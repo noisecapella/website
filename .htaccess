@@ -1,3 +1,1 @@
-Options +FollowSymlinks
-RewriteEngine on
-Redirect / /_site
+Redirect /index.html http://georgeschneeloch.com/_site
