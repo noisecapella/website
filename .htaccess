@@ -1,2 +1,4 @@
 RewriteEngine on
-RewriteRule (.*) _site/$1 [QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond _site/%{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ _site/$1 [QSA]
