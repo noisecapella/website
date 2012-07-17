@@ -1,0 +1,3 @@
+Options +FollowSymlinks
+RewriteEngine on
+Redirect / /_site
