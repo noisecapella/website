@@ -1,9 +1,8 @@
 RewriteEngine on
+RewriteBase /
+
 RewriteCond %{HTTP_HOST} ^(www.)?georgeschneeloch.com$
 RewriteCond %{REQUEST_URI} !^/_site/
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^(.*)$ /_site/$1
 
