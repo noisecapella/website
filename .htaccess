@@ -5,16 +5,5 @@ ErrorDocument 500 /500.html
 
 RewriteEngine On
 
-# Map http://www.example.com to /_site.
-RewriteRule ^$ /_site/ [L]
-
-# Map http://www.example.com/x to /_site/x unless there is a x in the web root.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} !^/_site/
-RewriteRule ^(.*)$ /_site/$1
-
-# Add trailing slash to directories within _site
-# This does not expose the internal URL.
-RewriteCond %{SCRIPT_FILENAME} -d
-RewriteRule ^_site/(.*[^/])$ http://www.example.com/$1/ [R=301]
+RewriteCond %{REQUEST_URI} !^/_site/.*$
+RewriteRule ^(.*)$ /$1 [L]
