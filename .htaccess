@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule ^(.*)$ /_site/$1
+RewriteRule ^/(.*)$ /_site/$1
