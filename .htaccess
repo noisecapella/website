@@ -1,3 +1,3 @@
 Redirect /index.html http://georgeschneeloch.com/_site
 RewriteEngine on
-RewriteRule ^/$ /_site/ [R]
+RewriteRule ^/(.*)$ /_site/$1 [R]
