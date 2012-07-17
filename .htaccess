@@ -1,2 +1,1 @@
-RewriteEngine on
-RewriteRule ^$ /_site [L]
+Alias /_site /
