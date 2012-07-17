@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteBase /
 
-RewriteRule (.*) _site/$1 [R=301,L]
+RewriteRule (.*) _site/$1 [L]
