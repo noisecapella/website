@@ -1,21 +1,2 @@
-# Bluehost.com
-# .htaccess main domain to subdirectory redirect
-# Copy and paste the following code into the .htaccess file
-# in the public_html folder of your hosting account
-# make the changes to the file according to the instructions.
-# Do not change this line.
 RewriteEngine on
-# Change example.com to be your main domain.
-RewriteCond %{HTTP_HOST} ^(www.)?georgeschneeloch.com$
-# Change 'subdirectory' to be the directory you will use for your main domain.
-RewriteCond %{REQUEST_URI} !^/_site/
-# Don't change these line.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-# Change 'subdirectory' to be the directory you will use for your main domain.
-RewriteRule ^(.*)$ /_site/$1 [L,P]
-# Change example.com to be your main domain again.
-# Change 'subdirectory' to be the directory you will use for your main domain
-# followed by / then the main file for your site, index.php, index.html, etc.
-RewriteCond %{HTTP_HOST} ^(www.)?georgeschneeloch.com$
-RewriteRule ^(/)?$ /_site/index.html [L,P]
+RewriteRule ^/(.*)$ /_site/$1  [L,P]
