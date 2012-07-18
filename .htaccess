@@ -1,3 +1,4 @@
 RewriteEngine on
+RewriteBase /
 RewriteCond %{HTTP_HOST} ^(www.)?georgeschneeloch.com$
-RewriteRule ^/(.*)$ http://www.georgeschneeloch.com/_site/$1  [L,P]
+RewriteRule ^(.*)$ http://www.georgeschneeloch.com/_site/$1  [L,P]
