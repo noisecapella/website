@@ -8,4 +8,5 @@
     </li>
 % endfor
 </ul>
-<a href="http://www.mikesfreegifs.com"><IMG SRC="http://www.mikesfreegifs.com/main4/underconstruction/Construction04.gif" ALIGN=LEFT BORDER=0 HSPACE=10><a/><br />
+<a href="http://www.mikesfreegifs.com"><IMG SRC="http://www.mikesfreegifs.com/main4/underconstruction/Construction04.gif"><a/>
+<br />
