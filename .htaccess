@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule ^(.*)$ _site/$1  [P]
+RewriteRule ^(.*)$ http://georgeschneeloch.com/_site/$1  [P]
