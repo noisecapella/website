@@ -18,4 +18,4 @@ RewriteRule ^(.*)$ /_site/$1
 # Change 'subdirectory' to be the directory you will use for your main domain
 # followed by / then the main file for your site, index.php, index.html, etc.
 RewriteCond %{HTTP_HOST} ^(www.)?georgeschneeloch.com$
-RewriteRule ^(/)?$ /_site/index.html [L]
+RewriteRule ^(/)?$ /_site/index.html [L, P]
