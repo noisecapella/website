@@ -1,1 +1,6 @@
+---
+categories: 
+date: 2012/07/18 11:50:00
+title: First entry
+---
 First entry! I'm finally making an attempt at setting up my website. Hopefully over time this will be updated regularly, with sections for my different projects.
