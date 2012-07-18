@@ -1,6 +1,1 @@
----
-categories: Category 1
-date: 2009/07/23 15:22:00
-title: Post 1
----
-This is post #1
+First entry! I'm finally making an attempt at setting up my website. Hopefully over time this will be updated regularly, with sections for my different projects.
