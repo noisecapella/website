@@ -21,8 +21,13 @@
 #  including that subdirectory: "http://www.yoursite.com/path/to/blogofile-dir"
 site.url = "http://www.georgeschneeloch.com"
 
+## site.author -- Your name, the author of the website.
+# This is optional. If set to anything other than None, the
+# simple_blog template creates a meta tag for the site author.
+site.author = "George Schneeloch"
+
 #### Blog Settings ####
-blog = controllers.blog
+blog = plugins.blog
 
 ## blog_enabled -- Should the blog be enabled?
 #  (You don't _have_ to use blogofile to build blogs)
@@ -40,9 +45,27 @@ blog.path = "/blog"
 # This is used repeatedly in default blog templates
 blog.name = "George Schneeloch"
 
+## HTML5 example customizes the blog templates.
+## Delete this setting to use the default ones instead.
+blog.template_path = "_templates/blog"
+
 ## blog_description -- A short one line description of the blog
 # used in the RSS/Atom feeds.
 blog.description = ""
 
 ## blog_timezone -- the timezone that you normally write your blog posts from
 blog.timezone = "US/Eastern"
+
+## blog_googleanaltics_id -- enable Google Analytics tracking
+## TODO: move to plugin/filter?
+blog.googleanlytics_id = "UA-XXXXX-X"
+
+## Markdown extensions
+## These are turned off by default, but turned on
+## to show examples in /blog/2009/07/24/post-2/
+filters.markdown.extensions.def_list.enabled = True
+filters.markdown.extensions.abbr.enabled = True
+filters.markdown.extensions.footnotes.enabled = True
+filters.markdown.extensions.fenced_code.enabled = True
+filters.markdown.extensions.headerid.enabled = True
+filters.markdown.extensions.tables.enabled = True
