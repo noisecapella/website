@@ -1,0 +1,14 @@
+---
+title: Stuff I'm working on
+permalink: http://www.georgeschneeloch.com/blog/2012/07/23/
+date: 2012/07/23 12:38:33
+categories: 
+guid: 36hoMqHqF435Lolk3ULHPJ2a6oQ=
+---
+I'm hoping to use this blog as a way to focus my thoughts. Lately it seems like I can't read a full page without my mind jumping to something else that's on my mind. So here's basically what I'm thinking about these days.
+
+I'm spending a lot of time trying to get this to work. To be fair, it was working, then I upgraded to the latest git version of blogofile, which does things a bit differently. I need to figure out how to override the template for the blog to look more like the other pages on this site. Following the stack trace is a bit time consuming. I have a lot of time now, but it's hard to focus on this when there's so much else I could be doing. Still, if I didn't want to think about the details of this blog I would host this on Tumblr instead. Hopefully I can get these things fixed so I can link to it publicly.
+
+I own a Makerbot Thing-O-Matic! I don't think I mentioned this before. This is another thing which takes a lot of time to mess with, which can be tempermental. But on the whole this thing is really fun to play around with, and worth the time and money I've put into it. I've done a little hacking around with [ReplicatorG](http://replicat.org), which is on my [github](http://github.com/bostonbusmap/replicatorg). I stapled someone else's gcode simulator onto it, which is in the branch `simulator`. It's not the best implementation, but I'm hopeful that someone will get inspired and make something greater.
+
+Speaking of the simulator, I've been reading through the [OpenGL red book](http://www.glprogramming.com/red/) slowly. It is somewhat ancient, but I really like how it is written, and I figure that it wouldn't hurt to learn how OpenGL used to be done. Apparently the newest version of this book doesn't really go into OpenGL 3 much. The next edition isn't out until 2013, so I figure I have time to catch up.

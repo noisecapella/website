@@ -1,0 +1,14 @@
+---
+title: About BostonBusMap
+permalink: http://www.georgeschneeloch.com/blog/2012/07/23/projects
+date: 2012/07/23 13:02:39
+categories: 
+guid: lqre1leqr3feOFkMdmpM1aCqPwA=
+---
+The first project I'll mention is [BostonBusMap](https://play.google.com/store/apps/details?id=boston.Bus.Map) (source [here](http://github.com/bostonbusmap/bostonbusmap)), an Android app that deals with live prediction data. It was built around the [NextBus](http://nextbus.com) data feed they use for their buses. It doesn't do anything complicated with the data, and the majority of effort with the app is getting it to perform well.
+
+Also, I wanted to do something which was more user friendly than a list-based direct representation of the data feed. Some of the features in the app require quick retrieval of and querying of stop data, which is why the stop data is bundled with the app. This is a bit of a hassle for me, because I need to update the app to ship new data within it whenever the stop data is updated on the data feed. But for the most part it's worked out well.
+
+I remember saying in some interviews regarding the app that I wrote the app for me first, and then shared it with other people. I think I should have phrased it differently, to sound less self centered. I am a fan of DIY, the idea that you can fix things yourself, that you have a bit of power over your own environment. When the MBTA released the data I was thrilled that I could write something that could make my bus commute much easier.
+
+(I should also thank my friend [Brittany Hamtil](http://www.brittanyhamtil.com) for helping out with the graphics, where I am completely incompetent.)
