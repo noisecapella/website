@@ -48,7 +48,7 @@ blog.name = "George Schneeloch"
 
 ## HTML5 example customizes the blog templates.
 ## Delete this setting to use the default ones instead.
-blog.template_path = "_templates/blog"
+blog.template_path = ["_templates", "_templates/blog"]
 
 ## blog_description -- A short one line description of the blog
 # used in the RSS/Atom feeds.
