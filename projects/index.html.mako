@@ -6,6 +6,7 @@
 - [Restructor](http://github.com/bostonbusmap/restructor) - my attempt at a computer vision Android app
 
 Minor forks:
+
 - [android-vnc-client](http://github.com/bostonbusmap/android-vnc-client) - I was aiming to get better support for using my bluetooth keyboard with this VNC client. I was running Ubuntu on my tablet for a little while on my trip through New Zealand (in lieu of a heavier laptop). I managed to get a little work done, but it wasn't really responsive or easy enough to make it fun
 - [ReplicatorG](http://github.com/bostonbusmap/replicatorg) - There's a 3D gcode simulator in the `simulator` branch, which is basically just the existing simulator infrastructure combined with (an existing gcode simulator) written in Processing.
 
