@@ -60,7 +60,128 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : /*$ preserve start $*/</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : /* ============================================================================================== */
+<span class="lineNum">       4 </span>            : /* FMOD Ex - Error string header file. Copyright (c), Firelight Technologies Pty, Ltd. 2004-2009. */
+<span class="lineNum">       5 </span>            : /*                                                                                                */
+<span class="lineNum">       6 </span>            : /* Use this header if you want to store or display a string version / english explanation of      */
+<span class="lineNum">       7 </span>            : /* the FMOD error codes.                                                                          */
+<span class="lineNum">       8 </span>            : /*                                                                                                */
+<span class="lineNum">       9 </span>            : /* ============================================================================================== */
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #ifndef _FMOD_ERRORS_H
+<span class="lineNum">      12 </span>            : #define _FMOD_ERRORS_H
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &quot;fmod.h&quot;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : #ifdef __GNUC__ 
+<span class="lineNum">      17 </span>            : static const char *FMOD_ErrorString(FMOD_RESULT errcode) __attribute__((unused));
+<a name="18"><span class="lineNum">      18 </span>            : #endif</a>
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 : static const char *FMOD_ErrorString(FMOD_RESULT errcode)</span>
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :     switch (errcode)</span>
+<span class="lineNum">      23 </span>            :     {
+<span class="lineNum">      24 </span>            : /*$ preserve end $*/
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :         case FMOD_ERR_ALREADYLOCKED:          return &quot;Tried to call lock a second time before unlock was called. &quot;;</span>
+<span class="lineNum">      26 </span><span class="lineNoCov">          0 :         case FMOD_ERR_BADCOMMAND:             return &quot;Tried to call a function on a data type that does not allow this type of functionality (ie calling Sound::lock on a streaming sound). &quot;;</span>
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_DRIVERS:           return &quot;Neither NTSCSI nor ASPI could be initialised. &quot;;</span>
+<span class="lineNum">      28 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_INIT:              return &quot;An error occurred while initialising the CDDA subsystem. &quot;;</span>
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_INVALID_DEVICE:    return &quot;Couldn't find the specified device. &quot;;</span>
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_NOAUDIO:           return &quot;No audio tracks on the specified disc. &quot;;</span>
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_NODEVICES:         return &quot;No CD/DVD devices were found. &quot;;</span>
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_NODISC:            return &quot;No disc present in the specified drive. &quot;;</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CDDA_READ:              return &quot;A CDDA read error occurred. &quot;;</span>
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CHANNEL_ALLOC:          return &quot;Error trying to allocate a channel. &quot;;</span>
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         case FMOD_ERR_CHANNEL_STOLEN:         return &quot;The specified channel has been reused to play another sound. &quot;;</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :         case FMOD_ERR_COM:                    return &quot;A Win32 COM related error occured. COM failed to initialize or a QueryInterface failed meaning a Windows codec or driver was not installed properly. &quot;;</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DMA:                    return &quot;DMA Failure.  See debug output for more information. &quot;;</span>
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DSP_CONNECTION:         return &quot;DSP connection error.  Connection possibly caused a cyclic dependancy.  Or tried to connect a tree too many units deep (more than 128). &quot;;</span>
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DSP_FORMAT:             return &quot;DSP Format error.  A DSP unit may have attempted to connect to this network with the wrong format. &quot;;</span>
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DSP_NOTFOUND:           return &quot;DSP connection error.  Couldn't find the DSP unit specified. &quot;;</span>
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DSP_RUNNING:            return &quot;DSP error.  Cannot perform this operation while the network is in the middle of running.  This will most likely happen if a connection or disconnection is attempted in a DSP callback. &quot;;</span>
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :         case FMOD_ERR_DSP_TOOMANYCONNECTIONS: return &quot;DSP connection error.  The unit being connected to or disconnected should only have 1 input or output. &quot;;</span>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_FAILED:           return &quot;An Event failed to be retrieved, most likely due to 'just fail' being specified as the max playbacks behavior. &quot;;</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_INFOONLY:         return &quot;Can't execute this command on an EVENT_INFOONLY event. &quot;;</span>
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_INTERNAL:         return &quot;An error occured that wasn't supposed to.  See debug log for reason. &quot;;</span>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_MAXSTREAMS:       return &quot;Event failed because 'Max streams' was hit when FMOD_INIT_FAIL_ON_MAXSTREAMS was specified. &quot;;</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_MISMATCH:         return &quot;FSB mismatches the FEV it was compiled with, the stream/sample mode it was meant to be created with was different, or the FEV was built for a different platform. &quot;;</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_NAMECONFLICT:     return &quot;A category with the same name already exists. &quot;;</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_NEEDSSIMPLE:      return &quot;Tried to call a function on a complex event that's only supported by simple events. &quot;;</span>
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         case FMOD_ERR_EVENT_NOTFOUND:         return &quot;The requested event, event group, event category or event property could not be found. &quot;;</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_BAD:               return &quot;Error loading file. &quot;;</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_COULDNOTSEEK:      return &quot;Couldn't perform seek operation.  This is a limitation of the medium (ie netstreams) or the file format. &quot;;</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_DISKEJECTED:       return &quot;Media was ejected while reading. &quot;;</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_EOF:               return &quot;End of file unexpectedly reached while trying to read essential data (truncated data?). &quot;;</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_NOTFOUND:          return &quot;File not found. &quot;;</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FILE_UNWANTED:          return &quot;Unwanted file access occured. &quot;;</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :         case FMOD_ERR_FORMAT:                 return &quot;Unsupported file or audio format. &quot;;</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :         case FMOD_ERR_HTTP:                   return &quot;A HTTP error occurred. This is a catch-all for HTTP errors not listed elsewhere. &quot;;</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :         case FMOD_ERR_HTTP_ACCESS:            return &quot;The specified resource requires authentication or is forbidden. &quot;;</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         case FMOD_ERR_HTTP_PROXY_AUTH:        return &quot;Proxy authentication is required to access the specified resource. &quot;;</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :         case FMOD_ERR_HTTP_SERVER_ERROR:      return &quot;A HTTP server error occurred. &quot;;</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         case FMOD_ERR_HTTP_TIMEOUT:           return &quot;The HTTP request timed out. &quot;;</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INITIALIZATION:         return &quot;FMOD was not initialized correctly to support this function. &quot;;</span>
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INITIALIZED:            return &quot;Cannot call this command after System::init. &quot;;</span>
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INTERNAL:               return &quot;An error occured that wasn't supposed to.  Contact support. &quot;;</span>
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_ADDRESS:        return &quot;On Xbox 360, this memory address passed to FMOD must be physical, (ie allocated with XPhysicalAlloc.) &quot;;</span>
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_FLOAT:          return &quot;Value passed in was a NaN, Inf or denormalized float. &quot;;</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_HANDLE:         return &quot;An invalid object handle was used. &quot;;</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_PARAM:          return &quot;An invalid parameter was passed to this function. &quot;;</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_SPEAKER:        return &quot;An invalid speaker was passed to this function based on the current speaker mode. &quot;;</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_SYNCPOINT:      return &quot;The syncpoint did not come from this sound handle. &quot;;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :         case FMOD_ERR_INVALID_VECTOR:         return &quot;The vectors passed in are not unit length, or perpendicular. &quot;;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :         case FMOD_ERR_IRX:                    return &quot;PS2 only.  fmodex.irx failed to initialize.  This is most likely because you forgot to load it. &quot;;</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MAXAUDIBLE:             return &quot;Reached maximum audible playback count for this sound's soundgroup. &quot;;</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MEMORY:                 return &quot;Not enough memory or resources. &quot;;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MEMORY_CANTPOINT:       return &quot;Can't use FMOD_OPENMEMORY_POINT on non PCM source data, or non mp3/xma/adpcm data if FMOD_CREATECOMPRESSEDSAMPLE was used. &quot;;</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MEMORY_IOP:             return &quot;PS2 only.  Not enough memory or resources on PlayStation 2 IOP ram. &quot;;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MEMORY_SRAM:            return &quot;Not enough memory or resources on console sound ram. &quot;;</span>
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         case FMOD_ERR_MUSIC_UNINITIALIZED:    return &quot;Music system is not initialized probably because no music data is loaded. &quot;;</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NEEDS2D:                return &quot;Tried to call a command on a 3d sound when the command was meant for 2d sound. &quot;;</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NEEDS3D:                return &quot;Tried to call a command on a 2d sound when the command was meant for 3d sound. &quot;;</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NEEDSHARDWARE:          return &quot;Tried to use a feature that requires hardware support.  (ie trying to play a VAG compressed sound in software on PS2). &quot;;</span>
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NEEDSSOFTWARE:          return &quot;Tried to use a feature that requires the software engine.  Software engine has either been turned off, or command was executed on a hardware channel which does not support this feature. &quot;;</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NET_CONNECT:            return &quot;Couldn't connect to the specified host. &quot;;</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NET_SOCKET_ERROR:       return &quot;A socket error occurred.  This is a catch-all for socket-related errors not listed elsewhere. &quot;;</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NET_URL:                return &quot;The specified URL couldn't be resolved. &quot;;</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NET_WOULD_BLOCK:        return &quot;Operation on a non-blocking socket could not complete immediately. &quot;;</span>
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :         case FMOD_ERR_NOTREADY:               return &quot;Operation could not be performed because specified sound is not ready. &quot;;</span>
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_ALLOCATED:       return &quot;Error initializing output device, but more specifically, the output device is already in use and cannot be reused. &quot;;</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_CREATEBUFFER:    return &quot;Error creating hardware sound buffer. &quot;;</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_DRIVERCALL:      return &quot;A call to a standard soundcard driver failed, which could possibly mean a bug in the driver or resources were missing or exhausted. &quot;;</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_ENUMERATION:     return &quot;Error enumerating the available driver list. List may be inconsistent due to a recent device addition or removal. &quot;;</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_FORMAT:          return &quot;Soundcard does not support the minimum features needed for this soundsystem (16bit stereo output). &quot;;</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_INIT:            return &quot;Error initializing output device. &quot;;</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_NOHARDWARE:      return &quot;FMOD_HARDWARE was specified but the sound card does not have the resources necessary to play it. &quot;;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         case FMOD_ERR_OUTPUT_NOSOFTWARE:      return &quot;Attempted to create a software sound but no software channels were specified in System::init. &quot;;</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         case FMOD_ERR_PAN:                    return &quot;Panning only works with mono or stereo sound sources. &quot;;</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         case FMOD_ERR_PLUGIN:                 return &quot;An unspecified error has been returned from a 3rd party plugin. &quot;;</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         case FMOD_ERR_PLUGIN_INSTANCES:       return &quot;The number of allowed instances of a plugin has been exceeded. &quot;;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         case FMOD_ERR_PLUGIN_MISSING:         return &quot;A requested output, dsp unit type or codec was not available. &quot;;</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         case FMOD_ERR_PLUGIN_RESOURCE:        return &quot;A resource that the plugin requires cannot be found. (ie the DLS file for MIDI playback) &quot;;</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         case FMOD_ERR_RECORD:                 return &quot;An error occured trying to initialize the recording device. &quot;;</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         case FMOD_ERR_REVERB_INSTANCE:        return &quot;Specified Instance in FMOD_REVERB_PROPERTIES couldn't be set. Most likely because it is an invalid instance number, or another application has locked the EAX4 FX slot. &quot;;</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         case FMOD_ERR_SUBSOUNDS:              return &quot;The error occured because the sound referenced contains subsounds.  The operation cannot be performed on a parent sound, or a parent sound was played without setting up a sentence first. &quot;;</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         case FMOD_ERR_SUBSOUND_ALLOCATED:     return &quot;This subsound is already being used by another sound, you cannot have more than one parent to a sound.  Null out the other parent's entry first. &quot;;</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :         case FMOD_ERR_SUBSOUND_CANTMOVE:      return &quot;Shared subsounds cannot be replaced or moved from their parent stream, such as when the parent stream is an FSB file. &quot;;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :         case FMOD_ERR_SUBSOUND_MODE:          return &quot;The subsound's mode bits do not match with the parent sound's mode bits.  See documentation for function that it was called with. &quot;;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :         case FMOD_ERR_TAGNOTFOUND:            return &quot;The specified tag could not be found or there are no tags. &quot;;</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         case FMOD_ERR_TOOMANYCHANNELS:        return &quot;The sound created exceeds the allowable input channel count.  This can be increased using the maxinputchannels parameter in System::setSoftwareFormat. &quot;;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         case FMOD_ERR_UNIMPLEMENTED:          return &quot;Something in FMOD hasn't been implemented when it should be! contact support! &quot;;</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :         case FMOD_ERR_UNINITIALIZED:          return &quot;This command failed because System::init or System::setDriver was not called. &quot;;</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         case FMOD_ERR_UNSUPPORTED:            return &quot;A command issued was not supported by this object.  Possibly a plugin without certain callbacks specified. &quot;;</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :         case FMOD_ERR_UPDATE:                 return &quot;An error caused by System::update occured. &quot;;</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         case FMOD_ERR_VERSION:                return &quot;The version number of this file format is not supported. &quot;;</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         case FMOD_OK:                         return &quot;No errors.&quot;;</span>
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :         default :                             return &quot;Unknown error.&quot;;</span>
+<span class="lineNum">     117 </span>            : /*$ preserve start $*/
+<span class="lineNum">     118 </span>            :     };
+<span class="lineNum">     119 </span>            : }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            : #endif
+<span class="lineNum">     122 </span>            : /*$ preserve end $*/
 </pre>
       </td>
     </tr>

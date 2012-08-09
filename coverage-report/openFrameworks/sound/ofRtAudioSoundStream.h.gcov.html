@@ -60,7 +60,57 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : #include &quot;ofBaseSoundStream.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofTypes.h&quot;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : class RtAudio;
+<span class="lineNum">       9 </span>            : typedef unsigned int RtAudioStreamStatus;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : class ofRtAudioSoundStream : public ofBaseSoundStream{
+<span class="lineNum">      12 </span>            :         public:
+<span class="lineNum">      13 </span>            :                 ofRtAudioSoundStream();
+<span class="lineNum">      14 </span>            :                 ~ofRtAudioSoundStream();
+<span class="lineNum">      15 </span>            :                 
+<span class="lineNum">      16 </span>            :                 void listDevices();
+<span class="lineNum">      17 </span>            :                 void setDeviceID(int deviceID);
+<span class="lineNum">      18 </span>            :         void setInDeviceID(int deviceID);
+<span class="lineNum">      19 </span>            :         void setOutDeviceID(int deviceID);
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :                 void setInput(ofBaseSoundInput * soundInput);
+<span class="lineNum">      22 </span>            :                 void setOutput(ofBaseSoundOutput * soundOutput);
+<span class="lineNum">      23 </span>            :                 bool setup(int outChannels, int inChannels, int sampleRate, int bufferSize, int nBuffers);
+<span class="lineNum">      24 </span>            :                 bool setup(ofBaseApp * app, int outChannels, int inChannels, int sampleRate, int bufferSize, int nBuffers);
+<span class="lineNum">      25 </span>            :                 
+<span class="lineNum">      26 </span>            :                 void start();
+<span class="lineNum">      27 </span>            :                 void stop();
+<span class="lineNum">      28 </span>            :                 void close();
+<span class="lineNum">      29 </span>            :                 
+<span class="lineNum">      30 </span>            :                 long unsigned long getTickCount();              
+<span class="lineNum">      31 </span>            :                                 
+<span class="lineNum">      32 </span>            :                 int getNumInputChannels();
+<span class="lineNum">      33 </span>            :                 int getNumOutputChannels();
+<span class="lineNum">      34 </span>            :         
+<span class="lineNum">      35 </span>            :                 
+<span class="lineNum">      36 </span>            :         private:
+<span class="lineNum">      37 </span>            :                 long unsigned long      tickCount;
+<span class="lineNum">      38 </span>            :                 ofPtr&lt;RtAudio&gt;            audio;
+<span class="lineNum">      39 </span>            :                 int                                     sampleRate;
+<span class="lineNum">      40 </span>            :                 int                                     outDeviceID, inDeviceID;
+<span class="lineNum">      41 </span>            :     
+<span class="lineNum">      42 </span>            :                 int                                     nInputChannels;
+<span class="lineNum">      43 </span>            :                 int                                     nOutputChannels;
+<span class="lineNum">      44 </span>            :                 ofBaseSoundInput *  soundInputPtr;
+<span class="lineNum">      45 </span>            :                 ofBaseSoundOutput * soundOutputPtr;
+<span class="lineNum">      46 </span>            :                 
+<a name="47"><span class="lineNum">      47 </span>            :                 static int rtAudioCallback(void *outputBuffer, void *inputBuffer, unsigned int bufferSize, double streamTime, RtAudioStreamStatus status, void *data);</a>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 : };</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : 
 </pre>
       </td>
     </tr>

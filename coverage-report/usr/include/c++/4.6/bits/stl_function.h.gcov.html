@@ -161,7 +161,7 @@
 <span class="lineNum">      99 </span>            :    *  This is one of the @link functors functor base classes@endlink.
 <a name="100"><span class="lineNum">     100 </span>            :    */</a>
 <span class="lineNum">     101 </span>            :   template&lt;typename _Arg, typename _Result&gt;
-<span class="lineNum">     102 </span><span class="lineCov">        383 :     struct unary_function</span>
+<span class="lineNum">     102 </span><span class="lineCov">        570 :     struct unary_function</span>
 <span class="lineNum">     103 </span>            :     {
 <span class="lineNum">     104 </span>            :       /// @c argument_type is the type of the argument
 <span class="lineNum">     105 </span>            :       typedef _Arg      argument_type;   
@@ -294,8 +294,8 @@
 <span class="lineNum">     232 </span>            :     struct less : public binary_function&lt;_Tp, _Tp, bool&gt;
 <a name="233"><span class="lineNum">     233 </span>            :     {</a>
 <span class="lineNum">     234 </span>            :       bool
-<span class="lineNum">     235 </span><span class="lineCov">     785794 :       operator()(const _Tp&amp; __x, const _Tp&amp; __y) const</span>
-<span class="lineNum">     236 </span><span class="lineCov">     785794 :       { return __x &lt; __y; }</span>
+<span class="lineNum">     235 </span><span class="lineCov">     894603 :       operator()(const _Tp&amp; __x, const _Tp&amp; __y) const</span>
+<span class="lineNum">     236 </span><span class="lineCov">     894603 :       { return __x &lt; __y; }</span>
 <span class="lineNum">     237 </span>            :     };
 <span class="lineNum">     238 </span>            : 
 <span class="lineNum">     239 </span>            :   /// One of the @link comparison_functors comparison functors@endlink.
@@ -491,19 +491,19 @@
 <span class="lineNum">     429 </span>            :       pointer_to_unary_function() { }
 <a name="430"><span class="lineNum">     430 </span>            : </a>
 <span class="lineNum">     431 </span>            :       explicit
-<span class="lineNum">     432 </span><span class="lineCov">        383 :       pointer_to_unary_function(_Result (*__x)(_Arg))</span>
-<span class="lineNum">     433 </span><span class="lineCov">        383 :       : _M_ptr(__x) { }</span>
+<span class="lineNum">     432 </span><span class="lineCov">        570 :       pointer_to_unary_function(_Result (*__x)(_Arg))</span>
+<span class="lineNum">     433 </span><span class="lineCov">        570 :       : _M_ptr(__x) { }</span>
 <a name="434"><span class="lineNum">     434 </span>            : </a>
 <span class="lineNum">     435 </span>            :       _Result
-<span class="lineNum">     436 </span><span class="lineCov">        383 :       operator()(_Arg __x) const</span>
-<span class="lineNum">     437 </span><span class="lineCov">        387 :       { return _M_ptr(__x); }</span>
+<span class="lineNum">     436 </span><span class="lineCov">        570 :       operator()(_Arg __x) const</span>
+<span class="lineNum">     437 </span><span class="lineCov">        574 :       { return _M_ptr(__x); }</span>
 <span class="lineNum">     438 </span>            :     };
 <span class="lineNum">     439 </span>            : 
 <span class="lineNum">     440 </span>            :   /// One of the @link pointer_adaptors adaptors for function pointers@endlink.
 <a name="441"><span class="lineNum">     441 </span>            :   template&lt;typename _Arg, typename _Result&gt;</a>
 <span class="lineNum">     442 </span>            :     inline pointer_to_unary_function&lt;_Arg, _Result&gt;
-<span class="lineNum">     443 </span><span class="lineCov">        383 :     ptr_fun(_Result (*__x)(_Arg))</span>
-<span class="lineNum">     444 </span><span class="lineCov">        387 :     { return pointer_to_unary_function&lt;_Arg, _Result&gt;(__x); }</span>
+<span class="lineNum">     443 </span><span class="lineCov">        570 :     ptr_fun(_Result (*__x)(_Arg))</span>
+<span class="lineNum">     444 </span><span class="lineCov">        574 :     { return pointer_to_unary_function&lt;_Arg, _Result&gt;(__x); }</span>
 <span class="lineNum">     445 </span>            : 
 <span class="lineNum">     446 </span>            :   /// One of the @link pointer_adaptors adaptors for function pointers@endlink.
 <span class="lineNum">     447 </span>            :   template&lt;typename _Arg1, typename _Arg2, typename _Result&gt;
@@ -540,8 +540,8 @@
 <span class="lineNum">     478 </span>            :       { return __x; }
 <a name="479"><span class="lineNum">     479 </span>            : </a>
 <span class="lineNum">     480 </span>            :       const _Tp&amp;
-<span class="lineNum">     481 </span><span class="lineCov">     157230 :       operator()(const _Tp&amp; __x) const</span>
-<span class="lineNum">     482 </span><span class="lineCov">     157230 :       { return __x; }</span>
+<span class="lineNum">     481 </span><span class="lineCov">     182803 :       operator()(const _Tp&amp; __x) const</span>
+<span class="lineNum">     482 </span><span class="lineCov">     182803 :       { return __x; }</span>
 <span class="lineNum">     483 </span>            :     };
 <span class="lineNum">     484 </span>            : 
 <span class="lineNum">     485 </span>            :   template&lt;typename _Pair&gt;
@@ -553,8 +553,8 @@
 <span class="lineNum">     491 </span>            :       { return __x.first; }
 <a name="492"><span class="lineNum">     492 </span>            : </a>
 <span class="lineNum">     493 </span>            :       const typename _Pair::first_type&amp;
-<span class="lineNum">     494 </span><span class="lineCov">     649788 :       operator()(const _Pair&amp; __x) const</span>
-<span class="lineNum">     495 </span><span class="lineCov">     649788 :       { return __x.first; }</span>
+<span class="lineNum">     494 </span><span class="lineCov">     735740 :       operator()(const _Pair&amp; __x) const</span>
+<span class="lineNum">     495 </span><span class="lineCov">     735740 :       { return __x.first; }</span>
 <span class="lineNum">     496 </span>            : 
 <span class="lineNum">     497 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     498 </span>            :       template&lt;typename _Pair2&gt;

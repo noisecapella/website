@@ -60,7 +60,389 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofFmodSoundPlayer.h&quot;</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;ofUtils.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : bool bFmodInitialized_ = false;
+<span class="lineNum">       8 </span>            : bool bUseSpectrum_ = false;
+<span class="lineNum">       9 </span>            : float fftValues_[8192];                 //
+<span class="lineNum">      10 </span>            : float fftInterpValues_[8192];                   //
+<span class="lineNum">      11 </span>            : float fftSpectrum_[8192];               // maximum #ofFmodSoundPlayer is 8192, in fmodex....
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : // ---------------------  static vars
+<span class="lineNum">      15 </span>            : static FMOD_CHANNELGROUP * channelgroup;
+<span class="lineNum">      16 </span>            : static FMOD_SYSTEM       * sys;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : // these are global functions, that affect every sound / channel:
+<span class="lineNum">      19 </span>            : // ------------------------------------------------------------
+<span class="lineNum">      20 </span>            : // ------------------------------------------------------------
+<a name="21"><span class="lineNum">      21 </span>            : </a>
+<span class="lineNum">      22 </span>            : //--------------------
+<span class="lineNum">      23 </span><span class="lineNoCov">          0 : void ofFmodSoundStopAll(){</span>
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :         ofFmodSoundPlayer::initializeFmod();</span>
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :         FMOD_ChannelGroup_Stop(channelgroup);</span>
+<span class="lineNum">      26 </span><span class="lineNoCov">          0 : }</span>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<span class="lineNum">      28 </span>            : //--------------------
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 : void ofFmodSoundSetVolume(float vol){</span>
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :         ofFmodSoundPlayer::initializeFmod();</span>
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :         FMOD_ChannelGroup_SetVolume(channelgroup, vol);</span>
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 : }</span>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<span class="lineNum">      34 </span>            : //--------------------
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 : void ofFmodSoundUpdate(){</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :         if (bFmodInitialized_){</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :                 FMOD_System_Update(sys);</span>
+<span class="lineNum">      38 </span>            :         }
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 : }</span>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<span class="lineNum">      41 </span>            : //--------------------
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 : float * ofFmodSoundGetSpectrum(int nBands){</span>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         ofFmodSoundPlayer::initializeFmod();</span>
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :         //      set to 0
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :         for (int i = 0; i &lt; 8192; i++){</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 fftInterpValues_[i] = 0;</span>
+<span class="lineNum">      50 </span>            :         }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         //      check what the user wants vs. what we can do:
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         if (nBands &gt; 8192){</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;error in ofFmodSoundGetSpectrum, the maximum number of bands is 8192 - you asked for %i we will return 8192&quot;, nBands);</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 nBands = 8192;</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         } else if (nBands &lt;= 0){</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;error in ofFmodSoundSpectrum, you've asked for %i bands, minimum is 1&quot;, nBands);</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 return fftInterpValues_;</span>
+<span class="lineNum">      59 </span>            :         }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :         //      FMOD needs pow2
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :         int nBandsToGet = ofNextPow2(nBands);</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :         if (nBandsToGet &lt; 64) nBandsToGet = 64;  // can't seem to get fft of 32, etc from fmodex</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :         //      get the fft
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :         FMOD_System_GetSpectrum(sys, fftSpectrum_, nBandsToGet, 0, FMOD_DSP_FFT_WINDOW_HANNING);</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :         //      convert to db scale
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :         for(int i = 0; i &lt; nBandsToGet; i++){</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         fftValues_[i] = 10.0f * (float)log10(1 + fftSpectrum_[i]) * 2.0f;</span>
+<span class="lineNum">      71 </span>            :         }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :         //      try to put all of the values (nBandsToGet) into (nBands)
+<span class="lineNum">      74 </span>            :         //  in a way which is accurate and preserves the data:
+<span class="lineNum">      75 </span>            :         //
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         if (nBandsToGet == nBands){</span>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 for(int i = 0; i &lt; nBandsToGet; i++){</span>
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :                         fftInterpValues_[i] = fftValues_[i];</span>
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :         } else {
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 float step              = (float)nBandsToGet / (float)nBands;</span>
+<span class="lineNum">      86 </span>            :                 //float pos             = 0;
+<span class="lineNum">      87 </span>            :                 // so for example, if nBands = 33, nBandsToGet = 64, step = 1.93f;
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :                 int currentBand = 0;</span>
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 for(int i = 0; i &lt; nBandsToGet; i++){</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :                         // if I am current band = 0, I care about (0+1) * step, my end pos
+<span class="lineNum">      93 </span>            :                         // if i &gt; endPos, then split i with me and my neighbor
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                         if (i &gt;= ((currentBand+1)*step)){</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                                 // do some fractional thing here...
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                                 float fraction = ((currentBand+1)*step) - (i-1);</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                                 float one_m_fraction = 1 - fraction;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                                 fftInterpValues_[currentBand] += fraction * fftValues_[i];</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                                 currentBand++;</span>
+<span class="lineNum">     102 </span>            :                                 // safety check:
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                                 if (currentBand &gt;= nBands){</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                                         ofLog(OF_LOG_ERROR, &quot;ofFmodSoundGetSpectrum - currentBand &gt;= nBands&quot;);</span>
+<span class="lineNum">     105 </span>            :                                 }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                                 fftInterpValues_[currentBand] += one_m_fraction * fftValues_[i];</span>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                         } else {
+<span class="lineNum">     110 </span>            :                                 // do normal things
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                                 fftInterpValues_[currentBand] += fftValues_[i];</span>
+<span class="lineNum">     112 </span>            :                         }
+<span class="lineNum">     113 </span>            :                 }
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                 // because we added &quot;step&quot; amount per band, divide to get the mean:
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 for (int i = 0; i &lt; nBands; i++){</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                         fftInterpValues_[i] /= step;</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                         if (fftInterpValues_[i] &gt; 1)fftInterpValues_[i] = 1;         // this seems &quot;wrong&quot;</span>
+<span class="lineNum">     119 </span>            :                 }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :         }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         return fftInterpValues_;</span>
+<span class="lineNum">     124 </span>            : }
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            : // ------------------------------------------------------------
+<span class="lineNum">     127 </span>            : // ------------------------------------------------------------
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : 
+<a name="130"><span class="lineNum">     130 </span>            : // now, the individual sound player:</a>
+<span class="lineNum">     131 </span>            : //------------------------------------------------------------
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 : ofFmodSoundPlayer::ofFmodSoundPlayer(){</span>
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         bLoop                   = false;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         bLoadedOk               = false;</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :         pan                     = 0.0; // range for oF is -1 to 1</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         volume                  = 1.0f;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         internalFreq    = 44100;</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :         speed                   = 1;</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         bPaused                 = false;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         isStreaming             = false;</span>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 : ofFmodSoundPlayer::~ofFmodSoundPlayer(){</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         unloadSound();</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            : 
+<a name="149"><span class="lineNum">     149 </span>            : //---------------------------------------</a>
+<span class="lineNum">     150 </span>            : // this should only be called once
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::initializeFmod(){</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         if(!bFmodInitialized_){</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 FMOD_System_Create(&amp;sys);</span>
+<span class="lineNum">     154 </span>            :                 #ifdef TARGET_LINUX
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                         FMOD_System_SetOutput(sys,FMOD_OUTPUTTYPE_ALSA);</span>
+<span class="lineNum">     156 </span>            :                 #endif
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 FMOD_System_Init(sys, 32, FMOD_INIT_NORMAL, NULL);  //do we want just 32 channels?</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 FMOD_System_GetMasterChannelGroup(sys, &amp;channelgroup);</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 bFmodInitialized_ = true;</span>
+<span class="lineNum">     160 </span>            :         }
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     162 </span>            : 
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<span class="lineNum">     164 </span>            : //---------------------------------------
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::closeFmod(){</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         if(bFmodInitialized_){</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 FMOD_System_Close(sys);</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 bFmodInitialized_ = false;</span>
+<span class="lineNum">     169 </span>            :         }
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 : }</span>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<span class="lineNum">     172 </span>            : //------------------------------------------------------------
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 : bool ofFmodSoundPlayer::loadSound(string fileName, bool stream){</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         fileName = ofToDataPath(fileName);</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :         // fmod uses IO posix internally, might have trouble
+<span class="lineNum">     178 </span>            :         // with unicode paths...
+<span class="lineNum">     179 </span>            :         // says this code:
+<span class="lineNum">     180 </span>            :         // http://66.102.9.104/search?q=cache:LM47mq8hytwJ:www.cleeker.com/doxygen/audioengine__fmod_8cpp-source.html+FSOUND_Sample_Load+cpp&amp;hl=en&amp;ct=clnk&amp;cd=18&amp;client=firefox-a
+<span class="lineNum">     181 </span>            :         // for now we use FMODs way, but we could switch if
+<span class="lineNum">     182 </span>            :         // there are problems:
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         bMultiPlay = false;</span>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :         // [1] init fmod, if necessary
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         initializeFmod();</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :         // [2] try to unload any previously loaded sounds
+<span class="lineNum">     191 </span>            :         // &amp; prevent user-created memory leaks
+<span class="lineNum">     192 </span>            :         // if they call &quot;loadSound&quot; repeatedly, for example
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 :         unloadSound();</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :         // [3] load sound
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :         //choose if we want streaming
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         int fmodFlags =  FMOD_SOFTWARE;</span>
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 :         if(stream)fmodFlags =  FMOD_SOFTWARE | FMOD_CREATESTREAM;</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         result = FMOD_System_CreateSound(sys, fileName.c_str(),  fmodFlags, NULL, &amp;sound);</span>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         if (result != FMOD_OK){</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 bLoadedOk = false;</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR,&quot;ofFmodSoundPlayer: Could not load sound file %s&quot;, fileName.c_str() );</span>
+<span class="lineNum">     207 </span>            :         } else {
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                 bLoadedOk = true;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 FMOD_Sound_GetLength(sound, &amp;length, FMOD_TIMEUNIT_PCM);</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 isStreaming = stream;</span>
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         return bLoadedOk;</span>
+<span class="lineNum">     214 </span>            : }
+<a name="215"><span class="lineNum">     215 </span>            : </a>
+<span class="lineNum">     216 </span>            : //------------------------------------------------------------
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::unloadSound(){</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :         if (bLoadedOk){</span>
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :                 stop();                                         // try to stop the sound</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :                 if(!isStreaming)FMOD_Sound_Release(sound);</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :                 bLoadedOk = false;</span>
+<span class="lineNum">     222 </span>            :         }
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 : }</span>
+<a name="224"><span class="lineNum">     224 </span>            : </a>
+<span class="lineNum">     225 </span>            : //------------------------------------------------------------
+<span class="lineNum">     226 </span><span class="lineNoCov">          0 : bool ofFmodSoundPlayer::getIsPlaying(){</span>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :         if (!bLoadedOk) return false;</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         int playing = 0;</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         FMOD_Channel_IsPlaying(channel, &amp;playing);</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :         return (playing != 0 ? true : false);</span>
+<span class="lineNum">     233 </span>            : }
+<a name="234"><span class="lineNum">     234 </span>            : </a>
+<span class="lineNum">     235 </span>            : //------------------------------------------------------------
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 : float ofFmodSoundPlayer::getSpeed(){</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :         return speed;</span>
+<span class="lineNum">     238 </span>            : }
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<span class="lineNum">     240 </span>            : //------------------------------------------------------------
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 : float ofFmodSoundPlayer::getPan(){</span>
+<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         return pan;</span>
+<span class="lineNum">     243 </span>            : }
+<a name="244"><span class="lineNum">     244 </span>            : </a>
+<span class="lineNum">     245 </span>            : //------------------------------------------------------------
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 : float ofFmodSoundPlayer::getVolume(){</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         return volume;</span>
+<span class="lineNum">     248 </span>            : }
+<a name="249"><span class="lineNum">     249 </span>            : </a>
+<span class="lineNum">     250 </span>            : //------------------------------------------------------------
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 : bool ofFmodSoundPlayer::isLoaded(){</span>
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :         return bLoadedOk;</span>
+<span class="lineNum">     253 </span>            : }
+<a name="254"><span class="lineNum">     254 </span>            : </a>
+<span class="lineNum">     255 </span>            : //------------------------------------------------------------
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setVolume(float vol){</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetVolume(channel, vol);</span>
+<span class="lineNum">     259 </span>            :         }
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 :         volume = vol;</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 : }</span>
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<span class="lineNum">     263 </span>            : //------------------------------------------------------------
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setPosition(float pct){</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :                 int sampleToBeAt = (int)(length * pct);</span>
+<span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetPosition(channel, sampleToBeAt, FMOD_TIMEUNIT_PCM);</span>
+<span class="lineNum">     268 </span>            :         }
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setPositionMS(int ms) {</span>
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetPosition(channel, ms, FMOD_TIMEUNIT_MS);</span>
+<span class="lineNum">     274 </span>            :         }
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 : }</span>
+<a name="276"><span class="lineNum">     276 </span>            : </a>
+<span class="lineNum">     277 </span>            : //------------------------------------------------------------
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 : float ofFmodSoundPlayer::getPosition(){</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     280 </span>            :                 unsigned int sampleImAt;
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :                 FMOD_Channel_GetPosition(channel, &amp;sampleImAt, FMOD_TIMEUNIT_PCM);</span>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                 float pct = 0.0f;</span>
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 if (length &gt; 0){</span>
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                         pct = sampleImAt / (float)length;</span>
+<span class="lineNum">     287 </span>            :                 }
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 return pct;</span>
+<span class="lineNum">     289 </span>            :         } else {
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     291 </span>            :         }
+<span class="lineNum">     292 </span>            : }
+<a name="293"><span class="lineNum">     293 </span>            : </a>
+<span class="lineNum">     294 </span>            : //------------------------------------------------------------
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 : int ofFmodSoundPlayer::getPositionMS(){</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     297 </span>            :                 unsigned int sampleImAt;
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :                 FMOD_Channel_GetPosition(channel, &amp;sampleImAt, FMOD_TIMEUNIT_MS);</span>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 return sampleImAt;</span>
+<span class="lineNum">     302 </span>            :         } else {
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     304 </span>            :         }
+<span class="lineNum">     305 </span>            : }
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<span class="lineNum">     307 </span>            : //------------------------------------------------------------
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setPan(float p){</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :         pan = p;</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :         p = ofClamp(p, -1, 1);</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetPan(channel,p);</span>
+<span class="lineNum">     313 </span>            :         }
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     315 </span>            : 
+<a name="316"><span class="lineNum">     316 </span>            : </a>
+<span class="lineNum">     317 </span>            : //------------------------------------------------------------
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setPaused(bool bP){</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetPaused(channel,bP);</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :                 bPaused = bP;</span>
+<span class="lineNum">     322 </span>            :         }
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     324 </span>            : 
+<a name="325"><span class="lineNum">     325 </span>            : </a>
+<span class="lineNum">     326 </span>            : //------------------------------------------------------------
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setSpeed(float spd){</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                         FMOD_Channel_SetFrequency(channel, internalFreq * spd);</span>
+<span class="lineNum">     330 </span>            :         }
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         speed = spd;</span>
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     333 </span>            : 
+<a name="334"><span class="lineNum">     334 </span>            : </a>
+<span class="lineNum">     335 </span>            : //------------------------------------------------------------
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setLoop(bool bLp){</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         if (getIsPlaying() == true){</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 FMOD_Channel_SetMode(channel,  (bLp == true) ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);</span>
+<span class="lineNum">     339 </span>            :         }
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :         bLoop = bLp;</span>
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 : }</span>
+<a name="342"><span class="lineNum">     342 </span>            : </a>
+<span class="lineNum">     343 </span>            : // ----------------------------------------------------------------------------
+<span class="lineNum">     344 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::setMultiPlay(bool bMp){</span>
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :         bMultiPlay = bMp;               // be careful with this...</span>
+<span class="lineNum">     346 </span><span class="lineNoCov">          0 : }</span>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<span class="lineNum">     348 </span>            : // ----------------------------------------------------------------------------
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::play(){</span>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            :         // if it's a looping sound, we should try to kill it, no?
+<span class="lineNum">     352 </span>            :         // or else people will have orphan channels that are looping
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :         if (bLoop == true){</span>
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :                 FMOD_Channel_Stop(channel);</span>
+<span class="lineNum">     355 </span>            :         }
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            :         // if the sound is not set to multiplay, then stop the current,
+<span class="lineNum">     358 </span>            :         // before we start another
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :         if (!bMultiPlay){</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 FMOD_Channel_Stop(channel);</span>
+<span class="lineNum">     361 </span>            :         }
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         FMOD_System_PlaySound(sys, FMOD_CHANNEL_FREE, sound, bPaused, &amp;channel);</span>
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span><span class="lineNoCov">          0 :         FMOD_Channel_GetFrequency(channel, &amp;internalFreq);</span>
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :         FMOD_Channel_SetVolume(channel,volume);</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :         setPan(pan);</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         FMOD_Channel_SetFrequency(channel, internalFreq * speed);</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         FMOD_Channel_SetMode(channel,  (bLoop == true) ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);</span>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            :         //fmod update() should be called every frame - according to the docs.
+<span class="lineNum">     372 </span>            :         //we have been using fmod without calling it at all which resulted in channels not being able
+<span class="lineNum">     373 </span>            :         //to be reused.  we should have some sort of global update function but putting it here
+<span class="lineNum">     374 </span>            :         //solves the channel bug
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         FMOD_System_Update(sys);</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 : }</span>
+<a name="378"><span class="lineNum">     378 </span>            : </a>
+<span class="lineNum">     379 </span>            : // ----------------------------------------------------------------------------
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 : void ofFmodSoundPlayer::stop(){</span></a>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :         FMOD_Channel_Stop(channel);</span>
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     383 </span>            : 
 </pre>
       </td>
     </tr>

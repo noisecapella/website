@@ -299,7 +299,7 @@
 <span class="lineNum">     237 </span>            : #else /* neither FreeBSD nor Solaris */
 <a name="238"><span class="lineNum">     238 </span>            : </a>
 <span class="lineNum">     239 </span>            : static inline int
-<span class="lineNum">     240 </span><span class="lineCov">      53562 : __gthread_active_p (void)</span>
+<span class="lineNum">     240 </span><span class="lineCov">      78760 : __gthread_active_p (void)</span>
 <span class="lineNum">     241 </span>            : {
 <span class="lineNum">     242 </span>            :   static void *const __gthread_active_ptr
 <span class="lineNum">     243 </span>            :     = __extension__ (void *) &amp;__gthrw_(
@@ -311,7 +311,7 @@
 <span class="lineNum">     249 </span>            :                                        pthread_create
 <span class="lineNum">     250 </span>            : #endif
 <span class="lineNum">     251 </span>            :                                        );
-<span class="lineNum">     252 </span><span class="lineCov">      53562 :   return __gthread_active_ptr != 0;</span>
+<span class="lineNum">     252 </span><span class="lineCov">      78760 :   return __gthread_active_ptr != 0;</span>
 <span class="lineNum">     253 </span>            : }
 <span class="lineNum">     254 </span>            : 
 <span class="lineNum">     255 </span>            : #endif /* FreeBSD or Solaris */

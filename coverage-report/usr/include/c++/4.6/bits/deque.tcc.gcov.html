@@ -40,9 +40,9 @@
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">13</td>
             <td class="headerCovTableEntry">38</td>
-            <td class="headerCovTableEntryLo">23.7 %</td>
+            <td class="headerCovTableEntryLo">34.2 %</td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -481,30 +481,30 @@
 <span class="lineNum">     419 </span>            :       _M_push_back_aux(_Args&amp;&amp;... __args)
 <a name="420"><span class="lineNum">     420 </span>            : #else</a>
 <span class="lineNum">     421 </span>            :       void
-<span class="lineNum">     422 </span><span class="lineCov">        532 :       deque&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">     422 </span><span class="lineCov">        695 :       deque&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">     423 </span>            :       _M_push_back_aux(const value_type&amp; __t)
 <span class="lineNum">     424 </span>            : #endif
 <span class="lineNum">     425 </span>            :       {
-<span class="lineNum">     426 </span><span class="lineCov">        532 :         _M_reserve_map_at_back();</span>
-<span class="lineNum">     427 </span><span class="lineCov">        532 :         *(this-&gt;_M_impl._M_finish._M_node + 1) = this-&gt;_M_allocate_node();</span>
+<span class="lineNum">     426 </span><span class="lineCov">        695 :         _M_reserve_map_at_back();</span>
+<span class="lineNum">     427 </span><span class="lineCov">        695 :         *(this-&gt;_M_impl._M_finish._M_node + 1) = this-&gt;_M_allocate_node();</span>
 <span class="lineNum">     428 </span>            :         __try
 <span class="lineNum">     429 </span>            :           {
 <span class="lineNum">     430 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     431 </span>            :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_finish._M_cur,
 <span class="lineNum">     432 </span>            :                                     std::forward&lt;_Args&gt;(__args)...);
 <span class="lineNum">     433 </span>            : #else
-<span class="lineNum">     434 </span><span class="lineCov">        532 :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_finish._M_cur, __t);</span>
+<span class="lineNum">     434 </span><span class="lineCov">        695 :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_finish._M_cur, __t);</span>
 <span class="lineNum">     435 </span>            : #endif
-<span class="lineNum">     436 </span><span class="lineCov">        532 :             this-&gt;_M_impl._M_finish._M_set_node(this-&gt;_M_impl._M_finish._M_node</span>
+<span class="lineNum">     436 </span><span class="lineCov">        695 :             this-&gt;_M_impl._M_finish._M_set_node(this-&gt;_M_impl._M_finish._M_node</span>
 <span class="lineNum">     437 </span>            :                                                 + 1);
-<span class="lineNum">     438 </span><span class="lineCov">        532 :             this-&gt;_M_impl._M_finish._M_cur = this-&gt;_M_impl._M_finish._M_first;</span>
+<span class="lineNum">     438 </span><span class="lineCov">        695 :             this-&gt;_M_impl._M_finish._M_cur = this-&gt;_M_impl._M_finish._M_first;</span>
 <span class="lineNum">     439 </span>            :           }
 <span class="lineNum">     440 </span><span class="lineNoCov">          0 :         __catch(...)</span>
 <span class="lineNum">     441 </span>            :           {
 <span class="lineNum">     442 </span><span class="lineNoCov">          0 :             _M_deallocate_node(*(this-&gt;_M_impl._M_finish._M_node + 1));</span>
 <span class="lineNum">     443 </span><span class="lineNoCov">          0 :             __throw_exception_again;</span>
 <span class="lineNum">     444 </span>            :           }
-<span class="lineNum">     445 </span><span class="lineCov">        532 :       }</span>
+<span class="lineNum">     445 </span><span class="lineCov">        695 :       }</span>
 <span class="lineNum">     446 </span>            : 
 <span class="lineNum">     447 </span>            :   // Called only if _M_impl._M_start._M_cur == _M_impl._M_start._M_first.
 <span class="lineNum">     448 </span>            :   template&lt;typename _Tp, typename _Alloc&gt;
@@ -515,22 +515,22 @@
 <span class="lineNum">     453 </span>            :       _M_push_front_aux(_Args&amp;&amp;... __args)
 <a name="454"><span class="lineNum">     454 </span>            : #else</a>
 <span class="lineNum">     455 </span>            :       void
-<span class="lineNum">     456 </span><span class="lineCov">      40990 :       deque&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">     456 </span><span class="lineCov">      74899 :       deque&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">     457 </span>            :       _M_push_front_aux(const value_type&amp; __t)
 <span class="lineNum">     458 </span>            : #endif
 <span class="lineNum">     459 </span>            :       {
-<span class="lineNum">     460 </span><span class="lineCov">      40990 :         _M_reserve_map_at_front();</span>
-<span class="lineNum">     461 </span><span class="lineCov">      40990 :         *(this-&gt;_M_impl._M_start._M_node - 1) = this-&gt;_M_allocate_node();</span>
+<span class="lineNum">     460 </span><span class="lineCov">      74899 :         _M_reserve_map_at_front();</span>
+<span class="lineNum">     461 </span><span class="lineCov">      74899 :         *(this-&gt;_M_impl._M_start._M_node - 1) = this-&gt;_M_allocate_node();</span>
 <span class="lineNum">     462 </span>            :         __try
 <span class="lineNum">     463 </span>            :           {
-<span class="lineNum">     464 </span><span class="lineCov">      40990 :             this-&gt;_M_impl._M_start._M_set_node(this-&gt;_M_impl._M_start._M_node</span>
+<span class="lineNum">     464 </span><span class="lineCov">      74899 :             this-&gt;_M_impl._M_start._M_set_node(this-&gt;_M_impl._M_start._M_node</span>
 <span class="lineNum">     465 </span>            :                                                - 1);
-<span class="lineNum">     466 </span><span class="lineCov">      40990 :             this-&gt;_M_impl._M_start._M_cur = this-&gt;_M_impl._M_start._M_last - 1;</span>
+<span class="lineNum">     466 </span><span class="lineCov">      74899 :             this-&gt;_M_impl._M_start._M_cur = this-&gt;_M_impl._M_start._M_last - 1;</span>
 <span class="lineNum">     467 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     468 </span>            :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_start._M_cur,
 <span class="lineNum">     469 </span>            :                                     std::forward&lt;_Args&gt;(__args)...);
 <span class="lineNum">     470 </span>            : #else
-<span class="lineNum">     471 </span><span class="lineCov">      40990 :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_start._M_cur, __t);</span>
+<span class="lineNum">     471 </span><span class="lineCov">      74899 :             this-&gt;_M_impl.construct(this-&gt;_M_impl._M_start._M_cur, __t);</span>
 <span class="lineNum">     472 </span>            : #endif
 <span class="lineNum">     473 </span>            :           }
 <span class="lineNum">     474 </span><span class="lineNoCov">          0 :         __catch(...)</span>
@@ -539,7 +539,7 @@
 <span class="lineNum">     477 </span><span class="lineNoCov">          0 :             _M_deallocate_node(*(this-&gt;_M_impl._M_start._M_node - 1));</span>
 <span class="lineNum">     478 </span><span class="lineNoCov">          0 :             __throw_exception_again;</span>
 <span class="lineNum">     479 </span>            :           }
-<span class="lineNum">     480 </span><span class="lineCov">      40990 :       }</span>
+<span class="lineNum">     480 </span><span class="lineCov">      74899 :       }</span>
 <span class="lineNum">     481 </span>            : 
 <a name="482"><span class="lineNum">     482 </span>            :   // Called only if _M_impl._M_finish._M_cur == _M_impl._M_finish._M_first.</a>
 <span class="lineNum">     483 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;
@@ -558,14 +558,14 @@
 <span class="lineNum">     496 </span>            :   //   _M_impl._M_start._M_cur == _M_impl._M_start._M_last,
 <a name="497"><span class="lineNum">     497 </span>            :   // then the deque must have at least two nodes.</a>
 <span class="lineNum">     498 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;
-<span class="lineNum">     499 </span><span class="lineCov">      41387 :     void deque&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">     499 </span><span class="lineCov">      75415 :     void deque&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">     500 </span>            :     _M_pop_front_aux()
 <span class="lineNum">     501 </span>            :     {
-<span class="lineNum">     502 </span><span class="lineCov">      41387 :       this-&gt;_M_impl.destroy(this-&gt;_M_impl._M_start._M_cur);</span>
-<span class="lineNum">     503 </span><span class="lineCov">      41387 :       _M_deallocate_node(this-&gt;_M_impl._M_start._M_first);</span>
-<span class="lineNum">     504 </span><span class="lineCov">      41387 :       this-&gt;_M_impl._M_start._M_set_node(this-&gt;_M_impl._M_start._M_node + 1);</span>
-<span class="lineNum">     505 </span><span class="lineCov">      41387 :       this-&gt;_M_impl._M_start._M_cur = this-&gt;_M_impl._M_start._M_first;</span>
-<span class="lineNum">     506 </span><span class="lineCov">      41387 :     }</span>
+<span class="lineNum">     502 </span><span class="lineCov">      75415 :       this-&gt;_M_impl.destroy(this-&gt;_M_impl._M_start._M_cur);</span>
+<span class="lineNum">     503 </span><span class="lineCov">      75415 :       _M_deallocate_node(this-&gt;_M_impl._M_start._M_first);</span>
+<span class="lineNum">     504 </span><span class="lineCov">      75415 :       this-&gt;_M_impl._M_start._M_set_node(this-&gt;_M_impl._M_start._M_node + 1);</span>
+<span class="lineNum">     505 </span><span class="lineCov">      75415 :       this-&gt;_M_impl._M_start._M_cur = this-&gt;_M_impl._M_start._M_first;</span>
+<span class="lineNum">     506 </span><span class="lineCov">      75415 :     }</span>
 <span class="lineNum">     507 </span>            : 
 <span class="lineNum">     508 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;
 <span class="lineNum">     509 </span>            :     template &lt;typename _InputIterator&gt;
@@ -840,15 +840,15 @@
 <span class="lineNum">     778 </span>            : 
 <a name="779"><span class="lineNum">     779 </span>            :    template&lt;typename _Tp, typename _Alloc&gt;</a>
 <span class="lineNum">     780 </span>            :      void
-<span class="lineNum">     781 </span><span class="lineCov">       1542 :      deque&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">     781 </span><span class="lineCov">       2301 :      deque&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">     782 </span>            :      _M_destroy_data_aux(iterator __first, iterator __last)
 <span class="lineNum">     783 </span>            :      {
-<span class="lineNum">     784 </span><span class="lineCov">       1550 :        for (_Map_pointer __node = __first._M_node + 1;</span>
+<span class="lineNum">     784 </span><span class="lineCov">       2309 :        for (_Map_pointer __node = __first._M_node + 1;</span>
 <span class="lineNum">     785 </span>            :             __node &lt; __last._M_node; ++__node)
 <span class="lineNum">     786 </span><span class="lineNoCov">          0 :          std::_Destroy(*__node, *__node + _S_buffer_size(),</span>
 <span class="lineNum">     787 </span>            :                        _M_get_Tp_allocator());
 <span class="lineNum">     788 </span>            : 
-<span class="lineNum">     789 </span><span class="lineCov">       1550 :        if (__first._M_node != __last._M_node)</span>
+<span class="lineNum">     789 </span><span class="lineCov">       2309 :        if (__first._M_node != __last._M_node)</span>
 <span class="lineNum">     790 </span>            :          {
 <span class="lineNum">     791 </span><span class="lineNoCov">          0 :            std::_Destroy(__first._M_cur, __first._M_last,</span>
 <span class="lineNum">     792 </span>            :                          _M_get_Tp_allocator());
@@ -856,9 +856,9 @@
 <span class="lineNum">     794 </span>            :                          _M_get_Tp_allocator());
 <span class="lineNum">     795 </span>            :          }
 <span class="lineNum">     796 </span>            :        else
-<span class="lineNum">     797 </span><span class="lineCov">       1550 :          std::_Destroy(__first._M_cur, __last._M_cur,</span>
+<span class="lineNum">     797 </span><span class="lineCov">       2309 :          std::_Destroy(__first._M_cur, __last._M_cur,</span>
 <span class="lineNum">     798 </span>            :                        _M_get_Tp_allocator());
-<span class="lineNum">     799 </span><span class="lineCov">       1542 :      }</span>
+<span class="lineNum">     799 </span><span class="lineCov">       2301 :      }</span>
 <span class="lineNum">     800 </span>            : 
 <a name="801"><span class="lineNum">     801 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;</a>
 <span class="lineNum">     802 </span>            :     void
@@ -912,21 +912,21 @@
 <span class="lineNum">     850 </span>            : 
 <a name="851"><span class="lineNum">     851 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;</a>
 <span class="lineNum">     852 </span>            :     void
-<span class="lineNum">     853 </span><span class="lineCov">         96 :     deque&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">     853 </span><span class="lineCov">        124 :     deque&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">     854 </span>            :     _M_reallocate_map(size_type __nodes_to_add, bool __add_at_front)
 <span class="lineNum">     855 </span>            :     {
 <span class="lineNum">     856 </span>            :       const size_type __old_num_nodes
-<span class="lineNum">     857 </span><span class="lineCov">         96 :         = this-&gt;_M_impl._M_finish._M_node - this-&gt;_M_impl._M_start._M_node + 1;</span>
-<span class="lineNum">     858 </span><span class="lineCov">         96 :       const size_type __new_num_nodes = __old_num_nodes + __nodes_to_add;</span>
+<span class="lineNum">     857 </span><span class="lineCov">        124 :         = this-&gt;_M_impl._M_finish._M_node - this-&gt;_M_impl._M_start._M_node + 1;</span>
+<span class="lineNum">     858 </span><span class="lineCov">        124 :       const size_type __new_num_nodes = __old_num_nodes + __nodes_to_add;</span>
 <span class="lineNum">     859 </span>            : 
 <span class="lineNum">     860 </span>            :       _Map_pointer __new_nstart;
-<span class="lineNum">     861 </span><span class="lineCov">         96 :       if (this-&gt;_M_impl._M_map_size &gt; 2 * __new_num_nodes)</span>
+<span class="lineNum">     861 </span><span class="lineCov">        124 :       if (this-&gt;_M_impl._M_map_size &gt; 2 * __new_num_nodes)</span>
 <span class="lineNum">     862 </span>            :         {
-<span class="lineNum">     863 </span><span class="lineCov">         96 :           __new_nstart = this-&gt;_M_impl._M_map + (this-&gt;_M_impl._M_map_size</span>
+<span class="lineNum">     863 </span><span class="lineCov">        124 :           __new_nstart = this-&gt;_M_impl._M_map + (this-&gt;_M_impl._M_map_size</span>
 <span class="lineNum">     864 </span>            :                                          - __new_num_nodes) / 2
 <span class="lineNum">     865 </span>            :                          + (__add_at_front ? __nodes_to_add : 0);
-<span class="lineNum">     866 </span><span class="lineCov">         96 :           if (__new_nstart &lt; this-&gt;_M_impl._M_start._M_node)</span>
-<span class="lineNum">     867 </span><span class="lineCov">         96 :             std::copy(this-&gt;_M_impl._M_start._M_node,</span>
+<span class="lineNum">     866 </span><span class="lineCov">        124 :           if (__new_nstart &lt; this-&gt;_M_impl._M_start._M_node)</span>
+<span class="lineNum">     867 </span><span class="lineCov">        124 :             std::copy(this-&gt;_M_impl._M_start._M_node,</span>
 <span class="lineNum">     868 </span>            :                       this-&gt;_M_impl._M_finish._M_node + 1,
 <span class="lineNum">     869 </span>            :                       __new_nstart);
 <span class="lineNum">     870 </span>            :           else
@@ -952,9 +952,9 @@
 <span class="lineNum">     890 </span><span class="lineNoCov">          0 :           this-&gt;_M_impl._M_map_size = __new_map_size;</span>
 <span class="lineNum">     891 </span>            :         }
 <span class="lineNum">     892 </span>            : 
-<span class="lineNum">     893 </span><span class="lineCov">         96 :       this-&gt;_M_impl._M_start._M_set_node(__new_nstart);</span>
-<span class="lineNum">     894 </span><span class="lineCov">         96 :       this-&gt;_M_impl._M_finish._M_set_node(__new_nstart + __old_num_nodes - 1);</span>
-<span class="lineNum">     895 </span><span class="lineCov">         96 :     }</span>
+<span class="lineNum">     893 </span><span class="lineCov">        124 :       this-&gt;_M_impl._M_start._M_set_node(__new_nstart);</span>
+<span class="lineNum">     894 </span><span class="lineCov">        124 :       this-&gt;_M_impl._M_finish._M_set_node(__new_nstart + __old_num_nodes - 1);</span>
+<span class="lineNum">     895 </span><span class="lineCov">        124 :     }</span>
 <span class="lineNum">     896 </span>            : 
 <span class="lineNum">     897 </span>            :   // Overload for deque::iterators, exploiting the &quot;segmented-iterator
 <span class="lineNum">     898 </span>            :   // optimization&quot;.

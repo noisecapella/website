@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,81 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofGstUtils.h&quot;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : class ofGstVideoPlayer: public ofBaseVideoPlayer, public ofGstAppSink{
+<span class="lineNum">       7 </span>            : public:
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            :         ofGstVideoPlayer();
+<span class="lineNum">      10 </span>            :         ~ofGstVideoPlayer();
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            :         /// needs to be called before loadMovie
+<span class="lineNum">      13 </span>            :         void    setPixelFormat(ofPixelFormat pixelFormat);
+<span class="lineNum">      14 </span>            :         bool    loadMovie(string uri);
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :         void    update();
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :         int             getCurrentFrame();
+<span class="lineNum">      19 </span>            :         int             getTotalNumFrames();
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :         void    firstFrame();
+<span class="lineNum">      22 </span>            :         void    nextFrame();
+<span class="lineNum">      23 </span>            :         void    previousFrame();
+<span class="lineNum">      24 </span>            :         void    setFrame(int frame);  // frame 0 = first frame...
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :         bool    isStream();
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :         void    play();
+<span class="lineNum">      29 </span>            :         void    stop();
+<span class="lineNum">      30 </span>            :         void    setPaused(bool bPause);
+<span class="lineNum">      31 </span>            :         bool    isPaused();
+<span class="lineNum">      32 </span>            :         bool    isLoaded();
+<span class="lineNum">      33 </span>            :         bool    isPlaying();
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :         float   getPosition();
+<span class="lineNum">      36 </span>            :         float   getSpeed();
+<span class="lineNum">      37 </span>            :         float   getDuration();
+<span class="lineNum">      38 </span>            :         bool    getIsMovieDone();
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :         void    setPosition(float pct);
+<span class="lineNum">      41 </span>            :         void    setVolume(float volume);
+<span class="lineNum">      42 </span>            :         void    setLoopState(ofLoopType state);
+<span class="lineNum">      43 </span>            :         int             getLoopState();
+<span class="lineNum">      44 </span>            :         void    setSpeed(float speed);
+<span class="lineNum">      45 </span>            :         void    close();
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :         bool                    isFrameNew();
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :         unsigned char * getPixels();
+<span class="lineNum">      50 </span>            :         ofPixelsRef             getPixelsRef();
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         float                   getHeight();
+<span class="lineNum">      53 </span>            :         float                   getWidth();
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :         void setFrameByFrame(bool frameByFrame);
+<span class="lineNum">      56 </span>            :         void setThreadAppSink(bool threaded);
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :         ofGstVideoUtils * getGstVideoUtils();
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : protected:
+<span class="lineNum">      61 </span>            :         bool    allocate(int bpp);
+<span class="lineNum">      62 </span>            :         void    on_stream_prepared();
+<a name="63"><span class="lineNum">      63 </span>            : </a>
+<span class="lineNum">      64 </span>            :         // return true to set the message as attended so upstream doesn't try to process it
+<span class="lineNum">      65 </span><span class="lineCov">       2450 :         virtual bool on_message(GstMessage* msg){return false;};</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            : private:
+<span class="lineNum">      68 </span>            :         ofPixelFormat           internalPixelFormat;
+<span class="lineNum">      69 </span>            :         guint64                         nFrames;
+<span class="lineNum">      70 </span>            :         int                             fps_n, fps_d;
+<span class="lineNum">      71 </span>            :         bool                            bIsStream;
+<span class="lineNum">      72 </span>            :         bool                            bIsAllocated;
+<span class="lineNum">      73 </span>            :         bool                            threadAppSink;
+<span class="lineNum">      74 </span>            :         ofGstVideoUtils         videoUtils;
+<span class="lineNum">      75 </span>            : };
 </pre>
       </td>
     </tr>

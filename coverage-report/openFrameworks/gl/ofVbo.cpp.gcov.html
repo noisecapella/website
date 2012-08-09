@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">273</td>
             <td class="headerCovTableEntry">317</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryMed">86.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">34</td>
             <td class="headerCovTableEntry">56</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">60.7 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,514 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : //TODO:</a>
+<span class="lineNum">       2 </span>            : //GL Error checking
+<span class="lineNum">       3 </span>            : // handle idling of arrays: possibly let gl create memory and use map buffers for streaming
+<span class="lineNum">       4 </span>            : // index updating/deleting?
+<span class="lineNum">       5 </span>            : // setVertexData with float* should know about ofVec3f vs ofVec2f?
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : #include &quot;ofVbo.h&quot;
+<span class="lineNum">       8 </span>            : #include &quot;ofUtils.h&quot;
+<a name="9"><span class="lineNum">       9 </span>            : #include &lt;map&gt;</a>
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span><span class="lineCov">      69253 : static map&lt;GLuint,int&gt; &amp; getIds(){</span>
+<span class="lineNum">      12 </span><span class="lineCov">      69253 :         static map&lt;GLuint,int&gt; * ids = new map&lt;GLuint,int&gt;;</span>
+<span class="lineNum">      13 </span><span class="lineCov">      69253 :         return *ids;</span>
+<span class="lineNum">      14 </span>            : }
+<a name="15"><span class="lineNum">      15 </span>            : </a>
+<span class="lineNum">      16 </span>            : //--------------------------------------------------------------
+<span class="lineNum">      17 </span><span class="lineCov">      34162 : static void retain(GLuint id){</span>
+<span class="lineNum">      18 </span><span class="lineCov">      50710 :         if(id==0) return;</span>
+<span class="lineNum">      19 </span><span class="lineCov">      16548 :         if(getIds().find(id)!=getIds().end()){</span>
+<span class="lineNum">      20 </span><span class="lineCov">        271 :                 getIds()[id]++;</span>
+<span class="lineNum">      21 </span>            :         }else{
+<span class="lineNum">      22 </span><span class="lineCov">      16277 :                 getIds()[id]=1;</span>
+<span class="lineNum">      23 </span>            :         }
+<span class="lineNum">      24 </span>            : }
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<span class="lineNum">      26 </span>            : //--------------------------------------------------------------
+<span class="lineNum">      27 </span><span class="lineCov">       3976 : static void release(GLuint id){</span>
+<span class="lineNum">      28 </span><span class="lineCov">       3976 :         if(getIds().find(id)!=getIds().end()){</span>
+<span class="lineNum">      29 </span><span class="lineCov">       3976 :                 getIds()[id]--;</span>
+<span class="lineNum">      30 </span><span class="lineCov">       3976 :                 if(getIds()[id]==0){</span>
+<span class="lineNum">      31 </span><span class="lineCov">       3705 :                         glDeleteBuffers(1, &amp;id);</span>
+<span class="lineNum">      32 </span><span class="lineCov">       3705 :                         getIds().erase(id);</span>
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            :         }else{
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: releasing id not found, this shouldn't be happening releasing anyway&quot;);</span>
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :                 glDeleteBuffers(1, &amp;id);</span>
+<span class="lineNum">      37 </span>            :         }
+<span class="lineNum">      38 </span><span class="lineCov">       3976 : }</span>
+<a name="39"><span class="lineNum">      39 </span>            : </a>
+<span class="lineNum">      40 </span>            : //--------------------------------------------------------------
+<span class="lineNum">      41 </span><span class="lineCov">       4740 : ofVbo::ofVbo()</span>
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span><span class="lineCov">       4740 :         bUsingVerts = false;</span>
+<span class="lineNum">      44 </span><span class="lineCov">       4740 :         bUsingTexCoords = false;</span>
+<span class="lineNum">      45 </span><span class="lineCov">       4740 :         bUsingColors = false;</span>
+<span class="lineNum">      46 </span><span class="lineCov">       4740 :         bUsingNormals = false;</span>
+<span class="lineNum">      47 </span><span class="lineCov">       4740 :         bUsingIndices = false;</span>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineCov">       4740 :         vertSize                = -1;</span>
+<span class="lineNum">      50 </span><span class="lineCov">       4740 :         vertStride      = 0;</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineCov">       4740 :         vertUsage               = -1;</span>
+<span class="lineNum">      53 </span><span class="lineCov">       4740 :         colorUsage              = -1;</span>
+<span class="lineNum">      54 </span><span class="lineCov">       4740 :         normUsage               = -1;</span>
+<span class="lineNum">      55 </span><span class="lineCov">       4740 :         texUsage                = -1;</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span><span class="lineCov">       4740 :         vertId     = 0;</span>
+<span class="lineNum">      58 </span><span class="lineCov">       4740 :         normalId   = 0;</span>
+<span class="lineNum">      59 </span><span class="lineCov">       4740 :         colorId    = 0;</span>
+<span class="lineNum">      60 </span><span class="lineCov">       4740 :         texCoordId = 0;</span>
+<span class="lineNum">      61 </span><span class="lineCov">       4740 :         indexId    = 0;</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">       4740 :         bAllocated              = false;</span>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       4740 : }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">         69 : ofVbo::ofVbo(const ofVbo &amp; mom){</span>
+<span class="lineNum">      68 </span><span class="lineCov">         69 :         bUsingVerts = mom.bUsingVerts;</span>
+<span class="lineNum">      69 </span><span class="lineCov">         69 :         bUsingTexCoords = mom.bUsingTexCoords;</span>
+<span class="lineNum">      70 </span><span class="lineCov">         69 :         bUsingColors = mom.bUsingColors;</span>
+<span class="lineNum">      71 </span><span class="lineCov">         69 :         bUsingNormals = mom.bUsingNormals;</span>
+<span class="lineNum">      72 </span><span class="lineCov">         69 :         bUsingIndices = mom.bUsingIndices;</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">         69 :         vertSize                = mom.vertSize;</span>
+<span class="lineNum">      75 </span><span class="lineCov">         69 :         vertStride      = mom.vertStride;</span>
+<span class="lineNum">      76 </span><span class="lineCov">         69 :         colorStride             = mom.colorStride;</span>
+<span class="lineNum">      77 </span><span class="lineCov">         69 :         normalStride    = mom.normalStride;</span>
+<span class="lineNum">      78 </span><span class="lineCov">         69 :         texCoordStride  = mom.texCoordStride;</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">         69 :         vertUsage               = mom.vertUsage;</span>
+<span class="lineNum">      81 </span><span class="lineCov">         69 :         colorUsage              = mom.colorUsage;</span>
+<span class="lineNum">      82 </span><span class="lineCov">         69 :         normUsage               = mom.normUsage;</span>
+<span class="lineNum">      83 </span><span class="lineCov">         69 :         texUsage                = mom.texUsage;</span>
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span><span class="lineCov">         69 :         vertId     = mom.vertId;</span>
+<span class="lineNum">      86 </span><span class="lineCov">         69 :         retain(vertId);</span>
+<span class="lineNum">      87 </span><span class="lineCov">         69 :         normalId   = mom.normalId;</span>
+<span class="lineNum">      88 </span><span class="lineCov">         69 :         retain(normalId);</span>
+<span class="lineNum">      89 </span><span class="lineCov">         69 :         colorId    = mom.colorId;</span>
+<span class="lineNum">      90 </span><span class="lineCov">         69 :         retain(colorId);</span>
+<span class="lineNum">      91 </span><span class="lineCov">         69 :         texCoordId = mom.texCoordId;</span>
+<span class="lineNum">      92 </span><span class="lineCov">         69 :         retain(texCoordId);</span>
+<span class="lineNum">      93 </span><span class="lineCov">         69 :         indexId    = mom.indexId;</span>
+<span class="lineNum">      94 </span><span class="lineCov">         69 :         retain(indexId);</span>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineCov">         69 :         bAllocated              = mom.bAllocated;</span>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">         69 : }</span></a>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">       3508 : ofVbo &amp; ofVbo::operator=(const ofVbo&amp; mom){</span>
+<span class="lineNum">     101 </span><span class="lineCov">       3508 :         if(&amp;mom==this) return *this;</span>
+<span class="lineNum">     102 </span><span class="lineCov">       3508 :         bUsingVerts = mom.bUsingVerts;</span>
+<span class="lineNum">     103 </span><span class="lineCov">       3508 :         bUsingTexCoords = mom.bUsingTexCoords;</span>
+<span class="lineNum">     104 </span><span class="lineCov">       3508 :         bUsingColors = mom.bUsingColors;</span>
+<span class="lineNum">     105 </span><span class="lineCov">       3508 :         bUsingNormals = mom.bUsingNormals;</span>
+<span class="lineNum">     106 </span><span class="lineCov">       3508 :         bUsingIndices = mom.bUsingIndices;</span>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">       3508 :         vertSize                = mom.vertSize;</span>
+<span class="lineNum">     109 </span><span class="lineCov">       3508 :         vertStride      = mom.vertStride;</span>
+<span class="lineNum">     110 </span><span class="lineCov">       3508 :         colorStride             = mom.colorStride;</span>
+<span class="lineNum">     111 </span><span class="lineCov">       3508 :         normalStride    = mom.normalStride;</span>
+<span class="lineNum">     112 </span><span class="lineCov">       3508 :         texCoordStride  = mom.texCoordStride;</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">       3508 :         vertUsage               = mom.vertUsage;</span>
+<span class="lineNum">     115 </span><span class="lineCov">       3508 :         colorUsage              = mom.colorUsage;</span>
+<span class="lineNum">     116 </span><span class="lineCov">       3508 :         normUsage               = mom.normUsage;</span>
+<span class="lineNum">     117 </span><span class="lineCov">       3508 :         texUsage                = mom.texUsage;</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">       3508 :         vertId     = mom.vertId;</span>
+<span class="lineNum">     120 </span><span class="lineCov">       3508 :         retain(vertId);</span>
+<span class="lineNum">     121 </span><span class="lineCov">       3508 :         normalId   = mom.normalId;</span>
+<span class="lineNum">     122 </span><span class="lineCov">       3508 :         retain(normalId);</span>
+<span class="lineNum">     123 </span><span class="lineCov">       3508 :         colorId    = mom.colorId;</span>
+<span class="lineNum">     124 </span><span class="lineCov">       3508 :         retain(colorId);</span>
+<span class="lineNum">     125 </span><span class="lineCov">       3508 :         texCoordId = mom.texCoordId;</span>
+<span class="lineNum">     126 </span><span class="lineCov">       3508 :         retain(texCoordId);</span>
+<span class="lineNum">     127 </span><span class="lineCov">       3508 :         indexId    = mom.indexId;</span>
+<span class="lineNum">     128 </span><span class="lineCov">       3508 :         retain(indexId);</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineCov">       3508 :         bAllocated              = mom.bAllocated;</span>
+<span class="lineNum">     132 </span><span class="lineCov">       3508 :         return *this;</span>
+<span class="lineNum">     133 </span>            : }
+<a name="134"><span class="lineNum">     134 </span>            : </a>
+<span class="lineNum">     135 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     136 </span><span class="lineCov">       4809 : ofVbo::~ofVbo(){</span>
+<span class="lineNum">     137 </span><span class="lineCov">       4809 :         clear();</span>
+<span class="lineNum">     138 </span><span class="lineCov">       4809 : }</span>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<span class="lineNum">     140 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 : void ofVbo::setMesh(const ofMesh &amp; mesh, int usage){</span>
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         setVertexData(mesh.getVerticesPointer(),mesh.getNumVertices(),usage);</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :         setColorData(mesh.getColorsPointer(),mesh.getNumColors(),usage);</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         setNormalData(mesh.getNormalsPointer(),mesh.getNumNormals(),usage);</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         setTexCoordData(mesh.getTexCoordsPointer(),mesh.getNumTexCoords(),usage);</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :         setIndexData(mesh.getIndexPointer(), mesh.getNumIndices(), usage);</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 : }</span>
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<span class="lineNum">     149 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     150 </span><span class="lineCov">       4642 : void ofVbo::setVertexData(const ofVec3f * verts, int total, int usage) {</span>
+<span class="lineNum">     151 </span><span class="lineCov">       4642 :         setVertexData(&amp;verts[0].x,3,total,usage,sizeof(ofVec3f));</span>
+<span class="lineNum">     152 </span><span class="lineCov">       4642 : }</span>
+<a name="153"><span class="lineNum">     153 </span>            : </a>
+<span class="lineNum">     154 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     155 </span><span class="lineCov">          2 : void ofVbo::setVertexData(const ofVec2f * verts, int total, int usage) {</span>
+<span class="lineNum">     156 </span><span class="lineCov">          2 :         setVertexData(&amp;verts[0].x,2,total,usage,sizeof(ofVec2f));</span>
+<span class="lineNum">     157 </span><span class="lineCov">          2 : }</span>
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<span class="lineNum">     159 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     160 </span><span class="lineCov">       4698 : void ofVbo::setVertexData(const float * vert0x, int numCoords, int total, int usage, int stride) {</span>
+<span class="lineNum">     161 </span><span class="lineCov">       4698 :         if(vert0x == NULL) {</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: bad vertex data!\n&quot;);</span>
+<span class="lineNum">     163 </span><span class="lineCov">       4698 :                 return; </span>
+<span class="lineNum">     164 </span>            :         }
+<span class="lineNum">     165 </span><span class="lineCov">       4698 :         if(!bUsingVerts) {</span>
+<span class="lineNum">     166 </span><span class="lineCov">       4365 :                 bAllocated  = true;</span>
+<span class="lineNum">     167 </span><span class="lineCov">       4365 :                 bUsingVerts = true;</span>
+<span class="lineNum">     168 </span><span class="lineCov">       4365 :                 glGenBuffers(1, &amp;(vertId));</span>
+<span class="lineNum">     169 </span><span class="lineCov">       4365 :                 retain(vertId);</span>
+<span class="lineNum">     170 </span>            :         }
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineCov">       4698 :         vertUsage = usage;</span>
+<span class="lineNum">     173 </span><span class="lineCov">       4698 :         vertSize = numCoords;</span>
+<span class="lineNum">     174 </span><span class="lineCov">       4698 :         vertStride = stride;</span>
+<span class="lineNum">     175 </span><span class="lineCov">       4698 :         totalVerts = total;</span>
+<span class="lineNum">     176 </span>            :         
+<span class="lineNum">     177 </span><span class="lineCov">       4698 :         glBindBuffer(GL_ARRAY_BUFFER, vertId);</span>
+<span class="lineNum">     178 </span><span class="lineCov">       4698 :         glBufferData(GL_ARRAY_BUFFER, total * stride, vert0x, usage);</span>
+<span class="lineNum">     179 </span><span class="lineCov">       4698 :         glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     180 </span>            : }
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<span class="lineNum">     182 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     183 </span><span class="lineCov">          4 : void ofVbo::setColorData(const ofFloatColor * colors, int total, int usage) {</span>
+<span class="lineNum">     184 </span><span class="lineCov">          4 :         setColorData(&amp;colors[0].r,total,usage,sizeof(ofFloatColor));</span>
+<span class="lineNum">     185 </span><span class="lineCov">          4 : }</span>
+<a name="186"><span class="lineNum">     186 </span>            : </a>
+<span class="lineNum">     187 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     188 </span><span class="lineCov">          4 : void ofVbo::setColorData(const float * color0r, int total, int usage, int stride) {</span>
+<span class="lineNum">     189 </span><span class="lineCov">          4 :         if(color0r == NULL) {</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: bad color data!\n&quot;);</span>
+<span class="lineNum">     191 </span><span class="lineCov">          4 :                 return; </span>
+<span class="lineNum">     192 </span>            :         }
+<span class="lineNum">     193 </span><span class="lineCov">          4 :         if(!bUsingColors) {</span>
+<span class="lineNum">     194 </span><span class="lineCov">          4 :                 bUsingColors = true;</span>
+<span class="lineNum">     195 </span><span class="lineCov">          4 :                 glGenBuffers(1, &amp;(colorId));</span>
+<span class="lineNum">     196 </span><span class="lineCov">          4 :                 retain(colorId);</span>
+<span class="lineNum">     197 </span>            :         }
+<span class="lineNum">     198 </span><span class="lineCov">          4 :         colorUsage = usage;</span>
+<span class="lineNum">     199 </span><span class="lineCov">          4 :         colorStride = stride;</span>
+<span class="lineNum">     200 </span>            :         
+<span class="lineNum">     201 </span><span class="lineCov">          4 :         glBindBuffer(GL_ARRAY_BUFFER, colorId);</span>
+<span class="lineNum">     202 </span><span class="lineCov">          4 :         glBufferData(GL_ARRAY_BUFFER, total * stride, color0r, usage);</span>
+<span class="lineNum">     203 </span><span class="lineCov">          4 :         glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     204 </span>            : }
+<a name="205"><span class="lineNum">     205 </span>            : </a>
+<span class="lineNum">     206 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     207 </span><span class="lineCov">      10035 : void ofVbo::setNormalData(const ofVec3f * normals, int total, int usage) {</span>
+<span class="lineNum">     208 </span><span class="lineCov">      10035 :         setNormalData(&amp;normals[0].x,total,usage,sizeof(ofVec3f));</span>
+<span class="lineNum">     209 </span><span class="lineCov">      10035 : }</span>
+<a name="210"><span class="lineNum">     210 </span>            : </a>
+<span class="lineNum">     211 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     212 </span><span class="lineCov">      10089 : void ofVbo::setNormalData(const float * normal0x, int total, int usage, int stride) {</span>
+<span class="lineNum">     213 </span><span class="lineCov">      10089 :         if(normal0x == NULL) {</span>
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: bad normal data!\n&quot;);</span>
+<span class="lineNum">     215 </span><span class="lineCov">      10089 :                 return; </span>
+<span class="lineNum">     216 </span>            :         }
+<span class="lineNum">     217 </span><span class="lineCov">      10089 :         if(!bUsingNormals) {</span>
+<span class="lineNum">     218 </span><span class="lineCov">       4359 :                 bUsingNormals = true;</span>
+<span class="lineNum">     219 </span><span class="lineCov">       4359 :                 glGenBuffers(1, &amp;(normalId));</span>
+<span class="lineNum">     220 </span><span class="lineCov">       4359 :                 retain(normalId);</span>
+<span class="lineNum">     221 </span>            :         }
+<span class="lineNum">     222 </span><span class="lineCov">      10089 :         normUsage = usage;</span>
+<span class="lineNum">     223 </span><span class="lineCov">      10089 :         normalStride = stride;</span>
+<span class="lineNum">     224 </span>            :         
+<span class="lineNum">     225 </span><span class="lineCov">      10089 :         glBindBuffer(GL_ARRAY_BUFFER, normalId);</span>
+<span class="lineNum">     226 </span><span class="lineCov">      10089 :         glBufferData(GL_ARRAY_BUFFER, total * stride, normal0x, usage);</span>
+<span class="lineNum">     227 </span><span class="lineCov">      10089 :         glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     228 </span>            : }
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<span class="lineNum">     230 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     231 </span><span class="lineCov">       3145 : void ofVbo::setTexCoordData(const ofVec2f * texCoords, int total, int usage) {</span>
+<span class="lineNum">     232 </span><span class="lineCov">       3145 :         setTexCoordData(&amp;texCoords[0].x,total,usage,sizeof(ofVec2f));</span>
+<span class="lineNum">     233 </span><span class="lineCov">       3145 : }</span>
+<a name="234"><span class="lineNum">     234 </span>            : </a>
+<span class="lineNum">     235 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     236 </span><span class="lineCov">       3194 : void ofVbo::setTexCoordData(const float * texCoord0x, int total, int usage, int stride) {</span>
+<span class="lineNum">     237 </span><span class="lineCov">       3194 :         if(texCoord0x == NULL) {</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: bad texCoord data!\n&quot;);</span>
+<span class="lineNum">     239 </span><span class="lineCov">       3194 :                 return; </span>
+<span class="lineNum">     240 </span>            :         }
+<span class="lineNum">     241 </span><span class="lineCov">       3194 :         if(!bUsingTexCoords) {</span>
+<span class="lineNum">     242 </span><span class="lineCov">       3194 :                 bUsingTexCoords = true;</span>
+<span class="lineNum">     243 </span><span class="lineCov">       3194 :                 glGenBuffers(1, &amp;(texCoordId));</span>
+<span class="lineNum">     244 </span><span class="lineCov">       3194 :                 retain(texCoordId);</span>
+<span class="lineNum">     245 </span>            :         }
+<span class="lineNum">     246 </span><span class="lineCov">       3194 :         texUsage = usage;</span>
+<span class="lineNum">     247 </span><span class="lineCov">       3194 :         texCoordStride = stride;</span>
+<span class="lineNum">     248 </span>            :         
+<span class="lineNum">     249 </span><span class="lineCov">       3194 :         glBindBuffer(GL_ARRAY_BUFFER, texCoordId);</span>
+<span class="lineNum">     250 </span><span class="lineCov">       3194 :         glBufferData(GL_ARRAY_BUFFER, total * stride, texCoord0x, usage);</span>
+<span class="lineNum">     251 </span><span class="lineCov">       3194 :         glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     252 </span>            : }
+<span class="lineNum">     253 </span>            : 
+<a name="254"><span class="lineNum">     254 </span>            : </a>
+<span class="lineNum">     255 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     256 </span><span class="lineCov">       4355 : void ofVbo::setIndexData(const ofIndexType * indices, int total, int usage){</span>
+<span class="lineNum">     257 </span><span class="lineCov">       4355 :         if(indices == NULL){</span>
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;ofVbo: bad index data!\n&quot;);</span>
+<span class="lineNum">     259 </span><span class="lineCov">       4355 :                 return;</span>
+<span class="lineNum">     260 </span>            :         }
+<span class="lineNum">     261 </span><span class="lineCov">       4355 :         if(!bUsingIndices){</span>
+<span class="lineNum">     262 </span><span class="lineCov">       4355 :                 bUsingIndices = true;</span>
+<span class="lineNum">     263 </span><span class="lineCov">       4355 :                 glGenBuffers(1, &amp;(indexId));</span>
+<span class="lineNum">     264 </span><span class="lineCov">       4355 :                 retain(indexId);</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span>            :         
+<span class="lineNum">     267 </span><span class="lineCov">       4355 :         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);</span>
+<span class="lineNum">     268 </span><span class="lineCov">       4355 :         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ofIndexType) * total, &amp;indices[0], usage);</span>
+<span class="lineNum">     269 </span><span class="lineCov">       4355 :         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     270 </span>            : }
+<a name="271"><span class="lineNum">     271 </span>            : </a>
+<span class="lineNum">     272 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 : void ofVbo::updateMesh(const ofMesh &amp; mesh){</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :         ofMesh * nonconstMesh = (ofMesh*)&amp;mesh;</span>
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :         if(nonconstMesh-&gt;haveVertsChanged()) updateVertexData(mesh.getVerticesPointer(),mesh.getNumVertices());</span>
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 :         if(nonconstMesh-&gt;haveColorsChanged()) updateColorData(mesh.getColorsPointer(),mesh.getNumColors());</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         if(nonconstMesh-&gt;haveNormalsChanged()) updateNormalData(mesh.getNormalsPointer(),mesh.getNumNormals());</span>
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :         if(nonconstMesh-&gt;haveTexCoordsChanged()) updateTexCoordData(mesh.getTexCoordsPointer(),mesh.getNumTexCoords());</span>
+<span class="lineNum">     279 </span><span class="lineNoCov">          0 : }</span>
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<span class="lineNum">     281 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     282 </span><span class="lineCov">       6834 : void ofVbo::updateVertexData(const ofVec3f * verts, int total) {</span>
+<span class="lineNum">     283 </span><span class="lineCov">       6834 :         updateVertexData(&amp;verts[0].x,total);</span>
+<span class="lineNum">     284 </span><span class="lineCov">       6834 : }</span>
+<a name="285"><span class="lineNum">     285 </span>            : </a>
+<span class="lineNum">     286 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     287 </span><span class="lineCov">        338 : void ofVbo::updateVertexData(const ofVec2f * verts, int total) {</span>
+<span class="lineNum">     288 </span><span class="lineCov">        338 :         updateVertexData(&amp;verts[0].x,total);</span>
+<span class="lineNum">     289 </span><span class="lineCov">        338 : }</span>
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<span class="lineNum">     291 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     292 </span><span class="lineCov">      15232 : void ofVbo::updateVertexData(const float * vert0x, int total) {</span>
+<span class="lineNum">     293 </span><span class="lineCov">      15232 :         if(bUsingVerts){</span>
+<span class="lineNum">     294 </span><span class="lineCov">      15232 :                 glBindBuffer(GL_ARRAY_BUFFER, vertId);</span>
+<span class="lineNum">     295 </span><span class="lineCov">      15232 :                 glBufferSubData(GL_ARRAY_BUFFER, 0, total*vertStride, vert0x);</span>
+<span class="lineNum">     296 </span><span class="lineCov">      15232 :                 glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     297 </span>            :         }
+<span class="lineNum">     298 </span><span class="lineCov">      15232 : }</span>
+<a name="299"><span class="lineNum">     299 </span>            : </a>
+<span class="lineNum">     300 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     301 </span><span class="lineCov">       1437 : void ofVbo::updateColorData(const ofFloatColor * colors, int total) {</span>
+<span class="lineNum">     302 </span><span class="lineCov">       1437 :         updateColorData(&amp;colors[0].r,total);</span>
+<span class="lineNum">     303 </span><span class="lineCov">       1437 : }</span>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<span class="lineNum">     305 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     306 </span><span class="lineCov">       1437 : void ofVbo::updateColorData(const float * color0r, int total) {</span>
+<span class="lineNum">     307 </span><span class="lineCov">       1437 :         if(bUsingColors) {</span>
+<span class="lineNum">     308 </span><span class="lineCov">       1437 :                 glBindBuffer(GL_ARRAY_BUFFER, colorId);</span>
+<span class="lineNum">     309 </span><span class="lineCov">       1437 :                 glBufferSubData(GL_ARRAY_BUFFER, 0, total*colorStride, color0r);</span>
+<span class="lineNum">     310 </span><span class="lineCov">       1437 :                 glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     311 </span>            :         }
+<span class="lineNum">     312 </span><span class="lineCov">       1437 : }</span>
+<a name="313"><span class="lineNum">     313 </span>            : </a>
+<span class="lineNum">     314 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 : void ofVbo::updateNormalData(const ofVec3f * normals, int total) {</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         updateNormalData(&amp;normals[0].x,total);</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 : }</span>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<span class="lineNum">     319 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     320 </span><span class="lineCov">       8060 : void ofVbo::updateNormalData(const float * normal0x, int total) {</span>
+<span class="lineNum">     321 </span><span class="lineCov">       8060 :         if(bUsingNormals) {</span>
+<span class="lineNum">     322 </span><span class="lineCov">       8060 :                 glBindBuffer(GL_ARRAY_BUFFER, normalId);</span>
+<span class="lineNum">     323 </span><span class="lineCov">       8060 :                 glBufferSubData(GL_ARRAY_BUFFER, 0, total*normalStride, normal0x);</span>
+<span class="lineNum">     324 </span><span class="lineCov">       8060 :                 glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     325 </span>            :         }
+<span class="lineNum">     326 </span><span class="lineCov">       8060 : }</span>
+<a name="327"><span class="lineNum">     327 </span>            : </a>
+<span class="lineNum">     328 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     329 </span><span class="lineCov">       3145 : void ofVbo::updateTexCoordData(const ofVec2f * texCoords, int total) {</span>
+<span class="lineNum">     330 </span><span class="lineCov">       3145 :         updateTexCoordData(&amp;texCoords[0].x,total);</span>
+<span class="lineNum">     331 </span><span class="lineCov">       3145 : }</span>
+<a name="332"><span class="lineNum">     332 </span>            : </a>
+<span class="lineNum">     333 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     334 </span><span class="lineCov">       3145 : void ofVbo::updateTexCoordData(const float * texCoord0x, int total) {</span>
+<span class="lineNum">     335 </span><span class="lineCov">       3145 :         if(bUsingTexCoords) {</span>
+<span class="lineNum">     336 </span><span class="lineCov">       3145 :                 glBindBuffer(GL_ARRAY_BUFFER, texCoordId);</span>
+<span class="lineNum">     337 </span><span class="lineCov">       3145 :                 glBufferSubData(GL_ARRAY_BUFFER, 0, total*texCoordStride, texCoord0x);</span>
+<span class="lineNum">     338 </span><span class="lineCov">       3145 :                 glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     339 </span>            :         }
+<span class="lineNum">     340 </span><span class="lineCov">       3145 : }</span>
+<a name="341"><span class="lineNum">     341 </span>            : </a>
+<span class="lineNum">     342 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     343 </span><span class="lineCov">       5740 : void ofVbo::updateIndexData(const ofIndexType * indices, int total) {</span>
+<span class="lineNum">     344 </span><span class="lineCov">       5740 :         if(bUsingIndices) {</span>
+<span class="lineNum">     345 </span><span class="lineCov">       5734 :                 glBindBuffer(GL_ARRAY_BUFFER, indexId);</span>
+<span class="lineNum">     346 </span><span class="lineCov">       5734 :                 glBufferSubData(GL_ARRAY_BUFFER, 0, total*sizeof(ofIndexType), &amp;indices[0]);</span>
+<span class="lineNum">     347 </span><span class="lineCov">       5734 :                 glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     348 </span>            :         }
+<span class="lineNum">     349 </span><span class="lineCov">       5740 : }</span>
+<a name="350"><span class="lineNum">     350 </span>            : </a>
+<span class="lineNum">     351 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     352 </span><span class="lineCov">      21134 : bool ofVbo::getIsAllocated(){</span>
+<span class="lineNum">     353 </span><span class="lineCov">      21134 :         return bAllocated;</span>
+<span class="lineNum">     354 </span>            : }       
+<a name="355"><span class="lineNum">     355 </span>            : </a>
+<span class="lineNum">     356 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 : bool ofVbo::getUsingVerts(){</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :         return bUsingVerts;</span>
+<span class="lineNum">     359 </span>            : }       
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<span class="lineNum">     361 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 : bool ofVbo::getUsingColors(){</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         return bUsingColors;</span>
+<span class="lineNum">     364 </span>            : }       
+<a name="365"><span class="lineNum">     365 </span>            : </a>
+<span class="lineNum">     366 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 : bool ofVbo::getUsingNormals(){</span>
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         return bUsingNormals;</span>
+<span class="lineNum">     369 </span>            : }
+<a name="370"><span class="lineNum">     370 </span>            : </a>
+<span class="lineNum">     371 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 : bool ofVbo::getUsingTexCoords(){</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :         return bUsingTexCoords;</span>
+<span class="lineNum">     374 </span>            : }
+<a name="375"><span class="lineNum">     375 </span>            : </a>
+<span class="lineNum">     376 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 : bool ofVbo::getUsingIndices(){</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :         return  bUsingIndices;</span>
+<span class="lineNum">     379 </span>            : }
+<a name="380"><span class="lineNum">     380 </span>            : </a>
+<span class="lineNum">     381 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 : GLuint ofVbo::getVertId(){</span>
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         return vertId;</span>
+<span class="lineNum">     384 </span>            : }
+<a name="385"><span class="lineNum">     385 </span>            : </a>
+<span class="lineNum">     386 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 : GLuint ofVbo::getColorId(){</span>
+<span class="lineNum">     388 </span><span class="lineNoCov">          0 :         return colorId;</span>
+<span class="lineNum">     389 </span>            : }
+<a name="390"><span class="lineNum">     390 </span>            : </a>
+<span class="lineNum">     391 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 : GLuint ofVbo::getNormalId(){</span>
+<span class="lineNum">     393 </span><span class="lineNoCov">          0 :         return normalId;</span>
+<span class="lineNum">     394 </span>            : }
+<a name="395"><span class="lineNum">     395 </span>            : </a>
+<span class="lineNum">     396 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 : GLuint ofVbo::getTexCoordId(){</span>
+<span class="lineNum">     398 </span><span class="lineNoCov">          0 :         return texCoordId;</span>
+<span class="lineNum">     399 </span>            : }
+<a name="400"><span class="lineNum">     400 </span>            : </a>
+<span class="lineNum">     401 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 : GLuint ofVbo::getIndexId(){</span>
+<span class="lineNum">     403 </span><span class="lineNoCov">          0 :         return indexId;</span>
+<span class="lineNum">     404 </span>            : }
+<a name="405"><span class="lineNum">     405 </span>            : </a>
+<span class="lineNum">     406 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     407 </span><span class="lineCov">      33833 : void ofVbo::bind(){</span>
+<span class="lineNum">     408 </span>            :         
+<span class="lineNum">     409 </span>            : //#ifndef TARGET_OPENGLES
+<span class="lineNum">     410 </span>            : //      glPushAttrib(GL_ALL_ATTRIB_BITS);
+<span class="lineNum">     411 </span>            : //      glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+<span class="lineNum">     412 </span>            : //#endif
+<span class="lineNum">     413 </span>            :         
+<span class="lineNum">     414 </span><span class="lineCov">      33833 :         if(bUsingVerts){</span>
+<span class="lineNum">     415 </span><span class="lineCov">      33833 :                 glEnableClientState(GL_VERTEX_ARRAY);           </span>
+<span class="lineNum">     416 </span><span class="lineCov">      33833 :                 glBindBuffer(GL_ARRAY_BUFFER, vertId);</span>
+<span class="lineNum">     417 </span><span class="lineCov">      33833 :                 glVertexPointer(vertSize, GL_FLOAT, vertStride, 0);</span>
+<span class="lineNum">     418 </span>            :         }
+<span class="lineNum">     419 </span>            :         
+<span class="lineNum">     420 </span><span class="lineCov">      33833 :         if(bUsingColors) {</span>
+<span class="lineNum">     421 </span><span class="lineCov">       3064 :                 glEnableClientState(GL_COLOR_ARRAY);</span>
+<span class="lineNum">     422 </span><span class="lineCov">       3064 :                 glBindBuffer(GL_ARRAY_BUFFER, colorId);</span>
+<span class="lineNum">     423 </span><span class="lineCov">       3064 :                 glColorPointer(4, GL_FLOAT, colorStride, 0);</span>
+<span class="lineNum">     424 </span>            :         }
+<span class="lineNum">     425 </span>            :         
+<span class="lineNum">     426 </span><span class="lineCov">      33833 :         if(bUsingNormals) {</span>
+<span class="lineNum">     427 </span><span class="lineCov">      19477 :                 glEnableClientState(GL_NORMAL_ARRAY);           </span>
+<span class="lineNum">     428 </span><span class="lineCov">      19477 :                 glBindBuffer(GL_ARRAY_BUFFER, normalId);</span>
+<span class="lineNum">     429 </span><span class="lineCov">      19477 :                 glNormalPointer(GL_FLOAT, normalStride, 0);</span>
+<span class="lineNum">     430 </span>            :         }
+<span class="lineNum">     431 </span>            :         
+<span class="lineNum">     432 </span><span class="lineCov">      33833 :         if(bUsingTexCoords) {</span>
+<span class="lineNum">     433 </span><span class="lineCov">      26549 :                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);            </span>
+<span class="lineNum">     434 </span><span class="lineCov">      26549 :                 glBindBuffer(GL_ARRAY_BUFFER, texCoordId);</span>
+<span class="lineNum">     435 </span><span class="lineCov">      26549 :                 glTexCoordPointer(2, GL_FLOAT, texCoordStride, 0);</span>
+<span class="lineNum">     436 </span>            :         }
+<span class="lineNum">     437 </span><span class="lineCov">      33833 : }</span>
+<a name="438"><span class="lineNum">     438 </span>            : </a>
+<span class="lineNum">     439 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     440 </span><span class="lineCov">      33833 : void ofVbo::unbind() {</span>
+<span class="lineNum">     441 </span>            : //      if(bUsingVerts)  glDisableClientState(GL_VERTEX_ARRAY);
+<span class="lineNum">     442 </span><span class="lineCov">      33833 :         if(bUsingColors) glDisableClientState(GL_COLOR_ARRAY);</span>
+<span class="lineNum">     443 </span><span class="lineCov">      33833 :         if(bUsingNormals) glDisableClientState(GL_NORMAL_ARRAY);</span>
+<span class="lineNum">     444 </span><span class="lineCov">      33833 :         if(bUsingTexCoords) glDisableClientState(GL_TEXTURE_COORD_ARRAY);</span>
+<span class="lineNum">     445 </span>            :         //glDisableClientState(GL_EDGE_FLAG_ARRAY);
+<span class="lineNum">     446 </span>            :         
+<span class="lineNum">     447 </span>            : //#ifndef       TARGET_OPENGLES
+<span class="lineNum">     448 </span>            : //      glPopClientAttrib();
+<span class="lineNum">     449 </span>            : //      glPopAttrib();  
+<span class="lineNum">     450 </span>            : //#endif
+<span class="lineNum">     451 </span>            :         
+<span class="lineNum">     452 </span><span class="lineCov">      33833 :         glBindBuffer(GL_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     453 </span><span class="lineCov">      33833 :         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);</span>
+<span class="lineNum">     454 </span><span class="lineCov">      33833 : }</span>
+<a name="455"><span class="lineNum">     455 </span>            : </a>
+<span class="lineNum">     456 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     457 </span><span class="lineCov">      16210 : void ofVbo::draw(int drawMode, int first, int total) {</span>
+<span class="lineNum">     458 </span><span class="lineCov">      16210 :         if(bAllocated) {</span>
+<span class="lineNum">     459 </span><span class="lineCov">      16210 :                 bind();</span>
+<span class="lineNum">     460 </span><span class="lineCov">      16210 :                 glDrawArrays(drawMode, first, total);</span>
+<span class="lineNum">     461 </span><span class="lineCov">      16210 :                 unbind();</span>
+<span class="lineNum">     462 </span>            :         }
+<span class="lineNum">     463 </span><span class="lineCov">      16210 : }</span>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<span class="lineNum">     465 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     466 </span><span class="lineCov">      17623 : void ofVbo::drawElements(int drawMode, int amt) {</span>
+<span class="lineNum">     467 </span><span class="lineCov">      17623 :         if(bAllocated){</span>
+<span class="lineNum">     468 </span><span class="lineCov">      17623 :                 bind();</span>
+<span class="lineNum">     469 </span><span class="lineCov">      17623 :                 if(bUsingIndices){</span>
+<span class="lineNum">     470 </span><span class="lineCov">      17623 :                         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);</span>
+<span class="lineNum">     471 </span>            : #ifdef TARGET_OPENGLES
+<span class="lineNum">     472 </span>            :                         glDrawElements(drawMode, amt, GL_UNSIGNED_SHORT, NULL);
+<span class="lineNum">     473 </span>            : #else
+<span class="lineNum">     474 </span><span class="lineCov">      17623 :                         glDrawElements(drawMode, amt, GL_UNSIGNED_INT, NULL);</span>
+<span class="lineNum">     475 </span>            : #endif
+<span class="lineNum">     476 </span>            :                 }
+<span class="lineNum">     477 </span><span class="lineCov">      17623 :                 unbind();</span>
+<span class="lineNum">     478 </span>            :         }
+<a name="479"><span class="lineNum">     479 </span><span class="lineCov">      17623 : }</span></a>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineCov">       4809 : void ofVbo::clear(){</span>
+<span class="lineNum">     482 </span><span class="lineCov">       4809 :         if(bUsingVerts){</span>
+<span class="lineNum">     483 </span><span class="lineCov">       1291 :                 release(vertId);</span>
+<span class="lineNum">     484 </span><span class="lineCov">       1291 :                 vertId = 0;</span>
+<span class="lineNum">     485 </span><span class="lineCov">       1291 :                 bUsingVerts = false;</span>
+<span class="lineNum">     486 </span>            :         }
+<span class="lineNum">     487 </span><span class="lineCov">       4809 :         if(bUsingNormals){</span>
+<span class="lineNum">     488 </span><span class="lineCov">       1285 :                 release(normalId);</span>
+<span class="lineNum">     489 </span><span class="lineCov">       1285 :                 normalId = 0;</span>
+<span class="lineNum">     490 </span><span class="lineCov">       1285 :                 bUsingNormals = false;</span>
+<span class="lineNum">     491 </span>            :         }
+<span class="lineNum">     492 </span><span class="lineCov">       4809 :         if(bUsingColors){</span>
+<span class="lineNum">     493 </span><span class="lineCov">          4 :                 release(colorId);</span>
+<span class="lineNum">     494 </span><span class="lineCov">          4 :                 colorId = 0;</span>
+<span class="lineNum">     495 </span><span class="lineCov">          4 :                 bUsingColors = false;</span>
+<span class="lineNum">     496 </span>            :         }
+<span class="lineNum">     497 </span><span class="lineCov">       4809 :         if(bUsingTexCoords){</span>
+<span class="lineNum">     498 </span><span class="lineCov">        115 :                 release(texCoordId);</span>
+<span class="lineNum">     499 </span><span class="lineCov">        115 :                 texCoordId = 0;</span>
+<span class="lineNum">     500 </span><span class="lineCov">        115 :                 bUsingTexCoords = false;</span>
+<span class="lineNum">     501 </span>            :         }
+<span class="lineNum">     502 </span><span class="lineCov">       4809 :         if(bUsingIndices){</span>
+<span class="lineNum">     503 </span><span class="lineCov">       1281 :                 release(indexId);</span>
+<span class="lineNum">     504 </span><span class="lineCov">       1281 :                 indexId = 0;</span>
+<a name="505"><span class="lineNum">     505 </span><span class="lineCov">       1281 :                 bUsingIndices = false;</span></a>
+<span class="lineNum">     506 </span>            :         }
+<span class="lineNum">     507 </span><span class="lineCov">       4905 : }</span>
+<span class="lineNum">     508 </span>            : 
 </pre>
       </td>
     </tr>

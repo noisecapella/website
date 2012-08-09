@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">238</td>
             <td class="headerCovTableEntry">373</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">63.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">50</td>
             <td class="headerCovTableEntry">99</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">50.5 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,649 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofPath.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;ofGraphics.h&quot;
+<a name="3"><span class="lineNum">       3 </span>            : #include &quot;ofTessellator.h&quot;</a>
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span><span class="lineCov">        286 : ofTessellator ofPath::tessellator;</span>
+<a name="6"><span class="lineNum">       6 </span>            : </a>
+<a name="7"><span class="lineNum">       7 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">       8 </span><span class="lineCov">       3728 : ofSubPath::ofSubPath(){</span>
+<span class="lineNum">       9 </span><span class="lineCov">       3728 :         bClosed = false;</span>
+<span class="lineNum">      10 </span><span class="lineCov">       3728 :         bHasChanged = true;</span>
+<span class="lineNum">      11 </span><span class="lineCov">       3728 : }</span>
+<a name="12"><span class="lineNum">      12 </span>            : </a>
+<span class="lineNum">      13 </span>            : //----------------------------------------------------------
+<span class="lineNum">      14 </span><span class="lineNoCov">          0 : const vector&lt;ofSubPath::Command&gt; &amp; ofSubPath::getCommands() const{</span>
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         return commands;</span>
+<span class="lineNum">      16 </span>            : }
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<span class="lineNum">      18 </span>            : //----------------------------------------------------------
+<span class="lineNum">      19 </span><span class="lineCov">       4115 : vector&lt;ofSubPath::Command&gt; &amp; ofSubPath::getCommands(){</span>
+<span class="lineNum">      20 </span><span class="lineCov">       4115 :         return commands;</span>
+<span class="lineNum">      21 </span>            : }
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<span class="lineNum">      23 </span>            : //----------------------------------------------------------
+<span class="lineNum">      24 </span><span class="lineCov">      60726 : void ofSubPath::addCommand(const ofSubPath::Command &amp; command){</span>
+<span class="lineNum">      25 </span><span class="lineCov">      60726 :         commands.push_back(command);</span>
+<span class="lineNum">      26 </span><span class="lineCov">      60726 :         bHasChanged=true;</span>
+<span class="lineNum">      27 </span><span class="lineCov">      60726 : }</span>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      30 </span><span class="lineCov">       3711 : void ofSubPath::close(){</span>
+<span class="lineNum">      31 </span><span class="lineCov">       3711 :         bClosed = true;</span>
+<span class="lineNum">      32 </span><span class="lineCov">       3711 : }</span>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      35 </span><span class="lineCov">      65870 : bool ofSubPath::isClosed(){</span>
+<span class="lineNum">      36 </span><span class="lineCov">      65870 :         return bClosed;</span>
+<span class="lineNum">      37 </span>            : }
+<a name="38"><span class="lineNum">      38 </span>            : </a>
+<a name="39"><span class="lineNum">      39 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : int ofSubPath::size(){</span>
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :         return commands.size();</span>
+<span class="lineNum">      42 </span>            : }
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<span class="lineNum">      44 </span>            : //----------------------------------------------------------
+<span class="lineNum">      45 </span><span class="lineCov">      36411 : ofSubPath::Command::Command(Type type , const ofPoint &amp; p)</span>
+<span class="lineNum">      46 </span>            : :type(type)
+<span class="lineNum">      47 </span><span class="lineCov">      36411 : ,to(p)</span>
+<span class="lineNum">      48 </span><span class="lineCov">      36411 : {}</span>
+<a name="49"><span class="lineNum">      49 </span>            : </a>
+<span class="lineNum">      50 </span>            : //----------------------------------------------------------
+<span class="lineNum">      51 </span><span class="lineCov">      23044 : ofSubPath::Command::Command(Type type , const ofPoint &amp; p, const ofPoint &amp; cp1, const ofPoint &amp; cp2)</span>
+<span class="lineNum">      52 </span>            : :type(type)
+<a name="53"><span class="lineNum">      53 </span>            : ,to(p)</a>
+<span class="lineNum">      54 </span>            : ,cp1(cp1)
+<span class="lineNum">      55 </span><span class="lineCov">      23044 : ,cp2(cp2)</span>
+<span class="lineNum">      56 </span>            : {
+<span class="lineNum">      57 </span><span class="lineCov">      23044 : }</span>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<span class="lineNum">      59 </span>            : //----------------------------------------------------------
+<span class="lineNum">      60 </span><span class="lineCov">       1271 : ofSubPath::Command::Command(Type type , const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd)</span>
+<span class="lineNum">      61 </span>            : :type(type)
+<span class="lineNum">      62 </span>            : ,to(centre)
+<span class="lineNum">      63 </span>            : ,radiusX(radiusX)
+<a name="64"><span class="lineNum">      64 </span>            : ,radiusY(radiusY)</a>
+<span class="lineNum">      65 </span>            : ,angleBegin(angleBegin)
+<span class="lineNum">      66 </span><span class="lineCov">       1271 : ,angleEnd(angleEnd)</span>
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span><span class="lineCov">       1271 : }</span>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            : 
+<a name="72"><span class="lineNum">      72 </span>            : // ofShape</a>
+<span class="lineNum">      73 </span>            : //----------------------------------------------------------
+<span class="lineNum">      74 </span><span class="lineCov">       1702 : ofPath::ofPath(){</span>
+<span class="lineNum">      75 </span><span class="lineCov">       1702 :         strokeWidth = 0;</span>
+<span class="lineNum">      76 </span><span class="lineCov">       1702 :         bFill = true;</span>
+<span class="lineNum">      77 </span><span class="lineCov">       1702 :         windingMode = OF_POLY_WINDING_ODD;</span>
+<span class="lineNum">      78 </span><span class="lineCov">       1702 :         prevCurveRes = 16;</span>
+<span class="lineNum">      79 </span><span class="lineCov">       1702 :         curveResolution = 16;</span>
+<span class="lineNum">      80 </span><span class="lineCov">       1702 :         arcResolution = 20;</span>
+<span class="lineNum">      81 </span><span class="lineCov">       1702 :         mode = PATHS;</span>
+<span class="lineNum">      82 </span><span class="lineCov">       1702 :         bNeedsTessellation = false;</span>
+<span class="lineNum">      83 </span><span class="lineCov">       1702 :         hasChanged = false;</span>
+<span class="lineNum">      84 </span><span class="lineCov">       1702 :         bUseShapeColor = true;</span>
+<span class="lineNum">      85 </span><span class="lineCov">       1702 :         clear();</span>
+<span class="lineNum">      86 </span><span class="lineCov">       1702 : }</span>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<span class="lineNum">      88 </span>            : //----------------------------------------------------------
+<span class="lineNum">      89 </span><span class="lineCov">      87915 : void ofPath::clear(){</span>
+<span class="lineNum">      90 </span><span class="lineCov">      87915 :         if(mode==PATHS){</span>
+<span class="lineNum">      91 </span><span class="lineCov">       2988 :                 paths.clear();</span>
+<span class="lineNum">      92 </span><span class="lineCov">       2990 :                 hasChanged = true;</span>
+<span class="lineNum">      93 </span>            :         }else{
+<span class="lineNum">      94 </span>            :                 // for performance, instead of clearing the whole vector
+<span class="lineNum">      95 </span>            :                 // let one polyline and clear it: avoids instantiation
+<span class="lineNum">      96 </span><span class="lineCov">      84925 :                 polylines.resize(1);</span>
+<span class="lineNum">      97 </span><span class="lineCov">      84925 :                 polylines[0].clear();</span>
+<span class="lineNum">      98 </span><span class="lineCov">      84925 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span><span class="lineCov">      87915 : }</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            : //----------------------------------------------------------
+<span class="lineNum">     103 </span><span class="lineCov">       8064 : void ofPath::newSubPath(){</span>
+<span class="lineNum">     104 </span><span class="lineCov">       8064 :         if(mode==PATHS){</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 paths.push_back(ofSubPath());</span>
+<span class="lineNum">     106 </span>            :         }else{
+<span class="lineNum">     107 </span><span class="lineCov">       8064 :                 polylines.push_back(ofPolyline());</span>
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span><span class="lineCov">       8064 : }</span>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<span class="lineNum">     111 </span>            : //----------------------------------------------------------
+<span class="lineNum">     112 </span><span class="lineCov">   15525759 : void ofPath::lineTo(const ofPoint &amp; p){</span>
+<span class="lineNum">     113 </span><span class="lineCov">   15525759 :         if(mode==PATHS){</span>
+<span class="lineNum">     114 </span><span class="lineCov">      36411 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::lineTo,p));</span>
+<span class="lineNum">     115 </span><span class="lineCov">      36411 :                 hasChanged = true;</span>
+<span class="lineNum">     116 </span>            :         }else{
+<span class="lineNum">     117 </span><span class="lineCov">   15489348 :                 lastPolyline().lineTo(p);</span>
+<span class="lineNum">     118 </span><span class="lineCov">   15489348 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     119 </span>            :         }
+<span class="lineNum">     120 </span><span class="lineCov">   15525759 : }</span>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<span class="lineNum">     122 </span>            : //----------------------------------------------------------
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 : void ofPath::lineTo(float x, float y, float z){</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         lineTo(ofPoint(x,y,z));</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : }</span>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<span class="lineNum">     127 </span>            : //----------------------------------------------------------
+<span class="lineNum">     128 </span><span class="lineCov">   15042218 : void ofPath::lineTo(float x, float y){</span>
+<span class="lineNum">     129 </span><span class="lineCov">   15042218 :         lineTo(ofPoint(x,y,0));</span>
+<span class="lineNum">     130 </span><span class="lineCov">   15042218 : }</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            : //----------------------------------------------------------
+<span class="lineNum">     133 </span><span class="lineCov">       1298 : void ofPath::moveTo(const ofPoint &amp; p){</span>
+<span class="lineNum">     134 </span><span class="lineCov">       1298 :         if(mode==PATHS){</span>
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 if(lastPath().size()&gt;0) newSubPath();</span>
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::lineTo,p));</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     138 </span>            :         }else{
+<span class="lineNum">     139 </span><span class="lineCov">       1298 :                 if(lastPolyline().size()&gt;0) newSubPath();</span>
+<span class="lineNum">     140 </span><span class="lineCov">       1298 :                 lastPolyline().addVertex(p);</span>
+<span class="lineNum">     141 </span><span class="lineCov">       1298 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span><span class="lineCov">       1298 : }</span>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<span class="lineNum">     145 </span>            : //----------------------------------------------------------
+<span class="lineNum">     146 </span><span class="lineCov">       1298 : void ofPath::moveTo(float x, float y, float z){</span>
+<span class="lineNum">     147 </span><span class="lineCov">       1298 :         moveTo(ofPoint(x,y,z));</span>
+<span class="lineNum">     148 </span><span class="lineCov">       1298 : }</span>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<span class="lineNum">     150 </span>            : //----------------------------------------------------------
+<span class="lineNum">     151 </span><span class="lineCov">      33806 : void ofPath::curveTo(const ofPoint &amp; p){</span>
+<span class="lineNum">     152 </span><span class="lineCov">      33806 :         if(mode==PATHS){</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::curveTo,p));</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     155 </span>            :         }else{
+<span class="lineNum">     156 </span><span class="lineCov">      33806 :                 lastPolyline().curveTo(p);</span>
+<span class="lineNum">     157 </span><span class="lineCov">      33806 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     158 </span>            :         }
+<span class="lineNum">     159 </span><span class="lineCov">      33806 : }</span>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<span class="lineNum">     161 </span>            : //----------------------------------------------------------
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 : void ofPath::curveTo(float x, float y, float z){</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         curveTo(ofPoint(x,y,z));</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 : }</span>
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<span class="lineNum">     166 </span>            : //----------------------------------------------------------
+<span class="lineNum">     167 </span><span class="lineCov">      33806 : void ofPath::curveTo(float x, float y){</span>
+<span class="lineNum">     168 </span><span class="lineCov">      33806 :         curveTo(ofPoint(x,y,0));</span>
+<span class="lineNum">     169 </span><span class="lineCov">      33806 : }</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : //----------------------------------------------------------
+<span class="lineNum">     172 </span><span class="lineCov">      12815 : void ofPath::bezierTo(const ofPoint &amp; cp1, const ofPoint &amp; cp2, const ofPoint &amp; p){</span>
+<span class="lineNum">     173 </span><span class="lineCov">      12815 :         if(mode==PATHS){</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::bezierTo,p,cp1,cp2));</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     176 </span>            :         }else{
+<span class="lineNum">     177 </span><span class="lineCov">      12815 :                 lastPolyline().bezierTo(cp1,cp2,p);</span>
+<span class="lineNum">     178 </span><span class="lineCov">      12815 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     179 </span>            :         }
+<span class="lineNum">     180 </span><span class="lineCov">      12815 : }</span>
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<span class="lineNum">     182 </span>            : //----------------------------------------------------------
+<span class="lineNum">     183 </span><span class="lineCov">      12815 : void ofPath::bezierTo(float cx1, float cy1, float cx2, float cy2, float x, float y){</span>
+<span class="lineNum">     184 </span><span class="lineCov">      12815 :         bezierTo(ofPoint(cx1,cy1,0),ofPoint(cx2,cy2,0),ofPoint(x,y,0));</span>
+<span class="lineNum">     185 </span><span class="lineCov">      12815 : }</span>
+<a name="186"><span class="lineNum">     186 </span>            : </a>
+<span class="lineNum">     187 </span>            : //----------------------------------------------------------
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 : void ofPath::bezierTo(float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z){</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         bezierTo(ofPoint(cx1,cy1,cz1),ofPoint(cx2,cy2,cz2),ofPoint(x,y,z));</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            : //----------------------------------------------------------
+<span class="lineNum">     193 </span><span class="lineCov">      23044 : void ofPath::quadBezierTo(const ofPoint &amp; cp1, const ofPoint &amp; cp2, const ofPoint &amp; p){</span>
+<span class="lineNum">     194 </span><span class="lineCov">      23044 :         if(mode==PATHS){</span>
+<span class="lineNum">     195 </span><span class="lineCov">      23044 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::quadBezierTo,p,cp1,cp2));</span>
+<span class="lineNum">     196 </span><span class="lineCov">      23044 :                 hasChanged = true;</span>
+<span class="lineNum">     197 </span>            :         }else{
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 lastPolyline().quadBezierTo(cp1,cp2,p);</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     200 </span>            :         }
+<span class="lineNum">     201 </span><span class="lineCov">      23044 : }</span>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<span class="lineNum">     203 </span>            : //----------------------------------------------------------
+<span class="lineNum">     204 </span><span class="lineCov">      23044 : void ofPath::quadBezierTo(float cx1, float cy1, float cx2, float cy2, float x, float y){</span>
+<span class="lineNum">     205 </span><span class="lineCov">      23044 :         quadBezierTo(ofPoint(cx1,cy1,0),ofPoint(cx2,cy2,0),ofPoint(x,y,0));</span>
+<span class="lineNum">     206 </span><span class="lineCov">      23044 : }</span>
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<span class="lineNum">     208 </span>            : //----------------------------------------------------------
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : void ofPath::quadBezierTo(float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z){</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         quadBezierTo(ofPoint(cx1,cy1,cz1),ofPoint(cx2,cy2,cz2),ofPoint(x,y,z));</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<span class="lineNum">     213 </span>            : //----------------------------------------------------------
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 : void ofPath::arc(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd, bool clockwise){</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     if(clockwise) {</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         arc(centre,radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     217 </span>            :     } else {
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :         arcNegative(centre,radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     219 </span>            :     }
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            : //----------------------------------------------------------
+<span class="lineNum">     223 </span><span class="lineCov">       1271 : void ofPath::arc(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     224 </span><span class="lineCov">       1271 :         if(mode==PATHS){</span>
+<span class="lineNum">     225 </span><span class="lineCov">       1271 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::arc,centre,radiusX,radiusY,angleBegin,angleEnd));</span>
+<span class="lineNum">     226 </span><span class="lineCov">       1271 :                 hasChanged = true;</span>
+<span class="lineNum">     227 </span>            :         }else{
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :                 lastPolyline().arc(centre,radiusX,radiusY,angleBegin,angleEnd,arcResolution);</span>
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     230 </span>            :         }
+<span class="lineNum">     231 </span><span class="lineCov">       1271 : }</span>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<span class="lineNum">     233 </span>            : //----------------------------------------------------------
+<span class="lineNum">     234 </span><span class="lineCov">       1271 : void ofPath::arc(float x, float y, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     235 </span><span class="lineCov">       1271 :         arc(ofPoint(x,y,0),radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     236 </span><span class="lineCov">       1271 : }</span>
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<span class="lineNum">     238 </span>            : //----------------------------------------------------------
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 : void ofPath::arc(float x, float y, float z, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         arc(ofPoint(x,y,z),radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            : //----------------------------------------------------------
+<span class="lineNum">     244 </span><span class="lineNoCov">          0 : void ofPath::arcNegative(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :         if(mode==PATHS){</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 lastPath().addCommand(ofSubPath::Command(ofSubPath::Command::arcNegative,centre,radiusX,radiusY,angleBegin,angleEnd));</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     248 </span>            :         }else{
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 lastPolyline().arcNegative(centre,radiusX,radiusY,angleBegin,angleEnd,arcResolution);</span>
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     251 </span>            :         }
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<span class="lineNum">     254 </span>            : //----------------------------------------------------------
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 : void ofPath::arcNegative(float x, float y, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         arcNegative(ofPoint(x,y,0),radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 : }</span>
+<a name="258"><span class="lineNum">     258 </span>            : </a>
+<span class="lineNum">     259 </span>            : //----------------------------------------------------------
+<span class="lineNum">     260 </span><span class="lineNoCov">          0 : void ofPath::arcNegative(float x, float y, float z, float radiusX, float radiusY, float angleBegin, float angleEnd){</span>
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :         arcNegative(ofPoint(x,y,z),radiusX,radiusY,angleBegin,angleEnd);</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            : //----------------------------------------------------------
+<span class="lineNum">     265 </span><span class="lineCov">      51053 : void ofPath::close(){</span>
+<span class="lineNum">     266 </span><span class="lineCov">      51053 :         if(mode==PATHS){</span>
+<span class="lineNum">     267 </span><span class="lineCov">       3711 :                 lastPath().close();</span>
+<span class="lineNum">     268 </span><span class="lineCov">       3711 :                 hasChanged = true;</span>
+<span class="lineNum">     269 </span>            :         }else{
+<span class="lineNum">     270 </span><span class="lineCov">      47342 :                 lastPolyline().setClosed(true);</span>
+<span class="lineNum">     271 </span><span class="lineCov">      47342 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     272 </span>            :         }
+<span class="lineNum">     273 </span>            :         //newPath();
+<span class="lineNum">     274 </span><span class="lineCov">      51053 : }</span>
+<a name="275"><span class="lineNum">     275 </span>            : </a>
+<span class="lineNum">     276 </span>            : //----------------------------------------------------------
+<span class="lineNum">     277 </span><span class="lineCov">     238147 : void ofPath::setPolyWindingMode(ofPolyWindingMode newMode){</span>
+<span class="lineNum">     278 </span><span class="lineCov">     238147 :         if(windingMode != newMode){</span>
+<span class="lineNum">     279 </span><span class="lineCov">       7333 :                 windingMode = newMode;</span>
+<span class="lineNum">     280 </span><span class="lineCov">       7333 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     281 </span>            :         }
+<span class="lineNum">     282 </span><span class="lineCov">     238147 : }</span>
+<a name="283"><span class="lineNum">     283 </span>            : </a>
+<span class="lineNum">     284 </span>            : //----------------------------------------------------------
+<span class="lineNum">     285 </span><span class="lineCov">     655710 : void ofPath::setFilled(bool hasFill){</span>
+<span class="lineNum">     286 </span><span class="lineCov">     655710 :         if(bFill != hasFill){</span>
+<span class="lineNum">     287 </span><span class="lineCov">     285087 :                 bFill = hasFill;</span>
+<span class="lineNum">     288 </span><span class="lineCov">     285087 :                 if(bFill) strokeWidth = 0;</span>
+<span class="lineNum">     289 </span><span class="lineCov">     142592 :                 else if(strokeWidth==0) strokeWidth = 1;</span>
+<span class="lineNum">     290 </span><span class="lineCov">     285087 :                 if(!cachedTessellationValid) bNeedsTessellation = true;</span>
+<span class="lineNum">     291 </span>            :         }
+<span class="lineNum">     292 </span><span class="lineCov">     655710 : }</span>
+<a name="293"><span class="lineNum">     293 </span>            : </a>
+<span class="lineNum">     294 </span>            : //----------------------------------------------------------
+<span class="lineNum">     295 </span><span class="lineCov">    1411779 : void ofPath::setStrokeWidth(float width){</span>
+<span class="lineNum">     296 </span><span class="lineCov">    1411779 :         strokeWidth = width;</span>
+<span class="lineNum">     297 </span><span class="lineCov">    1411779 : }</span>
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            : //----------------------------------------------------------
+<span class="lineNum">     300 </span><span class="lineCov">      64437 : ofSubPath &amp; ofPath::lastPath(){</span>
+<span class="lineNum">     301 </span><span class="lineCov">      64437 :         if(paths.empty() || paths.back().isClosed()){</span>
+<span class="lineNum">     302 </span><span class="lineCov">       3728 :                 paths.push_back(ofSubPath());</span>
+<span class="lineNum">     303 </span>            :         }
+<span class="lineNum">     304 </span><span class="lineCov">      64437 :         return paths.back();</span>
+<span class="lineNum">     305 </span>            : }
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<span class="lineNum">     307 </span>            : //----------------------------------------------------------
+<span class="lineNum">     308 </span><span class="lineCov">   15585907 : ofPolyline &amp; ofPath::lastPolyline(){</span>
+<span class="lineNum">     309 </span><span class="lineCov">   15585907 :         if(polylines.empty() || polylines.back().isClosed()){</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :                 polylines.push_back(ofPolyline());</span>
+<span class="lineNum">     311 </span>            :         }
+<span class="lineNum">     312 </span><span class="lineCov">   15585907 :         return polylines.back();</span>
+<span class="lineNum">     313 </span>            : }
+<a name="314"><span class="lineNum">     314 </span>            : </a>
+<span class="lineNum">     315 </span>            : //----------------------------------------------------------
+<span class="lineNum">     316 </span><span class="lineCov">        289 : vector&lt;ofSubPath&gt; &amp; ofPath::getSubPaths(){</span>
+<span class="lineNum">     317 </span><span class="lineCov">        289 :         if(mode==POLYLINES){</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;trying to get paths from shape with polylines only&quot;);</span>
+<span class="lineNum">     319 </span>            :         }
+<span class="lineNum">     320 </span><span class="lineCov">        289 :         return paths;</span>
+<span class="lineNum">     321 </span>            : }
+<a name="322"><span class="lineNum">     322 </span>            : </a>
+<span class="lineNum">     323 </span>            : //----------------------------------------------------------
+<span class="lineNum">     324 </span><span class="lineNoCov">          0 : const vector&lt;ofSubPath&gt; &amp; ofPath::getSubPaths() const{</span>
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :         if(mode==POLYLINES){</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING,&quot;trying to get paths from shape with polylines only&quot;);</span>
+<span class="lineNum">     327 </span>            :         }
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         return paths;</span>
+<span class="lineNum">     329 </span>            : }
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<span class="lineNum">     331 </span>            : //----------------------------------------------------------
+<span class="lineNum">     332 </span><span class="lineCov">        289 : ofPolyWindingMode ofPath::getWindingMode() const{</span>
+<span class="lineNum">     333 </span><span class="lineCov">        289 :         return windingMode;</span>
+<span class="lineNum">     334 </span>            : }
+<a name="335"><span class="lineNum">     335 </span>            : </a>
+<span class="lineNum">     336 </span>            : //----------------------------------------------------------
+<span class="lineNum">     337 </span><span class="lineCov">        578 : bool ofPath::isFilled() const{</span>
+<span class="lineNum">     338 </span><span class="lineCov">        578 :         return bFill;</span>
+<span class="lineNum">     339 </span>            : }
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<span class="lineNum">     341 </span>            : //----------------------------------------------------------
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 : ofColor ofPath::getFillColor() const{</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         return fillColor;</span>
+<span class="lineNum">     344 </span>            : }
+<a name="345"><span class="lineNum">     345 </span>            : </a>
+<span class="lineNum">     346 </span>            : //----------------------------------------------------------
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 : ofColor ofPath::getStrokeColor() const{</span>
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 :         return strokeColor;</span>
+<span class="lineNum">     349 </span>            : }
+<a name="350"><span class="lineNum">     350 </span>            : </a>
+<span class="lineNum">     351 </span>            : //----------------------------------------------------------
+<span class="lineNum">     352 </span><span class="lineCov">         34 : float ofPath::getStrokeWidth() const{</span>
+<span class="lineNum">     353 </span><span class="lineCov">         34 :         return strokeWidth;</span>
+<span class="lineNum">     354 </span>            : }
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            : //----------------------------------------------------------
+<span class="lineNum">     357 </span><span class="lineCov">     832089 : void ofPath::generatePolylinesFromPaths(){</span>
+<span class="lineNum">     358 </span><span class="lineCov">    1532063 :         if(mode==POLYLINES || paths.empty()) return;</span>
+<span class="lineNum">     359 </span><span class="lineCov">     699974 :         if(hasChanged || curveResolution!=prevCurveRes){</span>
+<span class="lineNum">     360 </span><span class="lineCov">       2680 :                 prevCurveRes = curveResolution;</span>
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineCov">       2680 :                 polylines.clear();</span>
+<span class="lineNum">     363 </span><span class="lineCov">       2680 :                 polylines.resize(paths.size());</span>
+<span class="lineNum">     364 </span><span class="lineCov">       6406 :                 for(int j=0;j&lt;(int)paths.size();j++){</span>
+<span class="lineNum">     365 </span><span class="lineCov">       3726 :                         const vector&lt;ofSubPath::Command&gt; &amp; commands = paths[j].getCommands();</span>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineCov">      64450 :                         for(int i=0; i&lt;(int)commands.size();i++){</span>
+<span class="lineNum">     368 </span><span class="lineCov">      60724 :                                 switch(commands[i].type){</span>
+<span class="lineNum">     369 </span>            :                                 case ofSubPath::Command::lineTo:
+<span class="lineNum">     370 </span><span class="lineCov">      36411 :                                         polylines[j].addVertex(commands[i].to);</span>
+<span class="lineNum">     371 </span><span class="lineCov">      36411 :                                         break;</span>
+<span class="lineNum">     372 </span>            :                                 case ofSubPath::Command::curveTo:
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :                                         polylines[j].curveTo(commands[i].to, curveResolution);</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :                                         break;</span>
+<span class="lineNum">     375 </span>            :                                 case ofSubPath::Command::bezierTo:
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :                                         polylines[j].bezierTo(commands[i].cp1,commands[i].cp2,commands[i].to, curveResolution);</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :                                         break;</span>
+<span class="lineNum">     378 </span>            :                                 case ofSubPath::Command::quadBezierTo:
+<span class="lineNum">     379 </span><span class="lineCov">      23044 :                                         polylines[j].quadBezierTo(commands[i].cp1,commands[i].cp2,commands[i].to, curveResolution);</span>
+<span class="lineNum">     380 </span><span class="lineCov">      23044 :                                         break;</span>
+<span class="lineNum">     381 </span>            :                                 case ofSubPath::Command::arc:
+<span class="lineNum">     382 </span><span class="lineCov">       1269 :                                         polylines[j].arc(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd, arcResolution);</span>
+<span class="lineNum">     383 </span><span class="lineCov">       1269 :                                         break;</span>
+<span class="lineNum">     384 </span>            :                 case ofSubPath::Command::arcNegative:
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :                     polylines[j].arcNegative(commands[i].to,commands[i].radiusX,commands[i].radiusY,commands[i].angleBegin,commands[i].angleEnd, arcResolution);</span>
+<span class="lineNum">     386 </span><span class="lineNoCov">          0 :                     break;</span>
+<span class="lineNum">     387 </span>            :                                 }
+<span class="lineNum">     388 </span>            :                         }
+<span class="lineNum">     389 </span><span class="lineCov">       3726 :                         polylines[j].setClosed(paths[j].isClosed());</span>
+<span class="lineNum">     390 </span>            :                 }
+<span class="lineNum">     391 </span><span class="lineCov">       2680 :                 hasChanged = false;</span>
+<span class="lineNum">     392 </span><span class="lineCov">       2680 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     393 </span><span class="lineCov">       2680 :                 cachedTessellationValid=false;</span>
+<span class="lineNum">     394 </span>            :         }
+<span class="lineNum">     395 </span>            : }
+<a name="396"><span class="lineNum">     396 </span>            : </a>
+<span class="lineNum">     397 </span>            : //----------------------------------------------------------
+<span class="lineNum">     398 </span><span class="lineCov">     153588 : void ofPath::tessellate(){</span>
+<span class="lineNum">     399 </span><span class="lineCov">     153588 :         generatePolylinesFromPaths();</span>
+<span class="lineNum">     400 </span><span class="lineCov">     241176 :         if(!bNeedsTessellation) return;</span>
+<span class="lineNum">     401 </span><span class="lineCov">      87588 :         if(bFill){</span>
+<span class="lineNum">     402 </span><span class="lineCov">      40418 :                 tessellator.tessellateToMesh( polylines, windingMode, cachedTessellation);</span>
+<span class="lineNum">     403 </span><span class="lineCov">      40418 :                 cachedTessellationValid=true;</span>
+<span class="lineNum">     404 </span>            :         }
+<span class="lineNum">     405 </span><span class="lineCov">      87588 :         if(hasOutline() &amp;&amp; windingMode!=OF_POLY_WINDING_ODD){</span>
+<span class="lineNum">     406 </span><span class="lineCov">       2934 :                 tessellator.tessellateToPolylines( polylines, windingMode, tessellatedContour);</span>
+<span class="lineNum">     407 </span>            :         }
+<span class="lineNum">     408 </span><span class="lineCov">      87588 :         bNeedsTessellation = false;</span>
+<span class="lineNum">     409 </span>            : }
+<a name="410"><span class="lineNum">     410 </span>            : </a>
+<span class="lineNum">     411 </span>            : //----------------------------------------------------------
+<span class="lineNum">     412 </span><span class="lineCov">     680031 : vector&lt;ofPolyline&gt; &amp; ofPath::getOutline() {</span>
+<span class="lineNum">     413 </span><span class="lineCov">     680031 :         if(windingMode!=OF_POLY_WINDING_ODD){</span>
+<span class="lineNum">     414 </span><span class="lineCov">       2934 :                 tessellate();</span>
+<span class="lineNum">     415 </span><span class="lineCov">       2934 :                 return tessellatedContour;</span>
+<span class="lineNum">     416 </span>            :         }else{
+<span class="lineNum">     417 </span><span class="lineCov">     677097 :                 generatePolylinesFromPaths();</span>
+<span class="lineNum">     418 </span><span class="lineCov">     680031 :                 return polylines;</span>
+<span class="lineNum">     419 </span>            :         }
+<span class="lineNum">     420 </span>            : }
+<a name="421"><span class="lineNum">     421 </span>            : </a>
+<span class="lineNum">     422 </span>            : //----------------------------------------------------------
+<span class="lineNum">     423 </span><span class="lineCov">       1676 : ofMesh &amp; ofPath::getTessellation(){</span>
+<span class="lineNum">     424 </span><span class="lineCov">       1676 :         tessellate();</span>
+<span class="lineNum">     425 </span><span class="lineCov">       1676 :         return cachedTessellation;</span>
+<span class="lineNum">     426 </span>            : }
+<a name="427"><span class="lineNum">     427 </span>            : </a>
+<span class="lineNum">     428 </span>            : //----------------------------------------------------------
+<span class="lineNum">     429 </span><span class="lineCov">      63056 : void ofPath::draw(float x, float y){</span>
+<span class="lineNum">     430 </span><span class="lineCov">      63056 :         ofPushMatrix();</span>
+<span class="lineNum">     431 </span><span class="lineCov">      63056 :         ofTranslate(x,y);</span>
+<span class="lineNum">     432 </span><span class="lineCov">      63056 :         draw();</span>
+<span class="lineNum">     433 </span><span class="lineCov">      63056 :         ofPopMatrix();</span>
+<span class="lineNum">     434 </span><span class="lineCov">      63056 : }</span>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<span class="lineNum">     436 </span>            : //----------------------------------------------------------
+<span class="lineNum">     437 </span><span class="lineCov">     149267 : void ofPath::draw(){</span>
+<span class="lineNum">     438 </span><span class="lineCov">     149267 :         if(ofGetCurrentRenderer()-&gt;rendersPathPrimitives()){</span>
+<span class="lineNum">     439 </span><span class="lineCov">        289 :                 ofGetCurrentRenderer()-&gt;draw(*this);</span>
+<span class="lineNum">     440 </span>            :         }else{
+<span class="lineNum">     441 </span><span class="lineCov">     148978 :                 tessellate();</span>
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span>            : 
+<span class="lineNum">     444 </span><span class="lineCov">     148978 :                 ofColor prevColor;</span>
+<span class="lineNum">     445 </span><span class="lineCov">     148978 :                 if(bUseShapeColor){</span>
+<span class="lineNum">     446 </span><span class="lineCov">       1269 :                         prevColor = ofGetStyle().color;</span>
+<span class="lineNum">     447 </span>            :                 }
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span><span class="lineCov">     148978 :                 if(bFill){</span>
+<span class="lineNum">     450 </span><span class="lineCov">      76800 :                         if(bUseShapeColor){</span>
+<span class="lineNum">     451 </span><span class="lineCov">       1269 :                                 ofSetColor(fillColor);</span>
+<span class="lineNum">     452 </span>            :                         }
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span><span class="lineCov">      76800 :                         ofGetCurrentRenderer()-&gt;draw(cachedTessellation,bUseShapeColor,false,false);</span>
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span>            :                 }
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span><span class="lineCov">     148978 :                 if(hasOutline()){</span>
+<span class="lineNum">     459 </span><span class="lineCov">      72178 :                         float lineWidth = ofGetStyle().lineWidth;</span>
+<span class="lineNum">     460 </span><span class="lineCov">      72178 :                         if(bUseShapeColor){</span>
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :                                 ofSetColor(strokeColor);</span>
+<span class="lineNum">     462 </span>            :                         }
+<span class="lineNum">     463 </span><span class="lineCov">      72178 :                         ofSetLineWidth( strokeWidth );</span>
+<span class="lineNum">     464 </span><span class="lineCov">      72178 :                         vector&lt;ofPolyline&gt; &amp; polys = getOutline();</span>
+<span class="lineNum">     465 </span><span class="lineCov">     155834 :                         for(int i=0;i&lt;(int)polys.size();i++){</span>
+<span class="lineNum">     466 </span><span class="lineCov">      83656 :                                 ofGetCurrentRenderer()-&gt;draw(polys[i]);</span>
+<span class="lineNum">     467 </span>            :                         }
+<span class="lineNum">     468 </span><span class="lineCov">      72178 :                         ofSetLineWidth(lineWidth);</span>
+<span class="lineNum">     469 </span>            :                 }
+<span class="lineNum">     470 </span>            : 
+<span class="lineNum">     471 </span><span class="lineCov">     148978 :                 if(bUseShapeColor){</span>
+<span class="lineNum">     472 </span><span class="lineCov">       1269 :                         ofSetColor(prevColor);</span>
+<span class="lineNum">     473 </span><span class="lineCov">     148978 :                 }</span>
+<span class="lineNum">     474 </span>            :         }
+<span class="lineNum">     475 </span><span class="lineCov">     149267 : }</span>
+<a name="476"><span class="lineNum">     476 </span>            : </a>
+<span class="lineNum">     477 </span>            : //----------------------------------------------------------
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 : void ofPath::flagShapeChanged(){</span>
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :         if(mode==PATHS){</span>
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     481 </span>            :         }else{
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     483 </span>            :         }
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 : }</span>
+<a name="485"><span class="lineNum">     485 </span>            : </a>
+<span class="lineNum">     486 </span>            : //----------------------------------------------------------
+<span class="lineNum">     487 </span><span class="lineCov">        294 : void ofPath::setMode(Mode _mode){</span>
+<span class="lineNum">     488 </span><span class="lineCov">        294 :         mode = _mode;</span>
+<span class="lineNum">     489 </span><span class="lineCov">        294 : }</span>
+<a name="490"><span class="lineNum">     490 </span>            : </a>
+<span class="lineNum">     491 </span>            : //----------------------------------------------------------
+<span class="lineNum">     492 </span><span class="lineCov">     227878 : void ofPath::setCurveResolution(int _curveResolution){</span>
+<span class="lineNum">     493 </span><span class="lineCov">     227878 :         curveResolution = _curveResolution;</span>
+<span class="lineNum">     494 </span><span class="lineCov">     227878 : }</span>
+<a name="495"><span class="lineNum">     495 </span>            : </a>
+<span class="lineNum">     496 </span>            : //----------------------------------------------------------
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 : int ofPath::getCurveResolution(){</span>
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 :         return curveResolution;</span>
+<span class="lineNum">     499 </span>            : }
+<a name="500"><span class="lineNum">     500 </span>            : </a>
+<span class="lineNum">     501 </span>            : //----------------------------------------------------------
+<span class="lineNum">     502 </span><span class="lineCov">          2 : void ofPath::setArcResolution(int res){</span>
+<span class="lineNum">     503 </span><span class="lineCov">          2 :         arcResolution = res;</span>
+<span class="lineNum">     504 </span><span class="lineCov">          2 : }</span>
+<a name="505"><span class="lineNum">     505 </span>            : </a>
+<span class="lineNum">     506 </span>            : //----------------------------------------------------------
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 : int ofPath::getArcResolution(){</span>
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :         return arcResolution;</span>
+<span class="lineNum">     509 </span>            : }
+<a name="510"><span class="lineNum">     510 </span>            : </a>
+<a name="511"><span class="lineNum">     511 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     512 </span><span class="lineCov">       1702 : void ofPath::setUseShapeColor(bool useColor){</span>
+<span class="lineNum">     513 </span><span class="lineCov">       1702 :         bUseShapeColor = useColor;</span>
+<span class="lineNum">     514 </span><span class="lineCov">       1702 : }</span>
+<a name="515"><span class="lineNum">     515 </span>            : </a>
+<span class="lineNum">     516 </span>            : //----------------------------------------------------------
+<span class="lineNum">     517 </span><span class="lineCov">       1734 : bool ofPath::getUseShapeColor(){</span>
+<span class="lineNum">     518 </span><span class="lineCov">       1734 :         return bUseShapeColor;</span>
+<span class="lineNum">     519 </span>            : }
+<a name="520"><span class="lineNum">     520 </span>            : </a>
+<span class="lineNum">     521 </span>            : //----------------------------------------------------------
+<span class="lineNum">     522 </span><span class="lineCov">          2 : void ofPath::setColor( const ofColor&amp; color ) {</span>
+<span class="lineNum">     523 </span><span class="lineCov">          2 :         setFillColor( color );</span>
+<span class="lineNum">     524 </span><span class="lineCov">          2 :         setStrokeColor( color );</span>
+<span class="lineNum">     525 </span><span class="lineCov">          2 : }</span>
+<a name="526"><span class="lineNum">     526 </span>            : </a>
+<span class="lineNum">     527 </span>            : //----------------------------------------------------------
+<span class="lineNum">     528 </span><span class="lineNoCov">          0 : void ofPath::setHexColor( int hex ) {</span>
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         setColor( ofColor().fromHex( hex ) );</span>
+<span class="lineNum">     530 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span>            : //----------------------------------------------------------
+<span class="lineNum">     533 </span><span class="lineCov">          2 : void ofPath::setFillColor(const ofColor &amp; color){</span>
+<span class="lineNum">     534 </span><span class="lineCov">          2 :         setUseShapeColor(true);</span>
+<span class="lineNum">     535 </span><span class="lineCov">          2 :         fillColor = color;</span>
+<span class="lineNum">     536 </span><span class="lineCov">          2 : }</span>
+<a name="537"><span class="lineNum">     537 </span>            : </a>
+<span class="lineNum">     538 </span>            : //----------------------------------------------------------
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 : void ofPath::setFillHexColor( int hex ) {</span>
+<span class="lineNum">     540 </span><span class="lineNoCov">          0 :         setFillColor( ofColor().fromHex( hex ) );</span>
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span>            : //----------------------------------------------------------
+<span class="lineNum">     544 </span><span class="lineCov">          2 : void ofPath::setStrokeColor(const ofColor &amp; color){</span>
+<span class="lineNum">     545 </span><span class="lineCov">          2 :         setUseShapeColor(true);</span>
+<span class="lineNum">     546 </span><span class="lineCov">          2 :         strokeColor = color;</span>
+<span class="lineNum">     547 </span><span class="lineCov">          2 : }</span>
+<a name="548"><span class="lineNum">     548 </span>            : </a>
+<span class="lineNum">     549 </span>            : //----------------------------------------------------------
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 : void ofPath::setStrokeHexColor( int hex ) {</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :         setStrokeColor( ofColor().fromHex( hex ) );</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 : };</span>
+<a name="553"><span class="lineNum">     553 </span>            : </a>
+<span class="lineNum">     554 </span>            : //----------------------------------------------------------
+<span class="lineNum">     555 </span><span class="lineCov">       1404 : void ofPath::simplify(float tolerance){</span>
+<span class="lineNum">     556 </span><span class="lineCov">       1404 :         if(mode==PATHS) generatePolylinesFromPaths();</span>
+<span class="lineNum">     557 </span><span class="lineCov">       3844 :         for(int i=0;i&lt;(int)polylines.size();i++){</span>
+<span class="lineNum">     558 </span><span class="lineCov">       2440 :                 polylines[i].simplify(tolerance);</span>
+<span class="lineNum">     559 </span>            :         }
+<span class="lineNum">     560 </span><span class="lineCov">       1404 : }</span>
+<a name="561"><span class="lineNum">     561 </span>            : </a>
+<span class="lineNum">     562 </span>            : //----------------------------------------------------------
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 : void ofPath::translate(const ofPoint &amp; p){</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :         if(mode==PATHS){</span>
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)paths.size();i++){</span>
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)paths[i].getCommands().size();j++){</span>
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :                                 paths[i].getCommands()[j].to += p;</span>
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :                                 if(paths[i].getCommands()[j].type==ofSubPath::Command::bezierTo || paths[i].getCommands()[j].type==ofSubPath::Command::quadBezierTo){</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp1 += p;</span>
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp2 += p;</span>
+<span class="lineNum">     571 </span>            :                                 }
+<span class="lineNum">     572 </span>            :                         }
+<span class="lineNum">     573 </span>            :                 }
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     575 </span>            :         }else{
+<span class="lineNum">     576 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)polylines.size();i++){</span>
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)polylines[i].size();j++){</span>
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :                                 polylines[i][j] += p;</span>
+<span class="lineNum">     579 </span>            :                         }
+<span class="lineNum">     580 </span>            :                 }
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     582 </span>            :         }
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 : }</span>
+<a name="584"><span class="lineNum">     584 </span>            : </a>
+<span class="lineNum">     585 </span>            : //----------------------------------------------------------
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 : void ofPath::rotate(float az, const ofVec3f&amp; axis ){</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :         if(mode==PATHS){</span>
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)paths.size();i++){</span>
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)paths[i].getCommands().size();j++){</span>
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :                                 paths[i].getCommands()[j].to.rotate(az,axis);</span>
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :                                 if(paths[i].getCommands()[j].type==ofSubPath::Command::bezierTo || paths[i].getCommands()[j].type==ofSubPath::Command::quadBezierTo){</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp1.rotate(az,axis);</span>
+<span class="lineNum">     593 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp2.rotate(az,axis);</span>
+<span class="lineNum">     594 </span>            :                                 }
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :                                 if(paths[i].getCommands()[j].type==ofSubPath::Command::arc || paths[i].getCommands()[j].type==ofSubPath::Command::arcNegative){</span>
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].angleBegin += az;</span>
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].angleEnd += az;</span>
+<span class="lineNum">     598 </span>            :                                 }
+<span class="lineNum">     599 </span>            :                         }
+<span class="lineNum">     600 </span>            :                 }
+<span class="lineNum">     601 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     602 </span>            :         }else{
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)polylines.size();i++){</span>
+<span class="lineNum">     604 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)polylines[i].size();j++){</span>
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :                                 polylines[i][j].rotate(az,axis);</span>
+<span class="lineNum">     606 </span>            :                         }
+<span class="lineNum">     607 </span>            :                 }
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span>
+<span class="lineNum">     609 </span>            :         }
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     611 </span>            : 
+<a name="612"><span class="lineNum">     612 </span>            : </a>
+<span class="lineNum">     613 </span>            : //----------------------------------------------------------
+<span class="lineNum">     614 </span><span class="lineNoCov">          0 : void ofPath::scale(float x, float y){</span>
+<span class="lineNum">     615 </span><span class="lineNoCov">          0 :         if(mode==PATHS){</span>
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)paths.size();i++){</span>
+<span class="lineNum">     617 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)paths[i].getCommands().size();j++){</span>
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :                                 paths[i].getCommands()[j].to.x*=x;</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :                                 paths[i].getCommands()[j].to.y*=y;</span>
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :                                 if(paths[i].getCommands()[j].type==ofSubPath::Command::bezierTo || paths[i].getCommands()[j].type==ofSubPath::Command::quadBezierTo){</span>
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp1.x*=x;</span>
+<span class="lineNum">     622 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp1.y*=y;</span>
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp2.x*=x;</span>
+<span class="lineNum">     624 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].cp2.y*=y;</span>
+<span class="lineNum">     625 </span>            :                                 }
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :                                 if(paths[i].getCommands()[j].type==ofSubPath::Command::arc || paths[i].getCommands()[j].type==ofSubPath::Command::arcNegative){</span>
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].radiusX *= x;</span>
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :                                         paths[i].getCommands()[j].radiusY *= y;</span>
+<span class="lineNum">     629 </span>            :                                 }
+<span class="lineNum">     630 </span>            :                         }
+<span class="lineNum">     631 </span>            :                 }
+<span class="lineNum">     632 </span><span class="lineNoCov">          0 :                 hasChanged = true;</span>
+<span class="lineNum">     633 </span>            :         }else{
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :                 for(int i=0;i&lt;(int)polylines.size();i++){</span>
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :                         for(int j=0;j&lt;(int)polylines[i].size();j++){</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :                                 polylines[i][j].x*=x;</span>
+<span class="lineNum">     637 </span><span class="lineNoCov">          0 :                                 polylines[i][j].y*=y;</span>
+<span class="lineNum">     638 </span>            :                         }
+<span class="lineNum">     639 </span>            :                 }
+<a name="640"><span class="lineNum">     640 </span><span class="lineNoCov">          0 :                 bNeedsTessellation = true;</span></a>
+<span class="lineNum">     641 </span>            :         }
+<span class="lineNum">     642 </span><span class="lineCov">        854 : }</span>
+<span class="lineNum">     643 </span>            : 
 </pre>
       </td>
     </tr>

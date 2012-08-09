@@ -148,7 +148,7 @@
 <span class="lineNum">      86 </span>            :   */
 <a name="87"><span class="lineNum">      87 </span>            :   template&lt;typename _Key, typename _Compare = std::less&lt;_Key&gt;,</a>
 <span class="lineNum">      88 </span>            :            typename _Alloc = std::allocator&lt;_Key&gt; &gt;
-<span class="lineNum">      89 </span><span class="lineCov">        579 :     class set</span>
+<span class="lineNum">      89 </span><span class="lineCov">        858 :     class set</span>
 <span class="lineNum">      90 </span>            :     {
 <span class="lineNum">      91 </span>            :       // concept requirements
 <span class="lineNum">      92 </span>            :       typedef typename _Alloc::value_type                   _Alloc_value_type;
@@ -197,8 +197,8 @@
 <span class="lineNum">     135 </span>            :       /**
 <a name="136"><span class="lineNum">     136 </span>            :        *  @brief  Default constructor creates no elements.</a>
 <span class="lineNum">     137 </span>            :        */
-<span class="lineNum">     138 </span><span class="lineCov">        577 :       set()</span>
-<span class="lineNum">     139 </span><span class="lineCov">        577 :       : _M_t() { }</span>
+<span class="lineNum">     138 </span><span class="lineCov">        856 :       set()</span>
+<span class="lineNum">     139 </span><span class="lineCov">        856 :       : _M_t() { }</span>
 <span class="lineNum">     140 </span>            : 
 <span class="lineNum">     141 </span>            :       /**
 <span class="lineNum">     142 </span>            :        *  @brief  Creates a %set with no elements.
@@ -362,8 +362,8 @@
 <span class="lineNum">     300 </span>            :        *  to the keys.
 <a name="301"><span class="lineNum">     301 </span>            :        */</a>
 <span class="lineNum">     302 </span>            :       iterator
-<span class="lineNum">     303 </span><span class="lineCov">     405079 :       end() const</span>
-<span class="lineNum">     304 </span><span class="lineCov">     405079 :       { return _M_t.end(); }</span>
+<span class="lineNum">     303 </span><span class="lineCov">     692685 :       end() const</span>
+<span class="lineNum">     304 </span><span class="lineCov">     692685 :       { return _M_t.end(); }</span>
 <span class="lineNum">     305 </span>            : 
 <span class="lineNum">     306 </span>            :       /**
 <span class="lineNum">     307 </span>            :        *  Returns a read-only (constant) iterator that points to the last
@@ -428,8 +428,8 @@
 <span class="lineNum">     366 </span>            : 
 <a name="367"><span class="lineNum">     367 </span>            :       ///  Returns the size of the %set.</a>
 <span class="lineNum">     368 </span>            :       size_type
-<span class="lineNum">     369 </span><span class="lineCov">      17483 :       size() const</span>
-<span class="lineNum">     370 </span><span class="lineCov">      17483 :       { return _M_t.size(); }</span>
+<span class="lineNum">     369 </span><span class="lineCov">      24217 :       size() const</span>
+<span class="lineNum">     370 </span><span class="lineCov">      24217 :       { return _M_t.size(); }</span>
 <span class="lineNum">     371 </span>            : 
 <span class="lineNum">     372 </span>            :       ///  Returns the maximum size of the %set.
 <span class="lineNum">     373 </span>            :       size_type
@@ -466,11 +466,11 @@
 <span class="lineNum">     404 </span>            :        *  Insertion requires logarithmic time.
 <a name="405"><span class="lineNum">     405 </span>            :        */</a>
 <span class="lineNum">     406 </span>            :       std::pair&lt;iterator, bool&gt;
-<span class="lineNum">     407 </span><span class="lineCov">       2245 :       insert(const value_type&amp; __x)</span>
+<span class="lineNum">     407 </span><span class="lineCov">       3753 :       insert(const value_type&amp; __x)</span>
 <span class="lineNum">     408 </span>            :       {
 <span class="lineNum">     409 </span>            :         std::pair&lt;typename _Rep_type::iterator, bool&gt; __p =
-<span class="lineNum">     410 </span><span class="lineCov">       2250 :           _M_t._M_insert_unique(__x);</span>
-<span class="lineNum">     411 </span><span class="lineCov">       2245 :         return std::pair&lt;iterator, bool&gt;(__p.first, __p.second);</span>
+<span class="lineNum">     410 </span><span class="lineCov">       3758 :           _M_t._M_insert_unique(__x);</span>
+<span class="lineNum">     411 </span><span class="lineCov">       3753 :         return std::pair&lt;iterator, bool&gt;(__p.first, __p.second);</span>
 <span class="lineNum">     412 </span>            :       }
 <span class="lineNum">     413 </span>            : 
 <span class="lineNum">     414 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -586,8 +586,8 @@
 <span class="lineNum">     524 </span>            :        *  in any way.  Managing the pointer is the user's responsibility.
 <a name="525"><span class="lineNum">     525 </span>            :        */</a>
 <span class="lineNum">     526 </span>            :       size_type
-<span class="lineNum">     527 </span><span class="lineCov">       2069 :       erase(const key_type&amp; __x)</span>
-<span class="lineNum">     528 </span><span class="lineCov">       2072 :       { return _M_t.erase(__x); }</span>
+<span class="lineNum">     527 </span><span class="lineCov">       3491 :       erase(const key_type&amp; __x)</span>
+<span class="lineNum">     528 </span><span class="lineCov">       3494 :       { return _M_t.erase(__x); }</span>
 <span class="lineNum">     529 </span>            : 
 <span class="lineNum">     530 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     531 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
@@ -663,8 +663,8 @@
 <span class="lineNum">     601 </span>            :        *  past-the-end ( @c end() ) iterator.
 <a name="602"><span class="lineNum">     602 </span>            :        */</a>
 <span class="lineNum">     603 </span>            :       iterator
-<span class="lineNum">     604 </span><span class="lineCov">     405079 :       find(const key_type&amp; __x)</span>
-<span class="lineNum">     605 </span><span class="lineCov">     405079 :       { return _M_t.find(__x); }</span>
+<span class="lineNum">     604 </span><span class="lineCov">     692685 :       find(const key_type&amp; __x)</span>
+<span class="lineNum">     605 </span><span class="lineCov">     692685 :       { return _M_t.find(__x); }</span>
 <span class="lineNum">     606 </span>            : 
 <span class="lineNum">     607 </span>            :       const_iterator
 <span class="lineNum">     608 </span>            :       find(const key_type&amp; __x) const

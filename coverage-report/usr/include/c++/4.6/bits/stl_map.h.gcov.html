@@ -147,7 +147,7 @@
 <span class="lineNum">      85 </span>            :   */
 <a name="86"><span class="lineNum">      86 </span>            :   template &lt;typename _Key, typename _Tp, typename _Compare = std::less&lt;_Key&gt;,</a>
 <span class="lineNum">      87 </span>            :             typename _Alloc = std::allocator&lt;std::pair&lt;const _Key, _Tp&gt; &gt; &gt;
-<span class="lineNum">      88 </span><span class="lineCov">          6 :     class map</span>
+<span class="lineNum">      88 </span><span class="lineCov">         12 :     class map</span>
 <span class="lineNum">      89 </span>            :     {
 <span class="lineNum">      90 </span>            :     public:
 <span class="lineNum">      91 </span>            :       typedef _Key                                          key_type;
@@ -211,8 +211,8 @@
 <span class="lineNum">     149 </span>            :       /**
 <a name="150"><span class="lineNum">     150 </span>            :        *  @brief  Default constructor creates no elements.</a>
 <span class="lineNum">     151 </span>            :        */
-<span class="lineNum">     152 </span><span class="lineCov">        420 :       map()</span>
-<span class="lineNum">     153 </span><span class="lineCov">        420 :       : _M_t() { }</span>
+<span class="lineNum">     152 </span><span class="lineCov">        640 :       map()</span>
+<span class="lineNum">     153 </span><span class="lineCov">        640 :       : _M_t() { }</span>
 <span class="lineNum">     154 </span>            : 
 <span class="lineNum">     155 </span>            :       /**
 <span class="lineNum">     156 </span>            :        *  @brief  Creates a %map with no elements.
@@ -368,8 +368,8 @@
 <span class="lineNum">     306 </span>            :        *  Iteration is done in ascending order according to the keys.
 <a name="307"><span class="lineNum">     307 </span>            :        */</a>
 <span class="lineNum">     308 </span>            :       iterator
-<span class="lineNum">     309 </span><span class="lineCov">         12 :       begin()</span>
-<span class="lineNum">     310 </span><span class="lineCov">         12 :       { return _M_t.begin(); }</span>
+<span class="lineNum">     309 </span><span class="lineCov">         24 :       begin()</span>
+<span class="lineNum">     310 </span><span class="lineCov">         24 :       { return _M_t.begin(); }</span>
 <span class="lineNum">     311 </span>            : 
 <span class="lineNum">     312 </span>            :       /**
 <span class="lineNum">     313 </span>            :        *  Returns a read-only (constant) iterator that points to the first pair
@@ -386,8 +386,8 @@
 <span class="lineNum">     324 </span>            :        *  according to the keys.
 <a name="325"><span class="lineNum">     325 </span>            :        */</a>
 <span class="lineNum">     326 </span>            :       iterator
-<span class="lineNum">     327 </span><span class="lineCov">      54709 :       end()</span>
-<span class="lineNum">     328 </span><span class="lineCov">      54709 :       { return _M_t.end(); }</span>
+<span class="lineNum">     327 </span><span class="lineCov">      71607 :       end()</span>
+<span class="lineNum">     328 </span><span class="lineCov">      71607 :       { return _M_t.end(); }</span>
 <span class="lineNum">     329 </span>            : 
 <span class="lineNum">     330 </span>            :       /**
 <span class="lineNum">     331 </span>            :        *  Returns a read-only (constant) iterator that points one past the last
@@ -477,8 +477,8 @@
 <span class="lineNum">     415 </span>            :        *  end().)
 <a name="416"><span class="lineNum">     416 </span>            :       */</a>
 <span class="lineNum">     417 </span>            :       bool
-<span class="lineNum">     418 </span><span class="lineCov">          6 :       empty() const</span>
-<span class="lineNum">     419 </span><span class="lineCov">          6 :       { return _M_t.empty(); }</span>
+<span class="lineNum">     418 </span><span class="lineCov">         12 :       empty() const</span>
+<span class="lineNum">     419 </span><span class="lineCov">         12 :       { return _M_t.empty(); }</span>
 <span class="lineNum">     420 </span>            : 
 <span class="lineNum">     421 </span>            :       /** Returns the size of the %map.  */
 <span class="lineNum">     422 </span>            :       size_type
@@ -504,16 +504,16 @@
 <span class="lineNum">     442 </span>            :        *  Lookup requires logarithmic time.
 <a name="443"><span class="lineNum">     443 </span>            :        */</a>
 <span class="lineNum">     444 </span>            :       mapped_type&amp;
-<span class="lineNum">     445 </span><span class="lineCov">      25625 :       operator[](const key_type&amp; __k)</span>
+<span class="lineNum">     445 </span><span class="lineCov">      31080 :       operator[](const key_type&amp; __k)</span>
 <span class="lineNum">     446 </span>            :       {
 <span class="lineNum">     447 </span>            :         // concept requirements
 <span class="lineNum">     448 </span>            :         __glibcxx_function_requires(_DefaultConstructibleConcept&lt;mapped_type&gt;)
 <span class="lineNum">     449 </span>            : 
-<span class="lineNum">     450 </span><span class="lineCov">      25622 :         iterator __i = lower_bound(__k);</span>
+<span class="lineNum">     450 </span><span class="lineCov">      31077 :         iterator __i = lower_bound(__k);</span>
 <span class="lineNum">     451 </span>            :         // __i-&gt;first is greater than or equivalent to __k.
-<span class="lineNum">     452 </span><span class="lineCov">      25625 :         if (__i == end() || key_comp()(__k, (*__i).first))</span>
-<span class="lineNum">     453 </span><span class="lineCov">      15762 :           __i = insert(__i, value_type(__k, mapped_type()));</span>
-<span class="lineNum">     454 </span><span class="lineCov">      25625 :         return (*__i).second;</span>
+<span class="lineNum">     452 </span><span class="lineCov">      31080 :         if (__i == end() || key_comp()(__k, (*__i).first))</span>
+<span class="lineNum">     453 </span><span class="lineCov">      18362 :           __i = insert(__i, value_type(__k, mapped_type()));</span>
+<span class="lineNum">     454 </span><span class="lineCov">      31080 :         return (*__i).second;</span>
 <span class="lineNum">     455 </span>            :       }
 <span class="lineNum">     456 </span>            : 
 <span class="lineNum">     457 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -628,9 +628,9 @@
 <span class="lineNum">     566 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <a name="567"><span class="lineNum">     567 </span>            :       insert(const_iterator __position, const value_type&amp; __x)</a>
 <span class="lineNum">     568 </span>            : #else
-<span class="lineNum">     569 </span><span class="lineCov">      15762 :       insert(iterator __position, const value_type&amp; __x)</span>
+<span class="lineNum">     569 </span><span class="lineCov">      18362 :       insert(iterator __position, const value_type&amp; __x)</span>
 <span class="lineNum">     570 </span>            : #endif
-<span class="lineNum">     571 </span><span class="lineCov">      15763 :       { return _M_t._M_insert_unique_(__position, __x); }</span>
+<span class="lineNum">     571 </span><span class="lineCov">      18363 :       { return _M_t._M_insert_unique_(__position, __x); }</span>
 <span class="lineNum">     572 </span>            : 
 <span class="lineNum">     573 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     574 </span>            :       template&lt;typename _Pair, typename = typename
@@ -707,8 +707,8 @@
 <span class="lineNum">     645 </span>            :        *  in any way.  Managing the pointer is the user's responsibility.
 <a name="646"><span class="lineNum">     646 </span>            :        */</a>
 <span class="lineNum">     647 </span>            :       size_type
-<span class="lineNum">     648 </span><span class="lineCov">       4425 :       erase(const key_type&amp; __x)</span>
-<span class="lineNum">     649 </span><span class="lineCov">       4426 :       { return _M_t.erase(__x); }</span>
+<span class="lineNum">     648 </span><span class="lineCov">       5684 :       erase(const key_type&amp; __x)</span>
+<span class="lineNum">     649 </span><span class="lineCov">       5685 :       { return _M_t.erase(__x); }</span>
 <span class="lineNum">     650 </span>            : 
 <span class="lineNum">     651 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     652 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
@@ -767,8 +767,8 @@
 <span class="lineNum">     705 </span>            :        *  Managing the pointer is the user's responsibility.
 <a name="706"><span class="lineNum">     706 </span>            :        */</a>
 <span class="lineNum">     707 </span>            :       void
-<span class="lineNum">     708 </span><span class="lineCov">          6 :       clear()</span>
-<span class="lineNum">     709 </span><span class="lineCov">          6 :       { _M_t.clear(); }</span>
+<span class="lineNum">     708 </span><span class="lineCov">         12 :       clear()</span>
+<span class="lineNum">     709 </span><span class="lineCov">         12 :       { _M_t.clear(); }</span>
 <span class="lineNum">     710 </span>            : 
 <span class="lineNum">     711 </span>            :       // observers
 <span class="lineNum">     712 </span>            :       /**
@@ -776,8 +776,8 @@
 <span class="lineNum">     714 </span>            :        *  constructed.
 <a name="715"><span class="lineNum">     715 </span>            :        */</a>
 <span class="lineNum">     716 </span>            :       key_compare
-<span class="lineNum">     717 </span><span class="lineCov">       9864 :       key_comp() const</span>
-<span class="lineNum">     718 </span><span class="lineCov">       9864 :       { return _M_t.key_comp(); }</span>
+<span class="lineNum">     717 </span><span class="lineCov">      12723 :       key_comp() const</span>
+<span class="lineNum">     718 </span><span class="lineCov">      12723 :       { return _M_t.key_comp(); }</span>
 <span class="lineNum">     719 </span>            : 
 <span class="lineNum">     720 </span>            :       /**
 <span class="lineNum">     721 </span>            :        *  Returns a value comparison object, built from the key comparison
@@ -800,8 +800,8 @@
 <span class="lineNum">     738 </span>            :        *  past-the-end ( @c end() ) iterator.
 <a name="739"><span class="lineNum">     739 </span>            :        */</a>
 <span class="lineNum">     740 </span>            :       iterator
-<span class="lineNum">     741 </span><span class="lineCov">      29057 :       find(const key_type&amp; __x)</span>
-<span class="lineNum">     742 </span><span class="lineCov">      29057 :       { return _M_t.find(__x); }</span>
+<span class="lineNum">     741 </span><span class="lineCov">      40468 :       find(const key_type&amp; __x)</span>
+<span class="lineNum">     742 </span><span class="lineCov">      40468 :       { return _M_t.find(__x); }</span>
 <span class="lineNum">     743 </span>            : 
 <span class="lineNum">     744 </span>            :       /**
 <span class="lineNum">     745 </span>            :        *  @brief Tries to locate an element in a %map.
@@ -842,8 +842,8 @@
 <span class="lineNum">     780 </span>            :        *  or end() if no such element exists.
 <a name="781"><span class="lineNum">     781 </span>            :        */</a>
 <span class="lineNum">     782 </span>            :       iterator
-<span class="lineNum">     783 </span><span class="lineCov">      25622 :       lower_bound(const key_type&amp; __x)</span>
-<span class="lineNum">     784 </span><span class="lineCov">      25622 :       { return _M_t.lower_bound(__x); }</span>
+<span class="lineNum">     783 </span><span class="lineCov">      31077 :       lower_bound(const key_type&amp; __x)</span>
+<span class="lineNum">     784 </span><span class="lineCov">      31077 :       { return _M_t.lower_bound(__x); }</span>
 <span class="lineNum">     785 </span>            : 
 <span class="lineNum">     786 </span>            :       /**
 <span class="lineNum">     787 </span>            :        *  @brief Finds the beginning of a subsequence matching given key.

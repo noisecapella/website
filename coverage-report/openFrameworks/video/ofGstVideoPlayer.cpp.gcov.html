@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">120</td>
             <td class="headerCovTableEntry">181</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">66.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">27</td>
             <td class="headerCovTableEntry">43</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">62.8 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,314 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  * ofGstVideoUtils.cpp
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  *  Created on: 16/01/2011
+<span class="lineNum">       5 </span>            :  *      Author: arturo
+<span class="lineNum">       6 </span>            :  */
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : #include &quot;ofGstVideoPlayer.h&quot;
+<span class="lineNum">       9 </span>            : #include &lt;gst/video/video.h&gt;
+<span class="lineNum">      10 </span>            : #include &lt;gst/audio/multichannel.h&gt;
+<a name="11"><span class="lineNum">      11 </span>            : </a>
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span><span class="lineCov">          9 : ofGstVideoPlayer::ofGstVideoPlayer(){</span>
+<span class="lineNum">      14 </span><span class="lineCov">          9 :         nFrames                                         = 0;</span>
+<span class="lineNum">      15 </span><span class="lineCov">          9 :         internalPixelFormat                     = OF_PIXELS_RGB;</span>
+<span class="lineNum">      16 </span><span class="lineCov">          9 :         bIsStream                                       = false;</span>
+<span class="lineNum">      17 </span><span class="lineCov">          9 :         bIsAllocated                            = false;</span>
+<span class="lineNum">      18 </span><span class="lineCov">          9 :         threadAppSink                           = false;</span>
+<span class="lineNum">      19 </span><span class="lineCov">          9 :         videoUtils.setSinkListener(this);</span>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">          9 : }</span></a>
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span><span class="lineCov">         27 : ofGstVideoPlayer::~ofGstVideoPlayer(){</span>
+<span class="lineNum">      23 </span><span class="lineCov">          9 :         close();</span>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">         36 : }</span></a>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span><span class="lineCov">          9 : void ofGstVideoPlayer::setPixelFormat(ofPixelFormat pixelFormat){</span>
+<span class="lineNum">      27 </span><span class="lineCov">          9 :         internalPixelFormat = pixelFormat;</span>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">          9 : }</span></a>
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span><span class="lineCov">          9 : bool ofGstVideoPlayer::loadMovie(string name){</span>
+<span class="lineNum">      31 </span><span class="lineCov">          9 :         close();</span>
+<span class="lineNum">      32 </span><span class="lineCov">          9 :         if( name.find( &quot;file://&quot;,0 ) != string::npos){</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :                 bIsStream               = false;</span>
+<span class="lineNum">      34 </span><span class="lineCov">          9 :         }else if( name.find( &quot;://&quot;,0 ) == string::npos){</span>
+<span class="lineNum">      35 </span><span class="lineCov">          9 :                 name                    = &quot;file://&quot;+ofToDataPath(name,true);</span>
+<span class="lineNum">      36 </span><span class="lineCov">          9 :                 bIsStream               = false;</span>
+<span class="lineNum">      37 </span>            :         }else{
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 bIsStream               = true;</span>
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span><span class="lineCov">          9 :         ofLog(OF_LOG_VERBOSE,&quot;loading &quot;+name);</span>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :         //GMainLoop* loop               =
+<span class="lineNum">      43 </span><span class="lineCov">          9 :         g_main_loop_new (NULL, FALSE);</span>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineCov">          9 :         GstElement * gstPipeline = gst_element_factory_make(&quot;playbin2&quot;,&quot;player&quot;);</span>
+<span class="lineNum">      46 </span><span class="lineCov">          9 :         g_object_set(G_OBJECT(gstPipeline), &quot;uri&quot;, name.c_str(), (void*)NULL);</span>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         // create the oF appsink for video rgb without sync to clock
+<span class="lineNum">      49 </span><span class="lineCov">          9 :         GstElement * gstSink = gst_element_factory_make(&quot;appsink&quot;, &quot;app_sink&quot;);</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineCov">          9 :         gst_base_sink_set_sync(GST_BASE_SINK(gstSink), true);</span>
+<span class="lineNum">      52 </span><span class="lineCov">          9 :         gst_app_sink_set_max_buffers(GST_APP_SINK(gstSink), 8);</span>
+<span class="lineNum">      53 </span><span class="lineCov">          9 :         gst_app_sink_set_drop (GST_APP_SINK(gstSink),true);</span>
+<span class="lineNum">      54 </span><span class="lineCov">          9 :         gst_base_sink_set_max_lateness  (GST_BASE_SINK(gstSink), -1);</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :         int bpp;
+<span class="lineNum">      57 </span><span class="lineCov">          9 :         string mime;</span>
+<span class="lineNum">      58 </span><span class="lineCov">          9 :         switch(internalPixelFormat){</span>
+<span class="lineNum">      59 </span>            :         case OF_PIXELS_MONO:
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :                 mime = &quot;video/x-raw-gray&quot;;</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 bpp = 8;</span>
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      63 </span>            :         case OF_PIXELS_RGB:
+<span class="lineNum">      64 </span><span class="lineCov">          9 :                 mime = &quot;video/x-raw-rgb&quot;;</span>
+<span class="lineNum">      65 </span><span class="lineCov">          9 :                 bpp = 24;</span>
+<span class="lineNum">      66 </span><span class="lineCov">          9 :                 break;</span>
+<span class="lineNum">      67 </span>            :         case OF_PIXELS_RGBA:
+<span class="lineNum">      68 </span>            :         case OF_PIXELS_BGRA:
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :                 mime = &quot;video/x-raw-rgb&quot;;</span>
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 bpp = 32;</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      72 </span>            :         default:
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :                 mime = &quot;video/x-raw-rgb&quot;;</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 bpp=24;</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      76 </span>            :         }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :         GstCaps *caps = gst_caps_new_simple(mime.c_str(),
+<span class="lineNum">      79 </span>            :                                                                                 &quot;bpp&quot;, G_TYPE_INT, bpp,
+<span class="lineNum">      80 </span>            :                                                                                 &quot;depth&quot;, G_TYPE_INT, 24,
+<span class="lineNum">      81 </span>            :                                                                                 &quot;endianness&quot;,G_TYPE_INT,4321,
+<span class="lineNum">      82 </span>            :                                                                                 &quot;red_mask&quot;,G_TYPE_INT,0xff0000,
+<span class="lineNum">      83 </span>            :                                                                                 &quot;green_mask&quot;,G_TYPE_INT,0x00ff00,
+<span class="lineNum">      84 </span>            :                                                                                 &quot;blue_mask&quot;,G_TYPE_INT,0x0000ff,
+<span class="lineNum">      85 </span>            :                                                                                 &quot;alpha_mask&quot;,G_TYPE_INT,0x000000ff,
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">          9 :                                                                                 NULL);</span>
+<span class="lineNum">      89 </span><span class="lineCov">          9 :         gst_app_sink_set_caps(GST_APP_SINK(gstSink), caps);</span>
+<span class="lineNum">      90 </span><span class="lineCov">          9 :         gst_caps_unref(caps);</span>
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span><span class="lineCov">          9 :         if(threadAppSink){</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 GstElement * appQueue = gst_element_factory_make(&quot;queue&quot;,&quot;appsink_queue&quot;);</span>
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                 g_object_set(G_OBJECT(appQueue), &quot;leaky&quot;, 0, &quot;silent&quot;, 1, (void*)NULL);</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                 GstElement* appBin = gst_bin_new(&quot;app_bin&quot;);</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 gst_bin_add(GST_BIN(appBin), appQueue);</span>
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 GstPad* appQueuePad = gst_element_get_static_pad(appQueue, &quot;sink&quot;);</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 GstPad* ghostPad = gst_ghost_pad_new(&quot;app_bin_sink&quot;, appQueuePad);</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                 gst_object_unref(appQueuePad);</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :                 gst_element_add_pad(appBin, ghostPad);</span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 gst_bin_add_many(GST_BIN(appBin), gstSink, NULL);</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                 gst_element_link_many(appQueue, gstSink, NULL);</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 g_object_set (G_OBJECT(gstPipeline),&quot;video-sink&quot;,appBin,(void*)NULL);</span>
+<span class="lineNum">     106 </span>            :         }else{
+<span class="lineNum">     107 </span><span class="lineCov">          9 :                 g_object_set (G_OBJECT(gstPipeline),&quot;video-sink&quot;,gstSink,(void*)NULL);</span>
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">     111 </span>            :         GstElement *audioSink = gst_element_factory_make(&quot;directsoundsink&quot;, NULL);
+<span class="lineNum">     112 </span>            :         g_object_set (G_OBJECT(gstPipeline),&quot;audio-sink&quot;,audioSink,(void*)NULL);
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            : #endif
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">          9 :         videoUtils.setPipelineWithSink(gstPipeline,gstSink,bIsStream);</span>
+<span class="lineNum">     118 </span><span class="lineCov">          9 :         if(!bIsStream) return allocate(bpp);</span>
+<span class="lineNum">     119 </span><span class="lineCov">          9 :         else return true;</span>
+<a name="120"><span class="lineNum">     120 </span>            : }</a>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::setThreadAppSink(bool threaded){</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         threadAppSink = threaded;</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 : }</span>
+<a name="125"><span class="lineNum">     125 </span>            : </a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          9 : bool ofGstVideoPlayer::allocate(int bpp){</span>
+<span class="lineNum">     128 </span><span class="lineCov">          9 :         if(bIsAllocated) return true;</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">          9 :         guint64 durationNanos = videoUtils.getDurationNanos();</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineCov">          9 :         nFrames           = 0;</span>
+<span class="lineNum">     133 </span><span class="lineCov">          9 :         if(GstPad* pad = gst_element_get_static_pad(videoUtils.getSink(), &quot;sink&quot;)){</span>
+<span class="lineNum">     134 </span>            :                 int width,height;
+<span class="lineNum">     135 </span><span class="lineCov">          9 :                 if(gst_video_get_size(GST_PAD(pad), &amp;width, &amp;height)){</span>
+<span class="lineNum">     136 </span><span class="lineCov">          9 :                         if(!videoUtils.allocate(width,height,bpp)) return false;</span>
+<span class="lineNum">     137 </span>            :                 }else{
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                         ofLog(OF_LOG_ERROR,&quot;GStreamer: cannot query width and height&quot;);</span>
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                         return false;</span>
+<span class="lineNum">     140 </span>            :                 }
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :                 const GValue *framerate;
+<span class="lineNum">     143 </span><span class="lineCov">          9 :                 framerate = gst_video_frame_rate(pad);</span>
+<span class="lineNum">     144 </span><span class="lineCov">          9 :                 fps_n=0;</span>
+<span class="lineNum">     145 </span><span class="lineCov">          9 :                 fps_d=0;</span>
+<span class="lineNum">     146 </span><span class="lineCov">          9 :                 if(framerate &amp;&amp; GST_VALUE_HOLDS_FRACTION (framerate)){</span>
+<span class="lineNum">     147 </span><span class="lineCov">          9 :                         fps_n = gst_value_get_fraction_numerator (framerate);</span>
+<span class="lineNum">     148 </span><span class="lineCov">          9 :                         fps_d = gst_value_get_fraction_denominator (framerate);</span>
+<span class="lineNum">     149 </span><span class="lineCov">          9 :                         nFrames = (float)(durationNanos / GST_SECOND) * (float)fps_n/(float)fps_d;</span>
+<span class="lineNum">     150 </span><span class="lineCov">          9 :                         ofLog(OF_LOG_VERBOSE,&quot;ofGstUtils: framerate: %i/%i&quot;,fps_n,fps_d);</span>
+<span class="lineNum">     151 </span>            :                 }else{
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                         ofLog(OF_LOG_WARNING,&quot;Gstreamer: cannot get framerate, frame seek won't work&quot;);</span>
+<span class="lineNum">     153 </span>            :                 }
+<span class="lineNum">     154 </span><span class="lineCov">          9 :                 gst_object_unref(GST_OBJECT(pad));</span>
+<span class="lineNum">     155 </span><span class="lineCov">          9 :                 bIsAllocated = true;</span>
+<span class="lineNum">     156 </span>            :         }else{
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR,&quot;GStreamer: cannot get sink pad&quot;);</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 bIsAllocated = false;</span>
+<span class="lineNum">     159 </span>            :         }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineCov">          9 :         return bIsAllocated;</span>
+<a name="162"><span class="lineNum">     162 </span>            : }</a>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::on_stream_prepared(){</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         if(!bIsAllocated) allocate(24);</span>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineCov">       2363 : int     ofGstVideoPlayer::getCurrentFrame(){</span>
+<span class="lineNum">     169 </span><span class="lineCov">       2363 :         int frame = 0;</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :         // zach I think this may fail on variable length frames...
+<span class="lineNum">     172 </span><span class="lineCov">       2363 :         float pos = getPosition();</span>
+<span class="lineNum">     173 </span><span class="lineCov">       2363 :         if(pos == -1) return -1;</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span><span class="lineCov">       2363 :         float  framePosInFloat = ((float)getTotalNumFrames() * pos);</span>
+<span class="lineNum">     177 </span><span class="lineCov">       2363 :         int    framePosInInt = (int)framePosInFloat;</span>
+<span class="lineNum">     178 </span><span class="lineCov">       2363 :         float  floatRemainder = (framePosInFloat - framePosInInt);</span>
+<span class="lineNum">     179 </span><span class="lineCov">       2363 :         if (floatRemainder &gt; 0.5f) framePosInInt = framePosInInt + 1;</span>
+<span class="lineNum">     180 </span>            :         //frame = (int)ceil((getTotalNumFrames() * getPosition()));
+<span class="lineNum">     181 </span><span class="lineCov">       2363 :         frame = framePosInInt;</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">       2363 :         return frame;</span>
+<a name="184"><span class="lineNum">     184 </span>            : }</a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineCov">       4658 : int     ofGstVideoPlayer::getTotalNumFrames(){</span>
+<span class="lineNum">     187 </span><span class="lineCov">       4658 :         return nFrames;</span>
+<a name="188"><span class="lineNum">     188 </span>            : }</a>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::firstFrame(){</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         setFrame(0);</span>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineCov">         22 : void ofGstVideoPlayer::nextFrame(){</span>
+<span class="lineNum">     195 </span><span class="lineCov">         22 :         gint64 currentFrame = getCurrentFrame();</span>
+<span class="lineNum">     196 </span><span class="lineCov">         22 :         if(currentFrame!=-1) setFrame(currentFrame + 1);</span>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         22 : }</span></a>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">         46 : void ofGstVideoPlayer::previousFrame(){</span>
+<span class="lineNum">     200 </span><span class="lineCov">         46 :         gint64 currentFrame = getCurrentFrame();</span>
+<span class="lineNum">     201 </span><span class="lineCov">         46 :         if(currentFrame!=-1) setFrame(currentFrame - 1);</span>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         46 : }</span></a>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineCov">         68 : void ofGstVideoPlayer::setFrame(int frame){ // frame 0 = first frame...</span>
+<span class="lineNum">     205 </span><span class="lineCov">         68 :         float pct = (float)frame / (float)nFrames;</span>
+<span class="lineNum">     206 </span><span class="lineCov">         68 :         setPosition(pct);</span>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         68 : }</span></a>
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 : bool ofGstVideoPlayer::isStream(){</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         return bIsStream;</span>
+<a name="211"><span class="lineNum">     211 </span>            : }</a>
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineCov">       7138 : void ofGstVideoPlayer::update(){</span>
+<span class="lineNum">     214 </span><span class="lineCov">       7138 :         videoUtils.update();</span>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">       7138 : }</span></a>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineCov">          9 : void ofGstVideoPlayer::play(){</span>
+<span class="lineNum">     218 </span><span class="lineCov">          9 :         videoUtils.play();</span>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">          9 : }</span></a>
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::stop(){</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         videoUtils.stop();</span>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineCov">          2 : void ofGstVideoPlayer::setPaused(bool bPause){</span>
+<span class="lineNum">     226 </span><span class="lineCov">          2 :         videoUtils.setPaused(bPause);</span>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 : bool ofGstVideoPlayer::isPaused(){</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :         return videoUtils.isPaused();</span>
+<a name="231"><span class="lineNum">     231 </span>            : }</a>
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 : bool ofGstVideoPlayer::isLoaded(){</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         return videoUtils.isLoaded();</span>
+<a name="235"><span class="lineNum">     235 </span>            : }</a>
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 : bool ofGstVideoPlayer::isPlaying(){</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         return videoUtils.isPlaying();</span>
+<a name="239"><span class="lineNum">     239 </span>            : }</a>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineCov">       4658 : float ofGstVideoPlayer::getPosition(){</span>
+<span class="lineNum">     242 </span><span class="lineCov">       4658 :         return videoUtils.getPosition();</span>
+<a name="243"><span class="lineNum">     243 </span>            : }</a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">       2295 : float ofGstVideoPlayer::getSpeed(){</span>
+<span class="lineNum">     246 </span><span class="lineCov">       2295 :         return videoUtils.getSpeed();</span>
+<a name="247"><span class="lineNum">     247 </span>            : }</a>
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span><span class="lineCov">       4590 : float ofGstVideoPlayer::getDuration(){</span>
+<span class="lineNum">     250 </span><span class="lineCov">       4590 :         return videoUtils.getDuration();</span>
+<a name="251"><span class="lineNum">     251 </span>            : }</a>
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span><span class="lineCov">       2295 : bool ofGstVideoPlayer::getIsMovieDone(){</span>
+<span class="lineNum">     254 </span><span class="lineCov">       2295 :         return videoUtils.getIsMovieDone();</span>
+<a name="255"><span class="lineNum">     255 </span>            : }</a>
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span><span class="lineCov">         68 : void ofGstVideoPlayer::setPosition(float pct){</span>
+<span class="lineNum">     258 </span><span class="lineCov">         68 :         videoUtils.setPosition(pct);</span>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         68 : }</span></a>
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::setVolume(float volume){</span>
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         videoUtils.setVolume(volume);</span>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::setLoopState(ofLoopType state){</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :         videoUtils.setLoopState(state);</span>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 : int     ofGstVideoPlayer::getLoopState(){</span>
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :         return videoUtils.getLoopState();</span>
+<a name="271"><span class="lineNum">     271 </span>            : }</a>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">        477 : void ofGstVideoPlayer::setSpeed(float speed){</span>
+<span class="lineNum">     274 </span><span class="lineCov">        477 :         videoUtils.setSpeed(speed);</span>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">        477 : }</span></a>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span><span class="lineCov">         18 : void ofGstVideoPlayer::close(){</span>
+<span class="lineNum">     278 </span><span class="lineCov">         18 :         bIsAllocated = false;</span>
+<span class="lineNum">     279 </span><span class="lineCov">         18 :         videoUtils.close();</span>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">         18 : }</span></a>
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineCov">       9434 : bool ofGstVideoPlayer::isFrameNew(){</span>
+<span class="lineNum">     283 </span><span class="lineCov">       9434 :         return videoUtils.isFrameNew();</span>
+<a name="284"><span class="lineNum">     284 </span>            : }</a>
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineCov">       5371 : unsigned char * ofGstVideoPlayer::getPixels(){</span>
+<span class="lineNum">     287 </span><span class="lineCov">       5371 :         return videoUtils.getPixels();</span>
+<a name="288"><span class="lineNum">     288 </span>            : }</a>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 : ofPixelsRef ofGstVideoPlayer::getPixelsRef(){</span>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         return videoUtils.getPixelsRef();</span>
+<a name="292"><span class="lineNum">     292 </span>            : }</a>
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span><span class="lineCov">          9 : float ofGstVideoPlayer::getHeight(){</span>
+<span class="lineNum">     295 </span><span class="lineCov">          9 :         return videoUtils.getHeight();</span>
+<a name="296"><span class="lineNum">     296 </span>            : }</a>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineCov">          9 : float ofGstVideoPlayer::getWidth(){</span>
+<span class="lineNum">     299 </span><span class="lineCov">          9 :         return videoUtils.getWidth();</span>
+<a name="300"><span class="lineNum">     300 </span>            : }</a>
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 : ofGstVideoUtils * ofGstVideoPlayer::getGstVideoUtils(){</span>
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         return &amp;videoUtils;</span>
+<a name="304"><span class="lineNum">     304 </span>            : }</a>
+<span class="lineNum">     305 </span>            : 
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 : void ofGstVideoPlayer::setFrameByFrame(bool frameByFrame){</span></a>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :         videoUtils.setFrameByFrame(frameByFrame);</span>
+<span class="lineNum">     308 </span><span class="lineCov">         27 : }</span>
 </pre>
       </td>
     </tr>

@@ -434,9 +434,9 @@
 <span class="lineNum">     372 </span>            :       typedef unsigned long _WordT;
 <a name="373"><span class="lineNum">     373 </span>            :       _WordT _M_w;</a>
 <a name="374"><span class="lineNum">     374 </span>            : </a>
-<span class="lineNum">     375 </span><span class="lineCov">          7 :       _GLIBCXX_CONSTEXPR _Base_bitset()</span>
-<span class="lineNum">     376 </span><span class="lineCov">          7 :       : _M_w(0)</span>
-<span class="lineNum">     377 </span><span class="lineCov">          7 :       { }</span>
+<span class="lineNum">     375 </span><span class="lineCov">         14 :       _GLIBCXX_CONSTEXPR _Base_bitset()</span>
+<span class="lineNum">     376 </span><span class="lineCov">         14 :       : _M_w(0)</span>
+<span class="lineNum">     377 </span><span class="lineCov">         14 :       { }</span>
 <span class="lineNum">     378 </span>            : 
 <span class="lineNum">     379 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <a name="380"><span class="lineNum">     380 </span>            :       constexpr _Base_bitset(unsigned long long __val)</a>
@@ -463,8 +463,8 @@
 <span class="lineNum">     401 </span><span class="lineNoCov">          0 :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }</span>
 <a name="402"><span class="lineNum">     402 </span>            : </a>
 <span class="lineNum">     403 </span>            :       _WordT&amp;
-<span class="lineNum">     404 </span><span class="lineCov">         23 :       _M_getword(size_t)</span>
-<span class="lineNum">     405 </span><span class="lineCov">         23 :       { return _M_w; }</span>
+<span class="lineNum">     404 </span><span class="lineCov">         46 :       _M_getword(size_t)</span>
+<span class="lineNum">     405 </span><span class="lineCov">         46 :       { return _M_w; }</span>
 <a name="406"><span class="lineNum">     406 </span>            : </a>
 <span class="lineNum">     407 </span>            :       _WordT
 <span class="lineNum">     408 </span><span class="lineNoCov">          0 :       _M_getword(size_t) const</span>
@@ -513,8 +513,8 @@
 <span class="lineNum">     451 </span>            :       { _M_w = ~static_cast&lt;_WordT&gt;(0); }
 <a name="452"><span class="lineNum">     452 </span>            : </a>
 <span class="lineNum">     453 </span>            :       void
-<span class="lineNum">     454 </span><span class="lineCov">          9 :       _M_do_reset()</span>
-<span class="lineNum">     455 </span><span class="lineCov">          9 :       { _M_w = 0; }</span>
+<span class="lineNum">     454 </span><span class="lineCov">         18 :       _M_do_reset()</span>
+<span class="lineNum">     455 </span><span class="lineCov">         18 :       { _M_w = 0; }</span>
 <span class="lineNum">     456 </span>            : 
 <span class="lineNum">     457 </span>            :       bool
 <span class="lineNum">     458 </span>            :       _M_is_equal(const _Base_bitset&lt;1&gt;&amp; __x) const
@@ -533,8 +533,8 @@
 <span class="lineNum">     471 </span>            :       { return __builtin_popcountl(_M_w); }
 <a name="472"><span class="lineNum">     472 </span>            : </a>
 <span class="lineNum">     473 </span>            :       unsigned long
-<span class="lineNum">     474 </span><span class="lineCov">          9 :       _M_do_to_ulong() const</span>
-<span class="lineNum">     475 </span><span class="lineCov">          9 :       { return _M_w; }</span>
+<span class="lineNum">     474 </span><span class="lineCov">         18 :       _M_do_to_ulong() const</span>
+<span class="lineNum">     475 </span><span class="lineCov">         18 :       { return _M_w; }</span>
 <span class="lineNum">     476 </span>            : 
 <span class="lineNum">     477 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     478 </span>            :       unsigned long long
@@ -895,8 +895,8 @@
 <span class="lineNum">     833 </span>            : 
 <a name="834"><span class="lineNum">     834 </span>            :       // 23.3.5.1 constructors:</a>
 <span class="lineNum">     835 </span>            :       /// All bits set to zero.
-<span class="lineNum">     836 </span><span class="lineCov">          1 :       _GLIBCXX_CONSTEXPR bitset()</span>
-<span class="lineNum">     837 </span><span class="lineCov">          1 :       { }</span>
+<span class="lineNum">     836 </span><span class="lineCov">          2 :       _GLIBCXX_CONSTEXPR bitset()</span>
+<span class="lineNum">     837 </span><span class="lineCov">          2 :       { }</span>
 <span class="lineNum">     838 </span>            : 
 <span class="lineNum">     839 </span>            :       /// Initial bits bitwise-copied from a single word (others set to zero).
 <span class="lineNum">     840 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -919,17 +919,17 @@
 <span class="lineNum">     857 </span>            :        */
 <a name="858"><span class="lineNum">     858 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;</a>
 <span class="lineNum">     859 </span>            :         explicit
-<span class="lineNum">     860 </span><span class="lineCov">          6 :         bitset(const std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,</span>
+<span class="lineNum">     860 </span><span class="lineCov">         12 :         bitset(const std::basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __s,</span>
 <span class="lineNum">     861 </span>            :                size_t __position = 0)
-<span class="lineNum">     862 </span><span class="lineCov">          6 :         : _Base()</span>
+<span class="lineNum">     862 </span><span class="lineCov">         12 :         : _Base()</span>
 <span class="lineNum">     863 </span>            :         {
-<span class="lineNum">     864 </span><span class="lineCov">          6 :           if (__position &gt; __s.size())</span>
+<span class="lineNum">     864 </span><span class="lineCov">         12 :           if (__position &gt; __s.size())</span>
 <span class="lineNum">     865 </span><span class="lineNoCov">          0 :             __throw_out_of_range(__N(&quot;bitset::bitset initial position &quot;</span>
 <span class="lineNum">     866 </span>            :                                      &quot;not valid&quot;));
-<span class="lineNum">     867 </span><span class="lineCov">          6 :           _M_copy_from_string(__s, __position,</span>
+<span class="lineNum">     867 </span><span class="lineCov">         12 :           _M_copy_from_string(__s, __position,</span>
 <span class="lineNum">     868 </span>            :                               std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::npos,
 <span class="lineNum">     869 </span>            :                               _CharT('0'), _CharT('1'));
-<span class="lineNum">     870 </span><span class="lineCov">          6 :         }</span>
+<span class="lineNum">     870 </span><span class="lineCov">         12 :         }</span>
 <span class="lineNum">     871 </span>            : 
 <span class="lineNum">     872 </span>            :       /**
 <span class="lineNum">     873 </span>            :        *  @brief  Use a subset of a string.
@@ -1065,10 +1065,10 @@
 <span class="lineNum">    1003 </span>            :        *  @ingroup SGIextensions
 <a name="1004"><span class="lineNum">    1004 </span>            :        */</a>
 <span class="lineNum">    1005 </span>            :       bitset&lt;_Nb&gt;&amp;
-<span class="lineNum">    1006 </span><span class="lineCov">         23 :       _Unchecked_set(size_t __pos)</span>
+<span class="lineNum">    1006 </span><span class="lineCov">         46 :       _Unchecked_set(size_t __pos)</span>
 <span class="lineNum">    1007 </span>            :       {
-<span class="lineNum">    1008 </span><span class="lineCov">         23 :         this-&gt;_M_getword(__pos) |= _Base::_S_maskbit(__pos);</span>
-<span class="lineNum">    1009 </span><span class="lineCov">         23 :         return *this;</span>
+<span class="lineNum">    1008 </span><span class="lineCov">         46 :         this-&gt;_M_getword(__pos) |= _Base::_S_maskbit(__pos);</span>
+<span class="lineNum">    1009 </span><span class="lineCov">         46 :         return *this;</span>
 <span class="lineNum">    1010 </span>            :       }
 <span class="lineNum">    1011 </span>            : 
 <span class="lineNum">    1012 </span>            :       bitset&lt;_Nb&gt;&amp;
@@ -1131,10 +1131,10 @@
 <span class="lineNum">    1069 </span>            :        *  @brief Sets every bit to false.
 <a name="1070"><span class="lineNum">    1070 </span>            :        */</a>
 <span class="lineNum">    1071 </span>            :       bitset&lt;_Nb&gt;&amp;
-<span class="lineNum">    1072 </span><span class="lineCov">          9 :       reset()</span>
+<span class="lineNum">    1072 </span><span class="lineCov">         18 :       reset()</span>
 <span class="lineNum">    1073 </span>            :       {
-<span class="lineNum">    1074 </span><span class="lineCov">          9 :         this-&gt;_M_do_reset();</span>
-<span class="lineNum">    1075 </span><span class="lineCov">          9 :         return *this;</span>
+<span class="lineNum">    1074 </span><span class="lineCov">         18 :         this-&gt;_M_do_reset();</span>
+<span class="lineNum">    1075 </span><span class="lineCov">         18 :         return *this;</span>
 <span class="lineNum">    1076 </span>            :       }
 <span class="lineNum">    1077 </span>            : 
 <span class="lineNum">    1078 </span>            :       /**
@@ -1212,8 +1212,8 @@
 <span class="lineNum">    1150 </span>            :        *                               represented in an @c unsigned @c long.
 <a name="1151"><span class="lineNum">    1151 </span>            :        */</a>
 <span class="lineNum">    1152 </span>            :       unsigned long
-<span class="lineNum">    1153 </span><span class="lineCov">          9 :       to_ulong() const</span>
-<span class="lineNum">    1154 </span><span class="lineCov">          9 :       { return this-&gt;_M_do_to_ulong(); }</span>
+<span class="lineNum">    1153 </span><span class="lineCov">         18 :       to_ulong() const</span>
+<span class="lineNum">    1154 </span><span class="lineCov">         18 :       { return this-&gt;_M_do_to_ulong(); }</span>
 <span class="lineNum">    1155 </span>            : 
 <span class="lineNum">    1156 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1157 </span>            :       unsigned long long
@@ -1304,11 +1304,11 @@
 <span class="lineNum">    1242 </span>            : 
 <a name="1243"><span class="lineNum">    1243 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;</a>
 <span class="lineNum">    1244 </span>            :         void
-<span class="lineNum">    1245 </span><span class="lineCov">          9 :         _M_copy_from_string(const std::basic_string&lt;_CharT,</span>
+<span class="lineNum">    1245 </span><span class="lineCov">         18 :         _M_copy_from_string(const std::basic_string&lt;_CharT,</span>
 <span class="lineNum">    1246 </span>            :                             _Traits, _Alloc&gt;&amp; __s, size_t __pos, size_t __n,
 <span class="lineNum">    1247 </span>            :                             _CharT __zero, _CharT __one)
-<span class="lineNum">    1248 </span><span class="lineCov">          9 :         { _M_copy_from_ptr&lt;_CharT, _Traits&gt;(__s.data(), __s.size(), __pos, __n,</span>
-<span class="lineNum">    1249 </span><span class="lineCov">          9 :                                             __zero, __one); }</span>
+<span class="lineNum">    1248 </span><span class="lineCov">         18 :         { _M_copy_from_ptr&lt;_CharT, _Traits&gt;(__s.data(), __s.size(), __pos, __n,</span>
+<span class="lineNum">    1249 </span><span class="lineCov">         18 :                                             __zero, __one); }</span>
 <span class="lineNum">    1250 </span>            : 
 <span class="lineNum">    1251 </span>            :       template&lt;class _CharT, class _Traits, class _Alloc&gt;
 <span class="lineNum">    1252 </span>            :         void
@@ -1425,23 +1425,23 @@
 <span class="lineNum">    1363 </span>            :   template&lt;size_t _Nb&gt;
 <a name="1364"><span class="lineNum">    1364 </span>            :     template&lt;class _CharT, class _Traits&gt;</a>
 <span class="lineNum">    1365 </span>            :       void
-<span class="lineNum">    1366 </span><span class="lineCov">          9 :       bitset&lt;_Nb&gt;::</span>
+<span class="lineNum">    1366 </span><span class="lineCov">         18 :       bitset&lt;_Nb&gt;::</span>
 <span class="lineNum">    1367 </span>            :       _M_copy_from_ptr(const _CharT* __s, size_t __len,
 <span class="lineNum">    1368 </span>            :                        size_t __pos, size_t __n, _CharT __zero, _CharT __one)
 <span class="lineNum">    1369 </span>            :       {
-<span class="lineNum">    1370 </span><span class="lineCov">          9 :         reset();</span>
-<span class="lineNum">    1371 </span><span class="lineCov">          9 :         const size_t __nbits = std::min(_Nb, std::min(__n, __len - __pos));</span>
-<span class="lineNum">    1372 </span><span class="lineCov">        201 :         for (size_t __i = __nbits; __i &gt; 0; --__i)</span>
+<span class="lineNum">    1370 </span><span class="lineCov">         18 :         reset();</span>
+<span class="lineNum">    1371 </span><span class="lineCov">         18 :         const size_t __nbits = std::min(_Nb, std::min(__n, __len - __pos));</span>
+<span class="lineNum">    1372 </span><span class="lineCov">        402 :         for (size_t __i = __nbits; __i &gt; 0; --__i)</span>
 <span class="lineNum">    1373 </span>            :           {
-<span class="lineNum">    1374 </span><span class="lineCov">        192 :             const _CharT __c = __s[__pos + __nbits - __i];</span>
-<span class="lineNum">    1375 </span><span class="lineCov">        192 :             if (_Traits::eq(__c, __zero))</span>
+<span class="lineNum">    1374 </span><span class="lineCov">        384 :             const _CharT __c = __s[__pos + __nbits - __i];</span>
+<span class="lineNum">    1375 </span><span class="lineCov">        384 :             if (_Traits::eq(__c, __zero))</span>
 <span class="lineNum">    1376 </span>            :               ;
-<span class="lineNum">    1377 </span><span class="lineCov">         23 :             else if (_Traits::eq(__c, __one))</span>
-<span class="lineNum">    1378 </span><span class="lineCov">         23 :               _Unchecked_set(__i - 1);</span>
+<span class="lineNum">    1377 </span><span class="lineCov">         46 :             else if (_Traits::eq(__c, __one))</span>
+<span class="lineNum">    1378 </span><span class="lineCov">         46 :               _Unchecked_set(__i - 1);</span>
 <span class="lineNum">    1379 </span>            :             else
 <span class="lineNum">    1380 </span><span class="lineNoCov">          0 :               __throw_invalid_argument(__N(&quot;bitset::_M_copy_from_ptr&quot;));</span>
 <span class="lineNum">    1381 </span>            :           }
-<span class="lineNum">    1382 </span><span class="lineCov">          9 :       }</span>
+<span class="lineNum">    1382 </span><span class="lineCov">         18 :       }</span>
 <span class="lineNum">    1383 </span>            : 
 <span class="lineNum">    1384 </span>            :   template&lt;size_t _Nb&gt;
 <a name="1385"><span class="lineNum">    1385 </span>            :     template&lt;class _CharT, class _Traits, class _Alloc&gt;</a>
@@ -1505,43 +1505,43 @@
 <span class="lineNum">    1443 </span>            :   */
 <a name="1444"><span class="lineNum">    1444 </span>            :   template&lt;class _CharT, class _Traits, size_t _Nb&gt;</a>
 <span class="lineNum">    1445 </span>            :     std::basic_istream&lt;_CharT, _Traits&gt;&amp;
-<span class="lineNum">    1446 </span><span class="lineCov">          3 :     operator&gt;&gt;(std::basic_istream&lt;_CharT, _Traits&gt;&amp; __is, bitset&lt;_Nb&gt;&amp; __x)</span>
+<span class="lineNum">    1446 </span><span class="lineCov">          6 :     operator&gt;&gt;(std::basic_istream&lt;_CharT, _Traits&gt;&amp; __is, bitset&lt;_Nb&gt;&amp; __x)</span>
 <span class="lineNum">    1447 </span>            :     {
 <span class="lineNum">    1448 </span>            :       typedef typename _Traits::char_type          char_type;
 <span class="lineNum">    1449 </span>            :       typedef std::basic_istream&lt;_CharT, _Traits&gt;  __istream_type;
 <span class="lineNum">    1450 </span>            :       typedef typename __istream_type::ios_base    __ios_base;
 <span class="lineNum">    1451 </span>            : 
-<span class="lineNum">    1452 </span><span class="lineCov">          3 :       std::basic_string&lt;_CharT, _Traits&gt; __tmp;</span>
-<span class="lineNum">    1453 </span><span class="lineCov">          3 :       __tmp.reserve(_Nb);</span>
+<span class="lineNum">    1452 </span><span class="lineCov">          6 :       std::basic_string&lt;_CharT, _Traits&gt; __tmp;</span>
+<span class="lineNum">    1453 </span><span class="lineCov">          6 :       __tmp.reserve(_Nb);</span>
 <span class="lineNum">    1454 </span>            : 
 <span class="lineNum">    1455 </span>            :       // _GLIBCXX_RESOLVE_LIB_DEFECTS
 <span class="lineNum">    1456 </span>            :       // 303. Bitset input operator underspecified
-<span class="lineNum">    1457 </span><span class="lineCov">          3 :       const char_type __zero = __is.widen('0');</span>
-<span class="lineNum">    1458 </span><span class="lineCov">          3 :       const char_type __one = __is.widen('1');</span>
+<span class="lineNum">    1457 </span><span class="lineCov">          6 :       const char_type __zero = __is.widen('0');</span>
+<span class="lineNum">    1458 </span><span class="lineCov">          6 :       const char_type __one = __is.widen('1');</span>
 <span class="lineNum">    1459 </span>            : 
-<span class="lineNum">    1460 </span><span class="lineCov">          3 :       typename __ios_base::iostate __state = __ios_base::goodbit;</span>
-<span class="lineNum">    1461 </span><span class="lineCov">          3 :       typename __istream_type::sentry __sentry(__is);</span>
-<span class="lineNum">    1462 </span><span class="lineCov">          3 :       if (__sentry)</span>
+<span class="lineNum">    1460 </span><span class="lineCov">          6 :       typename __ios_base::iostate __state = __ios_base::goodbit;</span>
+<span class="lineNum">    1461 </span><span class="lineCov">          6 :       typename __istream_type::sentry __sentry(__is);</span>
+<span class="lineNum">    1462 </span><span class="lineCov">          6 :       if (__sentry)</span>
 <span class="lineNum">    1463 </span>            :         {
 <span class="lineNum">    1464 </span>            :           __try
 <span class="lineNum">    1465 </span>            :             {
-<span class="lineNum">    1466 </span><span class="lineCov">         27 :               for (size_t __i = _Nb; __i &gt; 0; --__i)</span>
+<span class="lineNum">    1466 </span><span class="lineCov">         54 :               for (size_t __i = _Nb; __i &gt; 0; --__i)</span>
 <span class="lineNum">    1467 </span>            :                 {
-<span class="lineNum">    1468 </span><span class="lineCov">         24 :                   static typename _Traits::int_type __eof = _Traits::eof();</span>
+<span class="lineNum">    1468 </span><span class="lineCov">         48 :                   static typename _Traits::int_type __eof = _Traits::eof();</span>
 <span class="lineNum">    1469 </span>            :                   
-<span class="lineNum">    1470 </span><span class="lineCov">         24 :                   typename _Traits::int_type __c1 = __is.rdbuf()-&gt;sbumpc();</span>
-<span class="lineNum">    1471 </span><span class="lineCov">         24 :                   if (_Traits::eq_int_type(__c1, __eof))</span>
+<span class="lineNum">    1470 </span><span class="lineCov">         48 :                   typename _Traits::int_type __c1 = __is.rdbuf()-&gt;sbumpc();</span>
+<span class="lineNum">    1471 </span><span class="lineCov">         48 :                   if (_Traits::eq_int_type(__c1, __eof))</span>
 <span class="lineNum">    1472 </span>            :                     {
 <span class="lineNum">    1473 </span><span class="lineNoCov">          0 :                       __state |= __ios_base::eofbit;</span>
 <span class="lineNum">    1474 </span><span class="lineNoCov">          0 :                       break;</span>
 <span class="lineNum">    1475 </span>            :                     }
 <span class="lineNum">    1476 </span>            :                   else
 <span class="lineNum">    1477 </span>            :                     {
-<span class="lineNum">    1478 </span><span class="lineCov">         24 :                       const char_type __c2 = _Traits::to_char_type(__c1);</span>
-<span class="lineNum">    1479 </span><span class="lineCov">         24 :                       if (_Traits::eq(__c2, __zero))</span>
-<span class="lineNum">    1480 </span><span class="lineCov">         14 :                         __tmp.push_back(__zero);</span>
-<span class="lineNum">    1481 </span><span class="lineCov">         10 :                       else if (_Traits::eq(__c2, __one))</span>
-<span class="lineNum">    1482 </span><span class="lineCov">         10 :                         __tmp.push_back(__one);</span>
+<span class="lineNum">    1478 </span><span class="lineCov">         48 :                       const char_type __c2 = _Traits::to_char_type(__c1);</span>
+<span class="lineNum">    1479 </span><span class="lineCov">         48 :                       if (_Traits::eq(__c2, __zero))</span>
+<span class="lineNum">    1480 </span><span class="lineCov">         28 :                         __tmp.push_back(__zero);</span>
+<span class="lineNum">    1481 </span><span class="lineCov">         20 :                       else if (_Traits::eq(__c2, __one))</span>
+<span class="lineNum">    1482 </span><span class="lineCov">         20 :                         __tmp.push_back(__one);</span>
 <span class="lineNum">    1483 </span><span class="lineNoCov">          0 :                       else if (_Traits::</span>
 <span class="lineNum">    1484 </span>            :                                eq_int_type(__is.rdbuf()-&gt;sputbackc(__c2),
 <span class="lineNum">    1485 </span>            :                                            __eof))
@@ -1561,14 +1561,14 @@
 <span class="lineNum">    1499 </span><span class="lineNoCov">          0 :             { __is._M_setstate(__ios_base::badbit); }</span>
 <span class="lineNum">    1500 </span>            :         }
 <span class="lineNum">    1501 </span>            : 
-<span class="lineNum">    1502 </span><span class="lineCov">          3 :       if (__tmp.empty() &amp;&amp; _Nb)</span>
+<span class="lineNum">    1502 </span><span class="lineCov">          6 :       if (__tmp.empty() &amp;&amp; _Nb)</span>
 <span class="lineNum">    1503 </span><span class="lineNoCov">          0 :         __state |= __ios_base::failbit;</span>
 <span class="lineNum">    1504 </span>            :       else
-<span class="lineNum">    1505 </span><span class="lineCov">          3 :         __x._M_copy_from_string(__tmp, static_cast&lt;size_t&gt;(0), _Nb,</span>
+<span class="lineNum">    1505 </span><span class="lineCov">          6 :         __x._M_copy_from_string(__tmp, static_cast&lt;size_t&gt;(0), _Nb,</span>
 <span class="lineNum">    1506 </span>            :                                 __zero, __one);
-<span class="lineNum">    1507 </span><span class="lineCov">          3 :       if (__state)</span>
+<span class="lineNum">    1507 </span><span class="lineCov">          6 :       if (__state)</span>
 <span class="lineNum">    1508 </span><span class="lineNoCov">          0 :         __is.setstate(__state);</span>
-<span class="lineNum">    1509 </span><span class="lineCov">          3 :       return __is;</span>
+<span class="lineNum">    1509 </span><span class="lineCov">          6 :       return __is;</span>
 <span class="lineNum">    1510 </span>            :     }
 <span class="lineNum">    1511 </span>            : 
 <span class="lineNum">    1512 </span>            :   template &lt;class _CharT, class _Traits, size_t _Nb&gt;

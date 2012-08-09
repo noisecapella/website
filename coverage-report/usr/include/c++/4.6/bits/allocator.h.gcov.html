@@ -166,15 +166,15 @@
 <span class="lineNum">     104 </span>            :         struct rebind
 <a name="105"><span class="lineNum">     105 </span>            :         { typedef allocator&lt;_Tp1&gt; other; };</a>
 <span class="lineNum">     106 </span>            : 
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">     291709 :       allocator() throw() { }</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">     428713 :       allocator() throw() { }</span></a>
 <span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineCov">     231766 :       allocator(const allocator&amp; __a) throw()</span>
-<span class="lineNum">     110 </span><span class="lineCov">     231766 :       : __glibcxx_base_allocator&lt;_Tp&gt;(__a) { }</span>
+<span class="lineNum">     109 </span><span class="lineCov">     365285 :       allocator(const allocator&amp; __a) throw()</span>
+<span class="lineNum">     110 </span><span class="lineCov">     365285 :       : __glibcxx_base_allocator&lt;_Tp&gt;(__a) { }</span>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <span class="lineNum">     112 </span>            :       template&lt;typename _Tp1&gt;
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">     165683 :         allocator(const allocator&lt;_Tp1&gt;&amp;) throw() { }</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">     231552 :         allocator(const allocator&lt;_Tp1&gt;&amp;) throw() { }</span></a>
 <span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span><span class="lineCov">     640115 :       ~allocator() throw() { }</span>
+<span class="lineNum">     115 </span><span class="lineCov">     944163 :       ~allocator() throw() { }</span>
 <span class="lineNum">     116 </span>            : 
 <span class="lineNum">     117 </span>            :       // Inherit everything else.
 <span class="lineNum">     118 </span>            :     };
@@ -186,8 +186,8 @@
 <span class="lineNum">     124 </span>            : 
 <a name="125"><span class="lineNum">     125 </span>            :   template&lt;typename _Tp&gt;</a>
 <span class="lineNum">     126 </span>            :     inline bool
-<span class="lineNum">     127 </span><span class="lineCov">          8 :     operator==(const allocator&lt;_Tp&gt;&amp;, const allocator&lt;_Tp&gt;&amp;)</span>
-<span class="lineNum">     128 </span><span class="lineCov">          8 :     { return true; }</span>
+<span class="lineNum">     127 </span><span class="lineCov">         26 :     operator==(const allocator&lt;_Tp&gt;&amp;, const allocator&lt;_Tp&gt;&amp;)</span>
+<span class="lineNum">     128 </span><span class="lineCov">         26 :     { return true; }</span>
 <span class="lineNum">     129 </span>            : 
 <span class="lineNum">     130 </span>            :   template&lt;typename _T1, typename _T2&gt;
 <span class="lineNum">     131 </span>            :     inline bool
@@ -212,7 +212,7 @@
 <span class="lineNum">     150 </span>            :   // To implement Option 3 of DR 431.
 <a name="151"><span class="lineNum">     151 </span>            :   template&lt;typename _Alloc, bool = __is_empty(_Alloc)&gt;</a>
 <span class="lineNum">     152 </span>            :     struct __alloc_swap
-<span class="lineNum">     153 </span><span class="lineCov">        560 :     { static void _S_do_it(_Alloc&amp;, _Alloc&amp;) { } };</span>
+<span class="lineNum">     153 </span><span class="lineCov">        880 :     { static void _S_do_it(_Alloc&amp;, _Alloc&amp;) { } };</span>
 <span class="lineNum">     154 </span>            : 
 <span class="lineNum">     155 </span>            :   template&lt;typename _Alloc&gt;
 <span class="lineNum">     156 </span>            :     struct __alloc_swap&lt;_Alloc, false&gt;

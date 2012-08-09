@@ -507,7 +507,7 @@
 <span class="lineNum">     445 </span>            :       min() throw() { return __glibcxx_min(char); }
 <a name="446"><span class="lineNum">     446 </span>            : </a>
 <span class="lineNum">     447 </span>            :       static _GLIBCXX_CONSTEXPR char 
-<span class="lineNum">     448 </span><span class="lineCov">       4584 :       max() throw() { return __glibcxx_max(char); }</span>
+<span class="lineNum">     448 </span><span class="lineCov">       6816 :       max() throw() { return __glibcxx_max(char); }</span>
 <span class="lineNum">     449 </span>            : 
 <span class="lineNum">     450 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     451 </span>            :       static constexpr char 
@@ -642,7 +642,7 @@
 <span class="lineNum">     580 </span>            :       min() throw() { return 0; }
 <a name="581"><span class="lineNum">     581 </span>            : </a>
 <span class="lineNum">     582 </span>            :       static _GLIBCXX_CONSTEXPR unsigned char 
-<span class="lineNum">     583 </span><span class="lineCov">  154453160 :       max() throw() { return __SCHAR_MAX__ * 2U + 1; }</span>
+<span class="lineNum">     583 </span><span class="lineCov">  514104541 :       max() throw() { return __SCHAR_MAX__ * 2U + 1; }</span>
 <span class="lineNum">     584 </span>            : 
 <span class="lineNum">     585 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     586 </span>            :       static constexpr unsigned char 
@@ -920,7 +920,7 @@
 <span class="lineNum">     858 </span>            :       min() throw() { return -__SHRT_MAX__ - 1; }
 <a name="859"><span class="lineNum">     859 </span>            : </a>
 <span class="lineNum">     860 </span>            :       static _GLIBCXX_CONSTEXPR short 
-<span class="lineNum">     861 </span><span class="lineCov">       4584 :       max() throw() { return __SHRT_MAX__; }</span>
+<span class="lineNum">     861 </span><span class="lineCov">       6816 :       max() throw() { return __SHRT_MAX__; }</span>
 <span class="lineNum">     862 </span>            : 
 <span class="lineNum">     863 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     864 </span>            :       static constexpr short 
@@ -987,7 +987,7 @@
 <span class="lineNum">     925 </span>            :       min() throw() { return 0; }
 <a name="926"><span class="lineNum">     926 </span>            : </a>
 <span class="lineNum">     927 </span>            :       static _GLIBCXX_CONSTEXPR unsigned short 
-<span class="lineNum">     928 </span><span class="lineCov">       4584 :       max() throw() { return __SHRT_MAX__ * 2U + 1; }</span>
+<span class="lineNum">     928 </span><span class="lineCov">       6816 :       max() throw() { return __SHRT_MAX__ * 2U + 1; }</span>
 <span class="lineNum">     929 </span>            : 
 <span class="lineNum">     930 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     931 </span>            :       static constexpr unsigned short 
@@ -1056,7 +1056,7 @@
 <span class="lineNum">     994 </span>            :       min() throw() { return -__INT_MAX__ - 1; }
 <a name="995"><span class="lineNum">     995 </span>            : </a>
 <span class="lineNum">     996 </span>            :       static _GLIBCXX_CONSTEXPR int 
-<span class="lineNum">     997 </span><span class="lineCov">       4584 :       max() throw() { return __INT_MAX__; }</span>
+<span class="lineNum">     997 </span><span class="lineCov">       6816 :       max() throw() { return __INT_MAX__; }</span>
 <span class="lineNum">     998 </span>            : 
 <span class="lineNum">     999 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1000 </span>            :       static constexpr int 
@@ -1123,7 +1123,7 @@
 <span class="lineNum">    1061 </span>            :       min() throw() { return 0; }
 <a name="1062"><span class="lineNum">    1062 </span>            : </a>
 <span class="lineNum">    1063 </span>            :       static _GLIBCXX_CONSTEXPR unsigned int 
-<span class="lineNum">    1064 </span><span class="lineCov">       4584 :       max() throw() { return __INT_MAX__ * 2U + 1; }</span>
+<span class="lineNum">    1064 </span><span class="lineCov">       6816 :       max() throw() { return __INT_MAX__ * 2U + 1; }</span>
 <span class="lineNum">    1065 </span>            : 
 <span class="lineNum">    1066 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1067 </span>            :       static constexpr unsigned int 
@@ -1192,7 +1192,7 @@
 <span class="lineNum">    1130 </span>            :       min() throw() { return -__LONG_MAX__ - 1; }
 <a name="1131"><span class="lineNum">    1131 </span>            : </a>
 <span class="lineNum">    1132 </span>            :       static _GLIBCXX_CONSTEXPR long 
-<span class="lineNum">    1133 </span><span class="lineCov">       4584 :       max() throw() { return __LONG_MAX__; }</span>
+<span class="lineNum">    1133 </span><span class="lineCov">       6816 :       max() throw() { return __LONG_MAX__; }</span>
 <span class="lineNum">    1134 </span>            : 
 <span class="lineNum">    1135 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1136 </span>            :       static constexpr long 
@@ -1259,7 +1259,7 @@
 <span class="lineNum">    1197 </span>            :       min() throw() { return 0; }
 <a name="1198"><span class="lineNum">    1198 </span>            : </a>
 <span class="lineNum">    1199 </span>            :       static _GLIBCXX_CONSTEXPR unsigned long 
-<span class="lineNum">    1200 </span><span class="lineCov">       4584 :       max() throw() { return __LONG_MAX__ * 2UL + 1; }</span>
+<span class="lineNum">    1200 </span><span class="lineCov">       6816 :       max() throw() { return __LONG_MAX__ * 2UL + 1; }</span>
 <span class="lineNum">    1201 </span>            : 
 <span class="lineNum">    1202 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1203 </span>            :       static constexpr unsigned long 
@@ -1538,10 +1538,10 @@
 <span class="lineNum">    1476 </span>            :       static _GLIBCXX_USE_CONSTEXPR bool is_specialized = true;
 <a name="1477"><span class="lineNum">    1477 </span>            : </a>
 <span class="lineNum">    1478 </span>            :       static _GLIBCXX_CONSTEXPR double 
-<span class="lineNum">    1479 </span><span class="lineCov">      23437 :       min() throw()  { return __DBL_MIN__; }</span>
+<span class="lineNum">    1479 </span><span class="lineCov">      49488 :       min() throw()  { return __DBL_MIN__; }</span>
 <a name="1480"><span class="lineNum">    1480 </span>            : </a>
 <span class="lineNum">    1481 </span>            :       static _GLIBCXX_CONSTEXPR double 
-<span class="lineNum">    1482 </span><span class="lineCov">       4584 :       max() throw() { return __DBL_MAX__; }</span>
+<span class="lineNum">    1482 </span><span class="lineCov">       6816 :       max() throw() { return __DBL_MAX__; }</span>
 <span class="lineNum">    1483 </span>            : 
 <span class="lineNum">    1484 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">    1485 </span>            :       static constexpr double 

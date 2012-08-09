@@ -368,14 +368,14 @@
 <span class="lineNum">     306 </span>            : 
 <a name="307"><span class="lineNum">     307 </span>            :       typedef typename _Alloc::template rebind&lt;_Tp&gt;::other _Tp_alloc_type;</a>
 <span class="lineNum">     308 </span>            : 
-<span class="lineNum">     309 </span><span class="lineCov">        120 :       struct _List_impl </span>
+<span class="lineNum">     309 </span><span class="lineCov">        150 :       struct _List_impl </span>
 <span class="lineNum">     310 </span>            :       : public _Node_alloc_type
 <span class="lineNum">     311 </span>            :       {
 <a name="312"><span class="lineNum">     312 </span>            :         __detail::_List_node_base _M_node;</a>
 <span class="lineNum">     313 </span>            : 
-<span class="lineNum">     314 </span><span class="lineCov">        120 :         _List_impl()</span>
-<span class="lineNum">     315 </span><span class="lineCov">        120 :         : _Node_alloc_type(), _M_node()</span>
-<span class="lineNum">     316 </span><span class="lineCov">        120 :         { }</span>
+<span class="lineNum">     314 </span><span class="lineCov">        150 :         _List_impl()</span>
+<span class="lineNum">     315 </span><span class="lineCov">        150 :         : _Node_alloc_type(), _M_node()</span>
+<span class="lineNum">     316 </span><span class="lineCov">        150 :         { }</span>
 <span class="lineNum">     317 </span>            : 
 <span class="lineNum">     318 </span>            :         _List_impl(const _Node_alloc_type&amp; __a)
 <span class="lineNum">     319 </span>            :         : _Node_alloc_type(__a), _M_node()
@@ -411,9 +411,9 @@
 <span class="lineNum">     349 </span>            :       get_allocator() const
 <a name="350"><span class="lineNum">     350 </span>            :       { return allocator_type(_M_get_Node_allocator()); }</a>
 <span class="lineNum">     351 </span>            : 
-<span class="lineNum">     352 </span><span class="lineCov">        120 :       _List_base()</span>
-<span class="lineNum">     353 </span><span class="lineCov">        120 :       : _M_impl()</span>
-<span class="lineNum">     354 </span><span class="lineCov">        120 :       { _M_init(); }</span>
+<span class="lineNum">     352 </span><span class="lineCov">        150 :       _List_base()</span>
+<span class="lineNum">     353 </span><span class="lineCov">        150 :       : _M_impl()</span>
+<span class="lineNum">     354 </span><span class="lineCov">        150 :       { _M_init(); }</span>
 <span class="lineNum">     355 </span>            : 
 <span class="lineNum">     356 </span>            :       _List_base(const allocator_type&amp; __a)
 <span class="lineNum">     357 </span>            :       : _M_impl(__a)
@@ -430,18 +430,18 @@
 <span class="lineNum">     368 </span>            : #endif
 <a name="369"><span class="lineNum">     369 </span>            : </a>
 <span class="lineNum">     370 </span>            :       // This is what actually destroys the list.
-<span class="lineNum">     371 </span><span class="lineCov">        120 :       ~_List_base()</span>
-<span class="lineNum">     372 </span><span class="lineCov">        120 :       { _M_clear(); }</span>
+<span class="lineNum">     371 </span><span class="lineCov">        150 :       ~_List_base()</span>
+<span class="lineNum">     372 </span><span class="lineCov">        150 :       { _M_clear(); }</span>
 <span class="lineNum">     373 </span>            : 
 <span class="lineNum">     374 </span>            :       void
 <span class="lineNum">     375 </span>            :       _M_clear();
 <a name="376"><span class="lineNum">     376 </span>            : </a>
 <span class="lineNum">     377 </span>            :       void
-<span class="lineNum">     378 </span><span class="lineCov">        120 :       _M_init()</span>
+<span class="lineNum">     378 </span><span class="lineCov">        150 :       _M_init()</span>
 <span class="lineNum">     379 </span>            :       {
-<span class="lineNum">     380 </span><span class="lineCov">        120 :         this-&gt;_M_impl._M_node._M_next = &amp;this-&gt;_M_impl._M_node;</span>
-<span class="lineNum">     381 </span><span class="lineCov">        120 :         this-&gt;_M_impl._M_node._M_prev = &amp;this-&gt;_M_impl._M_node;</span>
-<span class="lineNum">     382 </span><span class="lineCov">        120 :       }</span>
+<span class="lineNum">     380 </span><span class="lineCov">        150 :         this-&gt;_M_impl._M_node._M_next = &amp;this-&gt;_M_impl._M_node;</span>
+<span class="lineNum">     381 </span><span class="lineCov">        150 :         this-&gt;_M_impl._M_node._M_prev = &amp;this-&gt;_M_impl._M_node;</span>
+<span class="lineNum">     382 </span><span class="lineCov">        150 :       }</span>
 <span class="lineNum">     383 </span>            :     };
 <span class="lineNum">     384 </span>            : 
 <span class="lineNum">     385 </span>            :   /**
@@ -488,7 +488,7 @@
 <span class="lineNum">     426 </span>            :    *  %empty. 
 <a name="427"><span class="lineNum">     427 </span>            :   */</a>
 <span class="lineNum">     428 </span>            :   template&lt;typename _Tp, typename _Alloc = std::allocator&lt;_Tp&gt; &gt;
-<span class="lineNum">     429 </span><span class="lineCov">        120 :     class list : protected _List_base&lt;_Tp, _Alloc&gt;</span>
+<span class="lineNum">     429 </span><span class="lineCov">        150 :     class list : protected _List_base&lt;_Tp, _Alloc&gt;</span>
 <span class="lineNum">     430 </span>            :     {
 <span class="lineNum">     431 </span>            :       // concept requirements
 <span class="lineNum">     432 </span>            :       typedef typename _Alloc::value_type                _Alloc_value_type;
@@ -571,8 +571,8 @@
 <span class="lineNum">     509 </span>            :       /**
 <a name="510"><span class="lineNum">     510 </span>            :        *  @brief  Default constructor creates no elements.</a>
 <span class="lineNum">     511 </span>            :        */
-<span class="lineNum">     512 </span><span class="lineCov">        120 :       list()</span>
-<span class="lineNum">     513 </span><span class="lineCov">        120 :       : _Base() { }</span>
+<span class="lineNum">     512 </span><span class="lineCov">        150 :       list()</span>
+<span class="lineNum">     513 </span><span class="lineCov">        150 :       : _Base() { }</span>
 <span class="lineNum">     514 </span>            : 
 <span class="lineNum">     515 </span>            :       /**
 <span class="lineNum">     516 </span>            :        *  @brief  Creates a %list with no elements.

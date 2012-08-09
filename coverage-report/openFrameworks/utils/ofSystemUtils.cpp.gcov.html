@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">52</td>
             <td class="headerCovTableEntry">61</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryMed">85.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryHi">91.7 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,522 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;ofSystemUtils.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofFileUtils.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofLog.h&quot;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">       8 </span>            : #include &lt;winuser.h&gt;
+<span class="lineNum">       9 </span>            : #include &lt;commdlg.h&gt;
+<span class="lineNum">      10 </span>            : #define _WIN32_DCOM
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : #include &lt;windows.h&gt;
+<span class="lineNum">      13 </span>            : #include &lt;shlobj.h&gt;
+<span class="lineNum">      14 </span>            : #include &lt;tchar.h&gt;
+<span class="lineNum">      15 </span>            : #include &lt;stdio.h&gt;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #endif
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">      20 </span>            :         // ofSystemUtils.cpp is configured to build as
+<span class="lineNum">      21 </span>            :         // objective-c++ so as able to use NSAutoreleasePool.
+<span class="lineNum">      22 </span>            :         // This is done with this compiler flag
+<span class="lineNum">      23 </span>            :         //              -x objective-c++
+<span class="lineNum">      24 </span>            :         // http://www.yakyak.org/viewtopic.php?p=1475838&amp;sid=1e9dcb5c9fd652a6695ac00c5e957822#p1475838
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :         #include &lt;Carbon/Carbon.h&gt;
+<span class="lineNum">      27 </span>            :         #include &lt;sys/param.h&gt; // for MAXPATHLEN
+<span class="lineNum">      28 </span>            :         #include &lt;Cocoa/Cocoa.h&gt;  // for NSAutoreleasePool
+<span class="lineNum">      29 </span>            : #endif
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">      32 </span>            : #include &lt;locale&gt;
+<span class="lineNum">      33 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      34 </span>            : #include &lt;string&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : std::string convertWideToNarrow( const wchar_t *s, char dfault = '?',
+<span class="lineNum">      37 </span>            :                       const std::locale&amp; loc = std::locale() )
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span>            :   std::ostringstream stm;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :   while( *s != L'\0' ) {
+<span class="lineNum">      42 </span>            :     stm &lt;&lt; std::use_facet&lt; std::ctype&lt;wchar_t&gt; &gt;( loc ).narrow( *s++, dfault );
+<span class="lineNum">      43 </span>            :   }
+<span class="lineNum">      44 </span>            :   return stm.str();
+<span class="lineNum">      45 </span>            : }
+<span class="lineNum">      46 </span>            : #endif
+<span class="lineNum">      47 </span>            : 
+<a name="48"><span class="lineNum">      48 </span>            : #if defined( TARGET_LINUX ) &amp;&amp; defined (OF_USING_GTK)</a>
+<span class="lineNum">      49 </span>            : #include &lt;gtk/gtk.h&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          5 : static gboolean closeGTK(GtkWidget *widget){</span>
+<span class="lineNum">      51 </span>            :         //gtk_widget_destroy(widget);
+<span class="lineNum">      52 </span><span class="lineCov">          5 :     gtk_main_quit();</span>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 :     return (FALSE);</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : }</a>
+<span class="lineNum">      55 </span><span class="lineCov">          5 : static void initGTK(){</span>
+<span class="lineNum">      56 </span><span class="lineCov">          5 :         int argc=0; char **argv = NULL;</span>
+<span class="lineNum">      57 </span><span class="lineCov">          5 :         gtk_init (&amp;argc, &amp;argv);</span>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<span class="lineNum">      59 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">      60 </span><span class="lineCov">          5 : static void startGTK(GtkWidget *dialog){</span>
+<span class="lineNum">      61 </span><span class="lineCov">          5 :         gtk_init_add( (GSourceFunc) closeGTK, NULL );</span>
+<span class="lineNum">      62 </span><span class="lineCov">          5 :         gtk_quit_add_destroy(1,GTK_OBJECT(dialog));</span>
+<span class="lineNum">      63 </span>            :         //g_timeout_add(10, (GSourceFunc) destroyWidgetGTK, (gpointer) dialog);
+<span class="lineNum">      64 </span><span class="lineCov">          5 :         gtk_main();</span>
+<span class="lineNum">      65 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">          5 : static string gtkFileDialog(GtkFileChooserAction action,string windowTitle,string defaultName=&quot;&quot;){</span>
+<span class="lineNum">      68 </span><span class="lineCov">          5 :         initGTK();</span>
+<span class="lineNum">      69 </span><span class="lineCov">          5 :         string results;</span>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">          5 :         const gchar* button_name = &quot;&quot;;</span>
+<span class="lineNum">      72 </span><span class="lineCov">          5 :         switch(action){</span>
+<span class="lineNum">      73 </span>            :         case GTK_FILE_CHOOSER_ACTION_OPEN:
+<span class="lineNum">      74 </span><span class="lineCov">          3 :                 button_name = GTK_STOCK_OPEN;</span>
+<span class="lineNum">      75 </span><span class="lineCov">          3 :                 break;</span>
+<span class="lineNum">      76 </span>            :         case GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 button_name = GTK_STOCK_SELECT_ALL;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">      79 </span>            :         case GTK_FILE_CHOOSER_ACTION_SAVE:
+<span class="lineNum">      80 </span><span class="lineCov">          2 :                 button_name = GTK_STOCK_SAVE;</span>
+<span class="lineNum">      81 </span><span class="lineCov">          2 :                 break;</span>
+<span class="lineNum">      82 </span>            :         default:
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">      84 </span>            :                 break;
+<span class="lineNum">      85 </span>            :         }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :         GtkWidget *dialog = gtk_file_chooser_dialog_new (windowTitle.c_str(),
+<span class="lineNum">      88 </span>            :                                                   NULL,
+<span class="lineNum">      89 </span>            :                                                   action,
+<span class="lineNum">      90 </span>            :                                                   button_name, GTK_RESPONSE_ACCEPT,
+<span class="lineNum">      91 </span>            :                                                   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+<span class="lineNum">      92 </span><span class="lineCov">          5 :                                                   NULL);</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span><span class="lineCov">          5 :         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),defaultName.c_str());</span>
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineCov">          5 :         if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {</span>
+<span class="lineNum">      97 </span><span class="lineCov">          4 :                 results = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));</span>
+<span class="lineNum">      98 </span>            :         }
+<span class="lineNum">      99 </span><span class="lineCov">          5 :         startGTK(dialog);</span>
+<span class="lineNum">     100 </span><span class="lineCov">          5 :         return results;</span>
+<span class="lineNum">     101 </span>            : }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            : #endif
+<span class="lineNum">     104 </span>            : #ifdef TARGET_ANDROID
+<span class="lineNum">     105 </span>            : #include &quot;ofxAndroidUtils.h&quot;
+<span class="lineNum">     106 </span>            : #endif
+<a name="107"><span class="lineNum">     107 </span>            : </a>
+<span class="lineNum">     108 </span>            : //------------------------------------------------------------------------------
+<span class="lineNum">     109 </span><span class="lineCov">          5 : ofFileDialogResult::ofFileDialogResult(){</span>
+<span class="lineNum">     110 </span><span class="lineCov">          5 :         filePath = &quot;&quot;;</span>
+<span class="lineNum">     111 </span><span class="lineCov">          5 :         fileName = &quot;&quot;;</span>
+<span class="lineNum">     112 </span><span class="lineCov">          5 :         bSuccess = false;</span>
+<span class="lineNum">     113 </span><span class="lineCov">          5 : }</span>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<span class="lineNum">     115 </span>            : //------------------------------------------------------------------------------
+<span class="lineNum">     116 </span><span class="lineCov">          2 : string ofFileDialogResult::getName(){</span>
+<span class="lineNum">     117 </span><span class="lineCov">          2 :         return fileName;</span>
+<span class="lineNum">     118 </span>            : }
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<span class="lineNum">     120 </span>            : //------------------------------------------------------------------------------
+<span class="lineNum">     121 </span><span class="lineCov">          6 : string ofFileDialogResult::getPath(){</span>
+<span class="lineNum">     122 </span><span class="lineCov">          6 :         return filePath;</span>
+<span class="lineNum">     123 </span>            : }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            : //------------------------------------------------------------------------------
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : void ofSystemAlertDialog(string errorMessage){</span>
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :         #ifdef TARGET_WIN32
+<span class="lineNum">     131 </span>            :                 // we need to convert error message to a wide char message.
+<span class="lineNum">     132 </span>            :                 // first, figure out the length and allocate a wchar_t at that length + 1 (the +1 is for a terminating character)
+<span class="lineNum">     133 </span>            :                 int length = strlen(errorMessage.c_str());
+<span class="lineNum">     134 </span>            :                 wchar_t * widearray = new wchar_t[length+1];
+<span class="lineNum">     135 </span>            :                 memset(widearray, 0, sizeof(wchar_t)*(length+1));
+<span class="lineNum">     136 </span>            :                 // then, call mbstowcs:
+<span class="lineNum">     137 </span>            :                 // http://www.cplusplus.com/reference/clibrary/cstdlib/mbstowcs/
+<span class="lineNum">     138 </span>            :                 mbstowcs(widearray, errorMessage.c_str(), length);
+<span class="lineNum">     139 </span>            :                 // launch the alert:
+<span class="lineNum">     140 </span>            :                 MessageBoxW(NULL, widearray, L&quot;alert&quot;, MB_OK);
+<span class="lineNum">     141 </span>            :                 // clear the allocated memory:
+<span class="lineNum">     142 </span>            :                 delete widearray;
+<span class="lineNum">     143 </span>            :         #endif
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :         #ifdef TARGET_OSX
+<span class="lineNum">     147 </span>            :                 NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];  // The StandardAlert requires a NSAutoreleasePool to avoid memory leaks
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :                 CFStringRef msgStrRef = CFStringCreateWithCString(NULL, errorMessage.c_str(), kCFStringEncodingASCII);
+<span class="lineNum">     150 </span>            :                 DialogRef theItem;
+<span class="lineNum">     151 </span>            :                 DialogItemIndex itemIndex;
+<span class="lineNum">     152 </span>            :                 CreateStandardAlert(kAlertNoteAlert, msgStrRef, NULL, NULL, &amp;theItem);
+<span class="lineNum">     153 </span>            :                 RunStandardAlert(theItem, NULL, &amp;itemIndex);
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :                 [pool drain];
+<span class="lineNum">     156 </span>            :         #endif
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            :         #if defined( TARGET_LINUX ) &amp;&amp; defined (OF_USING_GTK)
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 initGTK();</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                 GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, errorMessage.c_str());</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 gtk_dialog_run (GTK_DIALOG (dialog));</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 startGTK(dialog);</span>
+<span class="lineNum">     163 </span>            :         #endif
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            :         #ifdef TARGET_ANDROID
+<span class="lineNum">     166 </span>            :                 ofxAndroidAlertBox(errorMessage);
+<span class="lineNum">     167 </span>            :         #endif
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : //----------------------------------------------------------------------------------------
+<span class="lineNum">     172 </span>            : //------------------------------------------------------------------------------       OSX
+<span class="lineNum">     173 </span>            : //----------------------------------------------------------------------------------------
+<span class="lineNum">     174 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">     175 </span>            : //---------------------------------------------------------------------
+<span class="lineNum">     176 </span>            : // Gets a file to open from the user. Caller must release the CFURLRef.
+<span class="lineNum">     177 </span>            : CFURLRef GetOpenFileFromUser(bool bFolder)
+<span class="lineNum">     178 </span>            : {
+<span class="lineNum">     179 </span>            :         NavDialogCreationOptions dialogOptions;
+<span class="lineNum">     180 </span>            :         NavDialogRef dialog;
+<span class="lineNum">     181 </span>            :         NavReplyRecord replyRecord;
+<span class="lineNum">     182 </span>            :         CFURLRef fileAsCFURLRef = NULL;
+<span class="lineNum">     183 </span>            :         FSRef fileAsFSRef;
+<span class="lineNum">     184 </span>            :         OSStatus status;
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :         // Get the standard set of defaults
+<span class="lineNum">     187 </span>            :         status = NavGetDefaultDialogCreationOptions(&amp;dialogOptions);
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :         require_noerr( status, CantGetNavOptions );
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :         // Make the window app-wide modal
+<span class="lineNum">     192 </span>            :         dialogOptions.modality = kWindowModalityAppModal;
+<span class="lineNum">     193 </span>            :         dialogOptions.optionFlags != kNavAllowOpenPackages;
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :         // Create the dialog
+<span class="lineNum">     196 </span>            :         if( bFolder ){
+<span class="lineNum">     197 </span>            :                 status = NavCreateChooseFolderDialog(&amp;dialogOptions, NULL, NULL, NULL, &amp;dialog);
+<span class="lineNum">     198 </span>            :         }else{
+<span class="lineNum">     199 </span>            :                 status = NavCreateGetFileDialog(&amp;dialogOptions, NULL, NULL, NULL, NULL, NULL, &amp;dialog);
+<span class="lineNum">     200 </span>            :         }
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :         require_noerr( status, CantCreateDialog );
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :         // Show it
+<span class="lineNum">     205 </span>            :         status = NavDialogRun(dialog);
+<span class="lineNum">     206 </span>            :         require_noerr( status, CantRunDialog );
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :         // Get the reply
+<span class="lineNum">     209 </span>            :         status = NavDialogGetReply(dialog, &amp;replyRecord);
+<span class="lineNum">     210 </span>            :         require( ((status == noErr) || (status == userCanceledErr)), CantGetReply );
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :         // If the user clicked &quot;Cancel&quot;, just bail
+<span class="lineNum">     213 </span>            :         if ( status == userCanceledErr ) goto UserCanceled;
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :         // Get the file
+<span class="lineNum">     216 </span>            :         //TODO: for multiple files - 1 specifies index
+<span class="lineNum">     217 </span>            :         status = AEGetNthPtr(&amp;(replyRecord.selection), 1, typeFSRef, NULL, NULL, &amp;fileAsFSRef, sizeof(FSRef), NULL);
+<span class="lineNum">     218 </span>            :         require_noerr( status, CantExtractFSRef );
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span>            :         // Convert it to a CFURL
+<span class="lineNum">     221 </span>            :         fileAsCFURLRef = CFURLCreateFromFSRef(NULL, &amp;fileAsFSRef);
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :         // Cleanup
+<span class="lineNum">     224 </span>            : CantExtractFSRef:
+<span class="lineNum">     225 </span>            : UserCanceled:
+<span class="lineNum">     226 </span>            :         verify_noerr( NavDisposeReply(&amp;replyRecord) );
+<span class="lineNum">     227 </span>            : CantGetReply:
+<span class="lineNum">     228 </span>            : CantRunDialog:
+<span class="lineNum">     229 </span>            :         NavDialogDispose(dialog);
+<span class="lineNum">     230 </span>            : CantCreateDialog:
+<span class="lineNum">     231 </span>            : CantGetNavOptions:
+<span class="lineNum">     232 </span>            :     return fileAsCFURLRef;
+<span class="lineNum">     233 </span>            : }
+<span class="lineNum">     234 </span>            : #endif
+<span class="lineNum">     235 </span>            : //----------------------------------------------------------------------------------------
+<span class="lineNum">     236 </span>            : //----------------------------------------------------------------------------------------
+<span class="lineNum">     237 </span>            : //----------------------------------------------------------------------------------------
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            : 
+<a name="240"><span class="lineNum">     240 </span>            : </a>
+<span class="lineNum">     241 </span>            : // OS specific results here.  &quot;&quot; = cancel or something bad like can't load, can't save, etc...
+<span class="lineNum">     242 </span><span class="lineCov">          3 : ofFileDialogResult ofSystemLoadDialog(string windowTitle, bool bFolderSelection){</span>
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span><span class="lineCov">          3 :         ofFileDialogResult results;</span>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     247 </span>            :         //------------------------------------------------------------------------------       OSX
+<span class="lineNum">     248 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     249 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">     250 </span>            :         CFURLRef cfUrl = GetOpenFileFromUser(bFolderSelection);
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :         CFStringRef cfString = NULL;
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :         if ( cfUrl != NULL ){
+<span class="lineNum">     255 </span>            :                 cfString = CFURLCopyFileSystemPath( cfUrl, kCFURLPOSIXPathStyle );
+<span class="lineNum">     256 </span>            :                 CFRelease( cfUrl );
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :                 // copy from a CFString into a local c string (http://www.carbondev.com/site/?page=CStrings+)
+<span class="lineNum">     259 </span>            :                 const int kBufferSize = MAXPATHLEN;
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :                 char fileUrl[kBufferSize];
+<span class="lineNum">     262 </span>            :                 Boolean bool1 = CFStringGetCString(cfString,fileUrl,kBufferSize,kCFStringEncodingMacRoman);
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :                 //char fileName[kBufferSize];
+<span class="lineNum">     265 </span>            :                 //Boolean bool2 = CFStringGetCString(reply.saveFileName,fileName,kBufferSize,kCFStringEncodingMacRoman);
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :                 // append strings together
+<span class="lineNum">     268 </span>            :                 CFRelease(cfString);
+<span class="lineNum">     269 </span>            :                 results.filePath = fileUrl;
+<span class="lineNum">     270 </span>            :         }
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            : #endif
+<span class="lineNum">     273 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     274 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     275 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     278 </span>            :         //------------------------------------------------------------------------------   windoze
+<span class="lineNum">     279 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     280 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :         if (bFolderSelection == false){
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            :         OPENFILENAME ofn;
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :                 ZeroMemory(&amp;ofn, sizeof(ofn));
+<span class="lineNum">     287 </span>            :                 ofn.lStructSize = sizeof(ofn);
+<span class="lineNum">     288 </span>            :                 HWND hwnd = WindowFromDC(wglGetCurrentDC());
+<span class="lineNum">     289 </span>            :                 ofn.hwndOwner = hwnd;
+<span class="lineNum">     290 </span>            : #ifdef __MINGW32_VERSION
+<span class="lineNum">     291 </span>            :                 char szFileName[MAX_PATH];
+<span class="lineNum">     292 </span>            :                 ofn.lpstrFilter = &quot;All\0&quot;;
+<span class="lineNum">     293 </span>            :                 ofn.lpstrFile = szFileName;
+<span class="lineNum">     294 </span>            : #else // VS2010
+<span class="lineNum">     295 </span>            :                 wchar_t szFileName[MAX_PATH] = L&quot;&quot;;
+<span class="lineNum">     296 </span>            :                 ofn.lpstrFilter = L&quot;All\0&quot;;
+<span class="lineNum">     297 </span>            :                 ofn.lpstrFile = szFileName;
+<span class="lineNum">     298 </span>            : #endif
+<span class="lineNum">     299 </span>            :                 ofn.nMaxFile = MAX_PATH;
+<span class="lineNum">     300 </span>            :                 ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+<span class="lineNum">     301 </span>            :                 ofn.lpstrDefExt = 0;
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :                 if(GetOpenFileName(&amp;ofn)) {
+<span class="lineNum">     304 </span>            : #ifdef __MINGW32_VERSION
+<span class="lineNum">     305 </span>            :                         results.filePath = string(szFileName);
+<span class="lineNum">     306 </span>            : #else
+<span class="lineNum">     307 </span>            :                         results.filePath = convertWideToNarrow(szFileName);
+<span class="lineNum">     308 </span>            : #endif
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :                 }
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            :         } else {
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            :                 BROWSEINFOW      bi;
+<span class="lineNum">     315 </span>            :                 wchar_t         wideCharacterBuffer[MAX_PATH];
+<span class="lineNum">     316 </span>            :                 LPITEMIDLIST    pidl;
+<span class="lineNum">     317 </span>            :                 LPMALLOC                lpMalloc;
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span>            :                 // Get a pointer to the shell memory allocator
+<span class="lineNum">     320 </span>            :                 if(SHGetMalloc(&amp;lpMalloc) != S_OK){
+<span class="lineNum">     321 </span>            :                         //TODO: deal with some sort of error here?
+<span class="lineNum">     322 </span>            :                 }
+<span class="lineNum">     323 </span>            :                 bi.hwndOwner        =   NULL;
+<span class="lineNum">     324 </span>            :                 bi.pidlRoot         =   NULL;
+<span class="lineNum">     325 </span>            :                 bi.pszDisplayName   =   wideCharacterBuffer;
+<span class="lineNum">     326 </span>            :                 bi.lpszTitle        =   L&quot;Select Directory&quot;;
+<span class="lineNum">     327 </span>            :                 bi.ulFlags          =   BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+<span class="lineNum">     328 </span>            :                 bi.lpfn             =   NULL;
+<span class="lineNum">     329 </span>            :                 bi.lParam           =   0;
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            :                 if(pidl = SHBrowseForFolderW(&amp;bi)){
+<span class="lineNum">     332 </span>            :                         // Copy the path directory to the buffer
+<span class="lineNum">     333 </span>            :                         if(SHGetPathFromIDListW(pidl,wideCharacterBuffer)){
+<span class="lineNum">     334 </span>            :                                 results.filePath = convertWideToNarrow(wideCharacterBuffer);
+<span class="lineNum">     335 </span>            :                         }
+<span class="lineNum">     336 </span>            :                         lpMalloc-&gt;Free(pidl);
+<span class="lineNum">     337 </span>            :                 }
+<span class="lineNum">     338 </span>            :                 lpMalloc-&gt;Release();
+<span class="lineNum">     339 </span>            :         }
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     342 </span>            :         //------------------------------------------------------------------------------   windoze
+<span class="lineNum">     343 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     344 </span>            : #endif
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     350 </span>            :         //------------------------------------------------------------------------------   linux
+<span class="lineNum">     351 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     352 </span>            : #if defined( TARGET_LINUX ) &amp;&amp; defined (OF_USING_GTK)
+<span class="lineNum">     353 </span><span class="lineCov">          3 :                 if(bFolderSelection) results.filePath = gtkFileDialog(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,windowTitle);</span>
+<span class="lineNum">     354 </span><span class="lineCov">          3 :                 else results.filePath = gtkFileDialog(GTK_FILE_CHOOSER_ACTION_OPEN,windowTitle);</span>
+<span class="lineNum">     355 </span>            : #endif
+<span class="lineNum">     356 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     357 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     358 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineCov">          3 :         if( results.filePath.length() &gt; 0 ){</span>
+<span class="lineNum">     363 </span><span class="lineCov">          2 :                 results.bSuccess = true;</span>
+<span class="lineNum">     364 </span><span class="lineCov">          2 :                 results.fileName = ofFilePath::getFileName(results.filePath);</span>
+<span class="lineNum">     365 </span>            :         }
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineCov">          3 :         return results;</span>
+<span class="lineNum">     368 </span>            : }
+<span class="lineNum">     369 </span>            : 
+<a name="370"><span class="lineNum">     370 </span>            : </a>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineCov">          2 : ofFileDialogResult ofSystemSaveDialog(string defaultName, string messageName){</span>
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span><span class="lineCov">          2 :         ofFileDialogResult results;</span>
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     377 </span>            :         //------------------------------------------------------------------------------       OSX
+<span class="lineNum">     378 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     379 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            :         short fRefNumOut;
+<span class="lineNum">     382 </span>            :         FSRef output_file;
+<span class="lineNum">     383 </span>            :         OSStatus err;
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span>            :         NavDialogCreationOptions options;
+<span class="lineNum">     386 </span>            :         NavGetDefaultDialogCreationOptions( &amp;options );
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            :         options.optionFlags = kNavNoTypePopup + kNavSupportPackages + kNavAllowOpenPackages;
+<span class="lineNum">     389 </span>            :         options.modality = kWindowModalityAppModal;
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            :         options.optionFlags = kNavDefaultNavDlogOptions;
+<span class="lineNum">     392 </span>            :         options.message = CFStringCreateWithCString(NULL, messageName.c_str(), kCFStringEncodingASCII);;
+<span class="lineNum">     393 </span>            :         options.saveFileName = CFStringCreateWithCString(NULL, defaultName.c_str(), kCFStringEncodingASCII);
+<span class="lineNum">     394 </span>            :         NavDialogRef dialog;
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span>            :         err = NavCreatePutFileDialog(&amp;options, '.mov', 'Moov', NULL, NULL, &amp;dialog);
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :         //printf(&quot;NavCreatePutFileDialog returned %i\n&quot;, err );
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            :         err = NavDialogRun(dialog);
+<span class="lineNum">     401 </span>            :         //printf(&quot;NavDialogRun returned %i\n&quot;, err );
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span>            :         NavUserAction action;
+<span class="lineNum">     404 </span>            :         action = NavDialogGetUserAction( dialog );
+<span class="lineNum">     405 </span>            :         //printf(&quot;got action %i\n&quot;, action);
+<span class="lineNum">     406 </span>            :         if (action == kNavUserActionNone || action == kNavUserActionCancel) {
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span>            :                 return results;
+<span class="lineNum">     409 </span>            :         }
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            :         // get dialog reply
+<span class="lineNum">     412 </span>            :         NavReplyRecord reply;
+<span class="lineNum">     413 </span>            :         err = NavDialogGetReply(dialog, &amp;reply);
+<span class="lineNum">     414 </span>            :         if ( err != noErr )
+<span class="lineNum">     415 </span>            :                 return results;
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :         if ( reply.replacing ) {
+<span class="lineNum">     418 </span>            :                 ofLog(OF_LOG_WARNING, &quot;ofSystemSaveDialog: need to replace&quot;);
+<span class="lineNum">     419 </span>            :         }
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span>            :         AEKeyword keyword;
+<span class="lineNum">     422 </span>            :         DescType actual_type;
+<span class="lineNum">     423 </span>            :         Size actual_size;
+<span class="lineNum">     424 </span>            :         FSRef output_dir;
+<span class="lineNum">     425 </span>            :         err = AEGetNthPtr(&amp;(reply.selection), 1, typeFSRef, &amp;keyword, &amp;actual_type,
+<span class="lineNum">     426 </span>            :                                           &amp;output_dir, sizeof(output_file), &amp;actual_size);
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            :         //printf(&quot;AEGetNthPtr returned %i\n&quot;, err );
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            :         CFURLRef cfUrl = CFURLCreateFromFSRef( kCFAllocatorDefault, &amp;output_dir );
+<span class="lineNum">     432 </span>            :         CFStringRef cfString = NULL;
+<span class="lineNum">     433 </span>            :         if ( cfUrl != NULL )
+<span class="lineNum">     434 </span>            :         {
+<span class="lineNum">     435 </span>            :                 cfString = CFURLCopyFileSystemPath( cfUrl, kCFURLPOSIXPathStyle );
+<span class="lineNum">     436 </span>            :                 CFRelease( cfUrl );
+<span class="lineNum">     437 </span>            :         }
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :         // copy from a CFString into a local c string (http://www.carbondev.com/site/?page=CStrings+)
+<span class="lineNum">     440 </span>            :         const int kBufferSize = 255;
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span>            :         char folderURL[kBufferSize];
+<span class="lineNum">     443 </span>            :         Boolean bool1 = CFStringGetCString(cfString,folderURL,kBufferSize,kCFStringEncodingMacRoman);
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            :         char fileName[kBufferSize];
+<span class="lineNum">     446 </span>            :         Boolean bool2 = CFStringGetCString(reply.saveFileName,fileName,kBufferSize,kCFStringEncodingMacRoman);
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span>            :         // append strings together
+<span class="lineNum">     449 </span>            : 
+<span class="lineNum">     450 </span>            :         string url1 = folderURL;
+<span class="lineNum">     451 </span>            :         string url2 = fileName;
+<span class="lineNum">     452 </span>            :         string finalURL = url1 + &quot;/&quot; + url2;
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span>            :         results.filePath = finalURL.c_str();
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span>            :         //printf(&quot;url %s\n&quot;, finalURL.c_str());
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            :         // cleanup dialog
+<span class="lineNum">     459 </span>            :         NavDialogDispose(dialog);
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span>            : #endif
+<span class="lineNum">     462 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     463 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     464 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     467 </span>            :         //------------------------------------------------------------------------------   windoze
+<span class="lineNum">     468 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     469 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">     470 </span>            : 
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span>            :         wchar_t fileName[MAX_PATH] = L&quot;&quot;;
+<span class="lineNum">     473 </span>            :         char * extension;
+<span class="lineNum">     474 </span>            :         OPENFILENAMEW ofn;
+<span class="lineNum">     475 </span>            :     memset(&amp;ofn, 0, sizeof(OPENFILENAME));
+<span class="lineNum">     476 </span>            :         ofn.lStructSize = sizeof(OPENFILENAME);
+<span class="lineNum">     477 </span>            :         HWND hwnd = WindowFromDC(wglGetCurrentDC());
+<span class="lineNum">     478 </span>            :         ofn.hwndOwner = hwnd;
+<span class="lineNum">     479 </span>            :         ofn.hInstance = GetModuleHandle(0);
+<span class="lineNum">     480 </span>            :         ofn.nMaxFileTitle = 31;
+<span class="lineNum">     481 </span>            :         ofn.lpstrFile = fileName;
+<span class="lineNum">     482 </span>            :         ofn.nMaxFile = MAX_PATH;
+<span class="lineNum">     483 </span>            :         ofn.lpstrFilter = L&quot;All Files (*.*)\0*.*\0&quot;;
+<span class="lineNum">     484 </span>            :         ofn.lpstrDefExt = L&quot;&quot;;        // we could do .rxml here?
+<span class="lineNum">     485 </span>            :         ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY;
+<span class="lineNum">     486 </span>            :         ofn.lpstrTitle = L&quot;Select Output File&quot;;
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span>            :         if (GetSaveFileNameW(&amp;ofn)){
+<span class="lineNum">     489 </span>            :                 results.filePath = convertWideToNarrow(fileName);
+<span class="lineNum">     490 </span>            :         }
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span>            : #endif
+<span class="lineNum">     493 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     494 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     495 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     496 </span>            : 
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     499 </span>            :         //------------------------------------------------------------------------------   linux
+<span class="lineNum">     500 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     501 </span>            : #if defined( TARGET_LINUX ) &amp;&amp; defined (OF_USING_GTK)
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span><span class="lineCov">          2 :         results.filePath = gtkFileDialog(GTK_FILE_CHOOSER_ACTION_SAVE, messageName,defaultName);</span>
+<span class="lineNum">     504 </span>            : 
+<span class="lineNum">     505 </span>            : #endif
+<span class="lineNum">     506 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     507 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     508 </span>            :         //----------------------------------------------------------------------------------------
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span><span class="lineCov">          2 :         if( results.filePath.length() &gt; 0 ){</span>
+<span class="lineNum">     511 </span><span class="lineCov">          2 :                 results.bSuccess = true;</span>
+<span class="lineNum">     512 </span><span class="lineCov">          2 :                 results.fileName = ofFilePath::getFileName(results.filePath);</span>
+<span class="lineNum">     513 </span>            :         }
+<a name="514"><span class="lineNum">     514 </span>            : </a>
+<span class="lineNum">     515 </span><span class="lineCov">          2 :         return results;</span>
+<span class="lineNum">     516 </span><span class="lineCov">          6 : }</span>
 </pre>
       </td>
     </tr>

@@ -145,8 +145,8 @@
 <span class="lineNum">      83 </span>            :   { return __builtin_fabs(__x); }
 <a name="84"><span class="lineNum">      84 </span>            : </a>
 <span class="lineNum">      85 </span>            :   inline float
-<span class="lineNum">      86 </span><span class="lineCov">      13838 :   abs(float __x)</span>
-<span class="lineNum">      87 </span><span class="lineCov">      13842 :   { return __builtin_fabsf(__x); }</span>
+<span class="lineNum">      86 </span><span class="lineCov">      23480 :   abs(float __x)</span>
+<span class="lineNum">      87 </span><span class="lineCov">      23484 :   { return __builtin_fabsf(__x); }</span>
 <span class="lineNum">      88 </span>            : 
 <span class="lineNum">      89 </span>            :   inline long double
 <span class="lineNum">      90 </span>            :   abs(long double __x)
@@ -209,8 +209,8 @@
 <span class="lineNum">     147 </span>            :   using ::atan2;
 <a name="148"><span class="lineNum">     148 </span>            : </a>
 <span class="lineNum">     149 </span>            :   inline float
-<span class="lineNum">     150 </span><span class="lineCov">      13204 :   atan2(float __y, float __x)</span>
-<span class="lineNum">     151 </span><span class="lineCov">      13208 :   { return __builtin_atan2f(__y, __x); }</span>
+<span class="lineNum">     150 </span><span class="lineCov">      22399 :   atan2(float __y, float __x)</span>
+<span class="lineNum">     151 </span><span class="lineCov">      22403 :   { return __builtin_atan2f(__y, __x); }</span>
 <span class="lineNum">     152 </span>            : 
 <span class="lineNum">     153 </span>            :   inline long double
 <span class="lineNum">     154 </span>            :   atan2(long double __y, long double __x)
@@ -228,8 +228,8 @@
 <span class="lineNum">     166 </span>            :   using ::ceil;
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <span class="lineNum">     168 </span>            :   inline float
-<span class="lineNum">     169 </span><span class="lineCov">       7115 :   ceil(float __x)</span>
-<span class="lineNum">     170 </span><span class="lineCov">       7117 :   { return __builtin_ceilf(__x); }</span>
+<span class="lineNum">     169 </span><span class="lineCov">      12023 :   ceil(float __x)</span>
+<span class="lineNum">     170 </span><span class="lineCov">      12025 :   { return __builtin_ceilf(__x); }</span>
 <span class="lineNum">     171 </span>            : 
 <span class="lineNum">     172 </span>            :   inline long double
 <span class="lineNum">     173 </span>            :   ceil(long double __x)
@@ -244,8 +244,8 @@
 <span class="lineNum">     182 </span>            :   using ::cos;
 <a name="183"><span class="lineNum">     183 </span>            : </a>
 <span class="lineNum">     184 </span>            :   inline float
-<span class="lineNum">     185 </span><span class="lineCov">     526854 :   cos(float __x)</span>
-<span class="lineNum">     186 </span><span class="lineCov">     530222 :   { return __builtin_cosf(__x); }</span>
+<span class="lineNum">     185 </span><span class="lineCov">     766554 :   cos(float __x)</span>
+<span class="lineNum">     186 </span><span class="lineCov">     769922 :   { return __builtin_cosf(__x); }</span>
 <span class="lineNum">     187 </span>            : 
 <span class="lineNum">     188 </span>            :   inline long double
 <span class="lineNum">     189 </span>            :   cos(long double __x)
@@ -292,8 +292,8 @@
 <span class="lineNum">     230 </span>            :   using ::fabs;
 <a name="231"><span class="lineNum">     231 </span>            : </a>
 <span class="lineNum">     232 </span>            :   inline float
-<span class="lineNum">     233 </span><span class="lineCov">   16474893 :   fabs(float __x)</span>
-<span class="lineNum">     234 </span><span class="lineCov">   16474893 :   { return __builtin_fabsf(__x); }</span>
+<span class="lineNum">     233 </span><span class="lineCov">   40322697 :   fabs(float __x)</span>
+<span class="lineNum">     234 </span><span class="lineCov">   40322697 :   { return __builtin_fabsf(__x); }</span>
 <span class="lineNum">     235 </span>            : 
 <span class="lineNum">     236 </span>            :   inline long double
 <span class="lineNum">     237 </span>            :   fabs(long double __x)
@@ -308,8 +308,8 @@
 <span class="lineNum">     246 </span>            :   using ::floor;
 <a name="247"><span class="lineNum">     247 </span>            : </a>
 <span class="lineNum">     248 </span>            :   inline float
-<span class="lineNum">     249 </span><span class="lineCov">     153216 :   floor(float __x)</span>
-<span class="lineNum">     250 </span><span class="lineCov">     153216 :   { return __builtin_floorf(__x); }</span>
+<span class="lineNum">     249 </span><span class="lineCov">     234888 :   floor(float __x)</span>
+<span class="lineNum">     250 </span><span class="lineCov">     234888 :   { return __builtin_floorf(__x); }</span>
 <span class="lineNum">     251 </span>            : 
 <span class="lineNum">     252 </span>            :   inline long double
 <span class="lineNum">     253 </span>            :   floor(long double __x)
@@ -434,17 +434,17 @@
 <span class="lineNum">     372 </span>            :   template&lt;typename _Tp, typename _Up&gt;
 <a name="373"><span class="lineNum">     373 </span>            :     inline</a>
 <span class="lineNum">     374 </span>            :     typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type
-<span class="lineNum">     375 </span><span class="lineCov">         77 :     pow(_Tp __x, _Up __y)</span>
+<span class="lineNum">     375 </span><span class="lineCov">        119 :     pow(_Tp __x, _Up __y)</span>
 <span class="lineNum">     376 </span>            :     {
 <span class="lineNum">     377 </span>            :       typedef typename __gnu_cxx::__promote_2&lt;_Tp, _Up&gt;::__type __type;
-<span class="lineNum">     378 </span><span class="lineCov">         78 :       return pow(__type(__x), __type(__y));</span>
+<span class="lineNum">     378 </span><span class="lineCov">        120 :       return pow(__type(__x), __type(__y));</span>
 <span class="lineNum">     379 </span>            :     }
 <span class="lineNum">     380 </span>            : 
 <span class="lineNum">     381 </span>            :   using ::sin;
 <a name="382"><span class="lineNum">     382 </span>            : </a>
 <span class="lineNum">     383 </span>            :   inline float
-<span class="lineNum">     384 </span><span class="lineCov">     491369 :   sin(float __x)</span>
-<span class="lineNum">     385 </span><span class="lineCov">     494737 :   { return __builtin_sinf(__x); }</span>
+<span class="lineNum">     384 </span><span class="lineCov">     713881 :   sin(float __x)</span>
+<span class="lineNum">     385 </span><span class="lineCov">     717249 :   { return __builtin_sinf(__x); }</span>
 <span class="lineNum">     386 </span>            : 
 <span class="lineNum">     387 </span>            :   inline long double
 <span class="lineNum">     388 </span>            :   sin(long double __x)
@@ -475,8 +475,8 @@
 <span class="lineNum">     413 </span>            :   using ::sqrt;
 <a name="414"><span class="lineNum">     414 </span>            : </a>
 <span class="lineNum">     415 </span>            :   inline float
-<span class="lineNum">     416 </span><span class="lineCov">      15584 :   sqrt(float __x)</span>
-<span class="lineNum">     417 </span><span class="lineCov">      15584 :   { return __builtin_sqrtf(__x); }</span>
+<span class="lineNum">     416 </span><span class="lineCov">      29747 :   sqrt(float __x)</span>
+<span class="lineNum">     417 </span><span class="lineCov">      29747 :   { return __builtin_sqrtf(__x); }</span>
 <span class="lineNum">     418 </span>            : 
 <span class="lineNum">     419 </span>            :   inline long double
 <span class="lineNum">     420 </span>            :   sqrt(long double __x)

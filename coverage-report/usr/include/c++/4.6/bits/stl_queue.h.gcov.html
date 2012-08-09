@@ -192,8 +192,8 @@
 <span class="lineNum">     130 </span>            :        */
 <a name="131"><span class="lineNum">     131 </span>            : #ifndef __GXX_EXPERIMENTAL_CXX0X__</a>
 <span class="lineNum">     132 </span>            :       explicit
-<span class="lineNum">     133 </span><span class="lineCov">          2 :       queue(const _Sequence&amp; __c = _Sequence())</span>
-<span class="lineNum">     134 </span><span class="lineCov">          2 :       : c(__c) { }</span>
+<span class="lineNum">     133 </span><span class="lineCov">          5 :       queue(const _Sequence&amp; __c = _Sequence())</span>
+<span class="lineNum">     134 </span><span class="lineCov">          5 :       : c(__c) { }</span>
 <span class="lineNum">     135 </span>            : #else
 <span class="lineNum">     136 </span>            :       explicit
 <span class="lineNum">     137 </span>            :       queue(const _Sequence&amp; __c)
@@ -213,18 +213,18 @@
 <span class="lineNum">     151 </span>            : 
 <a name="152"><span class="lineNum">     152 </span>            :       /**  Returns the number of elements in the %queue.  */</a>
 <span class="lineNum">     153 </span>            :       size_type
-<span class="lineNum">     154 </span><span class="lineCov">          2 :       size() const</span>
-<span class="lineNum">     155 </span><span class="lineCov">          2 :       { return c.size(); }</span>
+<span class="lineNum">     154 </span><span class="lineCov">         54 :       size() const</span>
+<span class="lineNum">     155 </span><span class="lineCov">         54 :       { return c.size(); }</span>
 <span class="lineNum">     156 </span>            : 
 <span class="lineNum">     157 </span>            :       /**
 <span class="lineNum">     158 </span>            :        *  Returns a read/write reference to the data at the first
 <span class="lineNum">     159 </span>            :        *  element of the %queue.
 <a name="160"><span class="lineNum">     160 </span>            :        */</a>
 <span class="lineNum">     161 </span>            :       reference
-<span class="lineNum">     162 </span><span class="lineCov">          1 :       front()</span>
+<span class="lineNum">     162 </span><span class="lineCov">         27 :       front()</span>
 <span class="lineNum">     163 </span>            :       {
 <span class="lineNum">     164 </span>            :         __glibcxx_requires_nonempty();
-<span class="lineNum">     165 </span><span class="lineCov">          1 :         return c.front();</span>
+<span class="lineNum">     165 </span><span class="lineCov">         27 :         return c.front();</span>
 <span class="lineNum">     166 </span>            :       }
 <span class="lineNum">     167 </span>            : 
 <span class="lineNum">     168 </span>            :       /**
@@ -270,8 +270,8 @@
 <span class="lineNum">     208 </span>            :        *  underlying sequence.
 <a name="209"><span class="lineNum">     209 </span>            :        */</a>
 <span class="lineNum">     210 </span>            :       void
-<span class="lineNum">     211 </span><span class="lineCov">          1 :       push(const value_type&amp; __x)</span>
-<span class="lineNum">     212 </span><span class="lineCov">          1 :       { c.push_back(__x); }</span>
+<span class="lineNum">     211 </span><span class="lineCov">         27 :       push(const value_type&amp; __x)</span>
+<span class="lineNum">     212 </span><span class="lineCov">         27 :       { c.push_back(__x); }</span>
 <span class="lineNum">     213 </span>            : 
 <span class="lineNum">     214 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     215 </span>            :       void
@@ -296,11 +296,11 @@
 <span class="lineNum">     234 </span>            :        *  called.
 <a name="235"><span class="lineNum">     235 </span>            :        */</a>
 <span class="lineNum">     236 </span>            :       void
-<span class="lineNum">     237 </span><span class="lineCov">          1 :       pop()</span>
+<span class="lineNum">     237 </span><span class="lineCov">         27 :       pop()</span>
 <span class="lineNum">     238 </span>            :       {
 <span class="lineNum">     239 </span>            :         __glibcxx_requires_nonempty();
-<span class="lineNum">     240 </span><span class="lineCov">          1 :         c.pop_front();</span>
-<span class="lineNum">     241 </span><span class="lineCov">          1 :       }</span>
+<span class="lineNum">     240 </span><span class="lineCov">         27 :         c.pop_front();</span>
+<span class="lineNum">     241 </span><span class="lineCov">         27 :       }</span>
 <span class="lineNum">     242 </span>            : 
 <span class="lineNum">     243 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">     244 </span>            :       void

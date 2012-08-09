@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">121</td>
             <td class="headerCovTableEntry">169</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">71.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">15</td>
             <td class="headerCovTableEntry">27</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">55.6 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,260 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofEasyCam.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;ofMath.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;ofUtils.h&quot;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : // when an ofEasyCam is moving due to momentum, this keeps it
+<span class="lineNum">       6 </span>            : // from moving forever by assuming small values are zero.
+<span class="lineNum">       7 </span>            : float minDifference = 0.1e-5;
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : // this is the default on windows os
+<span class="lineNum">      10 </span>            : unsigned long doubleclickTime = 200;
+<a name="11"><span class="lineNum">      11 </span>            : </a>
+<span class="lineNum">      12 </span>            : //----------------------------------------
+<span class="lineNum">      13 </span><span class="lineCov">         44 : ofEasyCam::ofEasyCam(){</span>
+<span class="lineNum">      14 </span><span class="lineCov">         44 :         lastTap = 0;</span>
+<span class="lineNum">      15 </span><span class="lineCov">         44 :         lastDistance = 0;</span>
+<span class="lineNum">      16 </span><span class="lineCov">         44 :         drag = 0.9f;</span>
+<span class="lineNum">      17 </span><span class="lineCov">         44 :         sensitivityRot = 1.0f;//when 1 moving the mouse from one side to the other of the arcball (min(viewport.width, viewport.height)) will rotate 180degrees. when .5, 90 degrees.</span>
+<span class="lineNum">      18 </span><span class="lineCov">         44 :         sensitivityXY = .5;</span>
+<span class="lineNum">      19 </span><span class="lineCov">         44 :         sensitivityZ= .7;</span>
+<span class="lineNum">      20 </span>            :         
+<span class="lineNum">      21 </span><span class="lineCov">         44 :         bDistanceSet = false; </span>
+<span class="lineNum">      22 </span><span class="lineCov">         44 :         bMouseInputEnabled = false;</span>
+<span class="lineNum">      23 </span><span class="lineCov">         44 :         bDoRotate = false;</span>
+<span class="lineNum">      24 </span><span class="lineCov">         44 :         bApplyInertia =false;</span>
+<span class="lineNum">      25 </span><span class="lineCov">         44 :         bDoTranslate = false;</span>
+<span class="lineNum">      26 </span><span class="lineCov">         44 :         bInsideArcball = true;</span>
+<span class="lineNum">      27 </span><span class="lineCov">         44 :         bValidClick = false;</span>
+<span class="lineNum">      28 </span><span class="lineCov">         44 :         bEnableMouseMiddleButton = true;</span>
+<span class="lineNum">      29 </span>            :         
+<span class="lineNum">      30 </span><span class="lineCov">         44 :         doTranslationKey = 'm';</span>
+<span class="lineNum">      31 </span>            :         
+<span class="lineNum">      32 </span><span class="lineCov">         44 :         reset();</span>
+<span class="lineNum">      33 </span><span class="lineCov">         44 :         enableMouseInput();     </span>
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineCov">         44 : }</span>
+<a name="36"><span class="lineNum">      36 </span>            : </a>
+<span class="lineNum">      37 </span>            : //----------------------------------------
+<span class="lineNum">      38 </span><span class="lineCov">         44 : ofEasyCam::~ofEasyCam(){</span>
+<span class="lineNum">      39 </span><span class="lineCov">         44 :         disableMouseInput();</span>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         44 : }</span></a>
+<span class="lineNum">      41 </span>            : //----------------------------------------
+<span class="lineNum">      42 </span><span class="lineCov">       9821 : void ofEasyCam::update(ofEventArgs &amp; args){</span>
+<span class="lineNum">      43 </span><span class="lineCov">       9821 :         if(bMouseInputEnabled){</span>
+<span class="lineNum">      44 </span><span class="lineCov">       9821 :                 if(!bDistanceSet){</span>
+<span class="lineNum">      45 </span><span class="lineCov">         76 :                         setDistance(getImagePlaneDistance(viewport), true);</span>
+<span class="lineNum">      46 </span>            :                 }
+<span class="lineNum">      47 </span><span class="lineCov">       9821 :                 rotationFactor = sensitivityRot * 180 / min(viewport.width, viewport.height);</span>
+<span class="lineNum">      48 </span><span class="lineCov">       9821 :                 if (bMouseInputEnabled) {</span>
+<span class="lineNum">      49 </span><span class="lineCov">       9821 :                         updateMouse();</span>
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            :                 
+<span class="lineNum">      52 </span><span class="lineCov">       9821 :                 if (bDoRotate) {</span>
+<span class="lineNum">      53 </span><span class="lineCov">       3316 :                         updateRotation();</span>
+<span class="lineNum">      54 </span><span class="lineCov">       6505 :                 }else if (bDoTranslate) {</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :                         updateTranslation(); </span>
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            :         }       
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       9821 : }</span></a>
+<span class="lineNum">      59 </span>            : //----------------------------------------
+<span class="lineNum">      60 </span><span class="lineCov">      11992 : void ofEasyCam::begin(ofRectangle viewport){</span>
+<span class="lineNum">      61 </span><span class="lineCov">      11992 :         this-&gt;viewport = viewport;</span>
+<span class="lineNum">      62 </span><span class="lineCov">      11992 :         ofCamera::begin(viewport);      </span>
+<span class="lineNum">      63 </span><span class="lineCov">      11992 : }</span>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<span class="lineNum">      65 </span>            : //----------------------------------------
+<span class="lineNum">      66 </span><span class="lineCov">         44 : void ofEasyCam::reset(){</span>
+<span class="lineNum">      67 </span><span class="lineCov">         44 :         target.resetTransform();</span>
+<span class="lineNum">      68 </span>            :         
+<span class="lineNum">      69 </span><span class="lineCov">         44 :         target.setPosition(0,0, 0);</span>
+<span class="lineNum">      70 </span><span class="lineCov">         44 :         lookAt(target);</span>
+<span class="lineNum">      71 </span>            :         
+<span class="lineNum">      72 </span><span class="lineCov">         44 :         resetTransform();</span>
+<span class="lineNum">      73 </span><span class="lineCov">         44 :         setPosition(0, 0, lastDistance);</span>
+<span class="lineNum">      74 </span>            :         
+<span class="lineNum">      75 </span>            :                 
+<span class="lineNum">      76 </span><span class="lineCov">         44 :         xRot = 0;</span>
+<span class="lineNum">      77 </span><span class="lineCov">         44 :         yRot = 0;</span>
+<span class="lineNum">      78 </span><span class="lineCov">         44 :         zRot = 0;</span>
+<span class="lineNum">      79 </span>            :         
+<span class="lineNum">      80 </span><span class="lineCov">         44 :         moveX = 0;</span>
+<span class="lineNum">      81 </span><span class="lineCov">         44 :         moveY = 0;</span>
+<span class="lineNum">      82 </span><span class="lineCov">         44 :         moveZ = 0;</span>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         44 : }</span></a>
+<span class="lineNum">      84 </span>            : //----------------------------------------
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 : void ofEasyCam::setTarget(const ofVec3f&amp; targetPoint){</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         target.setPosition(targetPoint);</span>
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         lookAt(target);</span>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      89 </span>            : //----------------------------------------
+<span class="lineNum">      90 </span><span class="lineCov">          5 : void ofEasyCam::setTarget(ofNode&amp; targetNode){</span>
+<span class="lineNum">      91 </span><span class="lineCov">          5 :         target = targetNode;</span>
+<span class="lineNum">      92 </span><span class="lineCov">          5 :         lookAt(target);</span>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">      94 </span>            : //----------------------------------------
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 : ofNode&amp; ofEasyCam::getTarget(){</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :         return target;</span>
+<a name="97"><span class="lineNum">      97 </span>            : }</a>
+<span class="lineNum">      98 </span>            : //----------------------------------------
+<span class="lineNum">      99 </span><span class="lineCov">        348 : void ofEasyCam::setDistance(float distance){</span>
+<span class="lineNum">     100 </span><span class="lineCov">        348 :         setDistance(distance, true);</span>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">        348 : }</span></a>
+<span class="lineNum">     102 </span>            : //----------------------------------------
+<span class="lineNum">     103 </span><span class="lineCov">        424 : void ofEasyCam::setDistance(float distance, bool save){//should this be the distance from the camera to the target?</span>
+<span class="lineNum">     104 </span><span class="lineCov">        424 :         if (distance &gt; 0.0f){</span>
+<span class="lineNum">     105 </span><span class="lineCov">        380 :                 if(save){</span>
+<span class="lineNum">     106 </span><span class="lineCov">        380 :                         this-&gt;lastDistance = distance;</span>
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span><span class="lineCov">        380 :                 setPosition(target.getPosition() + (distance * getZAxis()));</span>
+<span class="lineNum">     109 </span><span class="lineCov">        380 :                 bDistanceSet = true;</span>
+<span class="lineNum">     110 </span>            :         }
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        424 : }</span></a>
+<span class="lineNum">     112 </span>            : //----------------------------------------
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 : float ofEasyCam::getDistance() const {</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         return target.getPosition().distance(getPosition());</span>
+<a name="115"><span class="lineNum">     115 </span>            : }</a>
+<span class="lineNum">     116 </span>            : //----------------------------------------
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 : void ofEasyCam::setDrag(float drag){</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         this-&gt;drag = drag;</span>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     120 </span>            : //----------------------------------------
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 : float ofEasyCam::getDrag() const {</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :         return drag;</span>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<span class="lineNum">     124 </span>            : //----------------------------------------
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : void ofEasyCam::setTranslationKey(char key){</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         doTranslationKey = key;</span>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     128 </span>            : //----------------------------------------
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 : char ofEasyCam::getTranslationKey(){</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :         return doTranslationKey;</span>
+<a name="131"><span class="lineNum">     131 </span>            : }</a>
+<span class="lineNum">     132 </span>            : //----------------------------------------
+<span class="lineNum">     133 </span><span class="lineCov">         46 : void ofEasyCam::enableMouseInput(){</span>
+<span class="lineNum">     134 </span><span class="lineCov">         46 :         if(!bMouseInputEnabled){</span>
+<span class="lineNum">     135 </span><span class="lineCov">         46 :                 bMouseInputEnabled = true;</span>
+<span class="lineNum">     136 </span>            :         //      ofRegisterMouseEvents(this);
+<span class="lineNum">     137 </span><span class="lineCov">         46 :                 ofAddListener(ofEvents().update , this, &amp;ofEasyCam::update);</span>
+<span class="lineNum">     138 </span>            :         }
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         46 : }</span></a>
+<span class="lineNum">     140 </span>            : //----------------------------------------
+<span class="lineNum">     141 </span><span class="lineCov">         47 : void ofEasyCam::disableMouseInput(){</span>
+<span class="lineNum">     142 </span><span class="lineCov">         47 :         if(bMouseInputEnabled){</span>
+<span class="lineNum">     143 </span><span class="lineCov">         46 :                 bMouseInputEnabled = false;</span>
+<span class="lineNum">     144 </span>            :                 //ofUnregisterMouseEvents(this);
+<span class="lineNum">     145 </span><span class="lineCov">         46 :                 ofRemoveListener(ofEvents().update, this, &amp;ofEasyCam::update);</span>
+<span class="lineNum">     146 </span>            :         }
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         47 : }</span></a>
+<span class="lineNum">     148 </span>            : //----------------------------------------
+<span class="lineNum">     149 </span><span class="lineCov">        892 : bool ofEasyCam::getMouseInputEnabled(){</span>
+<span class="lineNum">     150 </span><span class="lineCov">        892 :         return bMouseInputEnabled;</span>
+<a name="151"><span class="lineNum">     151 </span>            : }</a>
+<span class="lineNum">     152 </span>            : //----------------------------------------
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 : void ofEasyCam::enableMouseMiddleButton(){</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         bEnableMouseMiddleButton = true;</span>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     156 </span>            : //----------------------------------------
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 : void ofEasyCam::disableMouseMiddleButton(){</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         bEnableMouseMiddleButton = false;</span>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     160 </span>            : //----------------------------------------
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 : bool ofEasyCam::getMouseMiddleButtonEnabled(){</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         return bEnableMouseMiddleButton;</span>
+<a name="163"><span class="lineNum">     163 </span>            : }</a>
+<span class="lineNum">     164 </span>            : //----------------------------------------
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 : void ofEasyCam::updateTranslation(){</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         if (bApplyInertia) {</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 moveX *= drag;</span>
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 moveY *= drag;</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 moveZ *= drag;</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :                 if (ABS(moveX) &lt;= minDifference &amp;&amp; ABS(moveY) &lt;= minDifference &amp;&amp; ABS(moveZ) &lt;= minDifference) {</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                         bApplyInertia = false;</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :                         bDoTranslate = false;</span>
+<span class="lineNum">     173 </span>            :                 }
+<span class="lineNum">     174 </span>            :         }
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         move((getXAxis() * moveX) + (getYAxis() * moveY) + (getZAxis() * moveZ));</span>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 : }       </span></a>
+<span class="lineNum">     177 </span>            : //----------------------------------------
+<span class="lineNum">     178 </span><span class="lineCov">       3316 : void ofEasyCam::updateRotation(){</span>
+<span class="lineNum">     179 </span><span class="lineCov">       3316 :         if (bApplyInertia) {</span>
+<span class="lineNum">     180 </span><span class="lineCov">       1678 :                 xRot *=drag; </span>
+<span class="lineNum">     181 </span><span class="lineCov">       1678 :                 yRot *=drag;</span>
+<span class="lineNum">     182 </span><span class="lineCov">       1678 :                 zRot *=drag;</span>
+<span class="lineNum">     183 </span>            :                 
+<span class="lineNum">     184 </span><span class="lineCov">       1678 :                 if (ABS(xRot) &lt;= minDifference &amp;&amp; ABS(yRot) &lt;= minDifference &amp;&amp; ABS(zRot) &lt;= minDifference) {</span>
+<span class="lineNum">     185 </span><span class="lineCov">         27 :                         bApplyInertia = false;</span>
+<span class="lineNum">     186 </span><span class="lineCov">         27 :                         bDoRotate = false;</span>
+<span class="lineNum">     187 </span>            :                 }
+<span class="lineNum">     188 </span>            :         }
+<span class="lineNum">     189 </span><span class="lineCov">       3316 :         curRot = ofQuaternion(xRot, ofCamera::getXAxis(), yRot, ofCamera::getYAxis(), zRot, ofCamera::getZAxis());</span>
+<span class="lineNum">     190 </span><span class="lineCov">       3316 :         setPosition((ofCamera::getGlobalPosition()-target.getGlobalPosition())*curRot +target.getGlobalPosition());</span>
+<span class="lineNum">     191 </span><span class="lineCov">       3316 :         rotate(curRot);</span>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">       3316 : }</span></a>
+<span class="lineNum">     193 </span>            : //----------------------------------------
+<span class="lineNum">     194 </span><span class="lineCov">       9821 : void ofEasyCam::updateMouse(){</span>
+<span class="lineNum">     195 </span><span class="lineCov">       9821 :         mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());</span>
+<span class="lineNum">     196 </span><span class="lineCov">       9821 :         if(viewport.inside(mouse.x, mouse.y) &amp;&amp; !bValidClick &amp;&amp; ofGetMousePressed()){   </span>
+<span class="lineNum">     197 </span><span class="lineCov">         53 :                 unsigned long curTap = ofGetElapsedTimeMillis();</span>
+<span class="lineNum">     198 </span><span class="lineCov">         53 :                 if(lastTap != 0 &amp;&amp; curTap - lastTap &lt; doubleclickTime){</span>
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         reset();</span>
+<span class="lineNum">     200 </span>            :                 }
+<span class="lineNum">     201 </span><span class="lineCov">         53 :                 if ((bEnableMouseMiddleButton &amp;&amp; ofGetMousePressed(1)) || ofGetKeyPressed(doTranslationKey)  || ofGetMousePressed(2)){</span>
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                         bDoTranslate = true;</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :                         bDoRotate = false;</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :                         bApplyInertia = false;</span>
+<span class="lineNum">     205 </span><span class="lineCov">         53 :                 }else if (ofGetMousePressed(0)) {</span>
+<span class="lineNum">     206 </span><span class="lineCov">         53 :                         bDoTranslate = false;</span>
+<span class="lineNum">     207 </span><span class="lineCov">         53 :                         bDoRotate = true;</span>
+<span class="lineNum">     208 </span><span class="lineCov">         53 :                         bApplyInertia = false;</span>
+<span class="lineNum">     209 </span><span class="lineCov">         53 :                         if(ofVec2f(mouse.x - viewport.x - (viewport.width/2), mouse.y - viewport.y - (viewport.height/2)).length() &lt; min(viewport.width/2, viewport.height/2)){</span>
+<span class="lineNum">     210 </span><span class="lineCov">         52 :                                 bInsideArcball = true;</span>
+<span class="lineNum">     211 </span>            :                         }else {
+<span class="lineNum">     212 </span><span class="lineCov">          1 :                                 bInsideArcball = false;</span>
+<span class="lineNum">     213 </span>            :                         }
+<span class="lineNum">     214 </span>            :                 }
+<span class="lineNum">     215 </span><span class="lineCov">         53 :                 lastTap = curTap;</span>
+<span class="lineNum">     216 </span>            :                 //lastMouse = ofVec2f(ofGetPreviousMouseX(),ofGetPreviousMouseY()); //this was causing the camera to have a tiny &quot;random&quot; rotation when clicked.
+<span class="lineNum">     217 </span><span class="lineCov">         53 :                 lastMouse = mouse;</span>
+<span class="lineNum">     218 </span><span class="lineCov">         53 :                 bValidClick = true;</span>
+<span class="lineNum">     219 </span><span class="lineCov">         53 :                 bApplyInertia = false;</span>
+<span class="lineNum">     220 </span>            :         }
+<span class="lineNum">     221 </span>            :         
+<span class="lineNum">     222 </span><span class="lineCov">       9821 :         if (bValidClick) {</span>
+<span class="lineNum">     223 </span><span class="lineCov">       1690 :                 if (!ofGetMousePressed()) {</span>
+<span class="lineNum">     224 </span><span class="lineCov">         52 :                         bApplyInertia = true;</span>
+<span class="lineNum">     225 </span><span class="lineCov">         52 :                         bValidClick = false;</span>
+<span class="lineNum">     226 </span>            :                 }else {
+<span class="lineNum">     227 </span><span class="lineCov">       1638 :                         mouseVel = mouse  - lastMouse;</span>
+<span class="lineNum">     228 </span>            :                         
+<span class="lineNum">     229 </span><span class="lineCov">       1638 :                         if (bDoTranslate) {</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :                                 moveX = 0;</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :                                 moveY = 0;</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                                 moveZ = 0;</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                                 if (ofGetMousePressed(2)) {</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :                                         moveZ = mouseVel.y * sensitivityZ * getDistance() / viewport.height;                            </span>
+<span class="lineNum">     235 </span>            :                                 }else {
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :                                         moveX = -mouseVel.x * sensitivityXY * getDistance() /viewport.width;</span>
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                                         moveY =  mouseVel.y * sensitivityXY * getDistance() /viewport.height;</span>
+<span class="lineNum">     238 </span>            :                                 }
+<span class="lineNum">     239 </span>            :                         }else {
+<span class="lineNum">     240 </span><span class="lineCov">       1638 :                                 xRot = 0;</span>
+<span class="lineNum">     241 </span><span class="lineCov">       1638 :                                 yRot = 0;</span>
+<span class="lineNum">     242 </span><span class="lineCov">       1638 :                                 zRot = 0;</span>
+<span class="lineNum">     243 </span><span class="lineCov">       1638 :                                 if (bInsideArcball) {</span>
+<span class="lineNum">     244 </span><span class="lineCov">       1563 :                                         xRot = -mouseVel.y * rotationFactor;</span>
+<span class="lineNum">     245 </span><span class="lineCov">       1563 :                                         yRot = -mouseVel.x * rotationFactor;</span>
+<span class="lineNum">     246 </span>            :                                 }else {
+<span class="lineNum">     247 </span><span class="lineCov">         75 :                                         ofVec2f center(viewport.width/2, viewport.height/2);</span>
+<span class="lineNum">     248 </span><span class="lineCov">         75 :                                         zRot = - ofVec2f(mouse.x - viewport.x - center.x, mouse.y -viewport.y -center.y).angle(lastMouse - ofVec2f(viewport.x, viewport.y) - center);</span>
+<span class="lineNum">     249 </span>            :                                 }
+<span class="lineNum">     250 </span>            :                         }
+<span class="lineNum">     251 </span><span class="lineCov">       1638 :                         lastMouse = mouse;</span>
+<a name="252"><span class="lineNum">     252 </span>            :                 }</a>
+<span class="lineNum">     253 </span>            :         }
+<span class="lineNum">     254 </span><span class="lineCov">       9953 : }</span>
 </pre>
       </td>
     </tr>

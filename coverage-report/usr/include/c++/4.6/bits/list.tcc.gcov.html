@@ -125,12 +125,12 @@
 <span class="lineNum">      63 </span>            : 
 <a name="64"><span class="lineNum">      64 </span>            :   template&lt;typename _Tp, typename _Alloc&gt;</a>
 <span class="lineNum">      65 </span>            :     void
-<span class="lineNum">      66 </span><span class="lineCov">        120 :     _List_base&lt;_Tp, _Alloc&gt;::</span>
+<span class="lineNum">      66 </span><span class="lineCov">        150 :     _List_base&lt;_Tp, _Alloc&gt;::</span>
 <span class="lineNum">      67 </span>            :     _M_clear()
 <span class="lineNum">      68 </span>            :     {
 <span class="lineNum">      69 </span>            :       typedef _List_node&lt;_Tp&gt;  _Node;
-<span class="lineNum">      70 </span><span class="lineCov">        120 :       _Node* __cur = static_cast&lt;_Node*&gt;(this-&gt;_M_impl._M_node._M_next);</span>
-<span class="lineNum">      71 </span><span class="lineCov">        120 :       while (__cur != &amp;this-&gt;_M_impl._M_node)</span>
+<span class="lineNum">      70 </span><span class="lineCov">        150 :       _Node* __cur = static_cast&lt;_Node*&gt;(this-&gt;_M_impl._M_node._M_next);</span>
+<span class="lineNum">      71 </span><span class="lineCov">        150 :       while (__cur != &amp;this-&gt;_M_impl._M_node)</span>
 <span class="lineNum">      72 </span>            :         {
 <span class="lineNum">      73 </span><span class="lineNoCov">          0 :           _Node* __tmp = __cur;</span>
 <span class="lineNum">      74 </span><span class="lineNoCov">          0 :           __cur = static_cast&lt;_Node*&gt;(__cur-&gt;_M_next);</span>
@@ -141,7 +141,7 @@
 <span class="lineNum">      79 </span>            : #endif
 <span class="lineNum">      80 </span><span class="lineNoCov">          0 :           _M_put_node(__tmp);</span>
 <span class="lineNum">      81 </span>            :         }
-<span class="lineNum">      82 </span><span class="lineCov">        120 :     }</span>
+<span class="lineNum">      82 </span><span class="lineCov">        150 :     }</span>
 <span class="lineNum">      83 </span>            : 
 <span class="lineNum">      84 </span>            : #ifdef __GXX_EXPERIMENTAL_CXX0X__
 <span class="lineNum">      85 </span>            :   template&lt;typename _Tp, typename _Alloc&gt;

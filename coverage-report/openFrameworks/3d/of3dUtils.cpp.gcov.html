@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">53</td>
             <td class="headerCovTableEntry">108</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">49.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">71.4 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,175 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;of3dUtils.h&quot;</a>
+<a name="2"><span class="lineNum">       2 </span>            : #include &quot;ofGraphics.h&quot;</a>
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span><span class="lineCov">      37543 : void ofDrawAxis(float size) {</span>
+<span class="lineNum">       5 </span><span class="lineCov">      37543 :         ofPushStyle();</span>
+<span class="lineNum">       6 </span><span class="lineCov">      37543 :         ofSetLineWidth(3);</span>
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            :         // draw x axis
+<span class="lineNum">       9 </span><span class="lineCov">      37543 :         ofSetColor(ofColor::red);</span>
+<span class="lineNum">      10 </span><span class="lineCov">      37543 :         ofLine(0, 0, 0, size, 0, 0);</span>
+<span class="lineNum">      11 </span>            :         
+<span class="lineNum">      12 </span>            :         // draw y axis
+<span class="lineNum">      13 </span><span class="lineCov">      37543 :         ofSetColor(ofColor::green);</span>
+<span class="lineNum">      14 </span><span class="lineCov">      37543 :         ofLine(0, 0, 0, 0, size, 0);</span>
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :         // draw z axis
+<span class="lineNum">      17 </span><span class="lineCov">      37543 :         ofSetColor(ofColor::blue);</span>
+<span class="lineNum">      18 </span><span class="lineCov">      37543 :         ofLine(0, 0, 0, 0, 0, size);</span>
+<span class="lineNum">      19 </span>            :         
+<span class="lineNum">      20 </span><span class="lineCov">      37543 :         ofPopStyle();</span>
+<span class="lineNum">      21 </span><span class="lineCov">      37543 : }</span>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<span class="lineNum">      23 </span>            : //--------------------------------------------------------------
+<span class="lineNum">      24 </span><span class="lineCov">       3094 : void ofDrawGrid(float scale, float ticks, bool labels, bool x, bool y, bool z) {</span>
+<span class="lineNum">      25 </span>            :         
+<span class="lineNum">      26 </span><span class="lineCov">       3094 :         ofColor c(255,0,0);</span>
+<span class="lineNum">      27 </span>            :         
+<span class="lineNum">      28 </span><span class="lineCov">       3094 :         ofPushStyle();</span>
+<span class="lineNum">      29 </span>            :         
+<span class="lineNum">      30 </span><span class="lineCov">       3094 :         if (x) {</span>
+<span class="lineNum">      31 </span><span class="lineCov">       2573 :                 c.setHsb(0.0f, 200.0f, 255.0f);</span>
+<span class="lineNum">      32 </span><span class="lineCov">       2573 :                 ofSetColor(c);</span>
+<span class="lineNum">      33 </span><span class="lineCov">       2573 :                 ofDrawGridPlane(scale, ticks, labels);</span>
+<span class="lineNum">      34 </span>            :         }
+<span class="lineNum">      35 </span><span class="lineCov">       3094 :         if (y) {</span>
+<span class="lineNum">      36 </span><span class="lineCov">       3094 :                 c.setHsb(255.0f / 3.0f, 200.0f, 255.0f);</span>
+<span class="lineNum">      37 </span><span class="lineCov">       3094 :                 ofSetColor(c);</span>
+<span class="lineNum">      38 </span><span class="lineCov">       3094 :                 ofPushMatrix();</span>
+<span class="lineNum">      39 </span><span class="lineCov">       3094 :                 ofRotate(90, 0, 0, -1);</span>
+<span class="lineNum">      40 </span><span class="lineCov">       3094 :                 ofDrawGridPlane(scale, ticks, labels);</span>
+<span class="lineNum">      41 </span><span class="lineCov">       3094 :                 ofPopMatrix();</span>
+<span class="lineNum">      42 </span>            :         }
+<span class="lineNum">      43 </span><span class="lineCov">       3094 :         if (z) {</span>
+<span class="lineNum">      44 </span><span class="lineCov">       2573 :                 c.setHsb(255.0f * 2.0f / 3.0f, 200.0f, 255.0f);</span>
+<span class="lineNum">      45 </span><span class="lineCov">       2573 :                 ofSetColor(c);</span>
+<span class="lineNum">      46 </span><span class="lineCov">       2573 :                 ofPushMatrix();</span>
+<span class="lineNum">      47 </span><span class="lineCov">       2573 :                 ofRotate(90, 0, 1, 0);</span>
+<span class="lineNum">      48 </span><span class="lineCov">       2573 :                 ofDrawGridPlane(scale, ticks, labels);</span>
+<span class="lineNum">      49 </span><span class="lineCov">       2573 :                 ofPopMatrix();</span>
+<span class="lineNum">      50 </span>            :         }
+<span class="lineNum">      51 </span>            :         
+<span class="lineNum">      52 </span><span class="lineCov">       3094 :         if (labels) {</span>
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :                 ofPushStyle();</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 ofSetColor(255, 255, 255);</span>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 float labelPos = scale * (1.0f + 0.5f / ticks);</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :                 ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);</span>
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 ofDrawBitmapString(&quot;x&quot;, labelPos, 0, 0);</span>
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 ofDrawBitmapString(&quot;y&quot;, 0, labelPos, 0);</span>
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 ofDrawBitmapString(&quot;z&quot;, 0, 0, labelPos);</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :                 ofPopStyle();</span>
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span><span class="lineCov">       3094 :         ofPopStyle();</span>
+<span class="lineNum">      63 </span><span class="lineCov">       3094 : }</span>
+<span class="lineNum">      64 </span>            : 
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<span class="lineNum">      66 </span>            : //--------------------------------------------------------------
+<span class="lineNum">      67 </span><span class="lineCov">       8240 : void ofDrawGridPlane(float scale, float ticks, bool labels) {</span>
+<span class="lineNum">      68 </span>            :         
+<span class="lineNum">      69 </span><span class="lineCov">       8240 :         float minor = scale / ticks;</span>
+<span class="lineNum">      70 </span><span class="lineCov">       8240 :         float major =  minor * 2.0f;</span>
+<span class="lineNum">      71 </span>            :         
+<span class="lineNum">      72 </span><span class="lineCov">       8240 :         ofPushStyle();</span>
+<span class="lineNum">      73 </span><span class="lineCov">      24720 :         for (int iDimension=0; iDimension&lt;2; iDimension++)</span>
+<span class="lineNum">      74 </span>            :         {
+<span class="lineNum">      75 </span><span class="lineCov">     300808 :                 for (float yz=-scale; yz&lt;=scale; yz+= minor)</span>
+<span class="lineNum">      76 </span>            :                 {
+<span class="lineNum">      77 </span>            :                         //major major
+<span class="lineNum">      78 </span><span class="lineCov">     284328 :                         if (fabs(yz) == scale || yz == 0)</span>
+<span class="lineNum">      79 </span><span class="lineCov">      49440 :                                 ofSetLineWidth(2);</span>
+<span class="lineNum">      80 </span>            :                         
+<span class="lineNum">      81 </span>            :                         //major
+<span class="lineNum">      82 </span><span class="lineCov">     234888 :                         else if (yz / major == floor(yz / major) )</span>
+<span class="lineNum">      83 </span><span class="lineCov">     100964 :                                 ofSetLineWidth(1.5);</span>
+<span class="lineNum">      84 </span>            :                         
+<span class="lineNum">      85 </span>            :                         //minor
+<span class="lineNum">      86 </span>            :                         else
+<span class="lineNum">      87 </span><span class="lineCov">     133924 :                                 ofSetLineWidth(1);</span>
+<span class="lineNum">      88 </span><span class="lineCov">     284328 :                         if (iDimension==0)</span>
+<span class="lineNum">      89 </span><span class="lineCov">     142164 :                                 ofLine(0, yz, -scale, 0, yz, scale);</span>
+<span class="lineNum">      90 </span>            :                         else
+<span class="lineNum">      91 </span><span class="lineCov">     142164 :                                 ofLine(0, -scale, yz, 0, scale, yz);</span>
+<span class="lineNum">      92 </span>            :                 }
+<span class="lineNum">      93 </span>            :         }
+<span class="lineNum">      94 </span><span class="lineCov">       8240 :         ofPopStyle();</span>
+<span class="lineNum">      95 </span>            :         
+<span class="lineNum">      96 </span><span class="lineCov">       8240 :         if (labels) {</span>
+<span class="lineNum">      97 </span>            :                 //draw numbers on axes
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 ofPushStyle();</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                 ofSetColor(255, 255, 255);</span>
+<span class="lineNum">     100 </span>            :                 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                 float accuracy = ceil(-log(scale/ticks)/log(10.0f));</span>
+<span class="lineNum">     102 </span>            :                 
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                 ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                 for (float yz = -scale; yz&lt;=scale; yz+=minor)</span>
+<span class="lineNum">     105 </span>            :                 {
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                         ofDrawBitmapString(ofToString(yz, accuracy), 0, yz, 0);</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         ofDrawBitmapString(ofToString(yz, accuracy), 0, 0, yz);         </span>
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 ofPopStyle();</span>
+<span class="lineNum">     110 </span>            :         }
+<span class="lineNum">     111 </span>            :         
+<span class="lineNum">     112 </span><span class="lineCov">       8240 : }</span>
+<a name="113"><span class="lineNum">     113 </span>            : </a>
+<span class="lineNum">     114 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 : void ofDrawArrow(const ofVec3f&amp; start, const ofVec3f&amp; end, float headSize) {</span>
+<span class="lineNum">     116 </span>            :         
+<span class="lineNum">     117 </span>            :         //draw line
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         ofLine(start, end);</span>
+<span class="lineNum">     119 </span>            :         
+<span class="lineNum">     120 </span>            :         //draw cone
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :         ofMatrix4x4 mat;</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :         mat.makeRotationMatrix(ofVec3f(0,0,1), end - start);</span>
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :         ofPushMatrix();</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :         ofTranslate(end);</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :         glMultMatrixf(mat.getPtr());</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         ofTranslate(0,0,-headSize);</span>
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         ofCone(headSize, headSize);     </span>
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         ofPopMatrix();</span>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     130 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 : void ofDrawRotationAxes(float radius, float stripWidth, int circleRes){</span>
+<span class="lineNum">     132 </span>            :         
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         ofMesh axisXMesh;</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         axisXMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);</span>
+<span class="lineNum">     135 </span>            :         
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :         ofMesh axisYMesh;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         axisYMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);</span>
+<span class="lineNum">     138 </span>            :         
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :         ofMesh axisZMesh;</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         axisZMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);</span>
+<span class="lineNum">     141 </span>            :         
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :         for (int j = 0; j&lt;=circleRes; j++) {</span>
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 float x = cos(TWO_PI * j/circleRes);</span>
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 float y = sin(TWO_PI * j/circleRes);</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 axisXMesh.addColor(ofFloatColor(ofFloatColor::red));</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 axisXMesh.addVertex(ofVec3f(x*radius, y*radius, -stripWidth));</span>
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :                 axisXMesh.addColor(ofFloatColor(ofFloatColor::red));</span>
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 axisXMesh.addVertex(ofVec3f(x*radius, y*radius,  stripWidth));</span>
+<span class="lineNum">     149 </span>            :                 
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 axisYMesh.addColor(ofFloatColor(ofFloatColor::blue));</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 axisYMesh.addVertex(ofVec3f(x*radius, -stripWidth, y*radius));</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 axisYMesh.addColor(ofFloatColor(ofFloatColor::blue));</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 axisYMesh.addVertex(ofVec3f(x*radius,  stripWidth, y*radius));</span>
+<span class="lineNum">     154 </span>            :                 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 axisZMesh.addColor(ofFloatColor(ofFloatColor::green));</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 axisZMesh.addVertex(ofVec3f(-stripWidth, x*radius, y*radius));</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 axisZMesh.addColor(ofFloatColor(ofFloatColor::green));</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 axisZMesh.addVertex(ofVec3f( stripWidth, x*radius, y*radius));</span>
+<span class="lineNum">     159 </span>            :         }
+<span class="lineNum">     160 </span>            :         
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         glEnable(GL_DEPTH_TEST);</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         axisXMesh.draw();</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         axisYMesh.draw();</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         axisZMesh.draw();</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :         ofDrawAxis(radius);</span>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         glDisable(GL_DEPTH_TEST);</span></a>
+<span class="lineNum">     167 </span>            :         
+<span class="lineNum">     168 </span><span class="lineCov">        234 : }</span>
+<span class="lineNum">     169 </span>            : 
 </pre>
       </td>
     </tr>

@@ -31,18 +31,18 @@
             <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">30</td>
             <td class="headerCovTableEntry">57</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">52.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">40.9 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,7 +60,479 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  ofQuaternion.h
+<span class="lineNum">       3 </span>            :  *  
+<span class="lineNum">       4 </span>            :  *  Created by Aaron Meyers on 6/22/09 -- modified by Arturo Castro, Zach Lieberman, Memo Akten
+<span class="lineNum">       5 </span>            :  *  based on code from OSG - 
+<span class="lineNum">       6 </span>            :  *  see OSG license for more details: 
+<span class="lineNum">       7 </span>            :  *  http://www.openscenegraph.org/projects/osg/wiki/Legal
+<span class="lineNum">       8 </span>            :  * 
+<span class="lineNum">       9 </span>            :  */
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #pragma once
+<span class="lineNum">      12 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">      13 </span>            : #include &quot;ofVec3f.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;ofVec4f.h&quot;
+<span class="lineNum">      15 </span>            : #include &lt;cmath&gt;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #if (_MSC_VER)       
+<span class="lineNum">      18 </span>            : // make microsoft visual studio complain less about double / float conversion.
+<span class="lineNum">      19 </span>            : #pragma warning(disable : 4244)
+<span class="lineNum">      20 </span>            : #endif
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : class ofMatrix4x4;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : class ofQuaternion {
+<span class="lineNum">      26 </span>            : public:
+<span class="lineNum">      27 </span>            :     //    float _v[4];
+<span class="lineNum">      28 </span>            :     ofVec4f _v;
+<span class="lineNum">      29 </span>            :     
+<span class="lineNum">      30 </span>            :     inline ofQuaternion();
+<span class="lineNum">      31 </span>            :     inline ofQuaternion(float x, float y, float z, float w);
+<span class="lineNum">      32 </span>            :     inline ofQuaternion(const ofVec4f&amp; v);
+<span class="lineNum">      33 </span>            :     inline ofQuaternion(float angle, const ofVec3f&amp; axis);
+<span class="lineNum">      34 </span>            :     inline ofQuaternion(float angle1, const ofVec3f&amp; axis1, float angle2, const ofVec3f&amp; axis2, float angle3, const ofVec3f&amp; axis3);
+<span class="lineNum">      35 </span>            :     
+<span class="lineNum">      36 </span>            :     inline ofQuaternion&amp; operator =(const ofQuaternion&amp; q);
+<span class="lineNum">      37 </span>            :     inline bool operator ==(const ofQuaternion&amp; q) const;
+<span class="lineNum">      38 </span>            :     inline bool operator !=(const ofQuaternion&amp; q) const;
+<span class="lineNum">      39 </span>            :     //    inline bool operator &lt;(const ofQuaternion&amp; q) const;  // why?
+<span class="lineNum">      40 </span>            :     
+<span class="lineNum">      41 </span>            :     inline ostream&amp; operator&lt;&lt;(ostream&amp; os);
+<span class="lineNum">      42 </span>            :     inline istream&amp; operator&gt;&gt;(istream&amp; is);
+<span class="lineNum">      43 </span>            :     
+<span class="lineNum">      44 </span>            :     inline ofVec4f asVec4() const;
+<span class="lineNum">      45 </span>            :     inline ofVec3f asVec3() const;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :     
+<span class="lineNum">      48 </span>            :     inline void set(float x, float y, float z, float w);
+<span class="lineNum">      49 </span>            :     inline void set(const ofVec4f&amp; v);
+<span class="lineNum">      50 </span>            :     
+<span class="lineNum">      51 </span>            :     void set(const ofMatrix4x4&amp; matrix);
+<span class="lineNum">      52 </span>            :     void get(ofMatrix4x4&amp; matrix) const;
+<span class="lineNum">      53 </span>            :     
+<span class="lineNum">      54 </span>            :     inline float&amp; operator [](int i);
+<span class="lineNum">      55 </span>            :     inline float operator [](int i) const;
+<span class="lineNum">      56 </span>            :     
+<span class="lineNum">      57 </span>            :     inline float&amp; x();
+<span class="lineNum">      58 </span>            :     inline float&amp; y();
+<span class="lineNum">      59 </span>            :     inline float&amp; z();
+<span class="lineNum">      60 </span>            :     inline float&amp; w();
+<span class="lineNum">      61 </span>            :     
+<span class="lineNum">      62 </span>            :     inline float x() const;
+<span class="lineNum">      63 </span>            :     inline float y() const;
+<span class="lineNum">      64 </span>            :     inline float z() const;
+<span class="lineNum">      65 </span>            :     inline float w() const;
+<span class="lineNum">      66 </span>            :     
+<span class="lineNum">      67 </span>            :     // return true if the Quat represents a zero rotation, and therefore can be ignored in computations.
+<span class="lineNum">      68 </span>            :     inline bool zeroRotation() const;
+<span class="lineNum">      69 </span>            :     
+<span class="lineNum">      70 </span>            :     
+<span class="lineNum">      71 </span>            :     
+<span class="lineNum">      72 </span>            :     // BASIC ARITHMETIC METHODS
+<span class="lineNum">      73 </span>            :     // Implemented in terms of Vec4s. Some Vec4 operators, e.g.
+<span class="lineNum">      74 </span>            :     // operator* are not appropriate for quaternions (as
+<span class="lineNum">      75 </span>            :     // mathematical objects) so they are implemented differently.
+<span class="lineNum">      76 </span>            :     // Also define methods for conjugate and the multiplicative inverse.
+<span class="lineNum">      77 </span>            :     
+<span class="lineNum">      78 </span>            :     inline const ofQuaternion operator *(float rhs) const;                  // Multiply by scalar
+<span class="lineNum">      79 </span>            :     inline ofQuaternion&amp; operator *=(float rhs);                            // Unary multiply by scalar
+<span class="lineNum">      80 </span>            :     inline const ofQuaternion operator*(const ofQuaternion&amp; rhs) const;     // Binary multiply
+<span class="lineNum">      81 </span>            :     inline ofQuaternion&amp; operator*=(const ofQuaternion&amp; rhs);               // Unary multiply
+<span class="lineNum">      82 </span>            :     inline ofQuaternion operator /(float rhs) const;                        // Divide by scalar
+<span class="lineNum">      83 </span>            :     inline ofQuaternion&amp; operator /=(float rhs);                            // Unary divide by scalar
+<span class="lineNum">      84 </span>            :     inline const ofQuaternion operator/(const ofQuaternion&amp; denom) const;   // Binary divide
+<span class="lineNum">      85 </span>            :     inline ofQuaternion&amp; operator/=(const ofQuaternion&amp; denom);             // Unary divide
+<span class="lineNum">      86 </span>            :     inline const ofQuaternion operator +(const ofQuaternion&amp; rhs) const;    // Binary addition
+<span class="lineNum">      87 </span>            :     inline ofQuaternion&amp; operator +=(const ofQuaternion&amp; rhs);              // Unary addition
+<span class="lineNum">      88 </span>            :     inline const ofQuaternion operator -(const ofQuaternion&amp; rhs) const;    // Binary subtraction
+<span class="lineNum">      89 </span>            :     inline ofQuaternion&amp; operator -=(const ofQuaternion&amp; rhs);              // Unary subtraction
+<span class="lineNum">      90 </span>            :     inline const ofQuaternion operator -() const;                           // returns the negative of the quaternion. calls operator -() on the Vec4 */
+<span class="lineNum">      91 </span>            :     inline ofVec3f operator*(const ofVec3f&amp; v) const;                       // Rotate a vector by this quaternion.
+<span class="lineNum">      92 </span>            :     
+<span class="lineNum">      93 </span>            :     
+<span class="lineNum">      94 </span>            :     // Length of the quaternion = sqrt(vec . vec)
+<span class="lineNum">      95 </span>            :     inline float length() const;
+<span class="lineNum">      96 </span>            :     
+<span class="lineNum">      97 </span>            :     // Length of the quaternion = vec . vec
+<span class="lineNum">      98 </span>            :     inline float length2() const;
+<span class="lineNum">      99 </span>            :     
+<span class="lineNum">     100 </span>            :     // Conjugate
+<span class="lineNum">     101 </span>            :     inline ofQuaternion conj() const;
+<span class="lineNum">     102 </span>            :     
+<span class="lineNum">     103 </span>            :     // Multiplicative inverse method: q^(-1) = q^*/(q.q^*)
+<span class="lineNum">     104 </span>            :     inline const ofQuaternion inverse() const;
+<span class="lineNum">     105 </span>            :     
+<span class="lineNum">     106 </span>            :     
+<span class="lineNum">     107 </span>            :     
+<span class="lineNum">     108 </span>            :     // METHODS RELATED TO ROTATIONS
+<span class="lineNum">     109 </span>            :     // Set a quaternion which will perform a rotation of an
+<span class="lineNum">     110 </span>            :     // angle around the axis given by the vector(x,y,z).
+<span class="lineNum">     111 </span>            :     // Should be written to also accept an angle and a Vec3?
+<span class="lineNum">     112 </span>            :     
+<span class="lineNum">     113 </span>            :     // Define Spherical Linear interpolation method also
+<span class="lineNum">     114 </span>            :     void makeRotate(float angle, float x, float y, float z);
+<span class="lineNum">     115 </span>            :     void makeRotate(float angle, const ofVec3f&amp; vec);
+<span class="lineNum">     116 </span>            :     void makeRotate(float angle1, const ofVec3f&amp; axis1, float angle2, const ofVec3f&amp; axis2, float angle3, const ofVec3f&amp; axis3);
+<span class="lineNum">     117 </span>            :     
+<span class="lineNum">     118 </span>            :     
+<span class="lineNum">     119 </span>            :     // Make a rotation Quat which will rotate vec1 to vec2.
+<span class="lineNum">     120 </span>            :     // Generally take a dot product to get the angle between these
+<span class="lineNum">     121 </span>            :     // and then use a cross product to get the rotation axis
+<span class="lineNum">     122 </span>            :     // Watch out for the two special cases when the vectors
+<span class="lineNum">     123 </span>            :     // are co-incident or opposite in direction.
+<span class="lineNum">     124 </span>            :     void makeRotate(const ofVec3f&amp; vec1, const ofVec3f&amp; vec2);
+<span class="lineNum">     125 </span>            :     
+<span class="lineNum">     126 </span>            :     void makeRotate_original(const ofVec3f&amp; vec1, const ofVec3f&amp; vec2);
+<span class="lineNum">     127 </span>            :     
+<span class="lineNum">     128 </span>            :     // Return the angle and vector components represented by the quaternion.
+<span class="lineNum">     129 </span>            :     void getRotate(float&amp;angle, float&amp; x, float&amp; y, float&amp; z) const;
+<span class="lineNum">     130 </span>            :     void getRotate(float&amp; angle, ofVec3f&amp; vec) const;
+<span class="lineNum">     131 </span>            :     
+<span class="lineNum">     132 </span>            :     // calculate and return the rotation as euler angles
+<span class="lineNum">     133 </span>            :     ofVec3f getEuler() const;
+<span class="lineNum">     134 </span>            :     
+<span class="lineNum">     135 </span>            :     
+<span class="lineNum">     136 </span>            :     // Spherical Linear Interpolation.
+<span class="lineNum">     137 </span>            :     // As t goes from 0 to 1, the Quat object goes from &quot;from&quot; to &quot;to&quot;.
+<span class="lineNum">     138 </span>            :     void slerp(float t, const ofQuaternion&amp; from, const ofQuaternion&amp; to);
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :     inline void normalize();
+<span class="lineNum">     141 </span>            : };
+<span class="lineNum">     142 </span>            : 
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<span class="lineNum">     144 </span>            : //----------------------------------------
+<span class="lineNum">     145 </span><span class="lineCov">      77888 : ofQuaternion::ofQuaternion() {</span>
+<span class="lineNum">     146 </span><span class="lineCov">      77888 :     _v.set(0, 0, 0, 1);</span>
+<span class="lineNum">     147 </span><span class="lineCov">      77888 : }</span>
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            : //----------------------------------------
+<span class="lineNum">     151 </span>            : ostream&amp; ofQuaternion::operator&lt;&lt;(ostream&amp; os) {
+<span class="lineNum">     152 </span>            :     os &lt;&lt; _v.x &lt;&lt; &quot;, &quot; &lt;&lt; _v.y &lt;&lt; &quot;, &quot; &lt;&lt; _v.z &lt;&lt; &quot;, &quot; &lt;&lt; _v.w;
+<span class="lineNum">     153 </span>            :     return os;
+<span class="lineNum">     154 </span>            : }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            : //----------------------------------------
+<span class="lineNum">     158 </span>            : istream&amp; ofQuaternion::operator&gt;&gt;(istream&amp; is) {
+<span class="lineNum">     159 </span>            :     is &gt;&gt; _v.x;
+<span class="lineNum">     160 </span>            :     is.ignore(2);
+<span class="lineNum">     161 </span>            :     is &gt;&gt; _v.y;
+<span class="lineNum">     162 </span>            :     is.ignore(2);
+<span class="lineNum">     163 </span>            :     is &gt;&gt; _v.z;
+<span class="lineNum">     164 </span>            :     is.ignore(2);
+<span class="lineNum">     165 </span>            :     is &gt;&gt; _v.w;
+<span class="lineNum">     166 </span>            :     return is;
+<span class="lineNum">     167 </span>            : }
+<span class="lineNum">     168 </span>            : 
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<span class="lineNum">     170 </span>            : //----------------------------------------
+<span class="lineNum">     171 </span><span class="lineCov">      50212 : ofQuaternion::ofQuaternion(float x, float y, float z, float w) {</span>
+<span class="lineNum">     172 </span><span class="lineCov">      50212 :     _v.set(x, y, z, w);</span>
+<span class="lineNum">     173 </span><span class="lineCov">      50212 : }</span>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : //----------------------------------------
+<span class="lineNum">     177 </span>            : ofQuaternion::ofQuaternion(const ofVec4f&amp; v) {
+<span class="lineNum">     178 </span>            :     _v = v;
+<span class="lineNum">     179 </span>            : }
+<span class="lineNum">     180 </span>            : 
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<span class="lineNum">     182 </span>            : //----------------------------------------
+<span class="lineNum">     183 </span><span class="lineCov">         68 : ofQuaternion::ofQuaternion(float angle, const ofVec3f&amp; axis) {</span>
+<span class="lineNum">     184 </span><span class="lineCov">         68 :     makeRotate(angle, axis);</span>
+<span class="lineNum">     185 </span><span class="lineCov">         68 : }</span>
+<span class="lineNum">     186 </span>            : 
+<a name="187"><span class="lineNum">     187 </span>            : </a>
+<span class="lineNum">     188 </span>            : //----------------------------------------
+<span class="lineNum">     189 </span><span class="lineCov">      24010 : ofQuaternion::ofQuaternion(float angle1, const ofVec3f&amp; axis1, float angle2, const ofVec3f&amp; axis2, float angle3, const ofVec3f&amp; axis3) {</span>
+<span class="lineNum">     190 </span><span class="lineCov">      24010 :     makeRotate(angle1, axis1, angle2, axis2, angle3, axis3);</span>
+<span class="lineNum">     191 </span><span class="lineCov">      24010 : }</span>
+<span class="lineNum">     192 </span>            : 
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<span class="lineNum">     194 </span>            : //----------------------------------------
+<span class="lineNum">     195 </span><span class="lineCov">      54122 : ofQuaternion&amp; ofQuaternion::operator =(const ofQuaternion&amp; q) {</span>
+<span class="lineNum">     196 </span><span class="lineCov">      54122 :     _v = q._v;</span>
+<span class="lineNum">     197 </span><span class="lineCov">      54122 :     return *this;</span>
+<span class="lineNum">     198 </span>            : }
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            : //----------------------------------------
+<span class="lineNum">     202 </span>            : bool ofQuaternion::operator ==(const ofQuaternion&amp; q) const {
+<span class="lineNum">     203 </span>            :     return _v == q._v;
+<span class="lineNum">     204 </span>            : }
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            : //----------------------------------------
+<span class="lineNum">     208 </span>            : bool ofQuaternion::operator !=(const ofQuaternion&amp; q) const {
+<span class="lineNum">     209 </span>            :     return _v != q._v;
+<span class="lineNum">     210 </span>            : }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            : //----------------------------------------
+<span class="lineNum">     214 </span>            : //bool ofQuaternion::operator &lt;(const ofQuaternion&amp; q) const {
+<span class="lineNum">     215 </span>            : //    if(_v.x &lt; v._v.x) return true;
+<span class="lineNum">     216 </span>            : //    else if(_v.x &gt; v._v.x) return false;
+<span class="lineNum">     217 </span>            : //    else if(_v.y &lt; v._v.y) return true;
+<span class="lineNum">     218 </span>            : //    else if(_v.y &gt; v._v.y) return false;
+<span class="lineNum">     219 </span>            : //    else if(_v.z &lt; v._v.z) return true;
+<span class="lineNum">     220 </span>            : //    else if(_v.z &gt; v._v.z) return false;
+<span class="lineNum">     221 </span>            : //    else return (_v.w &lt; v._v.w);
+<span class="lineNum">     222 </span>            : //}
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            : 
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span>            : //----------------------------------------
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 : ofVec4f ofQuaternion::asVec4() const {</span>
+<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     return _v;</span>
+<span class="lineNum">     229 </span>            : }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            : //----------------------------------------
+<span class="lineNum">     233 </span>            : ofVec3f ofQuaternion::asVec3() const {
+<span class="lineNum">     234 </span>            :     return ofVec3f(_v);
+<span class="lineNum">     235 </span>            : }
+<span class="lineNum">     236 </span>            : 
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<span class="lineNum">     238 </span>            : //----------------------------------------
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 : void ofQuaternion::set(float x, float y, float z, float w) {</span>
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 :     _v.set(x, y, z, w);</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            : //----------------------------------------
+<span class="lineNum">     245 </span>            : void ofQuaternion::set(const ofVec4f&amp; v) {
+<span class="lineNum">     246 </span>            :     _v = v;
+<span class="lineNum">     247 </span>            : }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            : //----------------------------------------
+<span class="lineNum">     251 </span>            : float&amp; ofQuaternion::operator [](int i) {
+<span class="lineNum">     252 </span>            :     return _v[i];
+<span class="lineNum">     253 </span>            : }
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            : //----------------------------------------
+<span class="lineNum">     258 </span>            : float ofQuaternion::operator [](int i) const {
+<span class="lineNum">     259 </span>            :     return _v[i];
+<span class="lineNum">     260 </span>            : }
+<span class="lineNum">     261 </span>            : 
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<span class="lineNum">     263 </span>            : //----------------------------------------
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 : float&amp; ofQuaternion::x() {</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :     return _v.x;</span>
+<span class="lineNum">     266 </span>            : }
+<span class="lineNum">     267 </span>            : 
+<a name="268"><span class="lineNum">     268 </span>            : </a>
+<span class="lineNum">     269 </span>            : //----------------------------------------
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 : float&amp; ofQuaternion::y() {</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :     return _v.y;</span>
+<span class="lineNum">     272 </span>            : }
+<span class="lineNum">     273 </span>            : 
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<span class="lineNum">     275 </span>            : //----------------------------------------
+<span class="lineNum">     276 </span><span class="lineNoCov">          0 : float&amp; ofQuaternion::z() {</span>
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :     return _v.z;</span>
+<span class="lineNum">     278 </span>            : }
+<span class="lineNum">     279 </span>            : 
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<span class="lineNum">     281 </span>            : //----------------------------------------
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 : float&amp; ofQuaternion::w() {</span>
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     return _v.w;</span>
+<span class="lineNum">     284 </span>            : }
+<span class="lineNum">     285 </span>            : 
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<span class="lineNum">     287 </span>            : //----------------------------------------
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 : float ofQuaternion::x() const {</span>
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     return _v.x;</span>
+<span class="lineNum">     290 </span>            : }
+<span class="lineNum">     291 </span>            : 
+<a name="292"><span class="lineNum">     292 </span>            : </a>
+<span class="lineNum">     293 </span>            : //----------------------------------------
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 : float ofQuaternion::y() const {</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     return _v.y;</span>
+<span class="lineNum">     296 </span>            : }
+<span class="lineNum">     297 </span>            : 
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<span class="lineNum">     299 </span>            : //----------------------------------------
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 : float ofQuaternion::z() const {</span>
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :     return _v.z;</span>
+<span class="lineNum">     302 </span>            : }
+<span class="lineNum">     303 </span>            : 
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<span class="lineNum">     305 </span>            : //----------------------------------------
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 : float ofQuaternion::w() const {</span>
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     return _v.w;</span>
+<span class="lineNum">     308 </span>            : }
+<span class="lineNum">     309 </span>            : 
+<a name="310"><span class="lineNum">     310 </span>            : </a>
+<span class="lineNum">     311 </span>            : //----------------------------------------
+<span class="lineNum">     312 </span><span class="lineCov">      46636 : bool ofQuaternion::zeroRotation() const {</span>
+<span class="lineNum">     313 </span><span class="lineCov">      46636 :     return _v.x == 0.0 &amp;&amp; _v.y == 0.0 &amp;&amp; _v.z == 0.0 &amp;&amp; _v.w == 1.0;</span>
+<span class="lineNum">     314 </span>            : }
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            : 
+<a name="317"><span class="lineNum">     317 </span>            : </a>
+<span class="lineNum">     318 </span>            : //----------------------------------------
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 : const ofQuaternion ofQuaternion::operator *(float rhs) const {</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :     return ofQuaternion(_v.x*rhs, _v.y*rhs, _v.z*rhs, _v.w*rhs);</span>
+<span class="lineNum">     321 </span>            : }
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            : //----------------------------------------
+<span class="lineNum">     325 </span>            : ofQuaternion&amp; ofQuaternion::operator *=(float rhs) {
+<span class="lineNum">     326 </span>            :     _v.x *= rhs;
+<span class="lineNum">     327 </span>            :     _v.y *= rhs;
+<span class="lineNum">     328 </span>            :     _v.z *= rhs;
+<span class="lineNum">     329 </span>            :     _v.w *= rhs;
+<span class="lineNum">     330 </span>            :     return *this; // enable nesting
+<span class="lineNum">     331 </span>            : }
+<span class="lineNum">     332 </span>            : 
+<a name="333"><span class="lineNum">     333 </span>            : </a>
+<span class="lineNum">     334 </span>            : //----------------------------------------
+<span class="lineNum">     335 </span><span class="lineCov">      48020 : const ofQuaternion ofQuaternion::operator*(const ofQuaternion&amp; rhs) const {</span>
+<span class="lineNum">     336 </span>            :     return ofQuaternion(rhs._v.w*_v.x + rhs._v.x*_v.w + rhs._v.y*_v.z - rhs._v.z*_v.y,
+<span class="lineNum">     337 </span>            :                         rhs._v.w*_v.y - rhs._v.x*_v.z + rhs._v.y*_v.w + rhs._v.z*_v.x,
+<span class="lineNum">     338 </span>            :                         rhs._v.w*_v.z + rhs._v.x*_v.y - rhs._v.y*_v.x + rhs._v.z*_v.w,
+<span class="lineNum">     339 </span><span class="lineCov">      48020 :                         rhs._v.w*_v.w - rhs._v.x*_v.x - rhs._v.y*_v.y - rhs._v.z*_v.z);</span>
+<span class="lineNum">     340 </span>            : }
+<span class="lineNum">     341 </span>            : 
+<a name="342"><span class="lineNum">     342 </span>            : </a>
+<span class="lineNum">     343 </span>            : //----------------------------------------
+<span class="lineNum">     344 </span><span class="lineCov">       3384 : ofQuaternion&amp; ofQuaternion::operator*=(const ofQuaternion&amp; rhs) {</span>
+<span class="lineNum">     345 </span><span class="lineCov">       3384 :     float x = rhs._v.w * _v.x + rhs._v.x * _v.w + rhs._v.y * _v.z - rhs._v.z * _v.y;</span>
+<span class="lineNum">     346 </span><span class="lineCov">       3384 :     float y = rhs._v.w * _v.y - rhs._v.x * _v.z + rhs._v.y * _v.w + rhs._v.z * _v.x;</span>
+<span class="lineNum">     347 </span><span class="lineCov">       3384 :     float z = rhs._v.w * _v.z + rhs._v.x * _v.y - rhs._v.y * _v.x + rhs._v.z * _v.w;</span>
+<span class="lineNum">     348 </span><span class="lineCov">       3384 :     _v.w = rhs._v.w * _v.w - rhs._v.x * _v.x - rhs._v.y * _v.y - rhs._v.z * _v.z;</span>
+<span class="lineNum">     349 </span>            :     
+<span class="lineNum">     350 </span><span class="lineCov">       3384 :     _v.z = z;</span>
+<span class="lineNum">     351 </span><span class="lineCov">       3384 :     _v.y = y;</span>
+<span class="lineNum">     352 </span><span class="lineCov">       3384 :     _v.x = x;</span>
+<span class="lineNum">     353 </span>            :     
+<span class="lineNum">     354 </span><span class="lineCov">       3384 :     return (*this); // enable nesting</span>
+<span class="lineNum">     355 </span>            : }
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span>            : //----------------------------------------
+<span class="lineNum">     359 </span>            : ofQuaternion ofQuaternion::operator /(float rhs) const {
+<span class="lineNum">     360 </span>            :     float div = 1.0 / rhs;
+<span class="lineNum">     361 </span>            :     return ofQuaternion(_v.x*div, _v.y*div, _v.z*div, _v.w*div);
+<span class="lineNum">     362 </span>            : }
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            : //----------------------------------------
+<span class="lineNum">     366 </span>            : ofQuaternion&amp; ofQuaternion::operator /=(float rhs) {
+<span class="lineNum">     367 </span>            :     float div = 1.0 / rhs;
+<span class="lineNum">     368 </span>            :     _v.x *= div;
+<span class="lineNum">     369 </span>            :     _v.y *= div;
+<span class="lineNum">     370 </span>            :     _v.z *= div;
+<span class="lineNum">     371 </span>            :     _v.w *= div;
+<span class="lineNum">     372 </span>            :     return *this;
+<span class="lineNum">     373 </span>            : }
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span>            : //----------------------------------------
+<span class="lineNum">     377 </span>            : const ofQuaternion ofQuaternion::operator/(const ofQuaternion&amp; denom) const {
+<span class="lineNum">     378 </span>            :     return ((*this) * denom.inverse());
+<span class="lineNum">     379 </span>            : }
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            : //----------------------------------------
+<span class="lineNum">     383 </span>            : ofQuaternion&amp; ofQuaternion::operator/=(const ofQuaternion&amp; denom) {
+<span class="lineNum">     384 </span>            :     (*this) = (*this) * denom.inverse();
+<span class="lineNum">     385 </span>            :     return (*this); // enable nesting
+<span class="lineNum">     386 </span>            : }
+<span class="lineNum">     387 </span>            : 
+<a name="388"><span class="lineNum">     388 </span>            : </a>
+<span class="lineNum">     389 </span>            : //----------------------------------------
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 : const ofQuaternion ofQuaternion::operator +(const ofQuaternion&amp; rhs) const {</span>
+<span class="lineNum">     391 </span>            :     return ofQuaternion(_v.x + rhs._v.x, _v.y + rhs._v.y,
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :                         _v.z + rhs._v.z, _v.w + rhs._v.w);</span>
+<span class="lineNum">     393 </span>            : }
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span>            : //----------------------------------------
+<span class="lineNum">     397 </span>            : ofQuaternion&amp; ofQuaternion::operator +=(const ofQuaternion&amp; rhs) {
+<span class="lineNum">     398 </span>            :     _v.x += rhs._v.x;
+<span class="lineNum">     399 </span>            :     _v.y += rhs._v.y;
+<span class="lineNum">     400 </span>            :     _v.z += rhs._v.z;
+<span class="lineNum">     401 </span>            :     _v.w += rhs._v.w;
+<span class="lineNum">     402 </span>            :     return *this; // enable nesting
+<span class="lineNum">     403 </span>            : }
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span>            : //----------------------------------------
+<span class="lineNum">     407 </span>            : const ofQuaternion ofQuaternion::operator -(const ofQuaternion&amp; rhs) const {
+<span class="lineNum">     408 </span>            :     return ofQuaternion(_v.x - rhs._v.x, _v.y - rhs._v.y,
+<span class="lineNum">     409 </span>            :                         _v.z - rhs._v.z, _v.w - rhs._v.w);
+<span class="lineNum">     410 </span>            : }
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            : //----------------------------------------
+<span class="lineNum">     414 </span>            : ofQuaternion&amp; ofQuaternion::operator -=(const ofQuaternion&amp; rhs) {
+<span class="lineNum">     415 </span>            :     _v.x -= rhs._v.x;
+<span class="lineNum">     416 </span>            :     _v.y -= rhs._v.y;
+<span class="lineNum">     417 </span>            :     _v.z -= rhs._v.z;
+<span class="lineNum">     418 </span>            :     _v.w -= rhs._v.w;
+<span class="lineNum">     419 </span>            :     return *this; // enable nesting
+<span class="lineNum">     420 </span>            : }
+<span class="lineNum">     421 </span>            : 
+<a name="422"><span class="lineNum">     422 </span>            : </a>
+<span class="lineNum">     423 </span>            : //----------------------------------------
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 : const ofQuaternion ofQuaternion::operator -() const {</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     return ofQuaternion(-_v.x, -_v.y, -_v.z, -_v.w);</span>
+<span class="lineNum">     426 </span>            : }
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            : //----------------------------------------
+<span class="lineNum">     430 </span>            : float ofQuaternion::length() const {
+<span class="lineNum">     431 </span>            :     return sqrt(_v.x*_v.x + _v.y*_v.y + _v.z*_v.z + _v.w*_v.w);
+<span class="lineNum">     432 </span>            : }
+<span class="lineNum">     433 </span>            : 
+<a name="434"><span class="lineNum">     434 </span>            : </a>
+<span class="lineNum">     435 </span>            : //----------------------------------------
+<span class="lineNum">     436 </span><span class="lineCov">      49488 : float ofQuaternion::length2() const {</span>
+<span class="lineNum">     437 </span><span class="lineCov">      49488 :     return _v.x*_v.x + _v.y*_v.y + _v.z*_v.z + _v.w*_v.w;</span>
+<span class="lineNum">     438 </span>            : }
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span>            : //----------------------------------------
+<span class="lineNum">     442 </span>            : ofQuaternion ofQuaternion::conj() const {
+<span class="lineNum">     443 </span>            :     return ofQuaternion(-_v.x, -_v.y, -_v.z, _v.w);
+<span class="lineNum">     444 </span>            : }
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span>            : //----------------------------------------
+<span class="lineNum">     448 </span>            : const ofQuaternion ofQuaternion::inverse() const {
+<span class="lineNum">     449 </span>            :     return conj() / length2();
+<span class="lineNum">     450 </span>            : }
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            : 
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span>            : //----------------------------------------
+<span class="lineNum">     455 </span>            : ofVec3f ofQuaternion::operator*(const ofVec3f&amp; v) const {
+<span class="lineNum">     456 </span>            :     // nVidia SDK implementation
+<span class="lineNum">     457 </span>            :     ofVec3f uv, uuv;
+<span class="lineNum">     458 </span>            :     ofVec3f qvec(_v.x, _v.y, _v.z);
+<span class="lineNum">     459 </span>            :     uv = qvec.getCrossed(v);    //uv = qvec ^ v;
+<span class="lineNum">     460 </span>            :     uuv = qvec.getCrossed(uv);    //uuv = qvec ^ uv;
+<span class="lineNum">     461 </span>            :     uv *= (2.0f * _v.w);
+<span class="lineNum">     462 </span>            :     uuv *= 2.0f;
+<span class="lineNum">     463 </span>            :     return v + uv + uuv;
+<span class="lineNum">     464 </span>            : }
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            : void ofQuaternion::normalize(){
+<span class="lineNum">     467 </span>            :         float len = _v.w*_v.w + _v.x*_v.x + _v.y*_v.y + _v.z*_v.z;
+<span class="lineNum">     468 </span>            :         float factor = 1.0f / sqrt(len);
+<span class="lineNum">     469 </span>            :         _v.x *= factor;
+<span class="lineNum">     470 </span>            :         _v.y *= factor;
+<span class="lineNum">     471 </span>            :         _v.z *= factor;
+<span class="lineNum">     472 </span>            :         _v.w *= factor;
+<span class="lineNum">     473 </span>            : }
 </pre>
       </td>
     </tr>

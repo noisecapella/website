@@ -307,20 +307,20 @@
 <span class="lineNum">     245 </span><span class="lineNoCov">          0 :       { __c1 = __c2; }</span>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
 <span class="lineNum">     247 </span>            :       static _GLIBCXX_CONSTEXPR bool
-<span class="lineNum">     248 </span><span class="lineCov">        249 :       eq(const char_type&amp; __c1, const char_type&amp; __c2)</span>
-<span class="lineNum">     249 </span><span class="lineCov">        249 :       { return __c1 == __c2; }</span>
+<span class="lineNum">     248 </span><span class="lineCov">        498 :       eq(const char_type&amp; __c1, const char_type&amp; __c2)</span>
+<span class="lineNum">     249 </span><span class="lineCov">        498 :       { return __c1 == __c2; }</span>
 <span class="lineNum">     250 </span>            : 
 <span class="lineNum">     251 </span>            :       static _GLIBCXX_CONSTEXPR bool
 <span class="lineNum">     252 </span>            :       lt(const char_type&amp; __c1, const char_type&amp; __c2)
 <span class="lineNum">     253 </span>            :       { return __c1 &lt; __c2; }
 <a name="254"><span class="lineNum">     254 </span>            : </a>
 <span class="lineNum">     255 </span>            :       static int
-<span class="lineNum">     256 </span><span class="lineCov">         16 :       compare(const char_type* __s1, const char_type* __s2, size_t __n)</span>
-<span class="lineNum">     257 </span><span class="lineCov">         16 :       { return __builtin_memcmp(__s1, __s2, __n); }</span>
+<span class="lineNum">     256 </span><span class="lineCov">         32 :       compare(const char_type* __s1, const char_type* __s2, size_t __n)</span>
+<span class="lineNum">     257 </span><span class="lineCov">         32 :       { return __builtin_memcmp(__s1, __s2, __n); }</span>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
 <span class="lineNum">     259 </span>            :       static size_t
-<span class="lineNum">     260 </span><span class="lineCov">        197 :       length(const char_type* __s)</span>
-<span class="lineNum">     261 </span><span class="lineCov">        197 :       { return __builtin_strlen(__s); }</span>
+<span class="lineNum">     260 </span><span class="lineCov">        384 :       length(const char_type* __s)</span>
+<span class="lineNum">     261 </span><span class="lineCov">        384 :       { return __builtin_strlen(__s); }</span>
 <span class="lineNum">     262 </span>            : 
 <span class="lineNum">     263 </span>            :       static const char_type*
 <span class="lineNum">     264 </span>            :       find(const char_type* __s, size_t __n, const char_type&amp; __a)
@@ -339,8 +339,8 @@
 <span class="lineNum">     277 </span>            :       { return static_cast&lt;char_type*&gt;(__builtin_memset(__s, __a, __n)); }
 <a name="278"><span class="lineNum">     278 </span>            : </a>
 <span class="lineNum">     279 </span>            :       static _GLIBCXX_CONSTEXPR char_type
-<span class="lineNum">     280 </span><span class="lineCov">         24 :       to_char_type(const int_type&amp; __c)</span>
-<span class="lineNum">     281 </span><span class="lineCov">         24 :       { return static_cast&lt;char_type&gt;(__c); }</span>
+<span class="lineNum">     280 </span><span class="lineCov">         48 :       to_char_type(const int_type&amp; __c)</span>
+<span class="lineNum">     281 </span><span class="lineCov">         48 :       { return static_cast&lt;char_type&gt;(__c); }</span>
 <span class="lineNum">     282 </span>            : 
 <span class="lineNum">     283 </span>            :       // To keep both the byte 0xff and the eof symbol 0xffffffff
 <a name="284"><span class="lineNum">     284 </span>            :       // from ending up as 0xffffffff.</a>
@@ -349,12 +349,12 @@
 <span class="lineNum">     287 </span><span class="lineNoCov">          0 :       { return static_cast&lt;int_type&gt;(static_cast&lt;unsigned char&gt;(__c)); }</span>
 <a name="288"><span class="lineNum">     288 </span>            : </a>
 <span class="lineNum">     289 </span>            :       static _GLIBCXX_CONSTEXPR bool
-<span class="lineNum">     290 </span><span class="lineCov">         24 :       eq_int_type(const int_type&amp; __c1, const int_type&amp; __c2)</span>
-<span class="lineNum">     291 </span><span class="lineCov">         24 :       { return __c1 == __c2; }</span>
+<span class="lineNum">     290 </span><span class="lineCov">         48 :       eq_int_type(const int_type&amp; __c1, const int_type&amp; __c2)</span>
+<span class="lineNum">     291 </span><span class="lineCov">         48 :       { return __c1 == __c2; }</span>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
 <span class="lineNum">     293 </span>            :       static _GLIBCXX_CONSTEXPR int_type
-<span class="lineNum">     294 </span><span class="lineCov">          1 :       eof()</span>
-<span class="lineNum">     295 </span><span class="lineCov">          1 :       { return static_cast&lt;int_type&gt;(_GLIBCXX_STDIO_EOF); }</span>
+<span class="lineNum">     294 </span><span class="lineCov">          2 :       eof()</span>
+<span class="lineNum">     295 </span><span class="lineCov">          2 :       { return static_cast&lt;int_type&gt;(_GLIBCXX_STDIO_EOF); }</span>
 <span class="lineNum">     296 </span>            : 
 <span class="lineNum">     297 </span>            :       static _GLIBCXX_CONSTEXPR int_type
 <span class="lineNum">     298 </span>            :       not_eof(const int_type&amp; __c)

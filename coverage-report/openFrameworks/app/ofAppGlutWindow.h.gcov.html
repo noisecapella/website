@@ -60,7 +60,81 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofAppBaseWindow.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofEvents.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofTypes.h&quot;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : //class ofPoint;
+<span class="lineNum">       9 </span>            : class ofBaseApp;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : class ofAppGlutWindow : public ofAppBaseWindow {
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : public:
+<a name="14"><span class="lineNum">      14 </span>            : </a>
+<span class="lineNum">      15 </span>            :         ofAppGlutWindow();
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         ~ofAppGlutWindow(){}</span>
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :         void setupOpenGL(int w, int h, int screenMode);
+<span class="lineNum">      19 </span>            :         
+<span class="lineNum">      20 </span>            :         void setDoubleBuffering(bool _bDoubleBuffered); 
+<span class="lineNum">      21 </span>            :         
+<span class="lineNum">      22 </span>            :         void initializeWindow();
+<span class="lineNum">      23 </span>            :         void runAppViaInfiniteLoop(ofBaseApp * appPtr);
+<span class="lineNum">      24 </span>            :         
+<span class="lineNum">      25 </span>            :         //note if you fail to set a compatible string the app will not launch
+<span class="lineNum">      26 </span>            :         void setGlutDisplayString(string str);
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :         void hideCursor();
+<span class="lineNum">      29 </span>            :         void showCursor();
+<span class="lineNum">      30 </span>            :         
+<span class="lineNum">      31 </span>            :         void setFullscreen(bool fullScreen);
+<span class="lineNum">      32 </span>            :         void toggleFullscreen();
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         void setWindowTitle(string title);
+<span class="lineNum">      35 </span>            :         void setWindowPosition(int x, int y);
+<span class="lineNum">      36 </span>            :         void setWindowShape(int w, int h);
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :         ofPoint         getWindowPosition();
+<span class="lineNum">      39 </span>            :         ofPoint         getWindowSize();
+<span class="lineNum">      40 </span>            :         ofPoint         getScreenSize();
+<span class="lineNum">      41 </span>            :         
+<span class="lineNum">      42 </span>            :         void                    setOrientation(ofOrientation orientation);
+<span class="lineNum">      43 </span>            :         ofOrientation   getOrientation();
+<span class="lineNum">      44 </span>            :         
+<span class="lineNum">      45 </span>            :         int                     getWidth();
+<span class="lineNum">      46 </span>            :         int                     getHeight();    
+<span class="lineNum">      47 </span>            :         
+<span class="lineNum">      48 </span>            :         int                     getWindowMode();
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :         int                     getFrameNum();
+<span class="lineNum">      51 </span>            :         float           getFrameRate();
+<span class="lineNum">      52 </span>            :         double          getLastFrameTime();
+<span class="lineNum">      53 </span>            :         void            setFrameRate(float targetRate);
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :         void            enableSetupScreen();
+<span class="lineNum">      56 </span>            :         void            disableSetupScreen();
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :         static void display(void);
+<span class="lineNum">      59 </span>            :         static void mouse_cb(int button, int state, int x, int y);
+<span class="lineNum">      60 </span>            :         static void motion_cb(int x, int y);
+<span class="lineNum">      61 </span>            :         static void passive_motion_cb(int x, int y);
+<span class="lineNum">      62 </span>            :         static void idle_cb(void);
+<span class="lineNum">      63 </span>            :         static void keyboard_cb(unsigned char key, int x, int y);
+<span class="lineNum">      64 </span>            :         static void keyboard_up_cb(unsigned char key, int x, int y);
+<span class="lineNum">      65 </span>            :         static void special_key_cb(int key, int x, int y) ;
+<span class="lineNum">      66 </span>            :         static void special_key_up_cb(int key, int x, int y) ;
+<span class="lineNum">      67 </span>            :         static void resize_cb(int w, int h);
+<span class="lineNum">      68 </span>            :         static void entry_cb(int state);
+<span class="lineNum">      69 </span>            :         static void dragEvent(char ** fileNames, int howManyFiles, int dragX, int dragY);
+<span class="lineNum">      70 </span>            :         string displayString;
+<span class="lineNum">      71 </span>            :         
+<span class="lineNum">      72 </span>            :         
+<span class="lineNum">      73 </span>            :                  
+<span class="lineNum">      74 </span>            : };
+<span class="lineNum">      75 </span>            : 
 </pre>
       </td>
     </tr>

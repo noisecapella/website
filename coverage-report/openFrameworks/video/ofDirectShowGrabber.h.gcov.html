@@ -60,7 +60,67 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofTexture.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofBaseTypes.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofPixels.h&quot;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : #ifdef OF_VIDEO_CAPTURE_DIRECTSHOW
+<span class="lineNum">       9 </span>            :         #include &quot;videoInput.h&quot;
+<span class="lineNum">      10 </span>            : #endif
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : class ofDirectShowGrabber : public ofBaseVideoGrabber{
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :         public :
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            :                 ofDirectShowGrabber();
+<span class="lineNum">      18 </span>            :                 virtual ~ofDirectShowGrabber();
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :                 void                                    listDevices();
+<span class="lineNum">      21 </span>            :                 bool                                    initGrabber(int w, int h);
+<span class="lineNum">      22 </span>            :                 void                                    update();
+<span class="lineNum">      23 </span>            :                 bool                                    isFrameNew();
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :                 unsigned char           *       getPixels();
+<span class="lineNum">      26 </span>            :                 ofPixelsRef                             getPixelsRef();
+<span class="lineNum">      27 </span>            :                 
+<span class="lineNum">      28 </span>            :                 void                                    close();
+<span class="lineNum">      29 </span>            :                 void                                    clearMemory();
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 void                                    videoSettings();
+<span class="lineNum">      32 </span>            :                 
+<span class="lineNum">      33 </span>            :                 float                                   getWidth();
+<span class="lineNum">      34 </span>            :                 float                                   getHeight();
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 void                                    setVerbose(bool bTalkToMe);
+<span class="lineNum">      37 </span>            :                 void                                    setDeviceID(int _deviceID);
+<span class="lineNum">      38 </span>            :                 void                                    setDesiredFrameRate(int framerate);
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :         protected:
+<span class="lineNum">      44 </span>            :         
+<span class="lineNum">      45 </span>            :                 bool                                    bChooseDevice;
+<span class="lineNum">      46 </span>            :                 int                                             deviceID;
+<span class="lineNum">      47 </span>            :                 bool                                    bVerbose;
+<span class="lineNum">      48 </span>            :                 bool                                    bGrabberInited;
+<span class="lineNum">      49 </span>            :             ofPixels                            pixels;
+<span class="lineNum">      50 </span>            :                 int                                             attemptFramerate;
+<span class="lineNum">      51 </span>            :                 bool                                    bIsFrameNew;    
+<span class="lineNum">      52 </span>            :                 
+<span class="lineNum">      53 </span>            :                 int                                             width, height;  
+<span class="lineNum">      54 </span>            :                 //--------------------------------- directshow
+<span class="lineNum">      55 </span>            :                 #ifdef OF_VIDEO_CAPTURE_DIRECTSHOW
+<span class="lineNum">      56 </span>            :                         int                                     device;
+<span class="lineNum">      57 </span>            :                         videoInput                              VI;
+<a name="58"><span class="lineNum">      58 </span>            :                         bool                                    bDoWeNeedToResize;</a>
+<span class="lineNum">      59 </span>            :                 #endif  
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 : };</span>
+<span class="lineNum">      61 </span>            : 
 </pre>
       </td>
     </tr>

@@ -60,7 +60,46 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : #pragma once
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : //----------------------------------------------------------
+<span class="lineNum">       9 </span>            : // ofBaseSoundPlayer
+<span class="lineNum">      10 </span>            : //----------------------------------------------------------
+<span class="lineNum">      11 </span>            : class ofBaseSoundPlayer {
+<span class="lineNum">      12 </span>            :         
+<a name="13"><span class="lineNum">      13 </span>            : public:</a>
+<a name="14"><span class="lineNum">      14 </span>            :         </a>
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         ofBaseSoundPlayer(){};</span>
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         virtual ~ofBaseSoundPlayer(){};</span>
+<span class="lineNum">      17 </span>            :         
+<span class="lineNum">      18 </span>            :         virtual bool loadSound(string fileName, bool stream = false) = 0;
+<span class="lineNum">      19 </span>            :         virtual void unloadSound() = 0;
+<span class="lineNum">      20 </span>            :         virtual void play() = 0;
+<span class="lineNum">      21 </span>            :         virtual void stop() = 0;
+<span class="lineNum">      22 </span>            :         
+<span class="lineNum">      23 </span>            :         virtual void setVolume(float vol) = 0;
+<span class="lineNum">      24 </span>            :         virtual void setPan(float vol) = 0; // -1 = left, 1 = right
+<span class="lineNum">      25 </span>            :         virtual void setSpeed(float spd) = 0;
+<span class="lineNum">      26 </span>            :         virtual void setPaused(bool bP) = 0;
+<span class="lineNum">      27 </span>            :         virtual void setLoop(bool bLp) = 0;
+<span class="lineNum">      28 </span>            :         virtual void setMultiPlay(bool bMp) = 0;
+<span class="lineNum">      29 </span>            :         virtual void setPosition(float pct) = 0; // 0 = start, 1 = end;
+<span class="lineNum">      30 </span>            :         virtual void setPositionMS(int ms) = 0;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :         virtual float getPosition() = 0;
+<span class="lineNum">      33 </span>            :         virtual int getPositionMS() = 0;
+<span class="lineNum">      34 </span>            :         virtual bool getIsPlaying() = 0;
+<span class="lineNum">      35 </span>            :         virtual float getSpeed() = 0;
+<span class="lineNum">      36 </span>            :         virtual float getPan() = 0;
+<span class="lineNum">      37 </span>            :         virtual bool isLoaded() = 0;
+<a name="38"><span class="lineNum">      38 </span>            :         virtual float getVolume() = 0;</a>
+<span class="lineNum">      39 </span>            :         
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : };</span>
 </pre>
       </td>
     </tr>
