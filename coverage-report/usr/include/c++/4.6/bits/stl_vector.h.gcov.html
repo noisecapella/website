@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - /usr/include/c++/4.6/bits/stl_vector.h</title>
+  <title>LCOV - .coverage.total - /usr/include/c++/4.6/bits/stl_vector.h</title>
   <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">126</td>
@@ -41,8 +41,8 @@
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">707</td>
-            <td class="headerCovTableEntry">1054</td>
-            <td class="headerCovTableEntryLo">67.1 %</td>
+            <td class="headerCovTableEntry">1109</td>
+            <td class="headerCovTableEntryLo">63.8 %</td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -140,7 +140,7 @@
 <span class="lineNum">      78 </span>            :         typename _Tp_alloc_type::pointer _M_start;
 <span class="lineNum">      79 </span>            :         typename _Tp_alloc_type::pointer _M_finish;
 <a name="80"><span class="lineNum">      80 </span>            :         typename _Tp_alloc_type::pointer _M_end_of_storage;</a>
-<span class="lineNum">      81 </span>            : 
+<a name="81"><span class="lineNum">      81 </span>            : </a>
 <span class="lineNum">      82 </span><span class="lineCov">     252148 :         _Vector_impl()</span>
 <span class="lineNum">      83 </span><span class="lineCov">     252412 :         : _Tp_alloc_type(), _M_start(0), _M_finish(0), _M_end_of_storage(0)</span>
 <a name="84"><span class="lineNum">      84 </span><span class="lineCov">     252148 :         { }</span></a>
@@ -180,7 +180,7 @@
 <a name="118"><span class="lineNum">     118 </span>            :       }</a>
 <span class="lineNum">     119 </span>            : 
 <span class="lineNum">     120 </span><span class="lineCov">     224686 :       _Vector_base(size_t __n, const allocator_type&amp; __a)</span>
-<span class="lineNum">     121 </span><span class="lineCov">     224686 :       : _M_impl(__a)</span>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">     224686 :       : _M_impl(__a)</span></a>
 <span class="lineNum">     122 </span>            :       {
 <span class="lineNum">     123 </span><span class="lineCov">     225180 :         this-&gt;_M_impl._M_start = this-&gt;_M_allocate(__n);</span>
 <span class="lineNum">     124 </span><span class="lineCov">     225180 :         this-&gt;_M_impl._M_finish = this-&gt;_M_impl._M_start;</span>
@@ -199,7 +199,7 @@
 <span class="lineNum">     137 </span>            :         __x._M_impl._M_end_of_storage = 0;
 <span class="lineNum">     138 </span>            :       }
 <a name="139"><span class="lineNum">     139 </span>            : #endif</a>
-<span class="lineNum">     140 </span>            : 
+<a name="140"><span class="lineNum">     140 </span>            : </a>
 <span class="lineNum">     141 </span><span class="lineCov">     436234 :       ~_Vector_base()</span>
 <span class="lineNum">     142 </span><span class="lineCov">     436265 :       { _M_deallocate(this-&gt;_M_impl._M_start, this-&gt;_M_impl._M_end_of_storage</span>
 <span class="lineNum">     143 </span><span class="lineCov">     436234 :                       - this-&gt;_M_impl._M_start); }</span>
@@ -470,7 +470,7 @@
 <span class="lineNum">     408 </span>            :        *  %vector and that the resulting %vector's size is the same as
 <span class="lineNum">     409 </span>            :        *  the number of elements assigned.  Old data may be lost.
 <a name="410"><span class="lineNum">     410 </span>            :        */</a>
-<span class="lineNum">     411 </span>            :       void
+<a name="411"><span class="lineNum">     411 </span>            :       void</a>
 <span class="lineNum">     412 </span><span class="lineCov">          4 :       assign(size_type __n, const value_type&amp; __val)</span>
 <span class="lineNum">     413 </span><span class="lineCov">          4 :       { _M_fill_assign(__n, __val); }</span>
 <span class="lineNum">     414 </span>            : 
@@ -885,7 +885,7 @@
 <span class="lineNum">     823 </span>            :        *  available.
 <a name="824"><span class="lineNum">     824 </span>            :        */</a>
 <span class="lineNum">     825 </span>            :       void
-<span class="lineNum">     826 </span><span class="lineCov">  168983064 :       push_back(const value_type&amp; __x)</span>
+<a name="826"><span class="lineNum">     826 </span><span class="lineCov">  168983064 :       push_back(const value_type&amp; __x)</span></a>
 <span class="lineNum">     827 </span>            :       {
 <span class="lineNum">     828 </span><span class="lineCov">  169098864 :         if (this-&gt;_M_impl._M_finish != this-&gt;_M_impl._M_end_of_storage)</span>
 <span class="lineNum">     829 </span>            :           {

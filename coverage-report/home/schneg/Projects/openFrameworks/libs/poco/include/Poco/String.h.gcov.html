@@ -1,0 +1,675 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/poco/include/Poco/String.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/poco/include/Poco</a> - String.h<span style="font-size: 80%;"> (source / <a href="String.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntryLo">42.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : //</a>
+<span class="lineNum">       2 </span>            : // String.h
+<span class="lineNum">       3 </span>            : //
+<span class="lineNum">       4 </span>            : // $Id: //poco/1.4/Foundation/include/Poco/String.h#1 $
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : // Library: Foundation
+<span class="lineNum">       7 </span>            : // Package: Core
+<span class="lineNum">       8 </span>            : // Module:  String
+<span class="lineNum">       9 </span>            : //
+<span class="lineNum">      10 </span>            : // String utility functions.
+<span class="lineNum">      11 </span>            : //
+<span class="lineNum">      12 </span>            : // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
+<span class="lineNum">      13 </span>            : // and Contributors.
+<span class="lineNum">      14 </span>            : //
+<span class="lineNum">      15 </span>            : // Permission is hereby granted, free of charge, to any person or organization
+<span class="lineNum">      16 </span>            : // obtaining a copy of the software and accompanying documentation covered by
+<span class="lineNum">      17 </span>            : // this license (the &quot;Software&quot;) to use, reproduce, display, distribute,
+<span class="lineNum">      18 </span>            : // execute, and transmit the Software, and to prepare derivative works of the
+<span class="lineNum">      19 </span>            : // Software, and to permit third-parties to whom the Software is furnished to
+<span class="lineNum">      20 </span>            : // do so, all subject to the following:
+<span class="lineNum">      21 </span>            : // 
+<span class="lineNum">      22 </span>            : // The copyright notices in the Software and this entire statement, including
+<span class="lineNum">      23 </span>            : // the above license grant, this restriction and the following disclaimer,
+<span class="lineNum">      24 </span>            : // must be included in all copies of the Software, in whole or in part, and
+<span class="lineNum">      25 </span>            : // all derivative works of the Software, unless such copies or derivative
+<span class="lineNum">      26 </span>            : // works are solely in the form of machine-executable object code generated by
+<span class="lineNum">      27 </span>            : // a source language processor.
+<span class="lineNum">      28 </span>            : // 
+<span class="lineNum">      29 </span>            : // THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<span class="lineNum">      30 </span>            : // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<span class="lineNum">      31 </span>            : // FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+<span class="lineNum">      32 </span>            : // SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+<span class="lineNum">      33 </span>            : // FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+<span class="lineNum">      34 </span>            : // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+<span class="lineNum">      35 </span>            : // DEALINGS IN THE SOFTWARE.
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #ifndef Foundation_String_INCLUDED
+<span class="lineNum">      40 </span>            : #define Foundation_String_INCLUDED
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : #include &quot;Poco/Foundation.h&quot;
+<span class="lineNum">      44 </span>            : #include &quot;Poco/Ascii.h&quot;
+<span class="lineNum">      45 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : namespace Poco {
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : template &lt;class S&gt;
+<span class="lineNum">      52 </span>            : S trimLeft(const S&amp; str)
+<span class="lineNum">      53 </span>            :         /// Returns a copy of str with all leading
+<span class="lineNum">      54 </span>            :         /// whitespace removed.
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            :         typename S::const_iterator it  = str.begin();
+<span class="lineNum">      57 </span>            :         typename S::const_iterator end = str.end();
+<span class="lineNum">      58 </span>            :         
+<span class="lineNum">      59 </span>            :         while (it != end &amp;&amp; Ascii::isSpace(*it)) ++it;
+<span class="lineNum">      60 </span>            :         return S(it, end);
+<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : template &lt;class S&gt;
+<span class="lineNum">      65 </span>            : S&amp; trimLeftInPlace(S&amp; str)
+<span class="lineNum">      66 </span>            :         /// Removes all leading whitespace in str.
+<span class="lineNum">      67 </span>            : {
+<span class="lineNum">      68 </span>            :         typename S::iterator it  = str.begin();
+<span class="lineNum">      69 </span>            :         typename S::iterator end = str.end();
+<span class="lineNum">      70 </span>            :         
+<span class="lineNum">      71 </span>            :         while (it != end &amp;&amp; Ascii::isSpace(*it)) ++it;
+<span class="lineNum">      72 </span>            :         str.erase(str.begin(), it);
+<span class="lineNum">      73 </span>            :         return str;
+<span class="lineNum">      74 </span>            : }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            : template &lt;class S&gt;
+<span class="lineNum">      78 </span>            : S trimRight(const S&amp; str)
+<span class="lineNum">      79 </span>            :         /// Returns a copy of str with all trailing
+<span class="lineNum">      80 </span>            :         /// whitespace removed.
+<span class="lineNum">      81 </span>            : {
+<span class="lineNum">      82 </span>            :         int pos = int(str.size()) - 1;
+<span class="lineNum">      83 </span>            :                 
+<span class="lineNum">      84 </span>            :         while (pos &gt;= 0 &amp;&amp; Ascii::isSpace(str[pos])) --pos;
+<span class="lineNum">      85 </span>            :         return S(str, 0, pos + 1);
+<span class="lineNum">      86 </span>            : }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            : template &lt;class S&gt;
+<span class="lineNum">      90 </span>            : S&amp; trimRightInPlace(S&amp; str)
+<span class="lineNum">      91 </span>            :         /// Removes all trailing whitespace in str.
+<span class="lineNum">      92 </span>            : {
+<span class="lineNum">      93 </span>            :         int pos = int(str.size()) - 1;
+<span class="lineNum">      94 </span>            :                 
+<span class="lineNum">      95 </span>            :         while (pos &gt;= 0 &amp;&amp; Ascii::isSpace(str[pos])) --pos;
+<span class="lineNum">      96 </span>            :         str.resize(pos + 1);
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :         return str;
+<span class="lineNum">      99 </span>            : }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            : template &lt;class S&gt;
+<span class="lineNum">     103 </span>            : S trim(const S&amp; str)
+<span class="lineNum">     104 </span>            :         /// Returns a copy of str with all leading and
+<span class="lineNum">     105 </span>            :         /// trailing whitespace removed.
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span>            :         int first = 0;
+<span class="lineNum">     108 </span>            :         int last  = int(str.size()) - 1;
+<span class="lineNum">     109 </span>            :         
+<span class="lineNum">     110 </span>            :         while (first &lt;= last &amp;&amp; Ascii::isSpace(str[first])) ++first;
+<span class="lineNum">     111 </span>            :         while (last &gt;= first &amp;&amp; Ascii::isSpace(str[last])) --last;
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :         return S(str, first, last - first + 1);
+<span class="lineNum">     114 </span>            : }
+<span class="lineNum">     115 </span>            : 
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<span class="lineNum">     117 </span>            : template &lt;class S&gt;
+<span class="lineNum">     118 </span><span class="lineCov">       1136 : S&amp; trimInPlace(S&amp; str)</span>
+<span class="lineNum">     119 </span>            :         /// Removes all leading and trailing whitespace in str.
+<span class="lineNum">     120 </span>            : {
+<span class="lineNum">     121 </span><span class="lineCov">       1136 :         int first = 0;</span>
+<span class="lineNum">     122 </span><span class="lineCov">       1136 :         int last  = int(str.size()) - 1;</span>
+<span class="lineNum">     123 </span>            :         
+<span class="lineNum">     124 </span><span class="lineCov">       1152 :         while (first &lt;= last &amp;&amp; Ascii::isSpace(str[first])) ++first;</span>
+<span class="lineNum">     125 </span><span class="lineCov">       1140 :         while (last &gt;= first &amp;&amp; Ascii::isSpace(str[last])) --last;</span>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">       1136 :         str.resize(last + 1);</span>
+<span class="lineNum">     128 </span><span class="lineCov">       1136 :         str.erase(0, first);</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineCov">       1136 :         return str;</span>
+<span class="lineNum">     131 </span>            : }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            : template &lt;class S&gt;
+<span class="lineNum">     135 </span>            : S toUpper(const S&amp; str)
+<span class="lineNum">     136 </span>            :         /// Returns a copy of str containing all upper-case characters.
+<span class="lineNum">     137 </span>            : {
+<span class="lineNum">     138 </span>            :         typename S::const_iterator it  = str.begin();
+<span class="lineNum">     139 </span>            :         typename S::const_iterator end = str.end();
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :         S result;
+<span class="lineNum">     142 </span>            :         result.reserve(str.size());
+<span class="lineNum">     143 </span>            :         while (it != end) result += Ascii::toUpper(*it++);
+<span class="lineNum">     144 </span>            :         return result;
+<span class="lineNum">     145 </span>            : }
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            : template &lt;class S&gt;
+<span class="lineNum">     149 </span>            : S&amp; toUpperInPlace(S&amp; str)
+<span class="lineNum">     150 </span>            :         /// Replaces all characters in str with their upper-case counterparts.
+<span class="lineNum">     151 </span>            : {
+<span class="lineNum">     152 </span>            :         typename S::iterator it  = str.begin();
+<span class="lineNum">     153 </span>            :         typename S::iterator end = str.end();
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :         while (it != end) { *it = Ascii::toUpper(*it); ++it; }
+<span class="lineNum">     156 </span>            :         return str;
+<span class="lineNum">     157 </span>            : }
+<span class="lineNum">     158 </span>            : 
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<span class="lineNum">     160 </span>            : template &lt;class S&gt;
+<span class="lineNum">     161 </span><span class="lineCov">         20 : S toLower(const S&amp; str)</span>
+<span class="lineNum">     162 </span>            :         /// Returns a copy of str containing all lower-case characters.
+<span class="lineNum">     163 </span>            : {
+<span class="lineNum">     164 </span><span class="lineCov">         20 :         typename S::const_iterator it  = str.begin();</span>
+<span class="lineNum">     165 </span><span class="lineCov">         20 :         typename S::const_iterator end = str.end();</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">         20 :         S result;</span>
+<span class="lineNum">     168 </span><span class="lineCov">         20 :         result.reserve(str.size());</span>
+<span class="lineNum">     169 </span><span class="lineCov">         92 :         while (it != end) result += Ascii::toLower(*it++);</span>
+<span class="lineNum">     170 </span><span class="lineCov">         20 :         return result;</span>
+<span class="lineNum">     171 </span>            : }
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            : template &lt;class S&gt;
+<span class="lineNum">     175 </span>            : S&amp; toLowerInPlace(S&amp; str)
+<span class="lineNum">     176 </span>            :         /// Replaces all characters in str with their lower-case counterparts.
+<span class="lineNum">     177 </span>            : {
+<span class="lineNum">     178 </span>            :         typename S::iterator it  = str.begin();
+<span class="lineNum">     179 </span>            :         typename S::iterator end = str.end();
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            :         while (it != end) { *it = Ascii::toLower(*it); ++it; }
+<span class="lineNum">     182 </span>            :         return str;
+<span class="lineNum">     183 </span>            : }
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            : #if !defined(POCO_NO_TEMPLATE_ICOMPARE)
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            : template &lt;class S, class It&gt;
+<span class="lineNum">     190 </span>            : int icompare(
+<span class="lineNum">     191 </span>            :         const S&amp; str,
+<span class="lineNum">     192 </span>            :         typename S::size_type pos, 
+<span class="lineNum">     193 </span>            :         typename S::size_type n,
+<span class="lineNum">     194 </span>            :         It it2, 
+<span class="lineNum">     195 </span>            :         It end2)
+<span class="lineNum">     196 </span>            :         /// Case-insensitive string comparison
+<span class="lineNum">     197 </span>            : {
+<span class="lineNum">     198 </span>            :         typename S::size_type sz = str.size();
+<span class="lineNum">     199 </span>            :         if (pos &gt; sz) pos = sz;
+<span class="lineNum">     200 </span>            :         if (pos + n &gt; sz) n = sz - pos;
+<span class="lineNum">     201 </span>            :         It it1  = str.begin() + pos; 
+<span class="lineNum">     202 </span>            :         It end1 = str.begin() + pos + n;
+<span class="lineNum">     203 </span>            :         while (it1 != end1 &amp;&amp; it2 != end2)
+<span class="lineNum">     204 </span>            :         {
+<span class="lineNum">     205 </span>            :         typename S::value_type c1(Ascii::toLower(*it1));
+<span class="lineNum">     206 </span>            :         typename S::value_type c2(Ascii::toLower(*it2));
+<span class="lineNum">     207 </span>            :         if (c1 &lt; c2)
+<span class="lineNum">     208 </span>            :             return -1;
+<span class="lineNum">     209 </span>            :         else if (c1 &gt; c2)
+<span class="lineNum">     210 </span>            :             return 1;
+<span class="lineNum">     211 </span>            :         ++it1; ++it2;
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span>            :     
+<span class="lineNum">     214 </span>            :     if (it1 == end1)
+<span class="lineNum">     215 </span>            :                 return it2 == end2 ? 0 : -1;
+<span class="lineNum">     216 </span>            :     else
+<span class="lineNum">     217 </span>            :         return 1;
+<span class="lineNum">     218 </span>            : }
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            : template &lt;class S&gt;
+<span class="lineNum">     222 </span>            : int icompare(const S&amp; str1, const S&amp; str2)
+<span class="lineNum">     223 </span>            :         // A special optimization for an often used case.
+<span class="lineNum">     224 </span>            : {
+<span class="lineNum">     225 </span>            :         typename S::const_iterator it1(str1.begin());
+<span class="lineNum">     226 </span>            :         typename S::const_iterator end1(str1.end());
+<span class="lineNum">     227 </span>            :         typename S::const_iterator it2(str2.begin());
+<span class="lineNum">     228 </span>            :         typename S::const_iterator end2(str2.end());
+<span class="lineNum">     229 </span>            :         while (it1 != end1 &amp;&amp; it2 != end2)
+<span class="lineNum">     230 </span>            :         {
+<span class="lineNum">     231 </span>            :         typename S::value_type c1(Ascii::toLower(*it1));
+<span class="lineNum">     232 </span>            :         typename S::value_type c2(Ascii::toLower(*it2));
+<span class="lineNum">     233 </span>            :         if (c1 &lt; c2)
+<span class="lineNum">     234 </span>            :             return -1;
+<span class="lineNum">     235 </span>            :         else if (c1 &gt; c2)
+<span class="lineNum">     236 </span>            :             return 1;
+<span class="lineNum">     237 </span>            :         ++it1; ++it2;
+<span class="lineNum">     238 </span>            :         }
+<span class="lineNum">     239 </span>            :     
+<span class="lineNum">     240 </span>            :     if (it1 == end1)
+<span class="lineNum">     241 </span>            :                 return it2 == end2 ? 0 : -1;
+<span class="lineNum">     242 </span>            :     else
+<span class="lineNum">     243 </span>            :         return 1;
+<span class="lineNum">     244 </span>            : }
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : template &lt;class S&gt;
+<span class="lineNum">     248 </span>            : int icompare(const S&amp; str1, typename S::size_type n1, const S&amp; str2, typename S::size_type n2)
+<span class="lineNum">     249 </span>            : {
+<span class="lineNum">     250 </span>            :         if (n2 &gt; str2.size()) n2 = str2.size();
+<span class="lineNum">     251 </span>            :         return icompare(str1, 0, n1, str2.begin(), str2.begin() + n2);
+<span class="lineNum">     252 </span>            : }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            : template &lt;class S&gt;
+<span class="lineNum">     256 </span>            : int icompare(const S&amp; str1, typename S::size_type n, const S&amp; str2)
+<span class="lineNum">     257 </span>            : {
+<span class="lineNum">     258 </span>            :         if (n &gt; str2.size()) n = str2.size();
+<span class="lineNum">     259 </span>            :         return icompare(str1, 0, n, str2.begin(), str2.begin() + n);
+<span class="lineNum">     260 </span>            : }
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            : template &lt;class S&gt;
+<span class="lineNum">     264 </span>            : int icompare(const S&amp; str1, typename S::size_type pos, typename S::size_type n, const S&amp; str2)
+<span class="lineNum">     265 </span>            : {
+<span class="lineNum">     266 </span>            :         return icompare(str1, pos, n, str2.begin(), str2.end());
+<span class="lineNum">     267 </span>            : }
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            : template &lt;class S&gt;
+<span class="lineNum">     271 </span>            : int icompare(
+<span class="lineNum">     272 </span>            :         const S&amp; str1, 
+<span class="lineNum">     273 </span>            :         typename S::size_type pos1, 
+<span class="lineNum">     274 </span>            :         typename S::size_type n1, 
+<span class="lineNum">     275 </span>            :         const S&amp; str2,
+<span class="lineNum">     276 </span>            :         typename S::size_type pos2,
+<span class="lineNum">     277 </span>            :         typename S::size_type n2)
+<span class="lineNum">     278 </span>            : {
+<span class="lineNum">     279 </span>            :         typename S::size_type sz2 = str2.size();
+<span class="lineNum">     280 </span>            :         if (pos2 &gt; sz2) pos2 = sz2;
+<span class="lineNum">     281 </span>            :         if (pos2 + n2 &gt; sz2) n2 = sz2 - pos2;
+<span class="lineNum">     282 </span>            :         return icompare(str1, pos1, n1, str2.begin() + pos2, str2.begin() + pos2 + n2);
+<span class="lineNum">     283 </span>            : }
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            : template &lt;class S&gt;
+<span class="lineNum">     287 </span>            : int icompare(
+<span class="lineNum">     288 </span>            :         const S&amp; str1, 
+<span class="lineNum">     289 </span>            :         typename S::size_type pos1, 
+<span class="lineNum">     290 </span>            :         typename S::size_type n, 
+<span class="lineNum">     291 </span>            :         const S&amp; str2,
+<span class="lineNum">     292 </span>            :         typename S::size_type pos2)
+<span class="lineNum">     293 </span>            : {
+<span class="lineNum">     294 </span>            :         typename S::size_type sz2 = str2.size();
+<span class="lineNum">     295 </span>            :         if (pos2 &gt; sz2) pos2 = sz2;
+<span class="lineNum">     296 </span>            :         if (pos2 + n &gt; sz2) n = sz2 - pos2;
+<span class="lineNum">     297 </span>            :         return icompare(str1, pos1, n, str2.begin() + pos2, str2.begin() + pos2 + n);
+<span class="lineNum">     298 </span>            : }
+<span class="lineNum">     299 </span>            : 
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<span class="lineNum">     301 </span>            : template &lt;class S&gt;
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 : int icompare(</span>
+<span class="lineNum">     303 </span>            :         const S&amp; str,
+<span class="lineNum">     304 </span>            :         typename S::size_type pos,
+<span class="lineNum">     305 </span>            :         typename S::size_type n,
+<span class="lineNum">     306 </span>            :         const typename S::value_type* ptr)
+<span class="lineNum">     307 </span>            : {
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :         poco_check_ptr (ptr);</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :         typename S::size_type sz = str.size();</span>
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :         if (pos &gt; sz) pos = sz;</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :         if (pos + n &gt; sz) n = sz - pos;</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :         typename S::const_iterator it  = str.begin() + pos; </span>
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :         typename S::const_iterator end = str.begin() + pos + n;</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :         while (it != end &amp;&amp; *ptr)</span>
+<span class="lineNum">     315 </span>            :         {
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         typename S::value_type c1(Ascii::toLower(*it));</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         typename S::value_type c2(Ascii::toLower(*ptr));</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         if (c1 &lt; c2)</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :             return -1;</span>
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 :         else if (c1 &gt; c2)</span>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :             return 1;</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         ++it; ++ptr;</span>
+<span class="lineNum">     323 </span>            :         }
+<span class="lineNum">     324 </span>            :     
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     if (it == end)</span>
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :                 return *ptr == 0 ? 0 : -1;</span>
+<span class="lineNum">     327 </span>            :     else
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :         return 1;</span>
+<span class="lineNum">     329 </span>            : }
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            : template &lt;class S&gt;
+<span class="lineNum">     333 </span>            : int icompare(
+<span class="lineNum">     334 </span>            :         const S&amp; str,
+<span class="lineNum">     335 </span>            :         typename S::size_type pos,
+<span class="lineNum">     336 </span>            :         const typename S::value_type* ptr)
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span>            :         return icompare(str, pos, str.size() - pos, ptr);
+<span class="lineNum">     339 </span>            : }
+<span class="lineNum">     340 </span>            : 
+<a name="341"><span class="lineNum">     341 </span>            : </a>
+<span class="lineNum">     342 </span>            : template &lt;class S&gt;
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 : int icompare(</span>
+<span class="lineNum">     344 </span>            :         const S&amp; str,
+<span class="lineNum">     345 </span>            :         const typename S::value_type* ptr)
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span><span class="lineNoCov">          0 :         return icompare(str, 0, str.size(), ptr);</span>
+<span class="lineNum">     348 </span>            : }
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            : #else
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            : int Foundation_API icompare(const std::string&amp; str, std::string::size_type pos, std::string::size_type n, std::string::const_iterator it2, std::string::const_iterator end2);
+<span class="lineNum">     355 </span>            : int Foundation_API icompare(const std::string&amp; str1, const std::string&amp; str2);
+<span class="lineNum">     356 </span>            : int Foundation_API icompare(const std::string&amp; str1, std::string::size_type n1, const std::string&amp; str2, std::string::size_type n2);
+<span class="lineNum">     357 </span>            : int Foundation_API icompare(const std::string&amp; str1, std::string::size_type n, const std::string&amp; str2);
+<span class="lineNum">     358 </span>            : int Foundation_API icompare(const std::string&amp; str1, std::string::size_type pos, std::string::size_type n, const std::string&amp; str2);
+<span class="lineNum">     359 </span>            : int Foundation_API icompare(const std::string&amp; str1, std::string::size_type pos1, std::string::size_type n1, const std::string&amp; str2, std::string::size_type pos2, std::string::size_type n2);
+<span class="lineNum">     360 </span>            : int Foundation_API icompare(const std::string&amp; str1, std::string::size_type pos1, std::string::size_type n, const std::string&amp; str2, std::string::size_type pos2);
+<span class="lineNum">     361 </span>            : int Foundation_API icompare(const std::string&amp; str, std::string::size_type pos, std::string::size_type n, const std::string::value_type* ptr);
+<span class="lineNum">     362 </span>            : int Foundation_API icompare(const std::string&amp; str, std::string::size_type pos, const std::string::value_type* ptr);
+<span class="lineNum">     363 </span>            : int Foundation_API icompare(const std::string&amp; str, const std::string::value_type* ptr);
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            : #endif
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : template &lt;class S&gt;
+<span class="lineNum">     370 </span>            : S translate(const S&amp; str, const S&amp; from, const S&amp; to)
+<span class="lineNum">     371 </span>            :         /// Returns a copy of str with all characters in
+<span class="lineNum">     372 </span>            :         /// from replaced by the corresponding (by position)
+<span class="lineNum">     373 </span>            :         /// characters in to. If there is no corresponding
+<span class="lineNum">     374 </span>            :         /// character in to, the character is removed from
+<span class="lineNum">     375 </span>            :         /// the copy. 
+<span class="lineNum">     376 </span>            : {
+<span class="lineNum">     377 </span>            :         S result;
+<span class="lineNum">     378 </span>            :         result.reserve(str.size());
+<span class="lineNum">     379 </span>            :         typename S::const_iterator it  = str.begin();
+<span class="lineNum">     380 </span>            :         typename S::const_iterator end = str.end();
+<span class="lineNum">     381 </span>            :         typename S::size_type toSize = to.size();
+<span class="lineNum">     382 </span>            :         while (it != end)
+<span class="lineNum">     383 </span>            :         {
+<span class="lineNum">     384 </span>            :                 typename S::size_type pos = from.find(*it);
+<span class="lineNum">     385 </span>            :                 if (pos == S::npos)
+<span class="lineNum">     386 </span>            :                 {
+<span class="lineNum">     387 </span>            :                         result += *it;
+<span class="lineNum">     388 </span>            :                 }
+<span class="lineNum">     389 </span>            :                 else
+<span class="lineNum">     390 </span>            :                 {
+<span class="lineNum">     391 </span>            :                         if (pos &lt; toSize) result += to[pos];
+<span class="lineNum">     392 </span>            :                 }
+<span class="lineNum">     393 </span>            :                 ++it;
+<span class="lineNum">     394 </span>            :         }
+<span class="lineNum">     395 </span>            :         return result;
+<span class="lineNum">     396 </span>            : }
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            : template &lt;class S&gt;
+<span class="lineNum">     400 </span>            : S translate(const S&amp; str, const typename S::value_type* from, const typename S::value_type* to)
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span>            :         poco_check_ptr (from);
+<span class="lineNum">     403 </span>            :         poco_check_ptr (to);
+<span class="lineNum">     404 </span>            :         return translate(str, S(from), S(to));
+<span class="lineNum">     405 </span>            : }
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span>            : template &lt;class S&gt;
+<span class="lineNum">     409 </span>            : S&amp; translateInPlace(S&amp; str, const S&amp; from, const S&amp; to)
+<span class="lineNum">     410 </span>            :         /// Replaces in str all occurences of characters in from
+<span class="lineNum">     411 </span>            :         /// with the corresponding (by position) characters in to.
+<span class="lineNum">     412 </span>            :         /// If there is no corresponding character, the character
+<span class="lineNum">     413 </span>            :         /// is removed.
+<span class="lineNum">     414 </span>            : {
+<span class="lineNum">     415 </span>            :         str = translate(str, from, to);
+<span class="lineNum">     416 </span>            :         return str;
+<span class="lineNum">     417 </span>            : }
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span>            : template &lt;class S&gt;
+<span class="lineNum">     421 </span>            : S translateInPlace(S&amp; str, const typename S::value_type* from, const typename S::value_type* to)
+<span class="lineNum">     422 </span>            : {
+<span class="lineNum">     423 </span>            :         poco_check_ptr (from);
+<span class="lineNum">     424 </span>            :         poco_check_ptr (to);
+<span class="lineNum">     425 </span>            :         str = translate(str, S(from), S(to));
+<span class="lineNum">     426 </span>            :         return str;
+<span class="lineNum">     427 </span>            : }
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span>            : #if !defined(POCO_NO_TEMPLATE_ICOMPARE)
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            : template &lt;class S&gt;
+<span class="lineNum">     434 </span>            : S&amp; replaceInPlace(S&amp; str, const S&amp; from, const S&amp; to, typename S::size_type start = 0)
+<span class="lineNum">     435 </span>            : {
+<span class="lineNum">     436 </span>            :         poco_assert (from.size() &gt; 0);
+<span class="lineNum">     437 </span>            :         
+<span class="lineNum">     438 </span>            :         S result;
+<span class="lineNum">     439 </span>            :         typename S::size_type pos = 0;
+<span class="lineNum">     440 </span>            :         result.append(str, 0, start);
+<span class="lineNum">     441 </span>            :         do
+<span class="lineNum">     442 </span>            :         {
+<span class="lineNum">     443 </span>            :                 pos = str.find(from, start);
+<span class="lineNum">     444 </span>            :                 if (pos != S::npos)
+<span class="lineNum">     445 </span>            :                 {
+<span class="lineNum">     446 </span>            :                         result.append(str, start, pos - start);
+<span class="lineNum">     447 </span>            :                         result.append(to);
+<span class="lineNum">     448 </span>            :                         start = pos + from.length();
+<span class="lineNum">     449 </span>            :                 }
+<span class="lineNum">     450 </span>            :                 else result.append(str, start, str.size() - start);
+<span class="lineNum">     451 </span>            :         }
+<span class="lineNum">     452 </span>            :         while (pos != S::npos);
+<span class="lineNum">     453 </span>            :         str.swap(result);
+<span class="lineNum">     454 </span>            :         return str;
+<span class="lineNum">     455 </span>            : }
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            : template &lt;class S&gt;
+<span class="lineNum">     459 </span>            : S&amp; replaceInPlace(S&amp; str, const typename S::value_type* from, const typename S::value_type* to, typename S::size_type start = 0)
+<span class="lineNum">     460 </span>            : {
+<span class="lineNum">     461 </span>            :         poco_assert (*from);
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            :         S result;
+<span class="lineNum">     464 </span>            :         typename S::size_type pos = 0;
+<span class="lineNum">     465 </span>            :         typename S::size_type fromLen = std::strlen(from);
+<span class="lineNum">     466 </span>            :         result.append(str, 0, start);
+<span class="lineNum">     467 </span>            :         do
+<span class="lineNum">     468 </span>            :         {
+<span class="lineNum">     469 </span>            :                 pos = str.find(from, start);
+<span class="lineNum">     470 </span>            :                 if (pos != S::npos)
+<span class="lineNum">     471 </span>            :                 {
+<span class="lineNum">     472 </span>            :                         result.append(str, start, pos - start);
+<span class="lineNum">     473 </span>            :                         result.append(to);
+<span class="lineNum">     474 </span>            :                         start = pos + fromLen;
+<span class="lineNum">     475 </span>            :                 }
+<span class="lineNum">     476 </span>            :                 else result.append(str, start, str.size() - start);
+<span class="lineNum">     477 </span>            :         }
+<span class="lineNum">     478 </span>            :         while (pos != S::npos);
+<span class="lineNum">     479 </span>            :         str.swap(result);
+<span class="lineNum">     480 </span>            :         return str;
+<span class="lineNum">     481 </span>            : }
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span>            : template &lt;class S&gt;
+<span class="lineNum">     485 </span>            : S replace(const S&amp; str, const S&amp; from, const S&amp; to, typename S::size_type start = 0)
+<span class="lineNum">     486 </span>            :         /// Replace all occurences of from (which must not be the empty string)
+<span class="lineNum">     487 </span>            :         /// in str with to, starting at position start.
+<span class="lineNum">     488 </span>            : {
+<span class="lineNum">     489 </span>            :         S result(str);
+<span class="lineNum">     490 </span>            :         replaceInPlace(result, from, to, start);
+<span class="lineNum">     491 </span>            :         return result;
+<span class="lineNum">     492 </span>            : }
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span>            : template &lt;class S&gt;
+<span class="lineNum">     496 </span>            : S replace(const S&amp; str, const typename S::value_type* from, const typename S::value_type* to, typename S::size_type start = 0)
+<span class="lineNum">     497 </span>            : {
+<span class="lineNum">     498 </span>            :         S result(str);
+<span class="lineNum">     499 </span>            :         replaceInPlace(result, from, to, start);
+<span class="lineNum">     500 </span>            :         return result;
+<span class="lineNum">     501 </span>            : }
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span>            : #else
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            : 
+<span class="lineNum">     507 </span>            : std::string Foundation_API replace(const std::string&amp; str, const std::string&amp; from, const std::string&amp; to, std::string::size_type start = 0);
+<span class="lineNum">     508 </span>            : std::string Foundation_API replace(const std::string&amp; str, const std::string::value_type* from, const std::string::value_type* to, std::string::size_type start = 0);
+<span class="lineNum">     509 </span>            : std::string&amp; Foundation_API replaceInPlace(std::string&amp; str, const std::string&amp; from, const std::string&amp; to, std::string::size_type start = 0);
+<span class="lineNum">     510 </span>            : std::string&amp; Foundation_API replaceInPlace(std::string&amp; str, const std::string::value_type* from, const std::string::value_type* to, std::string::size_type start = 0);
+<span class="lineNum">     511 </span>            :         
+<span class="lineNum">     512 </span>            : 
+<span class="lineNum">     513 </span>            : #endif  
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span>            : template &lt;class S&gt;
+<span class="lineNum">     517 </span>            : S cat(const S&amp; s1, const S&amp; s2)
+<span class="lineNum">     518 </span>            :         /// Concatenates two strings.
+<span class="lineNum">     519 </span>            : {
+<span class="lineNum">     520 </span>            :         S result = s1;
+<span class="lineNum">     521 </span>            :         result.reserve(s1.size() + s2.size());
+<span class="lineNum">     522 </span>            :         result.append(s2);
+<span class="lineNum">     523 </span>            :         return result;
+<span class="lineNum">     524 </span>            : }
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : template &lt;class S&gt;
+<span class="lineNum">     528 </span>            : S cat(const S&amp; s1, const S&amp; s2, const S&amp; s3)
+<span class="lineNum">     529 </span>            :         /// Concatenates three strings.
+<span class="lineNum">     530 </span>            : {
+<span class="lineNum">     531 </span>            :         S result = s1;
+<span class="lineNum">     532 </span>            :         result.reserve(s1.size() + s2.size() + s3.size());
+<span class="lineNum">     533 </span>            :         result.append(s2);
+<span class="lineNum">     534 </span>            :         result.append(s3);
+<span class="lineNum">     535 </span>            :         return result;
+<span class="lineNum">     536 </span>            : }
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            : template &lt;class S&gt;
+<span class="lineNum">     540 </span>            : S cat(const S&amp; s1, const S&amp; s2, const S&amp; s3, const S&amp; s4)
+<span class="lineNum">     541 </span>            :         /// Concatenates four strings.
+<span class="lineNum">     542 </span>            : {
+<span class="lineNum">     543 </span>            :         S result = s1;
+<span class="lineNum">     544 </span>            :         result.reserve(s1.size() + s2.size() + s3.size() + s4.size());
+<span class="lineNum">     545 </span>            :         result.append(s2);
+<span class="lineNum">     546 </span>            :         result.append(s3);
+<span class="lineNum">     547 </span>            :         result.append(s4);
+<span class="lineNum">     548 </span>            :         return result;
+<span class="lineNum">     549 </span>            : }
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span>            : 
+<span class="lineNum">     552 </span>            : template &lt;class S&gt;
+<span class="lineNum">     553 </span>            : S cat(const S&amp; s1, const S&amp; s2, const S&amp; s3, const S&amp; s4, const S&amp; s5)
+<span class="lineNum">     554 </span>            :         /// Concatenates five strings.
+<span class="lineNum">     555 </span>            : {
+<span class="lineNum">     556 </span>            :         S result = s1;
+<span class="lineNum">     557 </span>            :         result.reserve(s1.size() + s2.size() + s3.size() + s4.size() + s5.size());
+<span class="lineNum">     558 </span>            :         result.append(s2);
+<span class="lineNum">     559 </span>            :         result.append(s3);
+<span class="lineNum">     560 </span>            :         result.append(s4);
+<span class="lineNum">     561 </span>            :         result.append(s5);
+<span class="lineNum">     562 </span>            :         return result;
+<span class="lineNum">     563 </span>            : }
+<span class="lineNum">     564 </span>            : 
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span>            : template &lt;class S&gt;
+<span class="lineNum">     567 </span>            : S cat(const S&amp; s1, const S&amp; s2, const S&amp; s3, const S&amp; s4, const S&amp; s5, const S&amp; s6)
+<span class="lineNum">     568 </span>            :         /// Concatenates six strings.
+<span class="lineNum">     569 </span>            : {
+<span class="lineNum">     570 </span>            :         S result = s1;
+<span class="lineNum">     571 </span>            :         result.reserve(s1.size() + s2.size() + s3.size() + s4.size() + s5.size() + s6.size());
+<span class="lineNum">     572 </span>            :         result.append(s2);
+<span class="lineNum">     573 </span>            :         result.append(s3);
+<span class="lineNum">     574 </span>            :         result.append(s4);
+<span class="lineNum">     575 </span>            :         result.append(s5);
+<span class="lineNum">     576 </span>            :         result.append(s6);
+<span class="lineNum">     577 </span>            :         return result;
+<span class="lineNum">     578 </span>            : }
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            : template &lt;class S, class It&gt;
+<span class="lineNum">     582 </span>            : S cat(const S&amp; delim, const It&amp; begin, const It&amp; end)
+<span class="lineNum">     583 </span>            :         /// Concatenates a sequence of strings, delimited
+<span class="lineNum">     584 </span>            :         /// by the string given in delim.
+<span class="lineNum">     585 </span>            : {
+<span class="lineNum">     586 </span>            :         S result;
+<span class="lineNum">     587 </span>            :         for (It it = begin; it != end; ++it)
+<span class="lineNum">     588 </span>            :         {
+<span class="lineNum">     589 </span>            :                 if (!result.empty()) result.append(delim);
+<span class="lineNum">     590 </span>            :                 result += *it;
+<span class="lineNum">     591 </span>            :         }
+<span class="lineNum">     592 </span>            :         return result;
+<span class="lineNum">     593 </span>            : }
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            : } // namespace Poco
+<span class="lineNum">     597 </span>            : 
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            : #endif // Foundation_String_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

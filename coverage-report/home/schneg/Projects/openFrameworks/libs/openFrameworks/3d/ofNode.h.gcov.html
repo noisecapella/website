@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/openFrameworks/3d/ofNode.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/openFrameworks/3d</a> - ofNode.h<span style="font-size: 80%;"> (source / <a href="ofNode.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryMed">85.7 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : </a>
+<span class="lineNum">       2 </span>            : #pragma once
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : #include &quot;ofVectorMath.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;of3dUtils.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofGraphics.h&quot;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : // a generic 3d object in space with transformation (position, rotation, scale)
+<span class="lineNum">      10 </span>            : // with API to move around in global or local space
+<span class="lineNum">      11 </span>            : // and virtual draw method
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : // Info:
+<span class="lineNum">      14 </span>            : // uses right-handed coordinate system
+<span class="lineNum">      15 </span>            : // ofNodes 'look' along -ve z axis
+<span class="lineNum">      16 </span>            : // All set* methods work in local space unless stated otherwise
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : // TODO:
+<span class="lineNum">      19 </span>            : // cache inverseMatrix, local and global
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span><span class="lineCov">          4 : class ofNode {</span>
+<a name="23"><span class="lineNum">      23 </span>            : public:</a>
+<span class="lineNum">      24 </span>            :         ofNode();
+<span class="lineNum">      25 </span><span class="lineCov">        116 :         virtual ~ofNode() {}</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :         // set parent to link nodes
+<span class="lineNum">      28 </span>            :         // transformations are inherited from parent node
+<span class="lineNum">      29 </span>            :         // set to NULL if not needed (default)
+<span class="lineNum">      30 </span>            :         void setParent(ofNode&amp; parent);
+<span class="lineNum">      31 </span>            :         void clearParent();
+<span class="lineNum">      32 </span>            :         ofNode* getParent() const;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         
+<span class="lineNum">      35 </span>            :         //----------------------------------------
+<span class="lineNum">      36 </span>            :         // Get transformations
+<span class="lineNum">      37 </span>            :         
+<span class="lineNum">      38 </span>            :         ofVec3f getPosition() const;
+<span class="lineNum">      39 </span>            :         float getX() const;
+<span class="lineNum">      40 </span>            :         float getY() const;
+<span class="lineNum">      41 </span>            :         float getZ() const;
+<span class="lineNum">      42 </span>            :         
+<span class="lineNum">      43 </span>            :         ofVec3f getXAxis() const;
+<span class="lineNum">      44 </span>            :         ofVec3f getYAxis() const;
+<span class="lineNum">      45 </span>            :         ofVec3f getZAxis() const;
+<span class="lineNum">      46 </span>            :         
+<span class="lineNum">      47 </span>            :         ofVec3f getSideDir() const;             // x axis
+<span class="lineNum">      48 </span>            :         ofVec3f getLookAtDir()const;    // -z axis
+<span class="lineNum">      49 </span>            :         ofVec3f getUpDir() const;               // y axis
+<span class="lineNum">      50 </span>            :         
+<span class="lineNum">      51 </span>            :         float getPitch() const;
+<span class="lineNum">      52 </span>            :         float getHeading() const;
+<span class="lineNum">      53 </span>            :         float getRoll() const;
+<span class="lineNum">      54 </span>            :         
+<span class="lineNum">      55 </span>            :         ofQuaternion getOrientationQuat() const;
+<span class="lineNum">      56 </span>            :         ofVec3f getOrientationEuler() const;
+<span class="lineNum">      57 </span>            :         ofVec3f getScale() const;
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :         const ofMatrix4x4&amp; getLocalTransformMatrix() const;
+<span class="lineNum">      60 </span>            :         
+<span class="lineNum">      61 </span>            :         // TODO: optimize and cache these
+<span class="lineNum">      62 </span>            :         // (parent would need to know about its children so it can inform them 
+<span class="lineNum">      63 </span>            :         // to update their global matrices if it itself transforms)
+<span class="lineNum">      64 </span>            :         ofMatrix4x4 getGlobalTransformMatrix() const;
+<span class="lineNum">      65 </span>            :         ofVec3f getGlobalPosition() const;
+<span class="lineNum">      66 </span>            :         ofQuaternion getGlobalOrientation() const;
+<span class="lineNum">      67 </span>            : //      ofVec3f getGlobalScale();
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :         
+<span class="lineNum">      70 </span>            :         
+<span class="lineNum">      71 </span>            :         // Set Transformations
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :         // directly set transformation matrix
+<span class="lineNum">      74 </span>            :         void setTransformMatrix(const ofMatrix4x4 &amp;m44);
+<span class="lineNum">      75 </span>            :         
+<span class="lineNum">      76 </span>            :         // position
+<span class="lineNum">      77 </span>            :         void setPosition(float px, float py, float pz);
+<span class="lineNum">      78 </span>            :         void setPosition(const ofVec3f&amp; p);
+<span class="lineNum">      79 </span>            :         
+<span class="lineNum">      80 </span>            :         void setGlobalPosition(float px, float py, float pz);
+<span class="lineNum">      81 </span>            :         void setGlobalPosition(const ofVec3f&amp; p);
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :         // orientation
+<span class="lineNum">      85 </span>            :         void setOrientation(const ofQuaternion&amp; q);                 // set as quaternion
+<span class="lineNum">      86 </span>            :         void setOrientation(const ofVec3f&amp; eulerAngles);    // or euler can be useful, but prepare for gimbal lock
+<span class="lineNum">      87 </span>            : //      void setOrientation(const ofMatrix3x3&amp; orientation);// or set as m33 if you have transformation matrix
+<span class="lineNum">      88 </span>            :         
+<span class="lineNum">      89 </span>            :         void setGlobalOrientation(const ofQuaternion&amp; q);
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :         
+<span class="lineNum">      92 </span>            :         // scale set and get
+<span class="lineNum">      93 </span>            :         void setScale(float s);
+<span class="lineNum">      94 </span>            :         void setScale(float sx, float sy, float sz);
+<span class="lineNum">      95 </span>            :         void setScale(const ofVec3f&amp; s);
+<span class="lineNum">      96 </span>            :         
+<span class="lineNum">      97 </span>            :         
+<span class="lineNum">      98 </span>            :         // helpful move methods
+<span class="lineNum">      99 </span>            :         void move(float x, float y, float z);                   // move by arbitrary amount
+<span class="lineNum">     100 </span>            :         void move(const ofVec3f&amp; offset);                           // move by arbitrary amount
+<span class="lineNum">     101 </span>            :         void truck(float amount);                                               // move sideways (in local x axis)
+<span class="lineNum">     102 </span>            :         void boom(float amount);                                                // move up+down (in local y axis)
+<span class="lineNum">     103 </span>            :         void dolly(float amount);                                               // move forward+backward (in local z axis)
+<span class="lineNum">     104 </span>            :         
+<span class="lineNum">     105 </span>            :         
+<span class="lineNum">     106 </span>            :         // helpful rotation methods
+<span class="lineNum">     107 </span>            :         void tilt(float degrees);                                               // tilt up+down (around local x axis)
+<span class="lineNum">     108 </span>            :         void pan(float degrees);                                                // rotate left+right (around local y axis)
+<span class="lineNum">     109 </span>            :         void roll(float degrees);                                               // roll left+right (around local z axis)
+<span class="lineNum">     110 </span>            :         void rotate(const ofQuaternion&amp; q);                         // rotate by quaternion
+<span class="lineNum">     111 </span>            :         void rotate(float degrees, const ofVec3f&amp; v);       // rotate around arbitrary axis by angle
+<span class="lineNum">     112 </span>            :         void rotate(float degrees, float vx, float vy, float vz);
+<span class="lineNum">     113 </span>            :         
+<span class="lineNum">     114 </span>            :         void rotateAround(const ofQuaternion&amp; q, const ofVec3f&amp; point); // rotate by quaternion around point
+<span class="lineNum">     115 </span>            :         void rotateAround(float degrees, const ofVec3f&amp; axis, const ofVec3f&amp; point);    // rotate around arbitrary axis by angle around point
+<span class="lineNum">     116 </span>            :         
+<span class="lineNum">     117 </span>            :         // orient node to look at position (-ve z axis pointing to node)
+<span class="lineNum">     118 </span>            :         void lookAt(const ofVec3f&amp; lookAtPosition, ofVec3f upVector = ofVec3f(0, 1, 0));
+<span class="lineNum">     119 </span>            :         void lookAt(ofNode&amp; lookAtNode, const ofVec3f&amp; upVector = ofVec3f(0, 1, 0));
+<span class="lineNum">     120 </span>            :         
+<span class="lineNum">     121 </span>            :         
+<span class="lineNum">     122 </span>            :         // orbit object around target at radius
+<span class="lineNum">     123 </span>            :         void orbit(float longitude, float latitude, float radius, const ofVec3f&amp; centerPoint = ofVec3f(0, 0, 0));
+<span class="lineNum">     124 </span>            :         void orbit(float longitude, float latitude, float radius, ofNode&amp; centerNode);
+<span class="lineNum">     125 </span>            :         
+<span class="lineNum">     126 </span>            :         
+<span class="lineNum">     127 </span>            :         // set opengl's modelview matrix to this nodes transform
+<span class="lineNum">     128 </span>            :         // if you want to draw something at the position+orientation+scale of this node...
+<span class="lineNum">     129 </span>            :         // ...call ofNode::transform(); write your draw code, and ofNode::restoreTransform();
+<span class="lineNum">     130 </span>            :         // OR A simpler way is to extend ofNode and override ofNode::customDraw();
+<span class="lineNum">     131 </span>            :         void transformGL() const;
+<span class="lineNum">     132 </span>            :         void restoreTransformGL() const;
+<span class="lineNum">     133 </span>            :         
+<span class="lineNum">     134 </span>            :         
+<span class="lineNum">     135 </span>            :         // resets this node's transformation
+<span class="lineNum">     136 </span>            :         void resetTransform();
+<span class="lineNum">     137 </span>            :         
+<a name="138"><span class="lineNum">     138 </span>            : </a>
+<span class="lineNum">     139 </span>            :         // if you extend ofNode and wish to change the way it draws, extend this
+<span class="lineNum">     140 </span><span class="lineCov">      10164 :         virtual void customDraw() {</span>
+<span class="lineNum">     141 </span><span class="lineCov">      10164 :                 ofBox(10);</span>
+<span class="lineNum">     142 </span><span class="lineCov">      10164 :                 ofDrawAxis(20);</span>
+<span class="lineNum">     143 </span><span class="lineCov">      10164 :         }</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :         
+<span class="lineNum">     146 </span>            :         // draw function. do NOT override this
+<span class="lineNum">     147 </span>            :         // transforms the node to its position+orientation+scale
+<span class="lineNum">     148 </span>            :         // and calls the virtual 'customDraw' method above which you CAN override
+<span class="lineNum">     149 </span>            :         void draw();
+<span class="lineNum">     150 </span>            :         
+<span class="lineNum">     151 </span>            : protected:
+<span class="lineNum">     152 </span>            :         ofNode *parent;
+<span class="lineNum">     153 </span>            :         
+<span class="lineNum">     154 </span>            :         void createMatrix();
+<span class="lineNum">     155 </span>            :         
+<a name="156"><span class="lineNum">     156 </span>            :         </a>
+<a name="157"><span class="lineNum">     157 </span>            :         // classes extending ofNode can override these methods to get notified </a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">       9699 :         virtual void onPositionChanged() {}</span></a>
+<span class="lineNum">     159 </span><span class="lineCov">       9068 :         virtual void onOrientationChanged() {}</span>
+<span class="lineNum">     160 </span><span class="lineCov">       6920 :         virtual void onScaleChanged() {}</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            : private:
+<span class="lineNum">     163 </span>            :         ofVec3f position;
+<span class="lineNum">     164 </span>            :         ofQuaternion orientation;
+<span class="lineNum">     165 </span>            :         ofVec3f scale;
+<span class="lineNum">     166 </span>            :         
+<span class="lineNum">     167 </span>            :         ofVec3f axis[3];
+<span class="lineNum">     168 </span>            :         
+<span class="lineNum">     169 </span>            :         ofMatrix4x4 localTransformMatrix;
+<span class="lineNum">     170 </span>            : //      ofMatrix4x4 globalTransformMatrix;
+<span class="lineNum">     171 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - openFrameworks/math/ofMath.cpp</title>
+  <title>LCOV - .coverage.total - openFrameworks/math/ofMath.cpp</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">72</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">132</td>
-            <td class="headerCovTableEntryLo">54.5 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">25</td>
-            <td class="headerCovTableEntry">42</td>
-            <td class="headerCovTableEntryLo">59.5 %</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,315 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofMath.h&quot;</a>
-<span class="lineNum">       2 </span>            : #include &quot;ofUtils.h&quot;
-<span class="lineNum">       3 </span>            : #include &quot;ofAppRunner.h&quot;
-<span class="lineNum">       4 </span>            : #include &quot;float.h&quot;
-<span class="lineNum">       5 </span>            : 
-<span class="lineNum">       6 </span>            : #ifndef TARGET_WIN32
-<span class="lineNum">       7 </span>            :         #include &lt;sys/time.h&gt;
-<span class="lineNum">       8 </span>            : #endif
-<span class="lineNum">       9 </span>            : 
-<span class="lineNum">      10 </span>            : #include &quot;ofNoise.h&quot;
-<span class="lineNum">      11 </span>            : #include &quot;ofPolyline.h&quot;
-<a name="12"><span class="lineNum">      12 </span>            : </a>
-<span class="lineNum">      13 </span>            : //--------------------------------------------------
-<span class="lineNum">      14 </span><span class="lineCov">      10414 : int ofNextPow2(int a){</span>
-<span class="lineNum">      15 </span>            :         // from nehe.gamedev.net lesson 43
-<span class="lineNum">      16 </span><span class="lineCov">      10412 :         int rval=1;</span>
-<span class="lineNum">      17 </span><span class="lineCov">      58827 :         while(rval&lt;a) rval&lt;&lt;=1;</span>
-<span class="lineNum">      18 </span><span class="lineCov">      10414 :         return rval;</span>
-<span class="lineNum">      19 </span>            : }
-<a name="20"><span class="lineNum">      20 </span>            : </a>
-<span class="lineNum">      21 </span>            : //--------------------------------------------------
-<span class="lineNum">      22 </span><span class="lineCov">        197 : void ofSeedRandom() {</span>
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :         // good info here:
-<span class="lineNum">      25 </span>            :         // http://stackoverflow.com/questions/322938/recommended-way-to-initialize-srand
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :         #ifdef TARGET_WIN32
-<span class="lineNum">      28 </span>            :                 srand(GetTickCount());
-<span class="lineNum">      29 </span>            :         #else
-<span class="lineNum">      30 </span>            :                 // use XOR'd second, microsecond precision AND pid as seed
-<span class="lineNum">      31 </span>            :                 struct timeval tv;
-<span class="lineNum">      32 </span><span class="lineCov">        197 :                 gettimeofday(&amp;tv, 0);</span>
-<span class="lineNum">      33 </span><span class="lineCov">        197 :                 long int n = (tv.tv_sec ^ tv.tv_usec) ^ getpid();</span>
-<span class="lineNum">      34 </span><span class="lineCov">        197 :                 srand(n);</span>
-<span class="lineNum">      35 </span>            :         #endif
-<span class="lineNum">      36 </span><span class="lineCov">        197 : }</span>
-<a name="37"><span class="lineNum">      37 </span>            : </a>
-<span class="lineNum">      38 </span>            : //--------------------------------------------------
-<span class="lineNum">      39 </span><span class="lineCov">    1780000 : void ofSeedRandom(int val) {</span>
-<span class="lineNum">      40 </span><span class="lineCov">    1780000 :         srand((long) val);</span>
-<span class="lineNum">      41 </span><span class="lineCov">    1780000 : }</span>
-<a name="42"><span class="lineNum">      42 </span>            : </a>
-<span class="lineNum">      43 </span>            : //--------------------------------------------------
-<span class="lineNum">      44 </span><span class="lineCov">       3548 : float ofRandom(float max) {</span>
-<span class="lineNum">      45 </span><span class="lineCov">       3548 :         return max * rand() / (RAND_MAX + 1.0f);</span>
-<span class="lineNum">      46 </span>            : }
-<a name="47"><span class="lineNum">      47 </span>            : </a>
-<span class="lineNum">      48 </span>            : //--------------------------------------------------
-<span class="lineNum">      49 </span><span class="lineCov">    5148200 : float ofRandom(float x, float y) {</span>
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineCov">    5148200 :         float high = 0;</span>
-<span class="lineNum">      52 </span><span class="lineCov">    5148200 :         float low = 0;</span>
-<span class="lineNum">      53 </span><span class="lineCov">    5148200 :         float randNum = 0;</span>
-<span class="lineNum">      54 </span>            :         // if there is no range, return the value
-<span class="lineNum">      55 </span><span class="lineCov">    5148200 :         if (x == y) return x;                   // float == ?, wise? epsilon?</span>
-<span class="lineNum">      56 </span><span class="lineCov">    5148200 :         high = MAX(x,y);</span>
-<span class="lineNum">      57 </span><span class="lineCov">    5148200 :         low = MIN(x,y);</span>
-<span class="lineNum">      58 </span><span class="lineCov">    5148200 :         randNum = low + ((high-low) * rand()/(RAND_MAX + 1.0));</span>
-<span class="lineNum">      59 </span><span class="lineCov">    5148200 :         return randNum;</span>
-<span class="lineNum">      60 </span>            : }
-<a name="61"><span class="lineNum">      61 </span>            : </a>
-<span class="lineNum">      62 </span>            : //--------------------------------------------------
-<span class="lineNum">      63 </span><span class="lineCov">      30000 : float ofRandomf() {</span>
-<span class="lineNum">      64 </span><span class="lineCov">      30000 :         float randNum = 0;</span>
-<span class="lineNum">      65 </span><span class="lineCov">      30000 :         randNum = (rand()/(RAND_MAX + 1.0)) * 2.0 - 1.0;</span>
-<span class="lineNum">      66 </span><span class="lineCov">      30000 :         return randNum;</span>
-<span class="lineNum">      67 </span>            : }
-<a name="68"><span class="lineNum">      68 </span>            : </a>
-<span class="lineNum">      69 </span>            : //--------------------------------------------------
-<span class="lineNum">      70 </span><span class="lineCov">   22000000 : float ofRandomuf() {</span>
-<span class="lineNum">      71 </span><span class="lineCov">   22000000 :         float randNum = 0;</span>
-<span class="lineNum">      72 </span><span class="lineCov">   22000000 :         randNum = rand()/(RAND_MAX + 1.0);</span>
-<span class="lineNum">      73 </span><span class="lineCov">   22000000 :         return randNum;</span>
-<span class="lineNum">      74 </span>            : }
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span>            : //---- new to 006
-<span class="lineNum">      77 </span>            : //from the forums http://www.openframeworks.cc/forum/viewtopic.php?t=1413
-<a name="78"><span class="lineNum">      78 </span>            : </a>
-<span class="lineNum">      79 </span>            : //--------------------------------------------------
-<span class="lineNum">      80 </span><span class="lineCov">    6389760 : float ofNormalize(float value, float min, float max){</span>
-<span class="lineNum">      81 </span><span class="lineCov">    6389760 :         return ofClamp( (value - min) / (max - min), 0, 1);</span>
-<span class="lineNum">      82 </span>            : }
-<span class="lineNum">      83 </span>            : 
-<a name="84"><span class="lineNum">      84 </span>            : //check for division by zero???</a>
-<span class="lineNum">      85 </span>            : //--------------------------------------------------
-<span class="lineNum">      86 </span><span class="lineCov">   16440889 : float ofMap(float value, float inputMin, float inputMax, float outputMin, float outputMax, bool clamp) {</span>
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span><span class="lineCov">   16440889 :         if (fabs(inputMin - inputMax) &lt; FLT_EPSILON){</span>
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING, &quot;ofMap: avoiding possible divide by zero, check inputMin and inputMax\n&quot;);</span>
-<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 return outputMin;</span>
-<span class="lineNum">      91 </span>            :         } else {
-<span class="lineNum">      92 </span><span class="lineCov">   16440889 :                 float outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);</span>
-<span class="lineNum">      93 </span>            :         
-<span class="lineNum">      94 </span><span class="lineCov">   16440889 :                 if( clamp ){</span>
-<span class="lineNum">      95 </span><span class="lineCov">    3797633 :                         if(outputMax &lt; outputMin){</span>
-<span class="lineNum">      96 </span><span class="lineCov">      65339 :                                 if( outVal &lt; outputMax )outVal = outputMax;</span>
-<span class="lineNum">      97 </span><span class="lineCov">      64119 :                                 else if( outVal &gt; outputMin )outVal = outputMin;</span>
-<span class="lineNum">      98 </span>            :                         }else{
-<span class="lineNum">      99 </span><span class="lineCov">    3732294 :                                 if( outVal &gt; outputMax )outVal = outputMax;</span>
-<span class="lineNum">     100 </span><span class="lineCov">    3732171 :                                 else if( outVal &lt; outputMin )outVal = outputMin;</span>
-<span class="lineNum">     101 </span>            :                         }
-<span class="lineNum">     102 </span>            :                 }
-<span class="lineNum">     103 </span><span class="lineCov">   16440889 :                 return outVal;</span>
-<span class="lineNum">     104 </span>            :         }
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span>            : }
-<a name="107"><span class="lineNum">     107 </span>            : </a>
-<span class="lineNum">     108 </span>            : //--------------------------------------------------
-<span class="lineNum">     109 </span><span class="lineCov">       9781 : float ofDist(float x1, float y1, float x2, float y2) {</span>
-<span class="lineNum">     110 </span><span class="lineCov">       9781 :         return sqrt(double((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));</span>
-<span class="lineNum">     111 </span>            : }
-<a name="112"><span class="lineNum">     112 </span>            : </a>
-<span class="lineNum">     113 </span>            : //--------------------------------------------------
-<span class="lineNum">     114 </span><span class="lineNoCov">          0 : float ofDistSquared(float x1, float y1, float x2, float y2) {</span>
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 :         return ( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );</span>
-<span class="lineNum">     116 </span>            : }
-<a name="117"><span class="lineNum">     117 </span>            : </a>
-<span class="lineNum">     118 </span>            : //--------------------------------------------------
-<span class="lineNum">     119 </span><span class="lineCov">    9827020 : float ofClamp(float value, float min, float max) {</span>
-<span class="lineNum">     120 </span><span class="lineCov">    9827020 :         return value &lt; min ? min : value &gt; max ? max : value;</span>
-<span class="lineNum">     121 </span>            : }
-<span class="lineNum">     122 </span>            : 
-<a name="123"><span class="lineNum">     123 </span>            : // return sign of the number</a>
-<span class="lineNum">     124 </span>            : //--------------------------------------------------
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 : int ofSign(float n) {</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         if( n &gt; 0 ) return 1;</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         else if(n &lt; 0) return -1;</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         else return 0;</span>
-<span class="lineNum">     129 </span>            : }
-<a name="130"><span class="lineNum">     130 </span>            : </a>
-<span class="lineNum">     131 </span>            : //--------------------------------------------------
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 : bool ofInRange(float t, float min, float max) {</span>
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         return t&gt;=min &amp;&amp; t&lt;=max;</span>
-<span class="lineNum">     134 </span>            : }
-<a name="135"><span class="lineNum">     135 </span>            : </a>
-<span class="lineNum">     136 </span>            : //--------------------------------------------------
-<span class="lineNum">     137 </span><span class="lineCov">     533110 : float ofRadToDeg(float radians) {</span>
-<span class="lineNum">     138 </span><span class="lineCov">     533110 :         return radians * RAD_TO_DEG;</span>
-<span class="lineNum">     139 </span>            : }
-<a name="140"><span class="lineNum">     140 </span>            : </a>
-<span class="lineNum">     141 </span>            : //--------------------------------------------------
-<span class="lineNum">     142 </span><span class="lineCov">      51358 : float ofDegToRad(float degrees) {</span>
-<span class="lineNum">     143 </span><span class="lineCov">      51358 :     return degrees * DEG_TO_RAD;</span>
-<span class="lineNum">     144 </span>            : }
-<a name="145"><span class="lineNum">     145 </span>            : </a>
-<span class="lineNum">     146 </span>            : //--------------------------------------------------
-<span class="lineNum">     147 </span><span class="lineCov">    6389760 : float ofLerp(float start, float stop, float amt) {</span>
-<span class="lineNum">     148 </span><span class="lineCov">    6389760 :         return start + (stop-start) * amt;</span>
-<span class="lineNum">     149 </span>            : }
-<a name="150"><span class="lineNum">     150 </span>            : </a>
-<span class="lineNum">     151 </span>            : //--------------------------------------------------
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 : float ofWrapRadians(float angle, float from, float to){</span>
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :         while (angle &gt; to ) angle -= TWO_PI;</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         while (angle &lt; from ) angle += TWO_PI;</span>
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         return angle;</span>
-<span class="lineNum">     156 </span>            : }
-<a name="157"><span class="lineNum">     157 </span>            : </a>
-<span class="lineNum">     158 </span>            : 
-<span class="lineNum">     159 </span><span class="lineNoCov">          0 : float ofWrapDegrees(float angle, float from, float to){</span>
-<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         while (angle &gt; to ) angle-=360;</span>
-<span class="lineNum">     161 </span><span class="lineNoCov">          0 :         while (angle &lt; from ) angle+=360;</span>
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         return angle;</span>
-<span class="lineNum">     163 </span>            : 
-<span class="lineNum">     164 </span>            : }
-<a name="165"><span class="lineNum">     165 </span>            : </a>
-<span class="lineNum">     166 </span>            : //--------------------------------------------------
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 : float ofLerpDegrees(float currentAngle, float targetAngle, float pct) {</span>
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :     return currentAngle + ofAngleDifferenceDegrees(currentAngle,targetAngle) * pct;</span>
-<span class="lineNum">     169 </span>            : }
-<a name="170"><span class="lineNum">     170 </span>            : </a>
-<span class="lineNum">     171 </span>            : //--------------------------------------------------
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 : float ofLerpRadians(float currentAngle, float targetAngle, float pct) {</span>
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         return currentAngle + ofAngleDifferenceRadians(currentAngle,targetAngle) * pct;</span>
-<span class="lineNum">     174 </span>            : }
-<a name="175"><span class="lineNum">     175 </span>            : </a>
-<span class="lineNum">     176 </span>            : //--------------------------------------------------
-<span class="lineNum">     177 </span><span class="lineCov">     434540 : float ofRandomWidth() {</span>
-<span class="lineNum">     178 </span><span class="lineCov">     434540 :         return ofRandom(0, ofGetWidth());</span>
-<span class="lineNum">     179 </span>            : }
-<a name="180"><span class="lineNum">     180 </span>            : </a>
-<span class="lineNum">     181 </span>            : //--------------------------------------------------
-<span class="lineNum">     182 </span><span class="lineCov">     434540 : float ofRandomHeight() {</span>
-<span class="lineNum">     183 </span><span class="lineCov">     434540 :         return ofRandom(0, ofGetHeight());</span>
-<span class="lineNum">     184 </span>            : }
-<a name="185"><span class="lineNum">     185 </span>            : </a>
-<span class="lineNum">     186 </span>            : //--------------------------------------------------
-<span class="lineNum">     187 </span><span class="lineCov">    4494781 : float ofNoise(float x){</span>
-<span class="lineNum">     188 </span><span class="lineCov">    4494781 :         return _slang_library_noise1(x)*0.5f + 0.5f;</span>
-<span class="lineNum">     189 </span>            : }
-<a name="190"><span class="lineNum">     190 </span>            : </a>
-<span class="lineNum">     191 </span>            : //--------------------------------------------------
-<span class="lineNum">     192 </span><span class="lineCov">       2056 : float ofNoise(float x, float y){</span>
-<span class="lineNum">     193 </span><span class="lineCov">       2056 :         return _slang_library_noise2(x,y)*0.5f + 0.5f;</span>
-<span class="lineNum">     194 </span>            : }
-<a name="195"><span class="lineNum">     195 </span>            : </a>
-<span class="lineNum">     196 </span>            : //--------------------------------------------------
-<span class="lineNum">     197 </span><span class="lineCov">    9626840 : float ofNoise(float x, float y, float z){</span>
-<span class="lineNum">     198 </span><span class="lineCov">    9626840 :         return _slang_library_noise3(x,y,z)*0.5f + 0.5f;</span>
-<span class="lineNum">     199 </span>            : }
-<a name="200"><span class="lineNum">     200 </span>            : </a>
-<span class="lineNum">     201 </span>            : //--------------------------------------------------
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 : float ofNoise(float x, float y, float z, float w){</span>
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         return _slang_library_noise4(x,y,z,w)*0.5f + 0.5f;</span>
-<span class="lineNum">     204 </span>            : }
-<a name="205"><span class="lineNum">     205 </span>            : </a>
-<span class="lineNum">     206 </span>            : //--------------------------------------------------
-<span class="lineNum">     207 </span><span class="lineCov">       7254 : float ofSignedNoise(float x){</span>
-<span class="lineNum">     208 </span><span class="lineCov">       7254 :         return _slang_library_noise1(x);</span>
-<span class="lineNum">     209 </span>            : }
-<a name="210"><span class="lineNum">     210 </span>            : </a>
-<span class="lineNum">     211 </span>            : //--------------------------------------------------
-<span class="lineNum">     212 </span><span class="lineCov">     568856 : float ofSignedNoise(float x, float y){</span>
-<span class="lineNum">     213 </span><span class="lineCov">     568856 :         return _slang_library_noise2(x,y);</span>
-<span class="lineNum">     214 </span>            : }
-<a name="215"><span class="lineNum">     215 </span>            : </a>
-<span class="lineNum">     216 </span>            : //--------------------------------------------------
-<span class="lineNum">     217 </span><span class="lineCov">   15899630 : float ofSignedNoise(float x, float y, float z){</span>
-<span class="lineNum">     218 </span><span class="lineCov">   15899630 :         return _slang_library_noise3(x,y,z);</span>
-<span class="lineNum">     219 </span>            : }
-<a name="220"><span class="lineNum">     220 </span>            : </a>
-<span class="lineNum">     221 </span>            : //--------------------------------------------------
-<span class="lineNum">     222 </span><span class="lineCov">   45544824 : float ofSignedNoise(float x, float y, float z, float w){</span>
-<span class="lineNum">     223 </span><span class="lineCov">   45544824 :         return _slang_library_noise4(x,y,z,w);</span>
-<span class="lineNum">     224 </span>            : }
-<a name="225"><span class="lineNum">     225 </span>            : </a>
-<span class="lineNum">     226 </span>            : //--------------------------------------------------
-<span class="lineNum">     227 </span><span class="lineNoCov">          0 : bool ofInsidePoly(float x, float y, const vector&lt;ofPoint&gt; &amp; polygon){</span>
-<span class="lineNum">     228 </span><span class="lineNoCov">          0 :     return ofPolyline::inside(x,y, ofPolyline(polygon));</span>
-<span class="lineNum">     229 </span>            : }
-<a name="230"><span class="lineNum">     230 </span>            : </a>
-<span class="lineNum">     231 </span>            : //--------------------------------------------------
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 : bool ofInsidePoly(const ofPoint &amp; p, const vector&lt;ofPoint&gt; &amp; poly){</span>
-<span class="lineNum">     233 </span><span class="lineNoCov">          0 :     return ofPolyline::inside(p.x,p.y, ofPolyline(poly));</span>
-<span class="lineNum">     234 </span>            : }
-<a name="235"><span class="lineNum">     235 </span>            : </a>
-<span class="lineNum">     236 </span>            : //--------------------------------------------------
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 : bool ofLineSegmentIntersection(ofPoint line1Start, ofPoint line1End, ofPoint line2Start, ofPoint line2End, ofPoint &amp; intersection){</span>
-<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         ofPoint diffLA, diffLB;</span>
-<span class="lineNum">     239 </span>            :         float compareA, compareB;
-<span class="lineNum">     240 </span><span class="lineNoCov">          0 :         diffLA = line1End - line1Start;</span>
-<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         diffLB = line2End - line2Start;</span>
-<span class="lineNum">     242 </span><span class="lineNoCov">          0 :         compareA = diffLA.x*line1Start.y - diffLA.y*line1Start.x;</span>
-<span class="lineNum">     243 </span><span class="lineNoCov">          0 :         compareB = diffLB.x*line2Start.y - diffLB.y*line2Start.x;</span>
-<span class="lineNum">     244 </span><span class="lineNoCov">          0 :         if (</span>
-<span class="lineNum">     245 </span>            :                 (
-<span class="lineNum">     246 </span>            :                         ( ( diffLA.x*line2Start.y - diffLA.y*line2Start.x ) &lt; compareA ) ^
-<span class="lineNum">     247 </span>            :                         ( ( diffLA.x*line2End.y - diffLA.y*line2End.x ) &lt; compareA )
-<span class="lineNum">     248 </span>            :                 )
-<span class="lineNum">     249 </span>            :                 &amp;&amp;
-<span class="lineNum">     250 </span>            :                 (
-<span class="lineNum">     251 </span>            :                         ( ( diffLB.x*line1Start.y - diffLB.y*line1Start.x ) &lt; compareB ) ^
-<span class="lineNum">     252 </span>            :                         ( ( diffLB.x*line1End.y - diffLB.y*line1End.x) &lt; compareB )
-<span class="lineNum">     253 </span>            :                 )
-<span class="lineNum">     254 </span>            :         )
-<span class="lineNum">     255 </span>            :         {
-<span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 float lDetDivInv = 1 / ((diffLA.x*diffLB.y) - (diffLA.y*diffLB.x));</span>
-<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 intersection.x =  -((diffLA.x*compareB) - (compareA*diffLB.x)) * lDetDivInv ;</span>
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 intersection.y =  -((diffLA.y*compareB) - (compareA*diffLB.y)) * lDetDivInv ;</span>
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 return true;</span>
-<span class="lineNum">     261 </span>            :         }
-<span class="lineNum">     262 </span>            : 
-<span class="lineNum">     263 </span><span class="lineNoCov">          0 :         return false;</span>
-<span class="lineNum">     264 </span>            : }
-<a name="265"><span class="lineNum">     265 </span>            : </a>
-<span class="lineNum">     266 </span>            : //--------------------------------------------------
-<span class="lineNum">     267 </span><span class="lineNoCov">          0 : ofPoint ofBezierPoint( ofPoint a, ofPoint b, ofPoint c, ofPoint d, float t){</span>
-<span class="lineNum">     268 </span><span class="lineNoCov">          0 :     float tp = 1.0 - t;</span>
-<span class="lineNum">     269 </span><span class="lineNoCov">          0 :     return a*tp*tp*tp + b*3*t*tp*tp + c*3*t*t*tp + d*t*t*t;</span>
-<span class="lineNum">     270 </span>            : }
-<a name="271"><span class="lineNum">     271 </span>            : </a>
-<span class="lineNum">     272 </span>            : //--------------------------------------------------
-<span class="lineNum">     273 </span><span class="lineNoCov">          0 : ofPoint ofCurvePoint( ofPoint a, ofPoint b, ofPoint c, ofPoint d, float t){</span>
-<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     ofPoint pt;</span>
-<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     float t2 = t * t;</span>
-<span class="lineNum">     276 </span><span class="lineNoCov">          0 :     float t3 = t2 * t;</span>
-<span class="lineNum">     277 </span>            :     pt.x = 0.5f * ( ( 2.0f * b.x ) +
-<span class="lineNum">     278 </span>            :                    ( -a.x + c.x ) * t +
-<span class="lineNum">     279 </span>            :                    ( 2.0f * a.x - 5.0f * b.x + 4 * c.x - d.x ) * t2 +
-<span class="lineNum">     280 </span><span class="lineNoCov">          0 :                    ( -a.x + 3.0f * b.x - 3.0f * c.x + d.x ) * t3 );</span>
-<span class="lineNum">     281 </span>            :     pt.y = 0.5f * ( ( 2.0f * b.y ) +
-<span class="lineNum">     282 </span>            :                    ( -a.y + c.y ) * t +
-<span class="lineNum">     283 </span>            :                    ( 2.0f * a.y - 5.0f * b.y + 4 * c.y - d.y ) * t2 +
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                    ( -a.y + 3.0f * b.y - 3.0f * c.y + d.y ) * t3 );</span>
-<span class="lineNum">     285 </span><span class="lineNoCov">          0 :     return pt;</span>
-<span class="lineNum">     286 </span>            : }
-<a name="287"><span class="lineNum">     287 </span>            : </a>
-<span class="lineNum">     288 </span>            : //--------------------------------------------------
-<span class="lineNum">     289 </span><span class="lineNoCov">          0 : ofPoint ofBezierTangent( ofPoint a, ofPoint b, ofPoint c, ofPoint d, float t){</span>
-<span class="lineNum">     290 </span><span class="lineNoCov">          0 :     return (d-a-c*3+b*3)*(t*t)*3 + (a+c-b*2)*t*6 - a*3+b*3;</span>
-<span class="lineNum">     291 </span>            : }
-<a name="292"><span class="lineNum">     292 </span>            : </a>
-<span class="lineNum">     293 </span>            : //--------------------------------------------------
-<span class="lineNum">     294 </span><span class="lineNoCov">          0 : ofPoint ofCurveTangent( ofPoint a, ofPoint b, ofPoint c, ofPoint d, float t){</span>
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     ofPoint v0 = ( c - a )*0.5;</span>
-<span class="lineNum">     296 </span><span class="lineNoCov">          0 :     ofPoint v1 = ( d - b )*0.5;</span>
-<span class="lineNum">     297 </span><span class="lineNoCov">          0 :     return ( b*2 -c*2 + v0 + v1)*(3*t*t) + ( c*3 - b*3 - v1 - v0*2 )*( 2*t) + v0;</span>
-<span class="lineNum">     298 </span>            : 
-<span class="lineNum">     299 </span>            : }
-<a name="300"><span class="lineNum">     300 </span>            : </a>
-<span class="lineNum">     301 </span>            : //--------------------------------------------------
-<span class="lineNum">     302 </span><span class="lineNoCov">          0 : float ofAngleDifferenceDegrees(float currentAngle, float targetAngle) {</span>
-<span class="lineNum">     303 </span><span class="lineNoCov">          0 :         return ofWrapDegrees(targetAngle - currentAngle);</span>
-<span class="lineNum">     304 </span>            : }
-<a name="305"><span class="lineNum">     305 </span>            : </a>
-<span class="lineNum">     306 </span>            : //--------------------------------------------------
-<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 : float ofAngleDifferenceRadians(float currentAngle, float targetAngle) {</span></a>
-<span class="lineNum">     308 </span><span class="lineNoCov">          0 :         return  ofWrapRadians(targetAngle - currentAngle);</span>
-<span class="lineNum">     309 </span><span class="lineCov">        575 : }</span>
+<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
 </pre>
       </td>
     </tr>

@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/openFrameworks/types/ofTypes.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/openFrameworks/types</a> - ofTypes.h<span style="font-size: 80%;"> (source / <a href="ofTypes.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">58</td>
+            <td class="headerCovTableEntry">76</td>
+            <td class="headerCovTableEntryMed">76.3 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofColor.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : #if (_MSC_VER)
+<span class="lineNum">       7 </span>            : #include &lt;memory&gt;
+<span class="lineNum">       8 </span>            : #else
+<span class="lineNum">       9 </span>            : #include &lt;tr1/memory&gt;
+<span class="lineNum">      10 </span>            : #endif
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : //----------------------------------------------------------
+<span class="lineNum">      13 </span>            : // ofDeviceInfo
+<a name="14"><span class="lineNum">      14 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      15 </span>            : class ofSerial;
+<span class="lineNum">      16 </span><span class="lineCov">       1268 : class ofSerialDeviceInfo{</span>
+<span class="lineNum">      17 </span>            :         friend class ofSerial;
+<span class="lineNum">      18 </span>            : 
+<a name="19"><span class="lineNum">      19 </span>            :         public:</a>
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span><span class="lineCov">        512 :                 ofSerialDeviceInfo(string devicePathIn, string deviceNameIn, int deviceIDIn){</span>
+<span class="lineNum">      22 </span><span class="lineCov">        512 :                         devicePath                      = devicePathIn;</span>
+<span class="lineNum">      23 </span><span class="lineCov">        512 :                         deviceName                      = deviceNameIn;</span>
+<span class="lineNum">      24 </span><span class="lineCov">        512 :                         deviceID                        = deviceIDIn;</span>
+<span class="lineNum">      25 </span><span class="lineCov">        512 :                 }</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 ofSerialDeviceInfo(){
+<span class="lineNum">      28 </span>            :                         deviceName = &quot;device undefined&quot;;
+<span class="lineNum">      29 </span>            :                         deviceID   = -1;
+<span class="lineNum">      30 </span>            :                 }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 string getDevicePath(){
+<span class="lineNum">      33 </span>            :                         return devicePath;
+<a name="34"><span class="lineNum">      34 </span>            :                 }</a>
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineCov">        768 :                 string getDeviceName(){</span>
+<span class="lineNum">      37 </span><span class="lineCov">        768 :                         return deviceName;</span>
+<a name="38"><span class="lineNum">      38 </span>            :                 }</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">        256 :                 int getDeviceID(){</span>
+<span class="lineNum">      41 </span><span class="lineCov">        256 :                         return deviceID;</span>
+<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :         protected:
+<span class="lineNum">      45 </span>            :                 string devicePath;                      //eg: /dev/tty.cu/usbdevice-a440
+<span class="lineNum">      46 </span>            :                 string deviceName;                      //eg: usbdevice-a440 / COM4
+<span class="lineNum">      47 </span>            :                 int deviceID;                           //eg: 0,1,2,3 etc
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 //TODO: other stuff for serial ?
+<span class="lineNum">      50 </span>            : };
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : //----------------------------------------------------------
+<span class="lineNum">      54 </span>            : // ofMutex
+<span class="lineNum">      55 </span>            : //----------------------------------------------------------
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            : #include &quot;Poco/Mutex.h&quot;
+<span class="lineNum">      58 </span>            : typedef Poco::FastMutex ofMutex;
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : //----------------------------------------------------------
+<span class="lineNum">      61 </span>            : // ofStyle
+<a name="62"><span class="lineNum">      62 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      63 </span>            : 
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">     601916 : class ofStyle{</span></a>
+<span class="lineNum">      65 </span>            :         public:
+<span class="lineNum">      66 </span><span class="lineCov">        193 :                 ofStyle(){</span>
+<span class="lineNum">      67 </span><span class="lineCov">        193 :                         bFill                           = true;</span>
+<span class="lineNum">      68 </span><span class="lineCov">        193 :                         blendingMode            = OF_BLENDMODE_DISABLED;</span>
+<span class="lineNum">      69 </span><span class="lineCov">        193 :                         smoothing                       = false;</span>
+<span class="lineNum">      70 </span><span class="lineCov">        193 :                         circleResolution        = 20;</span>
+<span class="lineNum">      71 </span><span class="lineCov">        193 :                         sphereResolution        = 20;</span>
+<span class="lineNum">      72 </span><span class="lineCov">        193 :                         curveResolution         = 20;</span>
+<span class="lineNum">      73 </span><span class="lineCov">        193 :                         lineWidth                       = 1.0;</span>
+<span class="lineNum">      74 </span><span class="lineCov">        193 :                         polyMode                        = OF_POLY_WINDING_ODD;</span>
+<span class="lineNum">      75 </span><span class="lineCov">        193 :                         rectMode                        = OF_RECTMODE_CORNER;</span>
+<span class="lineNum">      76 </span><span class="lineCov">        193 :                         drawBitmapMode          = OF_BITMAPMODE_MODEL_BILLBOARD;</span>
+<span class="lineNum">      77 </span><span class="lineCov">        193 :                         bgColor.set(200,200,200);</span>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        193 :                 }</span></a>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">     602109 :                 virtual ~ofStyle(){}</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 ofColor color;
+<span class="lineNum">      83 </span>            :                 ofColor bgColor;
+<span class="lineNum">      84 </span>            :                 ofPolyWindingMode polyMode;
+<span class="lineNum">      85 </span>            :                 ofRectMode rectMode;
+<span class="lineNum">      86 </span>            :                 bool bFill;
+<span class="lineNum">      87 </span>            :                 ofDrawBitmapMode drawBitmapMode;
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 ofBlendMode blendingMode;
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                 bool smoothing;
+<span class="lineNum">      92 </span>            :                 int circleResolution;
+<span class="lineNum">      93 </span>            :                 int sphereResolution;
+<span class="lineNum">      94 </span>            :                 int curveResolution;
+<span class="lineNum">      95 </span>            :                 float lineWidth;
+<span class="lineNum">      96 </span>            : };
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            : //----------------------------------------------------------
+<span class="lineNum">      99 </span>            : // ofPtr
+<a name="100"><span class="lineNum">     100 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     101 </span>            : template &lt;typename T&gt;
+<span class="lineNum">     102 </span><span class="lineCov">      68843 : class ofPtr: public std::tr1::shared_ptr&lt;T&gt;</span>
+<span class="lineNum">     103 </span>            : {
+<span class="lineNum">     104 </span>            : 
+<a name="105"><span class="lineNum">     105 </span>            : public:</a>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span><span class="lineCov">       1168 :         ofPtr()</span>
+<span class="lineNum">     108 </span><span class="lineCov">       1168 :           : std::tr1::shared_ptr&lt;T&gt;() { }</span>
+<span class="lineNum">     109 </span>            : 
+<a name="110"><span class="lineNum">     110 </span>            :           template&lt;typename Tp1&gt;</a>
+<span class="lineNum">     111 </span>            :                 explicit
+<span class="lineNum">     112 </span><span class="lineCov">        408 :                 ofPtr(Tp1* __p)</span>
+<span class="lineNum">     113 </span><span class="lineCov">        408 :         : std::tr1::shared_ptr&lt;T&gt;(__p) { }</span>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<span class="lineNum">     115 </span>            :           template&lt;typename Tp1, typename _Deleter&gt;
+<span class="lineNum">     116 </span><span class="lineCov">        385 :                 ofPtr(Tp1* __p, _Deleter __d)</span>
+<span class="lineNum">     117 </span><span class="lineCov">        385 :         : std::tr1::shared_ptr&lt;T&gt;(__p, __d) { }</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :           template&lt;typename Tp1, typename _Deleter, typename _Alloc&gt;
+<span class="lineNum">     120 </span>            :                 ofPtr(Tp1* __p, _Deleter __d, const _Alloc&amp; __a)
+<span class="lineNum">     121 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(__p, __d, __a) { }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :           // Aliasing constructor
+<span class="lineNum">     124 </span>            :           template&lt;typename Tp1&gt;
+<span class="lineNum">     125 </span>            :                 ofPtr(const ofPtr&lt;Tp1&gt;&amp; __r, T* __p)
+<span class="lineNum">     126 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(__r, __p) { }
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<span class="lineNum">     128 </span>            :           template&lt;typename Tp1&gt;
+<span class="lineNum">     129 </span><span class="lineCov">        220 :                 ofPtr(const ofPtr&lt;Tp1&gt;&amp; __r)</span>
+<span class="lineNum">     130 </span><span class="lineCov">        220 :         : std::tr1::shared_ptr&lt;T&gt;(__r) { }</span>
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :           /*ofPtr(ofPtr&amp;&amp; __r)
+<span class="lineNum">     133 </span>            :           : std::tr1::shared_ptr&lt;T&gt;(std::move(__r)) { }
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :           template&lt;typename Tp1&gt;
+<span class="lineNum">     136 </span>            :                 ofPtr(ofPtr&lt;Tp1&gt;&amp;&amp; __r)
+<span class="lineNum">     137 </span>            :                 : std::tr1::shared_ptr&lt;T&gt;(std::move(__r)) { }*/
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :           template&lt;typename Tp1&gt;
+<span class="lineNum">     140 </span>            :                 explicit
+<span class="lineNum">     141 </span>            :                 ofPtr(const std::tr1::weak_ptr&lt;Tp1&gt;&amp; __r)
+<span class="lineNum">     142 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(__r) { }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :         // tgfrerer: extends ofPtr facade to allow dynamic_pointer_cast, pt.1
+<span class="lineNum">     145 </span>            : #if (_MSC_VER)
+<span class="lineNum">     146 </span>            :         template&lt;typename Tp1&gt;
+<span class="lineNum">     147 </span>            :         ofPtr(const ofPtr&lt;Tp1&gt;&amp; __r, std::tr1::_Dynamic_tag)
+<span class="lineNum">     148 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(__r, std::tr1::_Dynamic_tag()) { }
+<span class="lineNum">     149 </span>            : #else
+<span class="lineNum">     150 </span>            :         template&lt;typename Tp1&gt;
+<span class="lineNum">     151 </span>            :         ofPtr(const ofPtr&lt;Tp1&gt;&amp; __r, std::tr1::__dynamic_cast_tag)
+<span class="lineNum">     152 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(__r, std::tr1::__dynamic_cast_tag()) { }
+<span class="lineNum">     153 </span>            : #endif
+<span class="lineNum">     154 </span>            :           /*template&lt;typename Tp1, typename Del&gt;
+<span class="lineNum">     155 </span>            :                 explicit
+<span class="lineNum">     156 </span>            :                 ofPtr(const std::tr1::unique_ptr&lt;Tp1, Del&gt;&amp;) = delete;
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            :           template&lt;typename Tp1, typename Del&gt;
+<span class="lineNum">     159 </span>            :                 explicit
+<span class="lineNum">     160 </span>            :                 ofPtr(std::tr1::unique_ptr&lt;Tp1, Del&gt;&amp;&amp; __r)
+<span class="lineNum">     161 </span>            :         : std::tr1::shared_ptr&lt;T&gt;(std::move(__r)) { }*/
+<span class="lineNum">     162 </span>            : };
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            : // tgfrerer: extends ofPtr facade to allow dynamic_pointer_cast, pt. 2
+<span class="lineNum">     165 </span>            : #if (_MSC_VER)
+<span class="lineNum">     166 </span>            : template&lt;typename _Tp, typename _Tp1&gt;
+<span class="lineNum">     167 </span>            : ofPtr&lt;_Tp&gt;
+<span class="lineNum">     168 </span>            :         dynamic_pointer_cast(const ofPtr&lt;_Tp1&gt;&amp; __r)
+<span class="lineNum">     169 </span>            : { return ofPtr&lt;_Tp&gt;(__r, std::tr1::_Dynamic_tag()); }
+<span class="lineNum">     170 </span>            : #else
+<span class="lineNum">     171 </span>            : template&lt;typename _Tp, typename _Tp1&gt;
+<span class="lineNum">     172 </span>            : ofPtr&lt;_Tp&gt;
+<span class="lineNum">     173 </span>            :         dynamic_pointer_cast(const ofPtr&lt;_Tp1&gt;&amp; __r)
+<span class="lineNum">     174 </span>            : { return ofPtr&lt;_Tp&gt;(__r, std::tr1::__dynamic_cast_tag()); }
+<span class="lineNum">     175 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

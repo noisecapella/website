@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/openFrameworks/utils/ofLog.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/openFrameworks/utils</a> - ofLog.h<span style="font-size: 80%;"> (source / <a href="ofLog.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryLo">66.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">60</td>
+            <td class="headerCovTableEntryLo">18.3 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofFileUtils.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofTypes.h&quot;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : enum ofLogLevel{
+<span class="lineNum">       8 </span>            :         OF_LOG_VERBOSE,
+<span class="lineNum">       9 </span>            :         OF_LOG_NOTICE,
+<span class="lineNum">      10 </span>            :         OF_LOG_WARNING,
+<span class="lineNum">      11 </span>            :         OF_LOG_ERROR,
+<span class="lineNum">      12 </span>            :         OF_LOG_FATAL_ERROR,
+<span class="lineNum">      13 </span>            :         OF_LOG_SILENT   // this one is special and should always be last,
+<span class="lineNum">      14 </span>            :                                         // set ofSetLogLevel to OF_SILENT to not recieve any messages
+<span class="lineNum">      15 </span>            : };
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : class ofBaseLoggerChannel;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : //--------------------------------------------------
+<span class="lineNum">      21 </span>            : void ofSetLogLevel(ofLogLevel logLevel);
+<span class="lineNum">      22 </span>            : void ofSetLogLevel(string module, ofLogLevel logLevel);
+<span class="lineNum">      23 </span>            : ofLogLevel ofGetLogLevel();
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : void ofSetLoggerChannel(ofPtr&lt;ofBaseLoggerChannel&gt; loggerChannel);
+<span class="lineNum">      26 </span>            : string ofGetLogLevelName(ofLogLevel level);
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : void ofLogToFile(const string &amp; path, bool append=false);
+<span class="lineNum">      29 </span>            : void ofLogToConsole();
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : //------------------------------------------------------------------------------
+<span class="lineNum">      32 </span>            : /// \class ofLog
+<span class="lineNum">      33 </span>            : /// \brief a streaming log interface
+<span class="lineNum">      34 </span>            : ///
+<span class="lineNum">      35 </span>            : /// ofLog accepts variables via the ostream operator &lt;&lt; and builds a string
+<span class="lineNum">      36 </span>            : /// and logs it when the stream is finished (via the destructor). A newline is
+<span class="lineNum">      37 </span>            : /// printed automatically and all the stream controls (endl, flush, hex, etc)
+<span class="lineNum">      38 </span>            : /// work normally. The log level is explicitly OF_LOG_NOTICE unless set, see the 
+<span class="lineNum">      39 </span>            : /// derived wrapper classes:
+<span class="lineNum">      40 </span>            : ///
+<span class="lineNum">      41 </span>            : /// Usage: ofLog() &lt;&lt; &quot;a string&quot; &lt;&lt; 100 &lt;&lt; 20.234f;
+<span class="lineNum">      42 </span>            : ///
+<span class="lineNum">      43 </span>            : /// It also accepts the legacy ofLog interface: ofLog(ofLogLevel level, string message):
+<span class="lineNum">      44 </span>            : ///
+<span class="lineNum">      45 </span>            : /// Usage: ofLog(OF_LOG_ERROR, &quot;another string&quot;);
+<span class="lineNum">      46 </span>            : ///
+<span class="lineNum">      47 </span>            : /// class idea from:
+<span class="lineNum">      48 </span>            : ///     http://www.gamedev.net/community/forums/topic.asp?topic_id=525405&amp;whichpage=1&amp;#3406418
+<span class="lineNum">      49 </span>            : /// how to catch std::endl (which is actually a func pointer):
+<span class="lineNum">      50 </span>            : ///     http://yvan.seth.id.au/Entries/Technology/Code/std__endl.html
+<span class="lineNum">      51 </span>            : ///
+<span class="lineNum">      52 </span>            : /// \author Dan Wilcox &lt;danomatika@gmail.com&gt; danomatika.com
+<span class="lineNum">      53 </span>            : ///
+<span class="lineNum">      54 </span>            : class ofLog{
+<span class="lineNum">      55 </span>            :         public:
+<span class="lineNum">      56 </span>            :         
+<span class="lineNum">      57 </span>            :                 /// log at notice level
+<span class="lineNum">      58 </span>            :                 ofLog();
+<span class="lineNum">      59 </span>            :                 
+<span class="lineNum">      60 </span>            :                 /// set the log level
+<span class="lineNum">      61 </span>            :                 ofLog(ofLogLevel logLevel);
+<span class="lineNum">      62 </span>            :                 
+<span class="lineNum">      63 </span>            :                 /// the legacy ofLog interfaces
+<span class="lineNum">      64 </span>            :                 ofLog(ofLogLevel logLevel, const string &amp; message);
+<span class="lineNum">      65 </span>            :                 ofLog(ofLogLevel logLevel, const char* format, ...);
+<span class="lineNum">      66 </span>            :                 
+<span class="lineNum">      67 </span>            :                 /// does the actual printing when the ostream is done
+<span class="lineNum">      68 </span>            :                 virtual ~ofLog();
+<span class="lineNum">      69 </span>            :                 
+<a name="70"><span class="lineNum">      70 </span>            :                 /// catch the &lt;&lt; ostream with a template class to read any type of data</a>
+<span class="lineNum">      71 </span>            :                 template &lt;class T&gt; 
+<span class="lineNum">      72 </span><span class="lineCov">       1033 :                         ofLog&amp; operator&lt;&lt;(const T&amp; value){</span>
+<span class="lineNum">      73 </span><span class="lineCov">       1033 :                         message &lt;&lt; value &lt;&lt; padding;</span>
+<span class="lineNum">      74 </span><span class="lineCov">       1033 :                         return *this;</span>
+<span class="lineNum">      75 </span>            :                 }
+<span class="lineNum">      76 </span>            :                 
+<span class="lineNum">      77 </span>            :                 /// catch the &lt;&lt; ostream function pointers such as std::endl and std::hex
+<span class="lineNum">      78 </span>            :                 ofLog&amp; operator&lt;&lt;(std::ostream&amp; (*func)(std::ostream&amp;)){
+<span class="lineNum">      79 </span>            :                         func(message);
+<span class="lineNum">      80 </span>            :                         return *this;
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            :                 
+<span class="lineNum">      83 </span>            :                 /// put a space between stream operator calls?
+<span class="lineNum">      84 </span>            :                 static void setAutoSpace(bool autoSpace);
+<span class="lineNum">      85 </span>            :                 
+<span class="lineNum">      86 </span>            :                 /// set the logging channel destinations for messages
+<span class="lineNum">      87 </span>            :                 static void setChannel(ofPtr&lt;ofBaseLoggerChannel&gt; channel);
+<span class="lineNum">      88 </span>            :         
+<span class="lineNum">      89 </span>            :         protected:
+<span class="lineNum">      90 </span>            :                 ofLogLevel level;                       ///&lt; log level
+<span class="lineNum">      91 </span>            :                 bool bPrinted;                          ///&lt; has the msg been printed in the constructor? 
+<span class="lineNum">      92 </span>            :                 string module;                          ///&lt; the destination module for this message
+<span class="lineNum">      93 </span>            :                 
+<span class="lineNum">      94 </span>            :                 /// print a log line
+<span class="lineNum">      95 </span>            :                 void _log(ofLogLevel level, const string &amp; module, const string &amp; message);
+<span class="lineNum">      96 </span>            :                 bool checkLog(ofLogLevel level, const string &amp; module);
+<span class="lineNum">      97 </span>            :         
+<span class="lineNum">      98 </span>            :         private:
+<span class="lineNum">      99 </span>            :                 std::ostringstream message;     ///&lt; temp buffer
+<span class="lineNum">     100 </span>            :                 
+<span class="lineNum">     101 </span>            :                 static bool bAutoSpace;         ///&lt; add a space between messages? 
+<span class="lineNum">     102 </span>            :                 
+<span class="lineNum">     103 </span>            :                 ofLog(ofLog const&amp;) {}                                              // not defined, not copyable
+<span class="lineNum">     104 </span>            :                 ofLog&amp; operator=(ofLog&amp; from) {return *this;}   // not defined, not assignable
+<span class="lineNum">     105 </span>            :                 
+<span class="lineNum">     106 </span>            :                 static ofPtr&lt;ofBaseLoggerChannel&gt; channel;        ///&lt; the message destination
+<span class="lineNum">     107 </span>            :                 static string padding;                                          ///&lt; the padding between ostream calls
+<span class="lineNum">     108 </span>            : };
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : //--------------------------------------------------------------
+<span class="lineNum">     111 </span>            : ///
+<span class="lineNum">     112 </span>            : /// \section Log Aliases
+<a name="113"><span class="lineNum">     113 </span>            : /// derived log classes for easy to use names</a>
+<span class="lineNum">     114 </span>            : ///
+<span class="lineNum">     115 </span><span class="lineCov">          9 : class ofLogVerbose : public ofLog{</span>
+<span class="lineNum">     116 </span>            :         public:
+<span class="lineNum">     117 </span>            :                 ofLogVerbose(const string &amp;module=&quot;OF&quot;);
+<span class="lineNum">     118 </span>            :                 ofLogVerbose(const string &amp; module, const string &amp; message);
+<a name="119"><span class="lineNum">     119 </span>            : };</a>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineCov">        256 : class ofLogNotice : public ofLog{</span>
+<span class="lineNum">     122 </span>            :         public:
+<span class="lineNum">     123 </span>            :                 ofLogNotice(const string &amp; module=&quot;OF&quot;);
+<span class="lineNum">     124 </span>            :                 ofLogNotice(const string &amp; module, const string &amp; message);
+<a name="125"><span class="lineNum">     125 </span>            : };</a>
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : class ofLogWarning : public ofLog{</span>
+<span class="lineNum">     128 </span>            :         public:
+<span class="lineNum">     129 </span>            :                 ofLogWarning(const string &amp; module=&quot;OF&quot;);
+<span class="lineNum">     130 </span>            :                 ofLogWarning(const string &amp; module, const string &amp; message);
+<a name="131"><span class="lineNum">     131 </span>            : };</a>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 : class ofLogError : public ofLog{</span>
+<span class="lineNum">     134 </span>            :         public:
+<span class="lineNum">     135 </span>            :                 ofLogError(const string &amp; module=&quot;OF&quot;);
+<span class="lineNum">     136 </span>            :                 ofLogError(const string &amp; module, const string &amp; message);
+<a name="137"><span class="lineNum">     137 </span>            : };</a>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 : class ofLogFatalError : public ofLog{</span>
+<span class="lineNum">     140 </span>            :         public:
+<span class="lineNum">     141 </span>            :                 ofLogFatalError(const string &amp; module=&quot;OF&quot;);
+<span class="lineNum">     142 </span>            :                 ofLogFatalError(const string &amp; module, const string &amp; message);
+<a name="143"><span class="lineNum">     143 </span>            : };</a>
+<span class="lineNum">     144 </span>            : 
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        195 : class ofBaseLoggerChannel{</span></a>
+<span class="lineNum">     146 </span>            : public:
+<span class="lineNum">     147 </span><span class="lineCov">          1 :         virtual ~ofBaseLoggerChannel(){};</span>
+<span class="lineNum">     148 </span>            :         virtual void log(ofLogLevel level, const string &amp; module, const string &amp; message)=0;
+<span class="lineNum">     149 </span>            :         virtual void log(ofLogLevel logLevel, const string &amp; module, const char* format, ...)=0;
+<span class="lineNum">     150 </span>            :         virtual void log(ofLogLevel logLevel, const string &amp; module, const char* format, va_list args)=0;
+<a name="151"><span class="lineNum">     151 </span>            : };</a>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">        194 : class ofConsoleLoggerChannel: public ofBaseLoggerChannel{</span>
+<span class="lineNum">     154 </span>            : public:
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :         virtual ~ofConsoleLoggerChannel(){};</span>
+<span class="lineNum">     156 </span>            :         void log(ofLogLevel level, const string &amp; module, const string &amp; message);
+<span class="lineNum">     157 </span>            :         void log(ofLogLevel logLevel, const string &amp; module, const char* format, ...);
+<span class="lineNum">     158 </span>            :         void log(ofLogLevel logLevel, const string &amp; module, const char* format, va_list args);
+<span class="lineNum">     159 </span>            : };
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            : class ofFileLoggerChannel: public ofBaseLoggerChannel{
+<span class="lineNum">     162 </span>            : public:
+<span class="lineNum">     163 </span>            :         ofFileLoggerChannel();
+<span class="lineNum">     164 </span>            :         ofFileLoggerChannel(const string &amp; path, bool append);
+<span class="lineNum">     165 </span>            :         virtual ~ofFileLoggerChannel();
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :         void setFile(const string &amp; path,bool append=false);
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :         void log(ofLogLevel level, const string &amp; module, const string &amp; message);
+<span class="lineNum">     170 </span>            :         void log(ofLogLevel logLevel, const string &amp; module, const char* format, ...);
+<span class="lineNum">     171 </span>            :         void log(ofLogLevel logLevel, const string &amp; module, const char* format, va_list args);
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :         void close();
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            : private:
+<span class="lineNum">     176 </span>            :         ofFile file;
+<span class="lineNum">     177 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

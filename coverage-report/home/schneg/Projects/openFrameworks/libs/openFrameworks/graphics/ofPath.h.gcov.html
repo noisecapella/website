@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/openFrameworks/graphics/ofPath.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/openFrameworks/graphics</a> - ofPath.h<span style="font-size: 80%;"> (source / <a href="ofPath.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofPoint.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofColor.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofPolyline.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;ofBaseTypes.h&quot;
+<span class="lineNum">       8 </span>            : #include &quot;ofMesh.h&quot;
+<span class="lineNum">       9 </span>            : #include &quot;ofTessellator.h&quot;
+<span class="lineNum">      10 </span>            : 
+<a name="11"><span class="lineNum">      11 </span>            : class ofSubPath;</a>
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span><span class="lineCov">       1472 : class ofPath{</span>
+<span class="lineNum">      14 </span>            : public:
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :         ofPath();
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :         void clear();
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :         // creates a new subpath
+<span class="lineNum">      21 </span>            :         void newSubPath();
+<span class="lineNum">      22 </span>            :         // closes current path, next command starts a new one
+<span class="lineNum">      23 </span>            :         void close();
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :         void lineTo(const ofPoint &amp; p);
+<span class="lineNum">      26 </span>            :         void lineTo(float x, float y);
+<span class="lineNum">      27 </span>            :         void lineTo(float x, float y, float z);
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :         // starts a new subpath with current parameters for winding, stroke, fill...
+<span class="lineNum">      30 </span>            :         // the new subpath starts in p
+<span class="lineNum">      31 </span>            :         void moveTo(const ofPoint &amp; p);
+<span class="lineNum">      32 </span>            :         void moveTo(float x, float y, float z=0);
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         void curveTo(const ofPoint &amp; p);
+<span class="lineNum">      35 </span>            :         void curveTo(float x, float y);
+<span class="lineNum">      36 </span>            :         void curveTo(float x, float y, float z);
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :         void bezierTo(const ofPoint &amp; cp1, const ofPoint &amp; cp2, const ofPoint &amp; p);
+<span class="lineNum">      39 </span>            :         void bezierTo(float cx1, float cy1, float cx2, float cy2, float x, float y);
+<span class="lineNum">      40 </span>            :         void bezierTo(float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z);
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :         void quadBezierTo(const ofPoint &amp; cp1, const ofPoint &amp; cp2, const ofPoint &amp; p);
+<span class="lineNum">      43 </span>            :         void quadBezierTo(float cx1, float cy1, float cx2, float cy2, float x, float y);
+<span class="lineNum">      44 </span>            :         void quadBezierTo(float cx1, float cy1, float cz1, float cx2, float cy2, float cz2, float x, float y, float z);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :     void arc(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd, bool clockwise);
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         void arc(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      49 </span>            :         void arc(float x, float y, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      50 </span>            :         void arc(float x, float y, float z, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         void arcNegative(const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      53 </span>            :         void arcNegative(float x, float y, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      54 </span>            :         void arcNegative(float x, float y, float z, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :         void setPolyWindingMode(ofPolyWindingMode mode);
+<span class="lineNum">      57 </span>            :         void setFilled(bool hasFill); // default true
+<span class="lineNum">      58 </span>            :         void setStrokeWidth(float width); // default 0
+<span class="lineNum">      59 </span>            :         void setColor( const ofColor&amp; color );
+<span class="lineNum">      60 </span>            :         void setHexColor( int hex );
+<span class="lineNum">      61 </span>            :         void setFillColor(const ofColor &amp; color);
+<span class="lineNum">      62 </span>            :         void setFillHexColor( int hex );
+<span class="lineNum">      63 </span>            :         void setStrokeColor(const ofColor &amp; color);
+<span class="lineNum">      64 </span>            :         void setStrokeHexColor( int hex );
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :         ofPolyWindingMode getWindingMode() const;
+<span class="lineNum">      68 </span>            :         bool isFilled() const; // default true
+<span class="lineNum">      69 </span>            :         ofColor getFillColor() const;
+<a name="70"><span class="lineNum">      70 </span>            :         ofColor getStrokeColor() const;</a>
+<span class="lineNum">      71 </span>            :         float getStrokeWidth() const; // default 0
+<span class="lineNum">      72 </span><span class="lineCov">     164021 :         bool hasOutline() const { return strokeWidth&gt;0; }</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :         void draw(float x, float y);
+<span class="lineNum">      75 </span>            :         void draw();
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :         vector&lt;ofSubPath&gt; &amp; getSubPaths();
+<span class="lineNum">      78 </span>            :         const vector&lt;ofSubPath&gt; &amp; getSubPaths() const;
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :         vector&lt;ofPolyline&gt; &amp; getOutline();
+<span class="lineNum">      81 </span>            :         ofMesh &amp; getTessellation();
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :         void simplify(float tolerance=0.3);
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :         // only needs to be called when path is modified externally
+<span class="lineNum">      86 </span>            :         void flagShapeChanged();
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :         enum Mode{
+<span class="lineNum">      89 </span>            :                 PATHS,
+<span class="lineNum">      90 </span>            :                 POLYLINES
+<span class="lineNum">      91 </span>            :         };
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :         void setMode(Mode mode);
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :         void setCurveResolution(int curveResolution);
+<span class="lineNum">      96 </span>            :         int getCurveResolution();
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :         void setArcResolution(int res);
+<span class="lineNum">      99 </span>            :         int getArcResolution();
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :         void setUseShapeColor(bool useColor);
+<span class="lineNum">     102 </span>            :         bool getUseShapeColor();
+<span class="lineNum">     103 </span>            :         
+<span class="lineNum">     104 </span>            :         void tessellate();
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :         void translate(const ofPoint &amp; p);
+<span class="lineNum">     107 </span>            :         void rotate(float az, const ofVec3f&amp; axis );
+<span class="lineNum">     108 </span>            :         void scale(float x, float y);
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : private:
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :         ofSubPath &amp; lastPath();
+<span class="lineNum">     113 </span>            :         ofPolyline &amp; lastPolyline();
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :         void generatePolylinesFromPaths();
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :         // path description
+<span class="lineNum">     118 </span>            :         vector&lt;ofSubPath&gt;         paths;
+<span class="lineNum">     119 </span>            :         ofPolyWindingMode       windingMode;
+<span class="lineNum">     120 </span>            :         ofColor                         fillColor;
+<span class="lineNum">     121 </span>            :         ofColor                         strokeColor;
+<span class="lineNum">     122 </span>            :         float                           strokeWidth;
+<span class="lineNum">     123 </span>            :         bool                            bFill;
+<span class="lineNum">     124 </span>            :         bool                            bUseShapeColor;
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :         // polyline / tessellation
+<span class="lineNum">     127 </span>            :         vector&lt;ofPolyline&gt;  polylines;
+<span class="lineNum">     128 </span>            :         vector&lt;ofPolyline&gt;  tessellatedContour; // if winding mode != ODD
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :         ofMesh                          cachedTessellation;
+<span class="lineNum">     131 </span>            :         bool                            cachedTessellationValid;
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :         static ofTessellator tessellator;
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :         bool                            hasChanged;
+<span class="lineNum">     136 </span>            :         int                                     prevCurveRes;
+<span class="lineNum">     137 </span>            :         int                                     curveResolution;
+<span class="lineNum">     138 </span>            :         int                                     arcResolution;
+<span class="lineNum">     139 </span>            :         bool                            bNeedsTessellation;
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :         Mode                            mode;
+<span class="lineNum">     142 </span>            : };
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">       2361 : class ofSubPath{</span>
+<span class="lineNum">     146 </span>            : public:
+<span class="lineNum">     147 </span>            :         struct Command;
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :         ofSubPath();
+<span class="lineNum">     150 </span>            :         vector&lt;Command&gt; &amp; getCommands();
+<span class="lineNum">     151 </span>            :         const vector&lt;Command&gt; &amp; getCommands() const;
+<span class="lineNum">     152 </span>            :         void addCommand(const Command &amp; command);
+<span class="lineNum">     153 </span>            :         bool hasChanged();
+<span class="lineNum">     154 </span>            :         void close();
+<span class="lineNum">     155 </span>            :         bool isClosed();
+<a name="156"><span class="lineNum">     156 </span>            :         int size();</a>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :         struct Command{</span>
+<span class="lineNum">     159 </span>            :                 enum Type{
+<span class="lineNum">     160 </span>            :                         lineTo,
+<span class="lineNum">     161 </span>            :                         curveTo,
+<span class="lineNum">     162 </span>            :                         bezierTo,
+<span class="lineNum">     163 </span>            :                         quadBezierTo,
+<span class="lineNum">     164 </span>            :                         arc,
+<span class="lineNum">     165 </span>            :             arcNegative,
+<span class="lineNum">     166 </span>            :                 };
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :                 /// for lineTo and curveTo
+<span class="lineNum">     169 </span>            :                 Command(Type type , const ofPoint &amp; p);
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :                 /// for bezierTo
+<span class="lineNum">     172 </span>            :                 Command(Type type , const ofPoint &amp; p, const ofPoint &amp; cp1, const ofPoint &amp; cp2);
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :                 ///for arc
+<span class="lineNum">     175 </span>            :                 Command(Type type , const ofPoint &amp; centre, float radiusX, float radiusY, float angleBegin, float angleEnd);
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :                 Type type;
+<span class="lineNum">     178 </span>            :                 ofPoint to;
+<span class="lineNum">     179 </span>            :                 ofPoint cp1, cp2;
+<span class="lineNum">     180 </span>            :                 float radiusX, radiusY, angleBegin, angleEnd;
+<span class="lineNum">     181 </span>            :         };
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            : private:
+<span class="lineNum">     184 </span>            :         vector&lt;Command&gt; commands;
+<span class="lineNum">     185 </span>            :         bool                    bClosed;
+<span class="lineNum">     186 </span>            :         bool                    bHasChanged;
+<span class="lineNum">     187 </span>            : };
+<span class="lineNum">     188 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

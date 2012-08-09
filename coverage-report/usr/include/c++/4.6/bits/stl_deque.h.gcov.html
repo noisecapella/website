@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - /usr/include/c++/4.6/bits/stl_deque.h</title>
+  <title>LCOV - .coverage.total - /usr/include/c++/4.6/bits/stl_deque.h</title>
   <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">159</td>
@@ -41,8 +41,8 @@
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">247</td>
-            <td class="headerCovTableEntry">342</td>
-            <td class="headerCovTableEntryLo">72.2 %</td>
+            <td class="headerCovTableEntry">353</td>
+            <td class="headerCovTableEntryLo">70.0 %</td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -206,7 +206,7 @@
 <span class="lineNum">     144 </span>            :       { return _M_cur; }
 <a name="145"><span class="lineNum">     145 </span>            : </a>
 <span class="lineNum">     146 </span>            :       _Self&amp;
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :       operator++()</span>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :       operator++()</span></a>
 <span class="lineNum">     148 </span>            :       {
 <span class="lineNum">     149 </span><span class="lineNoCov">          0 :         ++_M_cur;</span>
 <span class="lineNum">     150 </span><span class="lineNoCov">          0 :         if (_M_cur == _M_last)</span>
@@ -1943,7 +1943,7 @@
 <span class="lineNum">    1881 </span>            :        *  (And consequently, %deque iterators.)
 <a name="1882"><span class="lineNum">    1882 </span>            :        */</a>
 <span class="lineNum">    1883 </span>            :       void
-<span class="lineNum">    1884 </span><span class="lineCov">        532 :       _M_reserve_map_at_back(size_type __nodes_to_add = 1)</span>
+<a name="1884"><span class="lineNum">    1884 </span><span class="lineCov">        532 :       _M_reserve_map_at_back(size_type __nodes_to_add = 1)</span></a>
 <span class="lineNum">    1885 </span>            :       {
 <span class="lineNum">    1886 </span><span class="lineCov">        532 :         if (__nodes_to_add + 1 &gt; this-&gt;_M_impl._M_map_size</span>
 <span class="lineNum">    1887 </span>            :             - (this-&gt;_M_impl._M_finish._M_node - this-&gt;_M_impl._M_map))
@@ -1951,7 +1951,7 @@
 <span class="lineNum">    1889 </span><span class="lineCov">        532 :       }</span>
 <a name="1890"><span class="lineNum">    1890 </span>            : </a>
 <span class="lineNum">    1891 </span>            :       void
-<span class="lineNum">    1892 </span><span class="lineCov">      40990 :       _M_reserve_map_at_front(size_type __nodes_to_add = 1)</span>
+<a name="1892"><span class="lineNum">    1892 </span><span class="lineCov">      40990 :       _M_reserve_map_at_front(size_type __nodes_to_add = 1)</span></a>
 <span class="lineNum">    1893 </span>            :       {
 <span class="lineNum">    1894 </span><span class="lineCov">      40990 :         if (__nodes_to_add &gt; size_type(this-&gt;_M_impl._M_start._M_node</span>
 <span class="lineNum">    1895 </span>            :                                        - this-&gt;_M_impl._M_map))

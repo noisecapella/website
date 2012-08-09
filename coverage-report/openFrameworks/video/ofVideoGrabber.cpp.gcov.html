@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - openFrameworks/video/ofVideoGrabber.cpp</title>
+  <title>LCOV - .coverage.total - openFrameworks/video/ofVideoGrabber.cpp</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">67</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">123</td>
-            <td class="headerCovTableEntryLo">54.5 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">33</td>
-            <td class="headerCovTableEntryLo">51.5 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,258 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofVideoGrabber.h&quot;</a>
-<span class="lineNum">       2 </span>            : #include &quot;ofUtils.h&quot;
-<span class="lineNum">       3 </span>            : #include &quot;ofBaseTypes.h&quot;
-<span class="lineNum">       4 </span>            : #include &quot;ofConstants.h&quot;
-<span class="lineNum">       5 </span>            : 
-<span class="lineNum">       6 </span>            : //TODO: allow for non rgb pixel formats to work with textures
-<span class="lineNum">       7 </span>            : //TODO: getImageBytes()
-<span class="lineNum">       8 </span>            : //TODO: getBytesPerPixel()
-<span class="lineNum">       9 </span>            : //TODO: add ofPixels support which would take care of the above
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : #ifdef TARGET_ANDROID
-<span class="lineNum">      12 </span>            :         extern bool ofxAndroidInitGrabber(ofVideoGrabber * grabber);
-<span class="lineNum">      13 </span>            :         extern bool ofxAndroidCloseGrabber(ofVideoGrabber * grabber);
-<span class="lineNum">      14 </span>            : #endif
-<a name="15"><span class="lineNum">      15 </span>            : </a>
-<span class="lineNum">      16 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      17 </span><span class="lineCov">         10 : ofVideoGrabber::ofVideoGrabber(){</span>
-<span class="lineNum">      18 </span><span class="lineCov">         10 :         bUseTexture                     = false;</span>
-<span class="lineNum">      19 </span><span class="lineCov">         10 :         bInitialized            = false;</span>
-<span class="lineNum">      20 </span><span class="lineCov">         10 :         RequestedDeviceID       = -1;</span>
-<span class="lineNum">      21 </span><span class="lineCov">         10 :         internalPixelFormat = OF_PIXELS_RGB;</span>
-<span class="lineNum">      22 </span><span class="lineCov">         10 :         desiredFramerate        = -1;</span>
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            : #ifdef TARGET_ANDROID
-<span class="lineNum">      25 </span>            :         if(!ofxAndroidInitGrabber(this)) return;
-<span class="lineNum">      26 </span>            : #endif
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineCov">         10 : }</span>
-<a name="29"><span class="lineNum">      29 </span>            : </a>
-<span class="lineNum">      30 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      31 </span><span class="lineCov">         30 : ofVideoGrabber::~ofVideoGrabber(){</span>
-<span class="lineNum">      32 </span>            : #ifdef TARGET_ANDROID
-<span class="lineNum">      33 </span>            :         ofxAndroidCloseGrabber(this);
-<span class="lineNum">      34 </span>            : #endif
-<span class="lineNum">      35 </span><span class="lineCov">         30 : }</span>
-<a name="36"><span class="lineNum">      36 </span>            : </a>
-<span class="lineNum">      37 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      38 </span><span class="lineCov">          9 : void ofVideoGrabber::setGrabber(ofPtr&lt;ofBaseVideoGrabber&gt; newGrabber){</span>
-<span class="lineNum">      39 </span><span class="lineCov">          9 :         grabber = newGrabber;</span>
-<span class="lineNum">      40 </span><span class="lineCov">          9 : }</span>
-<a name="41"><span class="lineNum">      41 </span>            : </a>
-<span class="lineNum">      42 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      43 </span><span class="lineNoCov">          0 : ofPtr&lt;ofBaseVideoGrabber&gt; ofVideoGrabber::getGrabber(){</span>
-<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         return grabber;</span>
-<span class="lineNum">      45 </span>            : }
-<a name="46"><span class="lineNum">      46 </span>            : </a>
-<span class="lineNum">      47 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      48 </span><span class="lineCov">          9 : bool ofVideoGrabber::initGrabber(int w, int h, bool setUseTexture){</span>
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : #ifndef OF_VID_GRABBER_TYPE
-<span class="lineNum">      51 </span>            : #error OF_VID_GRABBER_TYPE is not #defined! 
-<span class="lineNum">      52 </span>            : #endif
-<span class="lineNum">      53 </span>            :     
-<span class="lineNum">      54 </span><span class="lineCov">          9 :         if( grabber == NULL ){</span>
-<span class="lineNum">      55 </span><span class="lineCov">          9 :                 setGrabber( ofPtr&lt;OF_VID_GRABBER_TYPE&gt;(new OF_VID_GRABBER_TYPE) );</span>
-<span class="lineNum">      56 </span>            :         }
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span><span class="lineCov">          9 :         bInitialized = true;</span>
-<span class="lineNum">      59 </span><span class="lineCov">          9 :         bUseTexture = setUseTexture;</span>
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span><span class="lineCov">          9 :         if( RequestedDeviceID &gt;= 0 ){</span>
-<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 grabber-&gt;setDeviceID(RequestedDeviceID);</span>
-<span class="lineNum">      63 </span>            :         }
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span><span class="lineCov">          9 :         grabber-&gt;setPixelFormat(internalPixelFormat);</span>
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineCov">          9 :         if( desiredFramerate!=-1 ){</span>
-<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 grabber-&gt;setDesiredFrameRate(desiredFramerate);</span>
-<span class="lineNum">      69 </span>            :         }
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span><span class="lineCov">          9 :         bool bOk = grabber-&gt;initGrabber(w, h);</span>
-<span class="lineNum">      72 </span><span class="lineCov">          9 :         width    = (int)grabber-&gt;getWidth();</span>
-<span class="lineNum">      73 </span><span class="lineCov">          9 :         height   = (int)grabber-&gt;getHeight();</span>
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span><span class="lineCov">          9 :         if( bOk &amp;&amp; bUseTexture ){</span>
-<span class="lineNum">      76 </span><span class="lineCov">          9 :                 if(internalPixelFormat == OF_PIXELS_RGB)</span>
-<span class="lineNum">      77 </span><span class="lineCov">          9 :                         tex.allocate(width, height, GL_RGB);</span>
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 else if(internalPixelFormat == OF_PIXELS_RGBA)</span>
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                         tex.allocate(width, height, GL_RGBA);</span>
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 :                 else if(internalPixelFormat == OF_PIXELS_BGRA)</span>
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :                         tex.allocate(width, height, GL_RGBA); // for some reason if we allcoate as GL_BGRA we get a white texture</span>
-<span class="lineNum">      82 </span>            : #ifdef TARGET_ANDROID
-<span class="lineNum">      83 </span>            :                 else if(internalPixelFormat == OF_PIXELS_RGB565)
-<span class="lineNum">      84 </span>            :                         tex.allocate(width, height, GL_RGB565_OES); // for some reason if we allcoate as GL_BGRA we get a white texture
-<span class="lineNum">      85 </span>            :                 else if(internalPixelFormat == OF_PIXELS_MONO)
-<span class="lineNum">      86 </span>            :                         tex.allocate(width, height, GL_LUMINANCE); // for some reason if we allcoate as GL_BGRA we get a white texture
-<span class="lineNum">      87 </span>            : #endif
-<span class="lineNum">      88 </span>            :         }
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span><span class="lineCov">          9 :         return bOk;</span>
-<span class="lineNum">      91 </span>            : }
-<a name="92"><span class="lineNum">      92 </span>            : </a>
-<span class="lineNum">      93 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setPixelFormat(ofPixelFormat pixelFormat) {</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :         internalPixelFormat = pixelFormat;</span>
-<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 : ofPixelFormat ofVideoGrabber::getPixelFormat(){</span>
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 :         return grabber-&gt;getPixelFormat();</span>
-<span class="lineNum">     100 </span>            : }
-<a name="101"><span class="lineNum">     101 </span>            : </a>
-<span class="lineNum">     102 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 : void ofVideoGrabber::listDevices(){</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 grabber-&gt;listDevices();</span>
-<span class="lineNum">     106 </span>            :         }
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 : }</span>
-<a name="108"><span class="lineNum">     108 </span>            : </a>
-<span class="lineNum">     109 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     110 </span><span class="lineCov">          8 : void ofVideoGrabber::setVerbose(bool bTalkToMe){</span>
-<span class="lineNum">     111 </span><span class="lineCov">          8 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :                 grabber-&gt;setVerbose(bTalkToMe);</span>
-<span class="lineNum">     113 </span>            :         }
-<span class="lineNum">     114 </span><span class="lineCov">          8 : }</span>
-<a name="115"><span class="lineNum">     115 </span>            : </a>
-<span class="lineNum">     116 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     117 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setDeviceID(int _deviceID){</span>
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :         RequestedDeviceID = _deviceID;</span>
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         if( bInitialized ){</span>
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING, &quot;call setDeviceID before grabber is started!&quot;);</span>
-<span class="lineNum">     121 </span>            :         }
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 : }</span>
-<a name="123"><span class="lineNum">     123 </span>            : </a>
-<span class="lineNum">     124 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setDesiredFrameRate(int framerate){</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         desiredFramerate = framerate;</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     128 </span><span class="lineNoCov">          0 :                 grabber-&gt;setDesiredFrameRate(framerate);</span>
-<span class="lineNum">     129 </span>            :         }
-<span class="lineNum">     130 </span><span class="lineNoCov">          0 : }</span>
-<a name="131"><span class="lineNum">     131 </span>            : </a>
-<span class="lineNum">     132 </span>            : //---------------------------------------------------------------------------
-<span class="lineNum">     133 </span><span class="lineCov">  278324416 : unsigned char * ofVideoGrabber::getPixels(){</span>
-<span class="lineNum">     134 </span><span class="lineCov">  278324416 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     135 </span><span class="lineCov">  278324416 :                 return grabber-&gt;getPixels();</span>
-<span class="lineNum">     136 </span>            :         }
-<span class="lineNum">     137 </span><span class="lineCov">  278324416 :         return NULL;</span>
-<span class="lineNum">     138 </span>            : }
-<a name="139"><span class="lineNum">     139 </span>            : </a>
-<span class="lineNum">     140 </span>            : //---------------------------------------------------------------------------
-<span class="lineNum">     141 </span><span class="lineCov">         83 : ofPixelsRef ofVideoGrabber::getPixelsRef(){</span>
-<span class="lineNum">     142 </span><span class="lineCov">         83 :         return grabber-&gt;getPixelsRef();</span>
-<span class="lineNum">     143 </span>            : }
-<span class="lineNum">     144 </span>            : 
-<a name="145"><span class="lineNum">     145 </span>            : //------------------------------------</a>
-<span class="lineNum">     146 </span>            : //for getting a reference to the texture
-<span class="lineNum">     147 </span><span class="lineCov">       1948 : ofTexture &amp; ofVideoGrabber::getTextureReference(){</span>
-<span class="lineNum">     148 </span><span class="lineCov">       1948 :         return tex;</span>
-<span class="lineNum">     149 </span>            : }
-<a name="150"><span class="lineNum">     150 </span>            : </a>
-<span class="lineNum">     151 </span>            : //---------------------------------------------------------------------------
-<span class="lineNum">     152 </span><span class="lineCov">       3177 : bool  ofVideoGrabber::isFrameNew(){</span>
-<span class="lineNum">     153 </span><span class="lineCov">       3177 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     154 </span><span class="lineCov">       3177 :                 return grabber-&gt;isFrameNew();</span>
-<span class="lineNum">     155 </span>            :         }
-<span class="lineNum">     156 </span><span class="lineCov">       3177 :         return false;</span>
-<span class="lineNum">     157 </span>            : }
-<a name="158"><span class="lineNum">     158 </span>            : </a>
-<span class="lineNum">     159 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     160 </span><span class="lineCov">       6228 : void ofVideoGrabber::update(){</span>
-<span class="lineNum">     161 </span><span class="lineCov">       6228 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     162 </span><span class="lineCov">       6228 :                 grabber-&gt;update();</span>
-<span class="lineNum">     163 </span><span class="lineCov">       6228 :                 if( bUseTexture &amp;&amp; grabber-&gt;isFrameNew() ){</span>
-<span class="lineNum">     164 </span>            :                         //note we should look at ways to do other pixel formats.
-<span class="lineNum">     165 </span><span class="lineCov">       3442 :                         if(internalPixelFormat == OF_PIXELS_RGB)</span>
-<span class="lineNum">     166 </span><span class="lineCov">       3442 :                                 tex.loadData(grabber-&gt;getPixels(), (int)tex.getWidth(), (int)tex.getHeight(), GL_RGB);</span>
-<span class="lineNum">     167 </span><span class="lineNoCov">          0 :                         else if(internalPixelFormat == OF_PIXELS_RGBA)</span>
-<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                                 tex.loadData(grabber-&gt;getPixels(), (int)tex.getWidth(), (int)tex.getHeight(), GL_RGBA);</span>
-<span class="lineNum">     169 </span>            : #ifndef TARGET_ANDROID
-<span class="lineNum">     170 </span><span class="lineNoCov">          0 :                         else if(internalPixelFormat == OF_PIXELS_BGRA)</span>
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                                 tex.loadData(grabber-&gt;getPixels(), (int)tex.getWidth(), (int)tex.getHeight(), GL_BGRA);</span>
-<span class="lineNum">     172 </span>            : #else
-<span class="lineNum">     173 </span>            :                         else if(internalPixelFormat == OF_PIXELS_MONO)
-<span class="lineNum">     174 </span>            :                                 tex.loadData(grabber-&gt;getPixels(), (int)tex.getWidth(), (int)tex.getHeight(), GL_LUMINANCE);
-<span class="lineNum">     175 </span>            : #endif
-<span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span>            :                 }
-<span class="lineNum">     178 </span>            :         }
-<span class="lineNum">     179 </span><span class="lineCov">       6228 : }</span>
-<a name="180"><span class="lineNum">     180 </span>            : </a>
-<span class="lineNum">     181 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     182 </span><span class="lineCov">       1948 : void ofVideoGrabber::grabFrame(){</span>
-<span class="lineNum">     183 </span><span class="lineCov">       1948 :         update();</span>
-<span class="lineNum">     184 </span><span class="lineCov">       1948 : }</span>
-<a name="185"><span class="lineNum">     185 </span>            : </a>
-<span class="lineNum">     186 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     187 </span><span class="lineNoCov">          0 : void ofVideoGrabber::close(){</span>
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 grabber-&gt;close();</span>
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 bInitialized=false;</span>
-<span class="lineNum">     191 </span>            :         }
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         tex.clear();</span>
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 : }</span>
-<a name="194"><span class="lineNum">     194 </span>            : </a>
-<span class="lineNum">     195 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 : void ofVideoGrabber::videoSettings(void){</span>
-<span class="lineNum">     197 </span><span class="lineNoCov">          0 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 grabber-&gt;videoSettings();</span>
-<span class="lineNum">     199 </span>            :         }
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 : }</span>
-<a name="201"><span class="lineNum">     201 </span>            : </a>
-<span class="lineNum">     202 </span>            : //------------------------------------
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setUseTexture(bool bUse){</span>
-<span class="lineNum">     204 </span><span class="lineNoCov">          0 :         bUseTexture = bUse;</span>
-<span class="lineNum">     205 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">     206 </span>            : 
-<a name="207"><span class="lineNum">     207 </span>            : </a>
-<span class="lineNum">     208 </span>            : //----------------------------------------------------------
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setAnchorPercent(float xPct, float yPct){</span>
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         tex.setAnchorPercent(xPct, yPct);</span>
-<span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span>
-<a name="212"><span class="lineNum">     212 </span>            : </a>
-<span class="lineNum">     213 </span>            : //----------------------------------------------------------
-<span class="lineNum">     214 </span><span class="lineNoCov">          0 : void ofVideoGrabber::setAnchorPoint(float x, float y){</span>
-<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         tex.setAnchorPoint(x, y);</span>
-<span class="lineNum">     216 </span><span class="lineNoCov">          0 : }</span>
-<a name="217"><span class="lineNum">     217 </span>            : </a>
-<span class="lineNum">     218 </span>            : //----------------------------------------------------------
-<span class="lineNum">     219 </span><span class="lineNoCov">          0 : void ofVideoGrabber::resetAnchor(){</span>
-<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         tex.resetAnchor();</span>
-<span class="lineNum">     221 </span><span class="lineNoCov">          0 : }</span>
-<a name="222"><span class="lineNum">     222 </span>            : </a>
-<span class="lineNum">     223 </span>            : //------------------------------------
-<span class="lineNum">     224 </span><span class="lineCov">       2067 : void ofVideoGrabber::draw(float _x, float _y, float _w, float _h){</span>
-<span class="lineNum">     225 </span><span class="lineCov">       2067 :         tex.draw(_x, _y, _w, _h);</span>
-<span class="lineNum">     226 </span><span class="lineCov">       2067 : }</span>
-<a name="227"><span class="lineNum">     227 </span>            : </a>
-<span class="lineNum">     228 </span>            : //------------------------------------
-<span class="lineNum">     229 </span><span class="lineCov">        576 : void ofVideoGrabber::draw(float _x, float _y){</span>
-<span class="lineNum">     230 </span><span class="lineCov">        576 :         tex.draw(_x, _y);</span>
-<span class="lineNum">     231 </span><span class="lineCov">        576 : }</span>
-<a name="232"><span class="lineNum">     232 </span>            : </a>
-<span class="lineNum">     233 </span>            : //----------------------------------------------------------
-<span class="lineNum">     234 </span><span class="lineCov">   92777294 : float ofVideoGrabber::getHeight(){</span>
-<span class="lineNum">     235 </span><span class="lineCov">   92777294 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     236 </span><span class="lineCov">   92777294 :                 height = grabber-&gt;getHeight();</span>
-<span class="lineNum">     237 </span>            :         }
-<span class="lineNum">     238 </span><span class="lineCov">   92777294 :         return (float)height;</span>
-<span class="lineNum">     239 </span>            : }
-<a name="240"><span class="lineNum">     240 </span>            : </a>
-<span class="lineNum">     241 </span>            : //----------------------------------------------------------
-<span class="lineNum">     242 </span><span class="lineCov">   92777294 : float ofVideoGrabber::getWidth(){</span>
-<span class="lineNum">     243 </span><span class="lineCov">   92777294 :         if(     grabber != NULL ){</span>
-<span class="lineNum">     244 </span><span class="lineCov">   92777294 :                 width = grabber-&gt;getWidth();</span>
-<span class="lineNum">     245 </span>            :         }
-<span class="lineNum">     246 </span><span class="lineCov">   92777294 :         return (float)width;</span>
-<span class="lineNum">     247 </span>            : }
-<a name="248"><span class="lineNum">     248 </span>            : </a>
-<span class="lineNum">     249 </span>            : //----------------------------------------------------------
-<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 : bool ofVideoGrabber::isInitialized(){</span></a>
-<span class="lineNum">     251 </span><span class="lineNoCov">          0 :         return bInitialized;</span>
-<span class="lineNum">     252 </span><span class="lineCov">         30 : }</span>
+<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
 </pre>
       </td>
     </tr>

@@ -1,0 +1,557 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/poco/include/Poco/Net/SocketImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/poco/include/Poco/Net</a> - SocketImpl.h<span style="font-size: 80%;"> (source / <a href="SocketImpl.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : //</a>
+<span class="lineNum">       2 </span>            : // SocketImpl.h
+<span class="lineNum">       3 </span>            : //
+<span class="lineNum">       4 </span>            : // $Id: //poco/1.4/Net/include/Poco/Net/SocketImpl.h#4 $
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : // Library: Net
+<span class="lineNum">       7 </span>            : // Package: Sockets
+<span class="lineNum">       8 </span>            : // Module:  SocketImpl
+<span class="lineNum">       9 </span>            : //
+<span class="lineNum">      10 </span>            : // Definition of the SocketImpl class.
+<span class="lineNum">      11 </span>            : //
+<span class="lineNum">      12 </span>            : // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
+<span class="lineNum">      13 </span>            : // and Contributors.
+<span class="lineNum">      14 </span>            : //
+<span class="lineNum">      15 </span>            : // Permission is hereby granted, free of charge, to any person or organization
+<span class="lineNum">      16 </span>            : // obtaining a copy of the software and accompanying documentation covered by
+<span class="lineNum">      17 </span>            : // this license (the &quot;Software&quot;) to use, reproduce, display, distribute,
+<span class="lineNum">      18 </span>            : // execute, and transmit the Software, and to prepare derivative works of the
+<span class="lineNum">      19 </span>            : // Software, and to permit third-parties to whom the Software is furnished to
+<span class="lineNum">      20 </span>            : // do so, all subject to the following:
+<span class="lineNum">      21 </span>            : // 
+<span class="lineNum">      22 </span>            : // The copyright notices in the Software and this entire statement, including
+<span class="lineNum">      23 </span>            : // the above license grant, this restriction and the following disclaimer,
+<span class="lineNum">      24 </span>            : // must be included in all copies of the Software, in whole or in part, and
+<span class="lineNum">      25 </span>            : // all derivative works of the Software, unless such copies or derivative
+<span class="lineNum">      26 </span>            : // works are solely in the form of machine-executable object code generated by
+<span class="lineNum">      27 </span>            : // a source language processor.
+<span class="lineNum">      28 </span>            : // 
+<span class="lineNum">      29 </span>            : // THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<span class="lineNum">      30 </span>            : // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<span class="lineNum">      31 </span>            : // FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+<span class="lineNum">      32 </span>            : // SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+<span class="lineNum">      33 </span>            : // FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+<span class="lineNum">      34 </span>            : // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+<span class="lineNum">      35 </span>            : // DEALINGS IN THE SOFTWARE.
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #ifndef Net_SocketImpl_INCLUDED
+<span class="lineNum">      40 </span>            : #define Net_SocketImpl_INCLUDED
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : #include &quot;Poco/Net/Net.h&quot;
+<span class="lineNum">      44 </span>            : #include &quot;Poco/Net/SocketDefs.h&quot;
+<span class="lineNum">      45 </span>            : #include &quot;Poco/Net/SocketAddress.h&quot;
+<span class="lineNum">      46 </span>            : #include &quot;Poco/RefCountedObject.h&quot;
+<span class="lineNum">      47 </span>            : #include &quot;Poco/Timespan.h&quot;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : namespace Poco {
+<span class="lineNum">      51 </span>            : namespace Net {
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : class Net_API SocketImpl: public Poco::RefCountedObject
+<span class="lineNum">      55 </span>            :         /// This class encapsulates the Berkeley sockets API.
+<span class="lineNum">      56 </span>            :         /// 
+<span class="lineNum">      57 </span>            :         /// Subclasses implement specific socket types like
+<span class="lineNum">      58 </span>            :         /// stream or datagram sockets.
+<span class="lineNum">      59 </span>            :         ///
+<span class="lineNum">      60 </span>            :         /// You should not create any instances of this class.
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            : public:
+<span class="lineNum">      63 </span>            :         enum SelectMode
+<span class="lineNum">      64 </span>            :         {
+<span class="lineNum">      65 </span>            :                 SELECT_READ  = 1,
+<span class="lineNum">      66 </span>            :                 SELECT_WRITE = 2,
+<span class="lineNum">      67 </span>            :                 SELECT_ERROR = 4
+<span class="lineNum">      68 </span>            :         };
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :         virtual SocketImpl* acceptConnection(SocketAddress&amp; clientAddr);
+<span class="lineNum">      71 </span>            :                 /// Get the next completed connection from the
+<span class="lineNum">      72 </span>            :                 /// socket's completed connection queue.
+<span class="lineNum">      73 </span>            :                 ///
+<span class="lineNum">      74 </span>            :                 /// If the queue is empty, waits until a connection
+<span class="lineNum">      75 </span>            :                 /// request completes.
+<span class="lineNum">      76 </span>            :                 ///
+<span class="lineNum">      77 </span>            :                 /// Returns a new TCP socket for the connection
+<span class="lineNum">      78 </span>            :                 /// with the client.
+<span class="lineNum">      79 </span>            :                 ///
+<span class="lineNum">      80 </span>            :                 /// The client socket's address is returned in clientAddr.
+<span class="lineNum">      81 </span>            :         
+<span class="lineNum">      82 </span>            :         virtual void connect(const SocketAddress&amp; address);
+<span class="lineNum">      83 </span>            :                 /// Initializes the socket and establishes a connection to 
+<span class="lineNum">      84 </span>            :                 /// the TCP server at the given address.
+<span class="lineNum">      85 </span>            :                 ///
+<span class="lineNum">      86 </span>            :                 /// Can also be used for UDP sockets. In this case, no
+<span class="lineNum">      87 </span>            :                 /// connection is established. Instead, incoming and outgoing
+<span class="lineNum">      88 </span>            :                 /// packets are restricted to the specified address.
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :         virtual void connect(const SocketAddress&amp; address, const Poco::Timespan&amp; timeout);
+<span class="lineNum">      91 </span>            :                 /// Initializes the socket, sets the socket timeout and 
+<span class="lineNum">      92 </span>            :                 /// establishes a connection to the TCP server at the given address.
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :         virtual void connectNB(const SocketAddress&amp; address);
+<span class="lineNum">      95 </span>            :                 /// Initializes the socket and establishes a connection to 
+<span class="lineNum">      96 </span>            :                 /// the TCP server at the given address. Prior to opening the
+<span class="lineNum">      97 </span>            :                 /// connection the socket is set to nonblocking mode.
+<span class="lineNum">      98 </span>            :         
+<span class="lineNum">      99 </span>            :         virtual void bind(const SocketAddress&amp; address, bool reuseAddress = false);
+<span class="lineNum">     100 </span>            :                 /// Bind a local address to the socket.
+<span class="lineNum">     101 </span>            :                 ///
+<span class="lineNum">     102 </span>            :                 /// This is usually only done when establishing a server
+<span class="lineNum">     103 </span>            :                 /// socket. TCP clients should not bind a socket to a
+<span class="lineNum">     104 </span>            :                 /// specific address.
+<span class="lineNum">     105 </span>            :                 ///
+<span class="lineNum">     106 </span>            :                 /// If reuseAddress is true, sets the SO_REUSEADDR
+<span class="lineNum">     107 </span>            :                 /// socket option.
+<span class="lineNum">     108 </span>            :                 
+<span class="lineNum">     109 </span>            :         virtual void bind6(const SocketAddress&amp; address, bool reuseAddress = false, bool ipV6Only = false);
+<span class="lineNum">     110 </span>            :                 /// Bind a local IPv6 address to the socket.
+<span class="lineNum">     111 </span>            :                 ///
+<span class="lineNum">     112 </span>            :                 /// This is usually only done when establishing a server
+<span class="lineNum">     113 </span>            :                 /// socket. TCP clients should not bind a socket to a
+<span class="lineNum">     114 </span>            :                 /// specific address.
+<span class="lineNum">     115 </span>            :                 ///
+<span class="lineNum">     116 </span>            :                 /// If reuseAddress is true, sets the SO_REUSEADDR
+<span class="lineNum">     117 </span>            :                 /// socket option.
+<span class="lineNum">     118 </span>            :                 ///
+<span class="lineNum">     119 </span>            :                 /// The given address must be an IPv6 address. The
+<span class="lineNum">     120 </span>            :                 /// IPPROTO_IPV6/IPV6_V6ONLY option is set on the socket
+<span class="lineNum">     121 </span>            :                 /// according to the ipV6Only parameter.
+<span class="lineNum">     122 </span>            :                 ///
+<span class="lineNum">     123 </span>            :                 /// If the library has not been built with IPv6 support,
+<span class="lineNum">     124 </span>            :                 /// a Poco::NotImplementedException will be thrown.
+<span class="lineNum">     125 </span>            :                 
+<span class="lineNum">     126 </span>            :         virtual void listen(int backlog = 64);
+<span class="lineNum">     127 </span>            :                 /// Puts the socket into listening state.
+<span class="lineNum">     128 </span>            :                 ///
+<span class="lineNum">     129 </span>            :                 /// The socket becomes a passive socket that
+<span class="lineNum">     130 </span>            :                 /// can accept incoming connection requests.
+<span class="lineNum">     131 </span>            :                 ///
+<span class="lineNum">     132 </span>            :                 /// The backlog argument specifies the maximum
+<span class="lineNum">     133 </span>            :                 /// number of connections that can be queued
+<span class="lineNum">     134 </span>            :                 /// for this socket.
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :         virtual void close();
+<span class="lineNum">     137 </span>            :                 /// Close the socket.
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :         virtual void shutdownReceive();
+<span class="lineNum">     140 </span>            :                 /// Shuts down the receiving part of the socket connection.
+<span class="lineNum">     141 </span>            :                 
+<span class="lineNum">     142 </span>            :         virtual void shutdownSend();
+<span class="lineNum">     143 </span>            :                 /// Shuts down the sending part of the socket connection.
+<span class="lineNum">     144 </span>            :                 
+<span class="lineNum">     145 </span>            :         virtual void shutdown();
+<span class="lineNum">     146 </span>            :                 /// Shuts down both the receiving and the sending part
+<span class="lineNum">     147 </span>            :                 /// of the socket connection.
+<span class="lineNum">     148 </span>            :         
+<span class="lineNum">     149 </span>            :         virtual int sendBytes(const void* buffer, int length, int flags = 0);
+<span class="lineNum">     150 </span>            :                 /// Sends the contents of the given buffer through
+<span class="lineNum">     151 </span>            :                 /// the socket.
+<span class="lineNum">     152 </span>            :                 ///
+<span class="lineNum">     153 </span>            :                 /// Returns the number of bytes sent, which may be
+<span class="lineNum">     154 </span>            :                 /// less than the number of bytes specified.
+<span class="lineNum">     155 </span>            :                 ///
+<span class="lineNum">     156 </span>            :                 /// Certain socket implementations may also return a negative
+<span class="lineNum">     157 </span>            :                 /// value denoting a certain condition.
+<span class="lineNum">     158 </span>            :         
+<span class="lineNum">     159 </span>            :         virtual int receiveBytes(void* buffer, int length, int flags = 0);
+<span class="lineNum">     160 </span>            :                 /// Receives data from the socket and stores it
+<span class="lineNum">     161 </span>            :                 /// in buffer. Up to length bytes are received.
+<span class="lineNum">     162 </span>            :                 ///
+<span class="lineNum">     163 </span>            :                 /// Returns the number of bytes received.
+<span class="lineNum">     164 </span>            :                 ///
+<span class="lineNum">     165 </span>            :                 /// Certain socket implementations may also return a negative
+<span class="lineNum">     166 </span>            :                 /// value denoting a certain condition.
+<span class="lineNum">     167 </span>            :         
+<span class="lineNum">     168 </span>            :         virtual int sendTo(const void* buffer, int length, const SocketAddress&amp; address, int flags = 0);
+<span class="lineNum">     169 </span>            :                 /// Sends the contents of the given buffer through
+<span class="lineNum">     170 </span>            :                 /// the socket to the given address.
+<span class="lineNum">     171 </span>            :                 ///
+<span class="lineNum">     172 </span>            :                 /// Returns the number of bytes sent, which may be
+<span class="lineNum">     173 </span>            :                 /// less than the number of bytes specified.
+<span class="lineNum">     174 </span>            :         
+<span class="lineNum">     175 </span>            :         virtual int receiveFrom(void* buffer, int length, SocketAddress&amp; address, int flags = 0);
+<span class="lineNum">     176 </span>            :                 /// Receives data from the socket and stores it
+<span class="lineNum">     177 </span>            :                 /// in buffer. Up to length bytes are received.
+<span class="lineNum">     178 </span>            :                 /// Stores the address of the sender in address.
+<span class="lineNum">     179 </span>            :                 ///
+<span class="lineNum">     180 </span>            :                 /// Returns the number of bytes received.
+<span class="lineNum">     181 </span>            :         
+<span class="lineNum">     182 </span>            :         virtual void sendUrgent(unsigned char data);
+<span class="lineNum">     183 </span>            :                 /// Sends one byte of urgent data through
+<span class="lineNum">     184 </span>            :                 /// the socket.
+<span class="lineNum">     185 </span>            :                 ///
+<span class="lineNum">     186 </span>            :                 /// The data is sent with the MSG_OOB flag.
+<span class="lineNum">     187 </span>            :                 ///
+<span class="lineNum">     188 </span>            :                 /// The preferred way for a socket to receive urgent data
+<span class="lineNum">     189 </span>            :                 /// is by enabling the SO_OOBINLINE option.
+<span class="lineNum">     190 </span>            :         
+<span class="lineNum">     191 </span>            :         virtual int available();
+<span class="lineNum">     192 </span>            :                 /// Returns the number of bytes available that can be read
+<span class="lineNum">     193 </span>            :                 /// without causing the socket to block.
+<span class="lineNum">     194 </span>            :                 
+<span class="lineNum">     195 </span>            :         virtual bool poll(const Poco::Timespan&amp; timeout, int mode);
+<span class="lineNum">     196 </span>            :                 /// Determines the status of the socket, using a 
+<span class="lineNum">     197 </span>            :                 /// call to select().
+<span class="lineNum">     198 </span>            :                 /// 
+<span class="lineNum">     199 </span>            :                 /// The mode argument is constructed by combining the values
+<span class="lineNum">     200 </span>            :                 /// of the SelectMode enumeration.
+<span class="lineNum">     201 </span>            :                 ///
+<span class="lineNum">     202 </span>            :                 /// Returns true if the next operation corresponding to
+<span class="lineNum">     203 </span>            :                 /// mode will not block, false otherwise.
+<span class="lineNum">     204 </span>            :                 
+<span class="lineNum">     205 </span>            :         virtual void setSendBufferSize(int size);
+<span class="lineNum">     206 </span>            :                 /// Sets the size of the send buffer.
+<span class="lineNum">     207 </span>            :                 
+<span class="lineNum">     208 </span>            :         virtual int getSendBufferSize();
+<span class="lineNum">     209 </span>            :                 /// Returns the size of the send buffer.
+<span class="lineNum">     210 </span>            :                 ///
+<span class="lineNum">     211 </span>            :                 /// The returned value may be different than the
+<span class="lineNum">     212 </span>            :                 /// value previously set with setSendBufferSize(),
+<span class="lineNum">     213 </span>            :                 /// as the system is free to adjust the value.
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :         virtual void setReceiveBufferSize(int size);
+<span class="lineNum">     216 </span>            :                 /// Sets the size of the receive buffer.
+<span class="lineNum">     217 </span>            :                 
+<span class="lineNum">     218 </span>            :         virtual int getReceiveBufferSize();
+<span class="lineNum">     219 </span>            :                 /// Returns the size of the receive buffer.
+<span class="lineNum">     220 </span>            :                 ///
+<span class="lineNum">     221 </span>            :                 /// The returned value may be different than the
+<span class="lineNum">     222 </span>            :                 /// value previously set with setReceiveBufferSize(),
+<span class="lineNum">     223 </span>            :                 /// as the system is free to adjust the value.
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :         virtual void setSendTimeout(const Poco::Timespan&amp; timeout);
+<span class="lineNum">     226 </span>            :                 /// Sets the send timeout for the socket.
+<span class="lineNum">     227 </span>            :         
+<span class="lineNum">     228 </span>            :         virtual Poco::Timespan getSendTimeout();
+<span class="lineNum">     229 </span>            :                 /// Returns the send timeout for the socket.
+<span class="lineNum">     230 </span>            :                 ///
+<span class="lineNum">     231 </span>            :                 /// The returned timeout may be different than the
+<span class="lineNum">     232 </span>            :                 /// timeout previously set with setSendTimeout(),
+<span class="lineNum">     233 </span>            :                 /// as the system is free to adjust the value.
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :         virtual void setReceiveTimeout(const Poco::Timespan&amp; timeout);
+<span class="lineNum">     236 </span>            :                 /// Sets the send timeout for the socket.
+<span class="lineNum">     237 </span>            :                 ///
+<span class="lineNum">     238 </span>            :                 /// On systems that do not support SO_RCVTIMEO, a
+<span class="lineNum">     239 </span>            :                 /// workaround using poll() is provided.
+<span class="lineNum">     240 </span>            :         
+<span class="lineNum">     241 </span>            :         virtual Poco::Timespan getReceiveTimeout();
+<span class="lineNum">     242 </span>            :                 /// Returns the receive timeout for the socket.
+<span class="lineNum">     243 </span>            :                 ///
+<span class="lineNum">     244 </span>            :                 /// The returned timeout may be different than the
+<span class="lineNum">     245 </span>            :                 /// timeout previously set with setReceiveTimeout(),
+<span class="lineNum">     246 </span>            :                 /// as the system is free to adjust the value.
+<span class="lineNum">     247 </span>            :         
+<span class="lineNum">     248 </span>            :         virtual SocketAddress address();
+<span class="lineNum">     249 </span>            :                 /// Returns the IP address and port number of the socket.
+<span class="lineNum">     250 </span>            :                 
+<span class="lineNum">     251 </span>            :         virtual SocketAddress peerAddress();
+<span class="lineNum">     252 </span>            :                 /// Returns the IP address and port number of the peer socket.
+<span class="lineNum">     253 </span>            :         
+<span class="lineNum">     254 </span>            :         void setOption(int level, int option, int value);
+<span class="lineNum">     255 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     256 </span>            :                 /// to the given integer value.
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :         void setOption(int level, int option, unsigned value);
+<span class="lineNum">     259 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     260 </span>            :                 /// to the given integer value.
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :         void setOption(int level, int option, unsigned char value);
+<span class="lineNum">     263 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     264 </span>            :                 /// to the given integer value.
+<span class="lineNum">     265 </span>            :                 
+<span class="lineNum">     266 </span>            :         void setOption(int level, int option, const Poco::Timespan&amp; value);
+<span class="lineNum">     267 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     268 </span>            :                 /// to the given time value.
+<span class="lineNum">     269 </span>            :                 
+<span class="lineNum">     270 </span>            :         void setOption(int level, int option, const IPAddress&amp; value);
+<span class="lineNum">     271 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     272 </span>            :                 /// to the given time value.
+<span class="lineNum">     273 </span>            :                 
+<span class="lineNum">     274 </span>            :         virtual void setRawOption(int level, int option, const void* value, poco_socklen_t length);
+<span class="lineNum">     275 </span>            :                 /// Sets the socket option specified by level and option
+<span class="lineNum">     276 </span>            :                 /// to the given time value.
+<span class="lineNum">     277 </span>            :                 
+<span class="lineNum">     278 </span>            :         void getOption(int level, int option, int&amp; value);
+<span class="lineNum">     279 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     280 </span>            :                 /// specified by level and option.
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :         void getOption(int level, int option, unsigned&amp; value);
+<span class="lineNum">     283 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     284 </span>            :                 /// specified by level and option.
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :         void getOption(int level, int option, unsigned char&amp; value);
+<span class="lineNum">     287 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     288 </span>            :                 /// specified by level and option.
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :         void getOption(int level, int option, Poco::Timespan&amp; value);
+<span class="lineNum">     291 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     292 </span>            :                 /// specified by level and option.
+<span class="lineNum">     293 </span>            :         
+<span class="lineNum">     294 </span>            :         void getOption(int level, int option, IPAddress&amp; value);
+<span class="lineNum">     295 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     296 </span>            :                 /// specified by level and option.
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span>            :         virtual void getRawOption(int level, int option, void* value, poco_socklen_t&amp; length);
+<span class="lineNum">     299 </span>            :                 /// Returns the value of the socket option 
+<span class="lineNum">     300 </span>            :                 /// specified by level and option.      
+<span class="lineNum">     301 </span>            :         
+<span class="lineNum">     302 </span>            :         void setLinger(bool on, int seconds);
+<span class="lineNum">     303 </span>            :                 /// Sets the value of the SO_LINGER socket option.
+<span class="lineNum">     304 </span>            :                 
+<span class="lineNum">     305 </span>            :         void getLinger(bool&amp; on, int&amp; seconds);
+<span class="lineNum">     306 </span>            :                 /// Returns the value of the SO_LINGER socket option.
+<span class="lineNum">     307 </span>            :         
+<span class="lineNum">     308 </span>            :         void setNoDelay(bool flag);
+<span class="lineNum">     309 </span>            :                 /// Sets the value of the TCP_NODELAY socket option.
+<span class="lineNum">     310 </span>            :                 
+<span class="lineNum">     311 </span>            :         bool getNoDelay();
+<span class="lineNum">     312 </span>            :                 /// Returns the value of the TCP_NODELAY socket option.
+<span class="lineNum">     313 </span>            :         
+<span class="lineNum">     314 </span>            :         void setKeepAlive(bool flag);
+<span class="lineNum">     315 </span>            :                 /// Sets the value of the SO_KEEPALIVE socket option.
+<span class="lineNum">     316 </span>            :                 
+<span class="lineNum">     317 </span>            :         bool getKeepAlive();
+<span class="lineNum">     318 </span>            :                 /// Returns the value of the SO_KEEPALIVE socket option.
+<span class="lineNum">     319 </span>            :         
+<span class="lineNum">     320 </span>            :         void setReuseAddress(bool flag);
+<span class="lineNum">     321 </span>            :                 /// Sets the value of the SO_REUSEADDR socket option.
+<span class="lineNum">     322 </span>            :         
+<span class="lineNum">     323 </span>            :         bool getReuseAddress();
+<span class="lineNum">     324 </span>            :                 /// Returns the value of the SO_REUSEADDR socket option.
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            :         void setReusePort(bool flag);
+<span class="lineNum">     327 </span>            :                 /// Sets the value of the SO_REUSEPORT socket option.
+<span class="lineNum">     328 </span>            :                 /// Does nothing if the socket implementation does not
+<span class="lineNum">     329 </span>            :                 /// support SO_REUSEPORT.
+<span class="lineNum">     330 </span>            :         
+<span class="lineNum">     331 </span>            :         bool getReusePort();
+<span class="lineNum">     332 </span>            :                 /// Returns the value of the SO_REUSEPORT socket option.
+<span class="lineNum">     333 </span>            :                 ///
+<span class="lineNum">     334 </span>            :                 /// Returns false if the socket implementation does not
+<span class="lineNum">     335 </span>            :                 /// support SO_REUSEPORT.
+<span class="lineNum">     336 </span>            :                 
+<span class="lineNum">     337 </span>            :         void setOOBInline(bool flag);
+<span class="lineNum">     338 </span>            :                 /// Sets the value of the SO_OOBINLINE socket option.
+<span class="lineNum">     339 </span>            :         
+<span class="lineNum">     340 </span>            :         bool getOOBInline();
+<span class="lineNum">     341 </span>            :                 /// Returns the value of the SO_OOBINLINE socket option.
+<span class="lineNum">     342 </span>            :         
+<span class="lineNum">     343 </span>            :         void setBroadcast(bool flag);
+<span class="lineNum">     344 </span>            :                 /// Sets the value of the SO_BROADCAST socket option.
+<span class="lineNum">     345 </span>            :                 
+<span class="lineNum">     346 </span>            :         bool getBroadcast();
+<span class="lineNum">     347 </span>            :                 /// Returns the value of the SO_BROADCAST socket option.
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            :         virtual void setBlocking(bool flag);
+<span class="lineNum">     350 </span>            :                 /// Sets the socket in blocking mode if flag is true,
+<span class="lineNum">     351 </span>            :                 /// disables blocking mode if flag is false.
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :         virtual bool getBlocking() const;
+<span class="lineNum">     354 </span>            :                 /// Returns the blocking mode of the socket.
+<span class="lineNum">     355 </span>            :                 /// This method will only work if the blocking modes of 
+<span class="lineNum">     356 </span>            :                 /// the socket are changed via the setBlocking method!
+<span class="lineNum">     357 </span>            :                 
+<span class="lineNum">     358 </span>            :         virtual bool secure() const;
+<span class="lineNum">     359 </span>            :                 /// Returns true iff the socket's connection is secure
+<span class="lineNum">     360 </span>            :                 /// (using SSL or TLS).
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span>            :         int socketError();
+<span class="lineNum">     363 </span>            :                 /// Returns the value of the SO_ERROR socket option.
+<span class="lineNum">     364 </span>            :         
+<span class="lineNum">     365 </span>            :         poco_socket_t sockfd() const;
+<span class="lineNum">     366 </span>            :                 /// Returns the socket descriptor for the 
+<span class="lineNum">     367 </span>            :                 /// underlying native socket.
+<span class="lineNum">     368 </span>            :         
+<span class="lineNum">     369 </span>            :         void ioctl(poco_ioctl_request_t request, int&amp; arg);
+<span class="lineNum">     370 </span>            :                 /// A wrapper for the ioctl system call.
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span>            :         void ioctl(poco_ioctl_request_t request, void* arg);
+<span class="lineNum">     373 </span>            :                 /// A wrapper for the ioctl system call.
+<span class="lineNum">     374 </span>            :         
+<span class="lineNum">     375 </span>            :         bool initialized() const;
+<span class="lineNum">     376 </span>            :                 /// Returns true iff the underlying socket is initialized.
+<span class="lineNum">     377 </span>            :         
+<span class="lineNum">     378 </span>            : protected:
+<span class="lineNum">     379 </span>            :         SocketImpl();
+<span class="lineNum">     380 </span>            :                 /// Creates a SocketImpl.
+<span class="lineNum">     381 </span>            :                 
+<span class="lineNum">     382 </span>            :         SocketImpl(poco_socket_t sockfd);
+<span class="lineNum">     383 </span>            :                 /// Creates a SocketImpl using the given native socket.
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span>            :         virtual ~SocketImpl();
+<span class="lineNum">     386 </span>            :                 /// Destroys the SocketImpl.
+<span class="lineNum">     387 </span>            :                 /// Closes the socket if it is still open.
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span>            :         virtual void init(int af);
+<span class="lineNum">     390 </span>            :                 /// Creates the underlying native socket.
+<span class="lineNum">     391 </span>            :                 ///
+<span class="lineNum">     392 </span>            :                 /// Subclasses must implement this method so
+<span class="lineNum">     393 </span>            :                 /// that it calls initSocket() with the
+<span class="lineNum">     394 </span>            :                 /// appropriate arguments.
+<span class="lineNum">     395 </span>            :                 ///
+<span class="lineNum">     396 </span>            :                 /// The default implementation creates a
+<span class="lineNum">     397 </span>            :                 /// stream socket.
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            :         void initSocket(int af, int type, int proto = 0);
+<span class="lineNum">     400 </span>            :                 /// Creates the underlying native socket.
+<span class="lineNum">     401 </span>            :                 ///
+<span class="lineNum">     402 </span>            :                 /// The first argument, af, specifies the address family
+<span class="lineNum">     403 </span>            :                 /// used by the socket, which should be either AF_INET or
+<span class="lineNum">     404 </span>            :                 /// AF_INET6.
+<span class="lineNum">     405 </span>            :                 ///
+<span class="lineNum">     406 </span>            :                 /// The second argument, type, specifies the type of the
+<span class="lineNum">     407 </span>            :                 /// socket, which can be one of SOCK_STREAM, SOCK_DGRAM
+<span class="lineNum">     408 </span>            :                 /// or SOCK_RAW.
+<span class="lineNum">     409 </span>            :                 ///
+<span class="lineNum">     410 </span>            :                 /// The third argument, proto, is normally set to 0,
+<span class="lineNum">     411 </span>            :                 /// except for raw sockets.
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            :         void reset(poco_socket_t fd = POCO_INVALID_SOCKET);
+<span class="lineNum">     414 </span>            :                 /// Allows subclasses to set the socket manually, iff no valid socket is set yet.
+<span class="lineNum">     415 </span>            :         
+<span class="lineNum">     416 </span>            :         static int lastError();
+<span class="lineNum">     417 </span>            :                 /// Returns the last error code.
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            :         static void error();
+<span class="lineNum">     420 </span>            :                 /// Throws an appropriate exception for the last error.
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span>            :         static void error(const std::string&amp; arg);
+<span class="lineNum">     423 </span>            :                 /// Throws an appropriate exception for the last error.
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span>            :         static void error(int code);
+<span class="lineNum">     426 </span>            :                 /// Throws an appropriate exception for the given error code.
+<span class="lineNum">     427 </span>            :                 
+<span class="lineNum">     428 </span>            :         static void error(int code, const std::string&amp; arg);
+<span class="lineNum">     429 </span>            :                 /// Throws an appropriate exception for the given error code.
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            : private:
+<span class="lineNum">     432 </span>            :         SocketImpl(const SocketImpl&amp;);
+<span class="lineNum">     433 </span>            :         SocketImpl&amp; operator = (const SocketImpl&amp;);
+<span class="lineNum">     434 </span>            :         
+<span class="lineNum">     435 </span>            :         poco_socket_t _sockfd;
+<span class="lineNum">     436 </span>            : #if defined(POCO_BROKEN_TIMEOUTS)
+<span class="lineNum">     437 </span>            :         Poco::Timespan _recvTimeout;
+<span class="lineNum">     438 </span>            :         Poco::Timespan _sndTimeout;
+<span class="lineNum">     439 </span>            : #endif
+<span class="lineNum">     440 </span>            :         bool          _blocking;
+<span class="lineNum">     441 </span>            :         
+<span class="lineNum">     442 </span>            :         friend class Socket;
+<span class="lineNum">     443 </span>            :         friend class SecureSocketImpl;
+<span class="lineNum">     444 </span>            : };
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span>            : //
+<span class="lineNum">     448 </span>            : // inlines
+<span class="lineNum">     449 </span>            : //
+<span class="lineNum">     450 </span>            : inline poco_socket_t SocketImpl::sockfd() const
+<span class="lineNum">     451 </span>            : {
+<span class="lineNum">     452 </span>            :         return _sockfd;
+<span class="lineNum">     453 </span>            : }
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span>            : inline bool SocketImpl::initialized() const
+<span class="lineNum">     457 </span>            : {
+<span class="lineNum">     458 </span>            :         return _sockfd != POCO_INVALID_SOCKET;
+<span class="lineNum">     459 </span>            : }
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span>            : inline int SocketImpl::lastError()
+<span class="lineNum">     463 </span>            : {
+<span class="lineNum">     464 </span>            : #if defined(_WIN32)
+<span class="lineNum">     465 </span>            :         return WSAGetLastError();
+<span class="lineNum">     466 </span>            : #else
+<span class="lineNum">     467 </span>            :         return errno;
+<span class="lineNum">     468 </span>            : #endif
+<span class="lineNum">     469 </span>            : }
+<a name="470"><span class="lineNum">     470 </span>            : </a>
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 : inline bool SocketImpl::getBlocking() const</span>
+<span class="lineNum">     473 </span>            : {
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :         return _blocking;</span>
+<span class="lineNum">     475 </span>            : }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span>            : } } // namespace Poco::Net
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span>            : #endif // Net_SocketImpl_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

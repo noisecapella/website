@@ -1,0 +1,949 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/openFrameworks/math/ofMatrix4x4.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/openFrameworks/math</a> - ofMatrix4x4.h<span style="font-size: 80%;"> (source / <a href="ofMatrix4x4.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">74</td>
+            <td class="headerCovTableEntry">122</td>
+            <td class="headerCovTableEntryLo">60.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">30</td>
+            <td class="headerCovTableEntryLo">66.7 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  ofMatrix4x4.h
+<span class="lineNum">       3 </span>            :  *  
+<span class="lineNum">       4 </span>            :  *  Created by Aaron Meyers on 6/22/09 -- modified by Arturo Castro, Zach Lieberman, Memo Akten
+<span class="lineNum">       5 </span>            :  *  based on code from OSG - 
+<span class="lineNum">       6 </span>            :  *  see OSG license for more details: 
+<span class="lineNum">       7 </span>            :  *  http://www.openscenegraph.org/projects/osg/wiki/Legal
+<span class="lineNum">       8 </span>            :  * 
+<span class="lineNum">       9 </span>            :  */
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #pragma once
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : #include &quot;ofVec3f.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;ofVec4f.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;ofQuaternion.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">      17 </span>            : #include &lt;cmath&gt;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #if (_MSC_VER)       
+<span class="lineNum">      21 </span>            :                 // make microsoft visual studio complain less about double / float conversion and
+<span class="lineNum">      22 </span>            :                 // truncation
+<span class="lineNum">      23 </span>            :                 #pragma warning(disable : 4244)
+<span class="lineNum">      24 </span>            :                 #pragma warning(disable : 4305)
+<span class="lineNum">      25 </span>            : #endif
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : class ofMatrix4x4 {
+<span class="lineNum">      29 </span>            : public:
+<span class="lineNum">      30 </span>            : //      float _mat[4][4];
+<span class="lineNum">      31 </span>            :         ofVec4f _mat[4];
+<span class="lineNum">      32 </span>            :         
+<a name="33"><span class="lineNum">      33 </span>            :         //---------------------------------------------</a>
+<span class="lineNum">      34 </span>            :         // constructors
+<span class="lineNum">      35 </span><span class="lineCov">   22588140 :         ofMatrix4x4() {</span>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">    4517628 :                 makeIdentityMatrix();</span></a>
+<span class="lineNum">      37 </span><span class="lineCov">    4517628 :         }</span>
+<span class="lineNum">      38 </span><span class="lineCov">    7851985 :         ofMatrix4x4( const ofMatrix4x4&amp; mat) {</span>
+<span class="lineNum">      39 </span><span class="lineCov">    1570397 :                 set(mat.getPtr());</span>
+<span class="lineNum">      40 </span><span class="lineCov">    1570397 :         }</span>
+<span class="lineNum">      41 </span>            :         ofMatrix4x4( float const * const ptr ) {
+<a name="42"><span class="lineNum">      42 </span>            :                 set(ptr);</a>
+<span class="lineNum">      43 </span>            :         }
+<span class="lineNum">      44 </span><span class="lineCov">       9545 :         ofMatrix4x4( const ofQuaternion&amp; quat ) {</span>
+<span class="lineNum">      45 </span><span class="lineCov">       1909 :                 makeRotationMatrix(quat);</span>
+<span class="lineNum">      46 </span><span class="lineCov">       1909 :         }</span>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         ofMatrix4x4(    float a00, float a01, float a02, float a03,
+<span class="lineNum">      49 </span>            :                       float a10, float a11, float a12, float a13,
+<span class="lineNum">      50 </span>            :                       float a20, float a21, float a22, float a23,
+<span class="lineNum">      51 </span>            :                       float a30, float a31, float a32, float a33);
+<span class="lineNum">      52 </span>            : 
+<a name="53"><span class="lineNum">      53 </span>            :         //---------------------------------------------</a>
+<span class="lineNum">      54 </span>            :         // destructor
+<span class="lineNum">      55 </span><span class="lineCov">    6068410 :         ~ofMatrix4x4() {}</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            : //      int compare(const ofMatrix4x4&amp; m) const;
+<span class="lineNum">      58 </span>            : //
+<span class="lineNum">      59 </span>            : //      bool operator &lt; (const ofMatrix4x4&amp; m) const { return compare(m)&lt;0; }
+<span class="lineNum">      60 </span>            : //      bool operator == (const ofMatrix4x4&amp; m) const { return compare(m)==0; }
+<span class="lineNum">      61 </span>            : //      bool operator != (const ofMatrix4x4&amp; m) const { return compare(m)!=0; }
+<span class="lineNum">      62 </span>            : 
+<a name="63"><span class="lineNum">      63 </span>            :         //---------------------------------------------</a>
+<span class="lineNum">      64 </span>            :         // write data with matrix(row,col)=number
+<span class="lineNum">      65 </span><span class="lineCov">     168358 :         float&amp; operator()(int row, int col) {</span>
+<span class="lineNum">      66 </span><span class="lineCov">     168358 :                 return _mat[row][col];</span>
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span>            : 
+<a name="69"><span class="lineNum">      69 </span>            :         //---------------------------------------------</a>
+<span class="lineNum">      70 </span>            :         // read data with var=matrix(row,col)
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :         float operator()(int row, int col) const {</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 return _mat[row][col];</span>
+<span class="lineNum">      73 </span>            :         }
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<span class="lineNum">      75 </span>            :         //----------------------------------------
+<span class="lineNum">      76 </span><span class="lineCov">      63672 :         ofVec3f getRowAsVec3f(int i) const {</span>
+<span class="lineNum">      77 </span><span class="lineCov">      63672 :                 return ofVec3f(_mat[i][0], _mat[i][1], _mat[i][2]);</span>
+<span class="lineNum">      78 </span>            :         }
+<span class="lineNum">      79 </span>            :         
+<span class="lineNum">      80 </span>            :         //----------------------------------------
+<span class="lineNum">      81 </span>            :         ofVec4f getRowAsVec4f(int i) const {
+<span class="lineNum">      82 </span>            :                 return _mat[i];
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            :         
+<span class="lineNum">      85 </span>            :         friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const ofMatrix4x4&amp; M);
+<span class="lineNum">      86 </span>            :         friend istream&amp; operator&gt;&gt;(istream&amp; is, ofMatrix4x4&amp; M);
+<span class="lineNum">      87 </span>            :         
+<span class="lineNum">      88 </span>            :         //---------------------------------------------
+<span class="lineNum">      89 </span>            :         // check if the matrix is valid
+<span class="lineNum">      90 </span>            :         bool isValid() const {
+<span class="lineNum">      91 </span>            :                 return !isNaN();
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :         bool isNaN() const;
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :         //---------------------------------------------
+<span class="lineNum">      97 </span>            :         // copy a matrix using = operator
+<span class="lineNum">      98 </span>            :         ofMatrix4x4&amp; operator = (const ofMatrix4x4&amp; rhs);
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :         //---------------------------------------------
+<span class="lineNum">     101 </span>            :         // methods to set the data of the matrix
+<span class="lineNum">     102 </span>            :         void set(const ofMatrix4x4&amp; rhs);
+<span class="lineNum">     103 </span>            :         void set(float const * const ptr);
+<span class="lineNum">     104 </span>            :         void set(double const * const ptr);
+<span class="lineNum">     105 </span>            :         void set(float a00, float a01, float a02, float a03,
+<span class="lineNum">     106 </span>            :                  float a10, float a11, float a12, float a13,
+<span class="lineNum">     107 </span>            :                  float a20, float a21, float a22, float a23,
+<span class="lineNum">     108 </span>            :                  float a30, float a31, float a32, float a33);
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :         //---------------------------------------------
+<a name="111"><span class="lineNum">     111 </span>            :         // access the internal data in float* format</a>
+<span class="lineNum">     112 </span>            :         // useful for opengl matrix transformations
+<span class="lineNum">     113 </span><span class="lineCov">     105945 :         float * getPtr() {</span>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">     105945 :                 return (float*)_mat;</span></a>
+<span class="lineNum">     115 </span>            :         }
+<span class="lineNum">     116 </span><span class="lineCov">    1571297 :         const float * getPtr() const {</span>
+<span class="lineNum">     117 </span><span class="lineCov">    1571297 :                 return (const float *)_mat;</span>
+<span class="lineNum">     118 </span>            :         }
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :         //---------------------------------------------
+<span class="lineNum">     121 </span>            :         // check matrix identity
+<span class="lineNum">     122 </span>            :         bool isIdentity() const;
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :         //---------------------------------------------
+<span class="lineNum">     126 </span>            :         // init matrix as identity, scale, translation...
+<span class="lineNum">     127 </span>            :         // all make* methods delete the current data
+<span class="lineNum">     128 </span>            :         void makeIdentityMatrix();
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :         void makeScaleMatrix( const ofVec3f&amp; );
+<span class="lineNum">     131 </span>            :         void makeScaleMatrix( float, float, float );
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :         void makeTranslationMatrix( const ofVec3f&amp; );
+<span class="lineNum">     134 </span>            :         void makeTranslationMatrix( float, float, float );
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :         void makeRotationMatrix( const ofVec3f&amp; from, const ofVec3f&amp; to );
+<span class="lineNum">     137 </span>            :         void makeRotationMatrix( float angle, const ofVec3f&amp; axis );
+<span class="lineNum">     138 </span>            :         void makeRotationMatrix( float angle, float x, float y, float z );
+<span class="lineNum">     139 </span>            :         void makeRotationMatrix( const ofQuaternion&amp; );
+<span class="lineNum">     140 </span>            :         void makeRotationMatrix( float angle1, const ofVec3f&amp; axis1,
+<span class="lineNum">     141 </span>            :                          float angle2, const ofVec3f&amp; axis2,
+<span class="lineNum">     142 </span>            :                          float angle3, const ofVec3f&amp; axis3);
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :         // init related to another matrix
+<span class="lineNum">     146 </span>            :         bool makeInvertOf( const ofMatrix4x4&amp; rhs);
+<span class="lineNum">     147 </span>            :         void makeOrthoNormalOf(const ofMatrix4x4&amp; rhs);
+<span class="lineNum">     148 </span>            :         void makeFromMultiplicationOf( const ofMatrix4x4&amp;, const ofMatrix4x4&amp; );
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :         ofMatrix4x4 getInverse();
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :         //---------------------------------------------
+<span class="lineNum">     154 </span>            :         // init as opengl related matrix for perspective settings
+<span class="lineNum">     155 </span>            :         // see opengl docs of the related funciton for further details
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :         // glOrtho
+<span class="lineNum">     158 </span>            :         void makeOrthoMatrix(double left,   double right,
+<span class="lineNum">     159 </span>            :                        double bottom, double top,
+<span class="lineNum">     160 </span>            :                        double zNear,  double zFar);
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :         // glOrtho2D
+<span class="lineNum">     163 </span>            :         void makeOrtho2DMatrix(double left,   double right,
+<span class="lineNum">     164 </span>            :                                 double bottom, double top);
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :         // glFrustum
+<span class="lineNum">     167 </span>            :         void makeFrustumMatrix(double left,   double right,
+<span class="lineNum">     168 </span>            :                          double bottom, double top,
+<span class="lineNum">     169 </span>            :                          double zNear,  double zFar);
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :         // gluPerspective
+<span class="lineNum">     172 </span>            :         // Aspect ratio is defined as width/height.
+<span class="lineNum">     173 </span>            :         void makePerspectiveMatrix(double fovy,  double aspectRatio,
+<span class="lineNum">     174 </span>            :                                                  double zNear, double zFar);
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :         // makeLookAtMatrix:
+<span class="lineNum">     178 </span>            :         // creates a transformation matrix positioned at 'eye'
+<span class="lineNum">     179 </span>            :         // pointing at (along z axis) 'center'
+<span class="lineNum">     180 </span>            :         // this is what you use if you want an object to look at a point
+<span class="lineNum">     181 </span>            :         void makeLookAtMatrix(const ofVec3f&amp; eye, const ofVec3f&amp; center, const ofVec3f&amp; up);
+<span class="lineNum">     182 </span>            :         
+<span class="lineNum">     183 </span>            :         
+<span class="lineNum">     184 </span>            :         // makeLookAtViewMatrix:
+<span class="lineNum">     185 </span>            :         // creates *the inverse of* a transformation matrix positioned at 'eye'
+<span class="lineNum">     186 </span>            :         // pointing at (along z axis) 'center'
+<span class="lineNum">     187 </span>            :         // this is what you use when you want your view matrix looking at a point
+<span class="lineNum">     188 </span>            :         // (the inverse of makeLookAtMatrix), same as gluLookAt
+<span class="lineNum">     189 </span>            :         void makeLookAtViewMatrix(const ofVec3f&amp; eye, const ofVec3f&amp; center, const ofVec3f&amp; up);
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :         //---------------------------------------------
+<span class="lineNum">     193 </span>            :         // Get the perspective components from a matrix
+<span class="lineNum">     194 </span>            :         // this only works with pure perspective projection matrices
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :         bool getOrtho(double&amp; left,   double&amp; right,
+<span class="lineNum">     197 </span>            :                       double&amp; bottom, double&amp; top,
+<span class="lineNum">     198 </span>            :                       double&amp; zNear,  double&amp; zFar) const;
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :         bool getFrustum(double&amp; left,   double&amp; right,
+<span class="lineNum">     201 </span>            :                         double&amp; bottom, double&amp; top,
+<span class="lineNum">     202 </span>            :                         double&amp; zNear,  double&amp; zFar) const;
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :         /** Get the frustum settings of a symmetric perspective projection
+<span class="lineNum">     205 </span>            :          * matrix.
+<span class="lineNum">     206 </span>            :          * Return false if matrix is not a perspective matrix,
+<span class="lineNum">     207 </span>            :          * where parameter values are undefined.
+<span class="lineNum">     208 </span>            :          * Note, if matrix is not a symmetric perspective matrix then the
+<span class="lineNum">     209 </span>            :          * shear will be lost.
+<span class="lineNum">     210 </span>            :          * Asymmetric matrices occur when stereo, power walls, caves and
+<span class="lineNum">     211 </span>            :          * reality center display are used.
+<span class="lineNum">     212 </span>            :          * In these configuration one should use the AsFrustum method instead.
+<span class="lineNum">     213 </span>            :          */
+<span class="lineNum">     214 </span>            :         bool getPerspective(double&amp; fovy,  double&amp; aspectRatio,
+<span class="lineNum">     215 </span>            :                             double&amp; zNear, double&amp; zFar) const;
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :         // will only work for modelview matrices
+<span class="lineNum">     218 </span>            :         void getLookAt(ofVec3f&amp; eye, ofVec3f&amp; center, ofVec3f&amp; up,
+<span class="lineNum">     219 </span>            :                        float lookDistance = 1.0f) const;
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :         //---------------------------------------------
+<span class="lineNum">     224 </span>            :         // decompose the matrix into translation, rotation,
+<span class="lineNum">     225 </span>            :         // scale and scale orientation.
+<span class="lineNum">     226 </span>            :         void decompose( ofVec3f&amp; translation,
+<span class="lineNum">     227 </span>            :                                         ofQuaternion&amp; rotation,
+<span class="lineNum">     228 </span>            :                                         ofVec3f&amp; scale,
+<span class="lineNum">     229 </span>            :                                         ofQuaternion&amp; so ) const;
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            :         //---------------------------------------------
+<span class="lineNum">     233 </span>            :         // basic utility functions to create new matrices
+<span class="lineNum">     234 </span>            :         inline static ofMatrix4x4 newIdentityMatrix( void );
+<span class="lineNum">     235 </span>            :         inline static ofMatrix4x4 newScaleMatrix( const ofVec3f&amp; sv);
+<span class="lineNum">     236 </span>            :         inline static ofMatrix4x4 newScaleMatrix( float sx, float sy, float sz);
+<span class="lineNum">     237 </span>            :         inline static ofMatrix4x4 newTranslationMatrix( const ofVec3f&amp; dv);
+<span class="lineNum">     238 </span>            :         inline static ofMatrix4x4 newTranslationMatrix( float x, float y, float z);
+<span class="lineNum">     239 </span>            :         inline static ofMatrix4x4 newRotationMatrix( const ofVec3f&amp; from, const ofVec3f&amp; to);
+<span class="lineNum">     240 </span>            :         inline static ofMatrix4x4 newRotationMatrix( float angle, float x, float y, float z);
+<span class="lineNum">     241 </span>            :         inline static ofMatrix4x4 newRotationMatrix( float angle, const ofVec3f&amp; axis);
+<span class="lineNum">     242 </span>            :         inline static ofMatrix4x4 newRotationMatrix( float angle1, const ofVec3f&amp; axis1,
+<span class="lineNum">     243 </span>            :                                            float angle2, const ofVec3f&amp; axis2,
+<span class="lineNum">     244 </span>            :                                            float angle3, const ofVec3f&amp; axis3);
+<span class="lineNum">     245 </span>            :         inline static ofMatrix4x4 newRotationMatrix( const ofQuaternion&amp; quat);
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span>            :         // create new matrices as transformation of another
+<span class="lineNum">     249 </span>            :         inline static ofMatrix4x4 getInverseOf( const ofMatrix4x4&amp; matrix);
+<span class="lineNum">     250 </span>            :         inline static ofMatrix4x4 getTransposedOf( const ofMatrix4x4&amp; matrix);
+<span class="lineNum">     251 </span>            :         inline static ofMatrix4x4 getOrthoNormalOf(const ofMatrix4x4&amp; matrix);
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :         // create new matrices related to glFunctions
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :         // glOrtho
+<span class="lineNum">     257 </span>            :         inline static ofMatrix4x4 newOrthoMatrix(double left,   double right,
+<span class="lineNum">     258 </span>            :                                          double bottom, double top,
+<span class="lineNum">     259 </span>            :                                          double zNear,  double zFar);
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :         // glOrtho2D
+<span class="lineNum">     262 </span>            :         inline static ofMatrix4x4 newOrtho2DMatrix(double left,   double right,
+<span class="lineNum">     263 </span>            :                                            double bottom, double top);
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :         // glFrustum
+<span class="lineNum">     266 </span>            :         inline static ofMatrix4x4 newFrustumMatrix(double left,   double right,
+<span class="lineNum">     267 </span>            :                                            double bottom, double top,
+<span class="lineNum">     268 </span>            :                                            double zNear,  double zFar);
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :         // gluPerspective
+<span class="lineNum">     271 </span>            :         inline static ofMatrix4x4 newPerspectiveMatrix(double fovy,  double aspectRatio,
+<span class="lineNum">     272 </span>            :                                                double zNear, double zFar);
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :         // gluLookAt
+<span class="lineNum">     275 </span>            :         inline static ofMatrix4x4 newLookAtMatrix(const ofVec3f&amp; eye,
+<span class="lineNum">     276 </span>            :                                           const ofVec3f&amp; center,
+<span class="lineNum">     277 </span>            :                                           const ofVec3f&amp; up);
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :         //---------------------------------------------
+<span class="lineNum">     281 </span>            :         // matrix - vector multiplication
+<span class="lineNum">     282 </span>            :         // although opengl uses premultiplication
+<span class="lineNum">     283 </span>            :         // because of the way matrices are used in opengl:
+<span class="lineNum">     284 </span>            :         //
+<span class="lineNum">     285 </span>            :         // ofMatrix4x4                          openGL
+<span class="lineNum">     286 </span>            :         // [0]  [1]  [2]  [3]           [0] [4] [8]  [12]
+<span class="lineNum">     287 </span>            :         // [4]  [5]  [6]  [7]           [1] [5] [9]  [13]
+<span class="lineNum">     288 </span>            :         // [8]  [9]  [10] [11]          [2] [6] [10] [14]
+<span class="lineNum">     289 </span>            :         // [12] [13] [14] [15]          [3] [7] [11] [15]
+<span class="lineNum">     290 </span>            :         //
+<span class="lineNum">     291 </span>            :         // in memory though both are layed in the same way
+<span class="lineNum">     292 </span>            :         // so when uploading a matrix it just works without
+<span class="lineNum">     293 </span>            :         // needing to transpose
+<span class="lineNum">     294 </span>            :         //
+<span class="lineNum">     295 </span>            :         // so although opengl docs explain transformations
+<span class="lineNum">     296 </span>            :         // like:
+<span class="lineNum">     297 </span>            :         //
+<span class="lineNum">     298 </span>            :         // ofVec3f c = rotateZ 30º ofVec3f a around ofVec3f b
+<span class="lineNum">     299 </span>            :         //
+<span class="lineNum">     300 </span>            :         // openGL docs says: c = T(b)*R(30)*a;
+<span class="lineNum">     301 </span>            :         //
+<span class="lineNum">     302 </span>            :         // with ofMatrix4x4:
+<span class="lineNum">     303 </span>            :         // ofMatrix4x4 R = ofMatrix4x4::newRotationMatrix(30,0,0,1);
+<span class="lineNum">     304 </span>            :         // ofMatrix4x4 T = ofMatrix4x4::newTranlationMatrix(b);
+<span class="lineNum">     305 </span>            :         // ofVec3f c = a*R*T;
+<span class="lineNum">     306 </span>            :         // where * is calling postMult
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :         inline ofVec3f postMult( const ofVec3f&amp; v ) const;
+<span class="lineNum">     309 </span>            :         inline ofVec3f operator* (const ofVec3f&amp; v) const {
+<span class="lineNum">     310 </span>            :                 return postMult(v);
+<span class="lineNum">     311 </span>            :         }
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span>            :         inline ofVec4f postMult( const ofVec4f&amp; v ) const;
+<span class="lineNum">     314 </span>            :         inline ofVec4f operator* (const ofVec4f&amp; v) const {
+<span class="lineNum">     315 </span>            :                 return postMult(v);
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :         inline ofVec3f preMult( const ofVec3f&amp; v ) const;
+<span class="lineNum">     319 </span>            :         inline ofVec4f preMult( const ofVec4f&amp; v ) const;
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :         //---------------------------------------------
+<span class="lineNum">     323 </span>            :         // set methods: all these alter the components
+<span class="lineNum">     324 </span>            :         // deleting the previous data only in that components
+<span class="lineNum">     325 </span>            :         void setRotate(const ofQuaternion&amp; q);
+<span class="lineNum">     326 </span>            :         void setTranslation( float tx, float ty, float tz );
+<span class="lineNum">     327 </span>            :         void setTranslation( const ofVec3f&amp; v );
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :         //---------------------------------------------
+<span class="lineNum">     330 </span>            :         // all these apply the transformations over the
+<span class="lineNum">     331 </span>            :         // current one, it's actually postMult... and behaves
+<span class="lineNum">     332 </span>            :         // the opposite to the equivalent gl functions
+<span class="lineNum">     333 </span>            :         // glTranslate + glRotate == rotate + translate
+<span class="lineNum">     334 </span>            :         void rotate(float angle, float x, float y, float z);
+<span class="lineNum">     335 </span>            :         void rotateRad(float angle, float x, float y, float z);
+<span class="lineNum">     336 </span>            :         void rotate(const ofQuaternion&amp; q);
+<span class="lineNum">     337 </span>            :         void translate( float tx, float ty, float tz );
+<span class="lineNum">     338 </span>            :         void translate( const ofVec3f&amp; v );
+<span class="lineNum">     339 </span>            :         void scale(float x, float y, float z);
+<span class="lineNum">     340 </span>            :         void scale( const ofVec3f&amp; v );
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :         //---------------------------------------------
+<span class="lineNum">     343 </span>            :         // all these apply the transformations over the
+<span class="lineNum">     344 </span>            :         // current one, it's actually preMult... and behaves
+<span class="lineNum">     345 </span>            :         // the the same the equivalent gl functions
+<span class="lineNum">     346 </span>            :         void glRotate(float angle, float x, float y, float z);
+<span class="lineNum">     347 </span>            :         void glRotateRad(float angle, float x, float y, float z);
+<span class="lineNum">     348 </span>            :         void glRotate(const ofQuaternion&amp; q);
+<span class="lineNum">     349 </span>            :         void glTranslate( float tx, float ty, float tz );
+<span class="lineNum">     350 </span>            :         void glTranslate( const ofVec3f&amp; v );
+<span class="lineNum">     351 </span>            :         void glScale(float x, float y, float z);
+<span class="lineNum">     352 </span>            :         void glScale( const ofVec3f&amp; v );
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            :         //---------------------------------------------
+<span class="lineNum">     355 </span>            :         // get methods: return matrix components
+<span class="lineNum">     356 </span>            :         // rotation and scale can only be used if the matrix
+<span class="lineNum">     357 </span>            :         // only has rotation or scale.
+<span class="lineNum">     358 </span>            :         // for matrices with both use decompose instead.
+<span class="lineNum">     359 </span>            :         ofQuaternion getRotate() const;
+<span class="lineNum">     360 </span>            :         ofVec3f getTranslation() const;
+<span class="lineNum">     361 </span>            :         ofVec3f getScale() const;
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span>            :         //---------------------------------------------
+<span class="lineNum">     365 </span>            :         // apply a 3x3 transform of v*M[0..2,0..2].
+<span class="lineNum">     366 </span>            :         inline static ofVec3f transform3x3(const ofVec3f&amp; v, const ofMatrix4x4&amp; m);
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            :         // apply a 3x3 transform of M[0..2,0..2]*v.
+<span class="lineNum">     369 </span>            :         inline static ofVec3f transform3x3(const ofMatrix4x4&amp; m, const ofVec3f&amp; v);
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span>            :         //---------------------------------------------
+<span class="lineNum">     373 </span>            :         // basic Matrixf multiplication, our workhorse methods.
+<span class="lineNum">     374 </span>            :         void postMult( const ofMatrix4x4&amp; );
+<span class="lineNum">     375 </span>            :         inline void operator *= ( const ofMatrix4x4&amp; other ) {
+<span class="lineNum">     376 </span>            :                 if ( this == &amp;other ) {
+<span class="lineNum">     377 </span>            :                         ofMatrix4x4 temp(other);
+<span class="lineNum">     378 </span>            :                         postMult( temp );
+<span class="lineNum">     379 </span>            :                 } else postMult( other );
+<a name="380"><span class="lineNum">     380 </span>            :         }</a>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineCov">    1501179 :         inline ofMatrix4x4 operator * ( const ofMatrix4x4 &amp;m ) const {</span>
+<span class="lineNum">     383 </span><span class="lineCov">    1501179 :                 ofMatrix4x4 r;</span>
+<span class="lineNum">     384 </span><span class="lineCov">    1501179 :                 r.makeFromMultiplicationOf(*this, m);</span>
+<span class="lineNum">     385 </span><span class="lineCov">    1501179 :                 return  r;</span>
+<span class="lineNum">     386 </span>            :         }
+<span class="lineNum">     387 </span>            :         
+<span class="lineNum">     388 </span>            :         
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :         void preMult( const ofMatrix4x4&amp; );
+<span class="lineNum">     391 </span>            : 
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span>            :         //---------------------------------------------
+<span class="lineNum">     395 </span>            :         // specialized postMult methods, usually you want to use this
+<span class="lineNum">     396 </span>            :         // for transforming ofVec not preMult
+<span class="lineNum">     397 </span>            :         // equivalent to postMult(newTranslationMatrix(v)); */
+<span class="lineNum">     398 </span>            :         inline void postMultTranslate( const ofVec3f&amp; v );
+<span class="lineNum">     399 </span>            :         // equivalent to postMult(scale(v));
+<span class="lineNum">     400 </span>            :         inline void postMultScale( const ofVec3f&amp; v );
+<span class="lineNum">     401 </span>            :         // equivalent to postMult(newRotationMatrix(q));
+<span class="lineNum">     402 </span>            :         inline void postMultRotate( const ofQuaternion&amp; q );
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            :         // AARON METHODS
+<span class="lineNum">     405 </span>            :         inline void postMultTranslate(float x, float y, float z);
+<span class="lineNum">     406 </span>            :         inline void postMultRotate(float angle, float x, float y, float z);
+<span class="lineNum">     407 </span>            :         inline void postMultScale(float x, float y, float z);
+<span class="lineNum">     408 </span>            : 
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            :         //---------------------------------------------
+<span class="lineNum">     411 </span>            :         // equivalent to preMult(newScaleMatrix(v));
+<span class="lineNum">     412 </span>            :         inline void preMultScale( const ofVec3f&amp; v );
+<span class="lineNum">     413 </span>            :         // equivalent to preMult(newTranslationMatrix(v));
+<span class="lineNum">     414 </span>            :         inline void preMultTranslate( const ofVec3f&amp; v );
+<span class="lineNum">     415 </span>            :         // equivalent to preMult(newRotationMatrix(q));
+<span class="lineNum">     416 </span>            :         inline void preMultRotate( const ofQuaternion&amp; q );
+<span class="lineNum">     417 </span>            : };
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span>            : //--------------------------------------------------
+<span class="lineNum">     421 </span>            : // implementation of inline methods
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span>            : inline bool ofMatrix4x4::isNaN() const {
+<span class="lineNum">     424 </span>            :         
+<span class="lineNum">     425 </span>            : #if (_MSC_VER) || defined (TARGET_ANDROID)
+<span class="lineNum">     426 </span>            : #ifndef isnan
+<span class="lineNum">     427 </span>            : #define isnan(a) ((a) != (a))
+<span class="lineNum">     428 </span>            : #endif
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span>            : return isnan(_mat[0][0]) || isnan(_mat[0][1]) || isnan(_mat[0][2]) || isnan(_mat[0][3]) ||
+<span class="lineNum">     431 </span>            :                isnan(_mat[1][0]) || isnan(_mat[1][1]) || isnan(_mat[1][2]) || isnan(_mat[1][3]) ||
+<span class="lineNum">     432 </span>            :                isnan(_mat[2][0]) || isnan(_mat[2][1]) || isnan(_mat[2][2]) || isnan(_mat[2][3]) ||
+<span class="lineNum">     433 </span>            :                isnan(_mat[3][0]) || isnan(_mat[3][1]) || isnan(_mat[3][2]) || isnan(_mat[3][3]);
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span>            : #else
+<span class="lineNum">     436 </span>            : return std::isnan(_mat[0][0]) || std::isnan(_mat[0][1]) || std::isnan(_mat[0][2]) || std::isnan(_mat[0][3]) ||
+<span class="lineNum">     437 </span>            :                std::isnan(_mat[1][0]) || std::isnan(_mat[1][1]) || std::isnan(_mat[1][2]) || std::isnan(_mat[1][3]) ||
+<span class="lineNum">     438 </span>            :                std::isnan(_mat[2][0]) || std::isnan(_mat[2][1]) || std::isnan(_mat[2][2]) || std::isnan(_mat[2][3]) ||
+<span class="lineNum">     439 </span>            :                std::isnan(_mat[3][0]) || std::isnan(_mat[3][1]) || std::isnan(_mat[3][2]) || std::isnan(_mat[3][3]);
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span>            : #endif
+<span class="lineNum">     442 </span>            :         
+<span class="lineNum">     443 </span>            : }
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span>            : inline ostream&amp; operator&lt;&lt;(ostream&amp; os, const ofMatrix4x4&amp; M) {
+<span class="lineNum">     448 </span>            :         int w = 8;
+<span class="lineNum">     449 </span>            :         os      &lt;&lt; setw(w)
+<span class="lineNum">     450 </span>            :                 &lt;&lt; M._mat[0][0] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w)
+<span class="lineNum">     451 </span>            :                 &lt;&lt; M._mat[0][1] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w)
+<span class="lineNum">     452 </span>            :                 &lt;&lt; M._mat[0][2] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     453 </span>            :                 &lt;&lt; M._mat[0][3] &lt;&lt; std::endl;
+<span class="lineNum">     454 </span>            :                 
+<span class="lineNum">     455 </span>            :         os      &lt;&lt; setw(w)
+<span class="lineNum">     456 </span>            :                 &lt;&lt; M._mat[1][0] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     457 </span>            :                 &lt;&lt; M._mat[1][1] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w)
+<span class="lineNum">     458 </span>            :                 &lt;&lt; M._mat[1][2] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     459 </span>            :                 &lt;&lt; M._mat[1][3] &lt;&lt; std::endl;
+<span class="lineNum">     460 </span>            :         
+<span class="lineNum">     461 </span>            :         os      &lt;&lt; setw(w)
+<span class="lineNum">     462 </span>            :                 &lt;&lt; M._mat[2][0] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     463 </span>            :                 &lt;&lt; M._mat[2][1] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w)
+<span class="lineNum">     464 </span>            :                 &lt;&lt; M._mat[2][2] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     465 </span>            :                 &lt;&lt; M._mat[2][3] &lt;&lt; std::endl;
+<span class="lineNum">     466 </span>            :         
+<span class="lineNum">     467 </span>            :         os      &lt;&lt; setw(w)
+<span class="lineNum">     468 </span>            :                 &lt;&lt; M._mat[3][0] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     469 </span>            :                 &lt;&lt; M._mat[3][1] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w)
+<span class="lineNum">     470 </span>            :                 &lt;&lt; M._mat[3][2] &lt;&lt; &quot;, &quot; &lt;&lt; setw(w) 
+<span class="lineNum">     471 </span>            :                 &lt;&lt; M._mat[3][3];
+<span class="lineNum">     472 </span>            :         
+<span class="lineNum">     473 </span>            :         return os;
+<span class="lineNum">     474 </span>            : }
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span>            : inline istream&amp; operator&gt;&gt;(istream&amp; is, ofMatrix4x4&amp; M) {
+<span class="lineNum">     477 </span>            :         is &gt;&gt; M._mat[0][0]; is.ignore(2); 
+<span class="lineNum">     478 </span>            :         is &gt;&gt; M._mat[0][1]; is.ignore(2);
+<span class="lineNum">     479 </span>            :         is &gt;&gt; M._mat[0][2]; is.ignore(2);
+<span class="lineNum">     480 </span>            :         is &gt;&gt; M._mat[0][3]; is.ignore(1);
+<span class="lineNum">     481 </span>            :         
+<span class="lineNum">     482 </span>            :         is &gt;&gt; M._mat[1][0]; is.ignore(2); 
+<span class="lineNum">     483 </span>            :         is &gt;&gt; M._mat[1][1]; is.ignore(2);
+<span class="lineNum">     484 </span>            :         is &gt;&gt; M._mat[1][2]; is.ignore(2);
+<span class="lineNum">     485 </span>            :         is &gt;&gt; M._mat[1][3]; is.ignore(1);
+<span class="lineNum">     486 </span>            :         
+<span class="lineNum">     487 </span>            :         is &gt;&gt; M._mat[2][0]; is.ignore(2); 
+<span class="lineNum">     488 </span>            :         is &gt;&gt; M._mat[2][1]; is.ignore(2);
+<span class="lineNum">     489 </span>            :         is &gt;&gt; M._mat[2][2]; is.ignore(2);
+<span class="lineNum">     490 </span>            :         is &gt;&gt; M._mat[2][3]; is.ignore(1);
+<span class="lineNum">     491 </span>            :         
+<span class="lineNum">     492 </span>            :         is &gt;&gt; M._mat[3][0]; is.ignore(2); 
+<span class="lineNum">     493 </span>            :         is &gt;&gt; M._mat[3][1]; is.ignore(2);
+<span class="lineNum">     494 </span>            :         is &gt;&gt; M._mat[3][2]; is.ignore(2);
+<span class="lineNum">     495 </span>            :         is &gt;&gt; M._mat[3][3];
+<span class="lineNum">     496 </span>            :         return is;
+<span class="lineNum">     497 </span>            : }
+<a name="498"><span class="lineNum">     498 </span>            : </a>
+<span class="lineNum">     499 </span>            : 
+<span class="lineNum">     500 </span><span class="lineCov">        900 : inline ofMatrix4x4&amp; ofMatrix4x4::operator = (const ofMatrix4x4&amp; rhs) {</span>
+<span class="lineNum">     501 </span><span class="lineCov">        900 :         if ( &amp;rhs == this ) return *this;</span>
+<span class="lineNum">     502 </span><span class="lineCov">        900 :         set(rhs.getPtr());</span>
+<span class="lineNum">     503 </span><span class="lineCov">        900 :         return *this;</span>
+<span class="lineNum">     504 </span>            : }
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            : inline void ofMatrix4x4::set(const ofMatrix4x4&amp; rhs) {
+<span class="lineNum">     507 </span>            :         set(rhs.getPtr());
+<a name="508"><span class="lineNum">     508 </span>            : }</a>
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span><span class="lineCov">    1571297 : inline void ofMatrix4x4::set(float const * const ptr) {</span>
+<span class="lineNum">     511 </span><span class="lineCov">    1571297 :         float* local_ptr = (float*)_mat;</span>
+<span class="lineNum">     512 </span><span class="lineCov">   26712049 :         for (int i = 0;i &lt; 16;++i) local_ptr[i] = (float)ptr[i];</span>
+<span class="lineNum">     513 </span><span class="lineCov">    1571297 : }</span>
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span>            : inline void ofMatrix4x4::set(double const * const ptr) {
+<span class="lineNum">     516 </span>            :         float* local_ptr = (float*)_mat;
+<span class="lineNum">     517 </span>            :         for (int i = 0;i &lt; 16;++i) local_ptr[i] = (float)ptr[i];
+<span class="lineNum">     518 </span>            : }
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span>            : inline bool ofMatrix4x4::isIdentity() const {
+<span class="lineNum">     521 </span>            :         return _mat[0][0] == 1.0f &amp;&amp; _mat[0][1] == 0.0f &amp;&amp; _mat[0][2] == 0.0f &amp;&amp;  _mat[0][3] == 0.0f &amp;&amp;
+<span class="lineNum">     522 </span>            :                    _mat[1][0] == 0.0f &amp;&amp; _mat[1][1] == 1.0f &amp;&amp; _mat[1][2] == 0.0f &amp;&amp;  _mat[1][3] == 0.0f &amp;&amp;
+<span class="lineNum">     523 </span>            :                    _mat[2][0] == 0.0f &amp;&amp; _mat[2][1] == 0.0f &amp;&amp; _mat[2][2] == 1.0f &amp;&amp;  _mat[2][3] == 0.0f &amp;&amp;
+<span class="lineNum">     524 </span>            :                    _mat[3][0] == 0.0f &amp;&amp; _mat[3][1] == 0.0f &amp;&amp; _mat[3][2] == 0.0f &amp;&amp;  _mat[3][3] == 1.0f;
+<span class="lineNum">     525 </span>            : }
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : inline void ofMatrix4x4::makeOrtho2DMatrix(double left,   double right,
+<span class="lineNum">     528 </span>            :                                 double bottom, double top) {
+<span class="lineNum">     529 </span>            :         makeOrthoMatrix(left, right, bottom, top, -1.0, 1.0);
+<a name="530"><span class="lineNum">     530 </span>            : }</a>
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span><span class="lineCov">      15301 : inline ofVec3f ofMatrix4x4::getTranslation() const {</span>
+<span class="lineNum">     533 </span><span class="lineCov">      15301 :         return ofVec3f(_mat[3][0], _mat[3][1], _mat[3][2]);</span>
+<a name="534"><span class="lineNum">     534 </span>            : }</a>
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span><span class="lineCov">       3869 : inline ofVec3f ofMatrix4x4::getScale() const {</span>
+<span class="lineNum">     537 </span><span class="lineCov">       3869 :         ofVec3f x_vec(_mat[0][0], _mat[1][0], _mat[2][0]);</span>
+<span class="lineNum">     538 </span><span class="lineCov">       3869 :         ofVec3f y_vec(_mat[0][1], _mat[1][1], _mat[2][1]);</span>
+<span class="lineNum">     539 </span><span class="lineCov">       3869 :         ofVec3f z_vec(_mat[0][2], _mat[1][2], _mat[2][2]);</span>
+<span class="lineNum">     540 </span><span class="lineCov">       3869 :         return ofVec3f(x_vec.length(), y_vec.length(), z_vec.length());</span>
+<span class="lineNum">     541 </span>            : }
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span>            : //static utility methods
+<span class="lineNum">     544 </span>            : inline ofMatrix4x4 ofMatrix4x4::newIdentityMatrix(void) {
+<span class="lineNum">     545 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     546 </span>            :         m.makeIdentityMatrix();
+<span class="lineNum">     547 </span>            :         return m;
+<span class="lineNum">     548 </span>            : }
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span>            : inline ofMatrix4x4 ofMatrix4x4::newScaleMatrix(float sx, float sy, float sz) {
+<span class="lineNum">     551 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     552 </span>            :         m.makeScaleMatrix(sx, sy, sz);
+<span class="lineNum">     553 </span>            :         return m;
+<span class="lineNum">     554 </span>            : }
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span>            : inline ofMatrix4x4 ofMatrix4x4::newScaleMatrix(const ofVec3f&amp; v ) {
+<span class="lineNum">     557 </span>            :         return newScaleMatrix(v.x, v.y, v.z );
+<span class="lineNum">     558 </span>            : }
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span>            : inline ofMatrix4x4 ofMatrix4x4::newTranslationMatrix(float tx, float ty, float tz) {
+<span class="lineNum">     561 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     562 </span>            :         m.makeTranslationMatrix(tx, ty, tz);
+<span class="lineNum">     563 </span>            :         return m;
+<span class="lineNum">     564 </span>            : }
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span>            : inline ofMatrix4x4 ofMatrix4x4::newTranslationMatrix(const ofVec3f&amp; v ) {
+<span class="lineNum">     567 </span>            :         return newTranslationMatrix(v.x, v.y, v.z );
+<span class="lineNum">     568 </span>            : }
+<span class="lineNum">     569 </span>            : 
+<span class="lineNum">     570 </span>            : inline ofMatrix4x4 ofMatrix4x4::newRotationMatrix( const ofQuaternion&amp; q ) {
+<span class="lineNum">     571 </span>            :         return ofMatrix4x4(q);
+<span class="lineNum">     572 </span>            : }
+<span class="lineNum">     573 </span>            : inline ofMatrix4x4 ofMatrix4x4::newRotationMatrix(float angle, float x, float y, float z ) {
+<span class="lineNum">     574 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     575 </span>            :         m.makeRotationMatrix(angle, x, y, z);
+<span class="lineNum">     576 </span>            :         return m;
+<span class="lineNum">     577 </span>            : }
+<span class="lineNum">     578 </span>            : inline ofMatrix4x4 ofMatrix4x4::newRotationMatrix(float angle, const ofVec3f&amp; axis ) {
+<span class="lineNum">     579 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     580 </span>            :         m.makeRotationMatrix(angle, axis);
+<span class="lineNum">     581 </span>            :         return m;
+<span class="lineNum">     582 </span>            : }
+<span class="lineNum">     583 </span>            : inline ofMatrix4x4 ofMatrix4x4::newRotationMatrix(      float angle1, const ofVec3f&amp; axis1,
+<span class="lineNum">     584 </span>            :     float angle2, const ofVec3f&amp; axis2,
+<span class="lineNum">     585 </span>            :     float angle3, const ofVec3f&amp; axis3) {
+<span class="lineNum">     586 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     587 </span>            :         m.makeRotationMatrix(angle1, axis1, angle2, axis2, angle3, axis3);
+<span class="lineNum">     588 </span>            :         return m;
+<span class="lineNum">     589 </span>            : }
+<span class="lineNum">     590 </span>            : inline ofMatrix4x4 ofMatrix4x4::newRotationMatrix(const ofVec3f&amp; from, const ofVec3f&amp; to ) {
+<span class="lineNum">     591 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     592 </span>            :         m.makeRotationMatrix(from, to);
+<span class="lineNum">     593 </span>            :         return m;
+<a name="594"><span class="lineNum">     594 </span>            : }</a>
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span><span class="lineCov">      11874 : inline ofMatrix4x4 ofMatrix4x4::getInverseOf( const ofMatrix4x4&amp; matrix) {</span>
+<span class="lineNum">     597 </span><span class="lineCov">      11874 :         ofMatrix4x4 m;</span>
+<span class="lineNum">     598 </span><span class="lineCov">      11874 :         m.makeInvertOf(matrix);</span>
+<span class="lineNum">     599 </span><span class="lineCov">      11874 :         return m;</span>
+<span class="lineNum">     600 </span>            : }
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span>            : inline ofMatrix4x4 ofMatrix4x4::getTransposedOf( const ofMatrix4x4&amp; matrix) {
+<span class="lineNum">     603 </span>            :         ofMatrix4x4 m(matrix._mat[0][0], matrix._mat[1][0], matrix._mat[2][0],
+<span class="lineNum">     604 </span>            :                        matrix._mat[3][0], matrix._mat[0][1], matrix._mat[1][1], matrix._mat[2][1],
+<span class="lineNum">     605 </span>            :                        matrix._mat[3][1], matrix._mat[0][2], matrix._mat[1][2], matrix._mat[2][2],
+<span class="lineNum">     606 </span>            :                        matrix._mat[3][2], matrix._mat[0][3], matrix._mat[1][3], matrix._mat[2][3],
+<span class="lineNum">     607 </span>            :                        matrix._mat[3][3]);
+<span class="lineNum">     608 </span>            :         return m;
+<span class="lineNum">     609 </span>            : }
+<span class="lineNum">     610 </span>            : 
+<span class="lineNum">     611 </span>            : inline ofMatrix4x4 ofMatrix4x4::getOrthoNormalOf(const ofMatrix4x4&amp; matrix) {
+<span class="lineNum">     612 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     613 </span>            :         m.makeOrthoNormalOf(matrix);
+<span class="lineNum">     614 </span>            :         return m;
+<span class="lineNum">     615 </span>            : }
+<span class="lineNum">     616 </span>            : 
+<span class="lineNum">     617 </span>            : inline ofMatrix4x4 ofMatrix4x4::newOrthoMatrix(double left, double right,
+<span class="lineNum">     618 </span>            :                                         double bottom, double top,
+<span class="lineNum">     619 </span>            :                                         double zNear, double zFar) {
+<span class="lineNum">     620 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     621 </span>            :         m.makeOrthoMatrix(left, right, bottom, top, zNear, zFar);
+<span class="lineNum">     622 </span>            :         return m;
+<span class="lineNum">     623 </span>            : }
+<span class="lineNum">     624 </span>            : 
+<span class="lineNum">     625 </span>            : inline ofMatrix4x4 ofMatrix4x4::newOrtho2DMatrix(double left, double right,
+<span class="lineNum">     626 </span>            :     double bottom, double top) {
+<span class="lineNum">     627 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     628 </span>            :         m.makeOrtho2DMatrix(left, right, bottom, top);
+<span class="lineNum">     629 </span>            :         return m;
+<span class="lineNum">     630 </span>            : }
+<span class="lineNum">     631 </span>            : 
+<span class="lineNum">     632 </span>            : inline ofMatrix4x4 ofMatrix4x4::newFrustumMatrix(double left, double right,
+<span class="lineNum">     633 </span>            :     double bottom, double top,
+<span class="lineNum">     634 </span>            :     double zNear, double zFar) {
+<span class="lineNum">     635 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     636 </span>            :         m.makeFrustumMatrix(left, right, bottom, top, zNear, zFar);
+<span class="lineNum">     637 </span>            :         return m;
+<span class="lineNum">     638 </span>            : }
+<span class="lineNum">     639 </span>            : 
+<span class="lineNum">     640 </span>            : inline ofMatrix4x4 ofMatrix4x4::newPerspectiveMatrix(double fovy, double aspectRatio,
+<span class="lineNum">     641 </span>            :     double zNear, double zFar) {
+<span class="lineNum">     642 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     643 </span>            :         m.makePerspectiveMatrix(fovy, aspectRatio, zNear, zFar);
+<span class="lineNum">     644 </span>            :         return m;
+<span class="lineNum">     645 </span>            : }
+<span class="lineNum">     646 </span>            : 
+<span class="lineNum">     647 </span>            : inline ofMatrix4x4 ofMatrix4x4::newLookAtMatrix(const ofVec3f&amp; eye, const ofVec3f&amp; center, const ofVec3f&amp; up) {
+<span class="lineNum">     648 </span>            :         ofMatrix4x4 m;
+<span class="lineNum">     649 </span>            :         m.makeLookAtMatrix(eye, center, up);
+<span class="lineNum">     650 </span>            :         return m;
+<span class="lineNum">     651 </span>            : }
+<span class="lineNum">     652 </span>            : 
+<span class="lineNum">     653 </span>            : inline ofVec3f ofMatrix4x4::postMult( const ofVec3f&amp; v ) const {
+<span class="lineNum">     654 </span>            :         float d = 1.0f / (_mat[3][0] * v.x + _mat[3][1] * v.y + _mat[3][2] * v.z + _mat[3][3]) ;
+<span class="lineNum">     655 </span>            :         return ofVec3f( (_mat[0][0]*v.x + _mat[0][1]*v.y + _mat[0][2]*v.z + _mat[0][3])*d,
+<span class="lineNum">     656 </span>            :                          (_mat[1][0]*v.x + _mat[1][1]*v.y + _mat[1][2]*v.z + _mat[1][3])*d,
+<span class="lineNum">     657 </span>            :                          (_mat[2][0]*v.x + _mat[2][1]*v.y + _mat[2][2]*v.z + _mat[2][3])*d) ;
+<a name="658"><span class="lineNum">     658 </span>            : }</a>
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span><span class="lineCov">    1482445 : inline ofVec3f ofMatrix4x4::preMult( const ofVec3f&amp; v ) const {</span>
+<span class="lineNum">     661 </span><span class="lineCov">    1482445 :         float d = 1.0f / (_mat[0][3] * v.x + _mat[1][3] * v.y + _mat[2][3] * v.z + _mat[3][3]) ;</span>
+<span class="lineNum">     662 </span><span class="lineCov">    1482445 :         return ofVec3f( (_mat[0][0]*v.x + _mat[1][0]*v.y + _mat[2][0]*v.z + _mat[3][0])*d,</span>
+<span class="lineNum">     663 </span><span class="lineCov">    1482445 :                          (_mat[0][1]*v.x + _mat[1][1]*v.y + _mat[2][1]*v.z + _mat[3][1])*d,</span>
+<span class="lineNum">     664 </span><span class="lineCov">    2964890 :                          (_mat[0][2]*v.x + _mat[1][2]*v.y + _mat[2][2]*v.z + _mat[3][2])*d);</span>
+<span class="lineNum">     665 </span>            : }
+<span class="lineNum">     666 </span>            : 
+<span class="lineNum">     667 </span>            : inline ofVec4f ofMatrix4x4::postMult( const ofVec4f&amp; v ) const {
+<span class="lineNum">     668 </span>            :         return ofVec4f( (_mat[0][0]*v.x + _mat[0][1]*v.y + _mat[0][2]*v.z + _mat[0][3]*v.w),
+<span class="lineNum">     669 </span>            :                          (_mat[1][0]*v.x + _mat[1][1]*v.y + _mat[1][2]*v.z + _mat[1][3]*v.w),
+<span class="lineNum">     670 </span>            :                          (_mat[2][0]*v.x + _mat[2][1]*v.y + _mat[2][2]*v.z + _mat[2][3]*v.w),
+<span class="lineNum">     671 </span>            :                          (_mat[3][0]*v.x + _mat[3][1]*v.y + _mat[3][2]*v.z + _mat[3][3]*v.w)) ;
+<span class="lineNum">     672 </span>            : }
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            : inline ofVec4f ofMatrix4x4::preMult( const ofVec4f&amp; v ) const {
+<span class="lineNum">     675 </span>            :         return ofVec4f( (_mat[0][0]*v.x + _mat[1][0]*v.y + _mat[2][0]*v.z + _mat[3][0]*v.w),
+<span class="lineNum">     676 </span>            :                          (_mat[0][1]*v.x + _mat[1][1]*v.y + _mat[2][1]*v.z + _mat[3][1]*v.w),
+<span class="lineNum">     677 </span>            :                          (_mat[0][2]*v.x + _mat[1][2]*v.y + _mat[2][2]*v.z + _mat[3][2]*v.w),
+<span class="lineNum">     678 </span>            :                          (_mat[0][3]*v.x + _mat[1][3]*v.y + _mat[2][3]*v.z + _mat[3][3]*v.w));
+<span class="lineNum">     679 </span>            : }
+<span class="lineNum">     680 </span>            : inline ofVec3f ofMatrix4x4::transform3x3(const ofVec3f&amp; v, const ofMatrix4x4&amp; m) {
+<span class="lineNum">     681 </span>            :         return ofVec3f( (m._mat[0][0]*v.x + m._mat[1][0]*v.y + m._mat[2][0]*v.z),
+<span class="lineNum">     682 </span>            :                          (m._mat[0][1]*v.x + m._mat[1][1]*v.y + m._mat[2][1]*v.z),
+<span class="lineNum">     683 </span>            :                          (m._mat[0][2]*v.x + m._mat[1][2]*v.y + m._mat[2][2]*v.z));
+<a name="684"><span class="lineNum">     684 </span>            : }</a>
+<span class="lineNum">     685 </span>            : 
+<span class="lineNum">     686 </span><span class="lineNoCov">          0 : inline ofVec3f ofMatrix4x4::transform3x3(const ofMatrix4x4&amp; m, const ofVec3f&amp; v) {</span>
+<span class="lineNum">     687 </span><span class="lineNoCov">          0 :         return ofVec3f( (m._mat[0][0]*v.x + m._mat[0][1]*v.y + m._mat[0][2]*v.z),</span>
+<span class="lineNum">     688 </span><span class="lineNoCov">          0 :                          (m._mat[1][0]*v.x + m._mat[1][1]*v.y + m._mat[1][2]*v.z),</span>
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 :                          (m._mat[2][0]*v.x + m._mat[2][1]*v.y + m._mat[2][2]*v.z) ) ;</span>
+<a name="690"><span class="lineNum">     690 </span>            : }</a>
+<span class="lineNum">     691 </span>            : 
+<span class="lineNum">     692 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::preMultTranslate( const ofVec3f&amp; v ) {</span>
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :         for (unsigned i = 0; i &lt; 3; ++i) {</span>
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 :                 float tmp = v.getPtr()[i];</span>
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 :                 if (tmp == 0)</span>
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :                         continue;</span>
+<span class="lineNum">     697 </span><span class="lineNoCov">          0 :                 _mat[3][0] += tmp * _mat[i][0];</span>
+<span class="lineNum">     698 </span><span class="lineNoCov">          0 :                 _mat[3][1] += tmp * _mat[i][1];</span>
+<span class="lineNum">     699 </span><span class="lineNoCov">          0 :                 _mat[3][2] += tmp * _mat[i][2];</span>
+<span class="lineNum">     700 </span><span class="lineNoCov">          0 :                 _mat[3][3] += tmp * _mat[i][3];</span>
+<span class="lineNum">     701 </span>            :         }
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     703 </span>            : 
+<span class="lineNum">     704 </span>            : inline void ofMatrix4x4::postMultTranslate( const ofVec3f&amp; v ) {
+<span class="lineNum">     705 </span>            :         for (unsigned i = 0; i &lt; 3; ++i) {
+<span class="lineNum">     706 </span>            :                 float tmp = v.getPtr()[i];
+<span class="lineNum">     707 </span>            :                 if (tmp == 0)
+<span class="lineNum">     708 </span>            :                         continue;
+<span class="lineNum">     709 </span>            :                 _mat[0][i] += tmp * _mat[0][3];
+<span class="lineNum">     710 </span>            :                 _mat[1][i] += tmp * _mat[1][3];
+<span class="lineNum">     711 </span>            :                 _mat[2][i] += tmp * _mat[2][3];
+<span class="lineNum">     712 </span>            :                 _mat[3][i] += tmp * _mat[3][3];
+<span class="lineNum">     713 </span>            :         }
+<span class="lineNum">     714 </span>            : }
+<span class="lineNum">     715 </span>            : 
+<span class="lineNum">     716 </span>            : // AARON METHOD
+<span class="lineNum">     717 </span>            : inline void ofMatrix4x4::postMultTranslate( float x, float y, float z) {
+<span class="lineNum">     718 </span>            :         if (x != 0) {
+<span class="lineNum">     719 </span>            :                 _mat[0][0] += x * _mat[0][3];
+<span class="lineNum">     720 </span>            :                 _mat[1][0] += x * _mat[1][3];
+<span class="lineNum">     721 </span>            :                 _mat[2][0] += x * _mat[2][3];
+<span class="lineNum">     722 </span>            :                 _mat[3][0] += x * _mat[3][3];
+<span class="lineNum">     723 </span>            :         }
+<span class="lineNum">     724 </span>            :         if (y != 0) {
+<span class="lineNum">     725 </span>            :                 _mat[0][1] += y * _mat[0][3];
+<span class="lineNum">     726 </span>            :                 _mat[1][1] += y * _mat[1][3];
+<span class="lineNum">     727 </span>            :                 _mat[2][1] += y * _mat[2][3];
+<span class="lineNum">     728 </span>            :                 _mat[3][1] += y * _mat[3][3];
+<span class="lineNum">     729 </span>            :         }
+<span class="lineNum">     730 </span>            :         if (z != 0) {
+<span class="lineNum">     731 </span>            :                 _mat[0][2] += z * _mat[0][3];
+<span class="lineNum">     732 </span>            :                 _mat[1][2] += z * _mat[1][3];
+<span class="lineNum">     733 </span>            :                 _mat[2][2] += z * _mat[2][3];
+<span class="lineNum">     734 </span>            :                 _mat[3][2] += z * _mat[3][3];
+<span class="lineNum">     735 </span>            :         }
+<a name="736"><span class="lineNum">     736 </span>            : }</a>
+<a name="737"><span class="lineNum">     737 </span>            : </a>
+<span class="lineNum">     738 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::preMultScale( const ofVec3f&amp; v ) {</span>
+<span class="lineNum">     739 </span><span class="lineNoCov">          0 :         _mat[0][0] *= v.getPtr()[0];</span>
+<span class="lineNum">     740 </span><span class="lineNoCov">          0 :         _mat[0][1] *= v.getPtr()[0];</span>
+<span class="lineNum">     741 </span><span class="lineNoCov">          0 :         _mat[0][2] *= v.getPtr()[0];</span>
+<span class="lineNum">     742 </span><span class="lineNoCov">          0 :         _mat[0][3] *= v.getPtr()[0];</span>
+<span class="lineNum">     743 </span><span class="lineNoCov">          0 :         _mat[1][0] *= v.getPtr()[1];</span>
+<span class="lineNum">     744 </span><span class="lineNoCov">          0 :         _mat[1][1] *= v.getPtr()[1];</span>
+<span class="lineNum">     745 </span><span class="lineNoCov">          0 :         _mat[1][2] *= v.getPtr()[1];</span>
+<span class="lineNum">     746 </span><span class="lineNoCov">          0 :         _mat[1][3] *= v.getPtr()[1];</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :         _mat[2][0] *= v.getPtr()[2];</span>
+<span class="lineNum">     748 </span><span class="lineNoCov">          0 :         _mat[2][1] *= v.getPtr()[2];</span>
+<span class="lineNum">     749 </span><span class="lineNoCov">          0 :         _mat[2][2] *= v.getPtr()[2];</span>
+<span class="lineNum">     750 </span><span class="lineNoCov">          0 :         _mat[2][3] *= v.getPtr()[2];</span>
+<span class="lineNum">     751 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     752 </span>            : 
+<span class="lineNum">     753 </span>            : inline void ofMatrix4x4::postMultScale( const ofVec3f&amp; v ) {
+<span class="lineNum">     754 </span>            :         _mat[0][0] *= v.getPtr()[0];
+<span class="lineNum">     755 </span>            :         _mat[1][0] *= v.getPtr()[0];
+<span class="lineNum">     756 </span>            :         _mat[2][0] *= v.getPtr()[0];
+<span class="lineNum">     757 </span>            :         _mat[3][0] *= v.getPtr()[0];
+<span class="lineNum">     758 </span>            :         _mat[0][1] *= v.getPtr()[1];
+<span class="lineNum">     759 </span>            :         _mat[1][1] *= v.getPtr()[1];
+<span class="lineNum">     760 </span>            :         _mat[2][1] *= v.getPtr()[1];
+<span class="lineNum">     761 </span>            :         _mat[3][1] *= v.getPtr()[1];
+<span class="lineNum">     762 </span>            :         _mat[0][2] *= v.getPtr()[2];
+<span class="lineNum">     763 </span>            :         _mat[1][2] *= v.getPtr()[2];
+<span class="lineNum">     764 </span>            :         _mat[2][2] *= v.getPtr()[2];
+<span class="lineNum">     765 </span>            :         _mat[3][2] *= v.getPtr()[2];
+<a name="766"><span class="lineNum">     766 </span>            : }</a>
+<span class="lineNum">     767 </span>            : 
+<span class="lineNum">     768 </span><span class="lineCov">      21942 : inline void ofMatrix4x4::rotate(const ofQuaternion&amp; q){</span>
+<span class="lineNum">     769 </span><span class="lineCov">      21942 :         postMultRotate(q);</span>
+<span class="lineNum">     770 </span><span class="lineCov">      21942 : }</span>
+<span class="lineNum">     771 </span>            : 
+<span class="lineNum">     772 </span>            : inline void ofMatrix4x4::rotate(float angle, float x, float y, float z){
+<span class="lineNum">     773 </span>            :         postMultRotate(angle,x,y,z);
+<span class="lineNum">     774 </span>            : }
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span>            : inline void ofMatrix4x4::rotateRad(float angle, float x, float y, float z){
+<span class="lineNum">     777 </span>            :         postMultRotate(angle*RAD_TO_DEG,x,y,z);
+<span class="lineNum">     778 </span>            : }
+<span class="lineNum">     779 </span>            : 
+<span class="lineNum">     780 </span>            : inline void ofMatrix4x4::translate( float tx, float ty, float tz ){
+<span class="lineNum">     781 </span>            :         postMultTranslate(tx,ty,tz);
+<span class="lineNum">     782 </span>            : }
+<span class="lineNum">     783 </span>            : 
+<span class="lineNum">     784 </span>            : inline void ofMatrix4x4::translate( const ofVec3f&amp; v ){
+<span class="lineNum">     785 </span>            :         postMultTranslate(v);
+<a name="786"><span class="lineNum">     786 </span>            : }</a>
+<span class="lineNum">     787 </span>            : 
+<span class="lineNum">     788 </span><span class="lineCov">       3869 : inline void ofMatrix4x4::scale(float x, float y, float z){</span>
+<span class="lineNum">     789 </span><span class="lineCov">       3869 :         postMultScale(x,y,z);</span>
+<span class="lineNum">     790 </span><span class="lineCov">       3869 : }</span>
+<span class="lineNum">     791 </span>            : 
+<span class="lineNum">     792 </span>            : inline void ofMatrix4x4::scale( const ofVec3f&amp; v ){
+<span class="lineNum">     793 </span>            :         postMultScale(v);
+<a name="794"><span class="lineNum">     794 </span>            : }</a>
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::glRotate(float angle, float x, float y, float z){</span>
+<span class="lineNum">     797 </span><span class="lineNoCov">          0 :         preMultRotate(ofQuaternion(angle,ofVec3f(x,y,z)));</span>
+<span class="lineNum">     798 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     799 </span>            : 
+<span class="lineNum">     800 </span>            : inline void ofMatrix4x4::glRotateRad(float angle, float x, float y, float z){
+<span class="lineNum">     801 </span>            :         preMultRotate(ofQuaternion(angle*RAD_TO_DEG,ofVec3f(x,y,z)));
+<span class="lineNum">     802 </span>            : }
+<span class="lineNum">     803 </span>            : 
+<span class="lineNum">     804 </span>            : inline void ofMatrix4x4::glRotate(const ofQuaternion&amp; q){
+<span class="lineNum">     805 </span>            :         preMultRotate(q);
+<a name="806"><span class="lineNum">     806 </span>            : }</a>
+<span class="lineNum">     807 </span>            : 
+<span class="lineNum">     808 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::glTranslate( float tx, float ty, float tz ){</span>
+<span class="lineNum">     809 </span><span class="lineNoCov">          0 :         preMultTranslate(ofVec3f(tx,ty,tz));</span>
+<a name="810"><span class="lineNum">     810 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     811 </span>            : 
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::glTranslate( const ofVec3f&amp; v ){</span>
+<span class="lineNum">     813 </span><span class="lineNoCov">          0 :         preMultTranslate(v);</span>
+<span class="lineNum">     814 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     815 </span>            : 
+<span class="lineNum">     816 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::glScale(float x, float y, float z){</span>
+<span class="lineNum">     817 </span><span class="lineNoCov">          0 :         preMultScale(ofVec3f(x,y,z));</span>
+<span class="lineNum">     818 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     819 </span>            : 
+<span class="lineNum">     820 </span>            : inline void ofMatrix4x4::glScale( const ofVec3f&amp; v ){
+<span class="lineNum">     821 </span>            :         preMultScale(v);
+<span class="lineNum">     822 </span>            : }
+<a name="823"><span class="lineNum">     823 </span>            : </a>
+<span class="lineNum">     824 </span>            : // AARON METHOD
+<span class="lineNum">     825 </span><span class="lineCov">       3869 : inline void ofMatrix4x4::postMultScale( float x, float y, float z ) {</span>
+<span class="lineNum">     826 </span><span class="lineCov">       3869 :         _mat[0][0] *= x;</span>
+<span class="lineNum">     827 </span><span class="lineCov">       3869 :         _mat[1][0] *= x;</span>
+<span class="lineNum">     828 </span><span class="lineCov">       3869 :         _mat[2][0] *= x;</span>
+<span class="lineNum">     829 </span><span class="lineCov">       3869 :         _mat[3][0] *= x;</span>
+<span class="lineNum">     830 </span><span class="lineCov">       3869 :         _mat[0][1] *= y;</span>
+<span class="lineNum">     831 </span><span class="lineCov">       3869 :         _mat[1][1] *= y;</span>
+<span class="lineNum">     832 </span><span class="lineCov">       3869 :         _mat[2][1] *= y;</span>
+<span class="lineNum">     833 </span><span class="lineCov">       3869 :         _mat[3][1] *= y;</span>
+<span class="lineNum">     834 </span><span class="lineCov">       3869 :         _mat[0][2] *= z;</span>
+<span class="lineNum">     835 </span><span class="lineCov">       3869 :         _mat[1][2] *= z;</span>
+<span class="lineNum">     836 </span><span class="lineCov">       3869 :         _mat[2][2] *= z;</span>
+<span class="lineNum">     837 </span><span class="lineCov">       3869 :         _mat[3][2] *= z;</span>
+<span class="lineNum">     838 </span><span class="lineCov">       3869 : }</span>
+<a name="839"><span class="lineNum">     839 </span>            : </a>
+<span class="lineNum">     840 </span>            : 
+<span class="lineNum">     841 </span><span class="lineNoCov">          0 : inline void ofMatrix4x4::preMultRotate( const ofQuaternion&amp; q ) {</span>
+<span class="lineNum">     842 </span><span class="lineNoCov">          0 :         if (q.zeroRotation())</span>
+<span class="lineNum">     843 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     844 </span><span class="lineNoCov">          0 :         ofMatrix4x4 r;</span>
+<span class="lineNum">     845 </span><span class="lineNoCov">          0 :         r.setRotate(q);</span>
+<span class="lineNum">     846 </span><span class="lineNoCov">          0 :         preMult(r);</span>
+<a name="847"><span class="lineNum">     847 </span>            : }</a>
+<span class="lineNum">     848 </span>            : 
+<span class="lineNum">     849 </span><span class="lineCov">      21942 : inline void ofMatrix4x4::postMultRotate( const ofQuaternion&amp; q ) {</span>
+<span class="lineNum">     850 </span><span class="lineCov">      21942 :         if (q.zeroRotation())</span>
+<span class="lineNum">     851 </span><span class="lineCov">      21942 :                 return;</span>
+<span class="lineNum">     852 </span><span class="lineCov">      21528 :         ofMatrix4x4 r;</span>
+<span class="lineNum">     853 </span><span class="lineCov">      21528 :         r.setRotate(q);</span>
+<span class="lineNum">     854 </span><span class="lineCov">      21528 :         postMult(r);</span>
+<span class="lineNum">     855 </span>            : }
+<span class="lineNum">     856 </span>            : 
+<span class="lineNum">     857 </span>            : // AARON METHOD
+<span class="lineNum">     858 </span>            : inline void ofMatrix4x4::postMultRotate(float angle, float x, float y, float z) {
+<span class="lineNum">     859 </span>            :         ofMatrix4x4 r;
+<span class="lineNum">     860 </span>            :         r.makeRotationMatrix(angle, x, y, z);
+<span class="lineNum">     861 </span>            :         postMult(r);
+<span class="lineNum">     862 </span>            : }
+<span class="lineNum">     863 </span>            : 
+<a name="864"><span class="lineNum">     864 </span>            : </a>
+<span class="lineNum">     865 </span>            : 
+<span class="lineNum">     866 </span><span class="lineCov">    1482445 : inline ofVec3f operator* (const ofVec3f&amp; v, const ofMatrix4x4&amp; m ) {</span>
+<span class="lineNum">     867 </span><span class="lineCov">    1482445 :         return m.preMult(v);</span>
+<span class="lineNum">     868 </span>            : }
+<span class="lineNum">     869 </span>            : inline ofVec4f operator* (const ofVec4f&amp; v, const ofMatrix4x4&amp; m ) {
+<span class="lineNum">     870 </span>            :         return m.preMult(v);
+<span class="lineNum">     871 </span>            : }
+<span class="lineNum">     872 </span>            : 
+<span class="lineNum">     873 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

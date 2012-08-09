@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - openFrameworks/sound/ofSoundPlayer.cpp</title>
+  <title>LCOV - .coverage.total - openFrameworks/sound/ofSoundPlayer.cpp</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">95</td>
-            <td class="headerCovTableEntryLo">3.2 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">29</td>
-            <td class="headerCovTableEntryLo">10.3 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,219 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofSoundPlayer.h&quot;</a>
-<span class="lineNum">       2 </span>            : #include &quot;ofUtils.h&quot;
-<span class="lineNum">       3 </span>            : 
-<span class="lineNum">       4 </span>            : // these are global functions, that affect every sound / channel:
-<span class="lineNum">       5 </span>            : // ------------------------------------------------------------
-<span class="lineNum">       6 </span>            : // ------------------------------------------------------------
-<a name="7"><span class="lineNum">       7 </span>            : </a>
-<span class="lineNum">       8 </span>            : //--------------------
-<span class="lineNum">       9 </span><span class="lineNoCov">          0 : void ofSoundStopAll(){</span>
-<span class="lineNum">      10 </span>            :         #ifdef OF_SOUND_PLAYER_FMOD
-<span class="lineNum">      11 </span>            :                 ofFmodSoundStopAll();
-<span class="lineNum">      12 </span>            :         #endif
-<span class="lineNum">      13 </span><span class="lineNoCov">          0 : }</span>
-<a name="14"><span class="lineNum">      14 </span>            : </a>
-<span class="lineNum">      15 </span>            : //--------------------
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 : void ofSoundSetVolume(float vol){</span>
-<span class="lineNum">      17 </span>            :         #ifdef OF_SOUND_PLAYER_FMOD
-<span class="lineNum">      18 </span>            :                 ofFmodSoundSetVolume(vol);
-<span class="lineNum">      19 </span>            :         #endif
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 : }</span>
-<a name="21"><span class="lineNum">      21 </span>            : </a>
-<span class="lineNum">      22 </span>            : //--------------------
-<span class="lineNum">      23 </span><span class="lineNoCov">          0 : void ofSoundUpdate(){</span>
-<span class="lineNum">      24 </span>            :         #ifdef OF_SOUND_PLAYER_FMOD
-<span class="lineNum">      25 </span>            :                 ofFmodSoundUpdate();
-<span class="lineNum">      26 </span>            :         #endif
-<span class="lineNum">      27 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">      28 </span>            : 
-<a name="29"><span class="lineNum">      29 </span>            : #ifndef TARGET_ANDROID</a>
-<span class="lineNum">      30 </span>            : //--------------------
-<span class="lineNum">      31 </span><span class="lineCov">        193 : void ofSoundShutdown(){</span>
-<span class="lineNum">      32 </span>            :         #ifdef OF_SOUND_PLAYER_FMOD
-<span class="lineNum">      33 </span>            :                 ofFmodSoundPlayer::closeFmod();
-<span class="lineNum">      34 </span>            :         #endif
-<span class="lineNum">      35 </span><span class="lineCov">        193 : }</span>
-<span class="lineNum">      36 </span>            : #endif
-<a name="37"><span class="lineNum">      37 </span>            : </a>
-<span class="lineNum">      38 </span>            : //--------------------
-<span class="lineNum">      39 </span><span class="lineNoCov">          0 : float * ofSoundGetSpectrum(int nBands){</span>
-<span class="lineNum">      40 </span>            :         #ifdef OF_SOUND_PLAYER_FMOD
-<span class="lineNum">      41 </span>            :                 return ofFmodSoundGetSpectrum(nBands);
-<span class="lineNum">      42 </span>            :         #elif defined(OF_SOUND_PLAYER_OPENAL)
-<span class="lineNum">      43 </span><span class="lineNoCov">          0 :                 return ofOpenALSoundPlayer::getSystemSpectrum(nBands);</span>
-<span class="lineNum">      44 </span>            :         #else
-<span class="lineNum">      45 </span>            :                 ofLog(OF_LOG_ERROR, &quot;ofSoundGetSpectrum returning NULL - no implementation!&quot;);
-<span class="lineNum">      46 </span>            :                 return NULL;
-<span class="lineNum">      47 </span>            :         #endif
-<span class="lineNum">      48 </span>            : }
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            : 
-<a name="52"><span class="lineNum">      52 </span>            : #include &quot;ofSoundPlayer.h&quot;</a>
-<span class="lineNum">      53 </span>            : //---------------------------------------------------------------------------
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 : ofSoundPlayer::ofSoundPlayer (){</span>
-<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         player  = ofPtr&lt;OF_SOUND_PLAYER_TYPE&gt;(new OF_SOUND_PLAYER_TYPE);</span>
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 : }</span>
-<a name="57"><span class="lineNum">      57 </span>            : </a>
-<span class="lineNum">      58 </span>            : //---------------------------------------------------------------------------
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setPlayer(ofPtr&lt;ofBaseSoundPlayer&gt; newPlayer){</span>
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         player = newPlayer;</span>
-<span class="lineNum">      61 </span><span class="lineNoCov">          0 : }</span>
-<a name="62"><span class="lineNum">      62 </span>            : </a>
-<span class="lineNum">      63 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      64 </span><span class="lineNoCov">          0 : ofPtr&lt;ofBaseSoundPlayer&gt; ofSoundPlayer::getPlayer(){</span>
-<span class="lineNum">      65 </span><span class="lineNoCov">          0 :         return player;</span>
-<span class="lineNum">      66 </span>            : }
-<a name="67"><span class="lineNum">      67 </span>            : </a>
-<span class="lineNum">      68 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      69 </span><span class="lineNoCov">          0 : bool ofSoundPlayer::loadSound(string fileName, bool stream){</span>
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 return player-&gt;loadSound(fileName, stream);</span>
-<span class="lineNum">      72 </span>            :         }
-<span class="lineNum">      73 </span><span class="lineNoCov">          0 : }</span>
-<a name="74"><span class="lineNum">      74 </span>            : </a>
-<span class="lineNum">      75 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 : void ofSoundPlayer::unloadSound(){</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 player-&gt;unloadSound();</span>
-<span class="lineNum">      79 </span>            :         }
-<span class="lineNum">      80 </span><span class="lineNoCov">          0 : }</span>
-<a name="81"><span class="lineNum">      81 </span>            : </a>
-<span class="lineNum">      82 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      83 </span><span class="lineNoCov">          0 : void ofSoundPlayer::play(){</span>
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 player-&gt;play();</span>
-<span class="lineNum">      86 </span>            :         }
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 : }</span>
-<a name="88"><span class="lineNum">      88 </span>            : </a>
-<span class="lineNum">      89 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      90 </span><span class="lineNoCov">          0 : void ofSoundPlayer::stop(){</span>
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">      92 </span><span class="lineNoCov">          0 :                 player-&gt;stop();</span>
-<span class="lineNum">      93 </span>            :         }
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 : }</span>
-<a name="95"><span class="lineNum">      95 </span>            : </a>
-<span class="lineNum">      96 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setVolume(float vol){</span>
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 :                 player-&gt;setVolume(vol);</span>
-<span class="lineNum">     100 </span>            :         }
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 : }</span>
-<a name="102"><span class="lineNum">     102 </span>            : </a>
-<span class="lineNum">     103 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setPan(float pan){</span>
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                 player-&gt;setPan(CLAMP(pan,-1.0f,1.0f));</span>
-<span class="lineNum">     107 </span>            :         }
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 : }</span>
-<a name="109"><span class="lineNum">     109 </span>            : </a>
-<span class="lineNum">     110 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setSpeed(float spd){</span>
-<span class="lineNum">     112 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 player-&gt;setSpeed(spd);</span>
-<span class="lineNum">     114 </span>            :         }
-<span class="lineNum">     115 </span><span class="lineNoCov">          0 : }</span>
-<a name="116"><span class="lineNum">     116 </span>            : </a>
-<span class="lineNum">     117 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setPaused(bool bP){</span>
-<span class="lineNum">     119 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 player-&gt;setPaused(bP);</span>
-<span class="lineNum">     121 </span>            :         }
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 : }</span>
-<a name="123"><span class="lineNum">     123 </span>            : </a>
-<span class="lineNum">     124 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     125 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setLoop(bool bLp){</span>
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 player-&gt;setLoop(bLp);</span>
-<span class="lineNum">     128 </span>            :         }
-<span class="lineNum">     129 </span><span class="lineNoCov">          0 : }</span>
-<a name="130"><span class="lineNum">     130 </span>            : </a>
-<span class="lineNum">     131 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setMultiPlay(bool bMp){</span>
-<span class="lineNum">     133 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 player-&gt;setMultiPlay(bMp);</span>
-<span class="lineNum">     135 </span>            :         }
-<span class="lineNum">     136 </span><span class="lineNoCov">          0 : }</span>
-<a name="137"><span class="lineNum">     137 </span>            : </a>
-<span class="lineNum">     138 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setPosition(float pct){</span>
-<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 player-&gt;setPosition(pct);</span>
-<span class="lineNum">     142 </span>            :         }
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 : }</span>
-<a name="144"><span class="lineNum">     144 </span>            : </a>
-<span class="lineNum">     145 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 : void ofSoundPlayer::setPositionMS(int ms){</span>
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     148 </span><span class="lineNoCov">          0 :                 player-&gt;setPositionMS(ms);</span>
-<span class="lineNum">     149 </span>            :         }
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 : }</span>
-<a name="151"><span class="lineNum">     151 </span>            : </a>
-<span class="lineNum">     152 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 : float ofSoundPlayer::getPosition(){</span>
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 return player-&gt;getPosition();</span>
-<span class="lineNum">     156 </span>            :         } else {
-<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 return 0;</span>
-<span class="lineNum">     158 </span>            :         }
-<span class="lineNum">     159 </span>            : }
-<a name="160"><span class="lineNum">     160 </span>            : </a>
-<span class="lineNum">     161 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     162 </span><span class="lineNoCov">          0 : int ofSoundPlayer::getPositionMS(){</span>
-<span class="lineNum">     163 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     164 </span><span class="lineNoCov">          0 :                 return player-&gt;getPositionMS();</span>
-<span class="lineNum">     165 </span>            :         } else {
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 :                 return 0;</span>
-<span class="lineNum">     167 </span>            :         }
-<span class="lineNum">     168 </span>            : }
-<a name="169"><span class="lineNum">     169 </span>            : </a>
-<span class="lineNum">     170 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 : bool ofSoundPlayer::getIsPlaying(){</span>
-<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     173 </span><span class="lineNoCov">          0 :                 return player-&gt;getIsPlaying();</span>
-<span class="lineNum">     174 </span>            :         } else {
-<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 return false;</span>
-<span class="lineNum">     176 </span>            :         }
-<span class="lineNum">     177 </span>            : }
-<a name="178"><span class="lineNum">     178 </span>            : </a>
-<span class="lineNum">     179 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     180 </span><span class="lineNoCov">          0 : bool ofSoundPlayer::isLoaded(){</span>
-<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 return player-&gt;isLoaded();</span>
-<span class="lineNum">     183 </span>            :         } else {
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 return false; </span>
-<span class="lineNum">     185 </span>            :         }
-<span class="lineNum">     186 </span>            : }
-<a name="187"><span class="lineNum">     187 </span>            : </a>
-<span class="lineNum">     188 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 : float ofSoundPlayer::getSpeed(){</span>
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 return player-&gt;getSpeed();</span>
-<span class="lineNum">     192 </span>            :         } else {
-<span class="lineNum">     193 </span><span class="lineNoCov">          0 :                 return 0;</span>
-<span class="lineNum">     194 </span>            :         }
-<span class="lineNum">     195 </span>            : }
-<a name="196"><span class="lineNum">     196 </span>            : </a>
-<span class="lineNum">     197 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 : float ofSoundPlayer::getPan(){</span>
-<span class="lineNum">     199 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :                 return player-&gt;getPan();</span>
-<span class="lineNum">     201 </span>            :         } else {
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                 return 0;</span>
-<span class="lineNum">     203 </span>            :         }
-<span class="lineNum">     204 </span>            : }
-<a name="205"><span class="lineNum">     205 </span>            : </a>
-<span class="lineNum">     206 </span>            : //--------------------------------------------------------------------
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 : float ofSoundPlayer::getVolume(){</span>
-<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         if( player != NULL ){</span>
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 return player-&gt;getVolume();</span>
-<span class="lineNum">     210 </span>            :         } else {
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
-<span class="lineNum">     212 </span>            :         }
-<span class="lineNum">     213 </span><span class="lineCov">        575 : }</span>
+<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
 </pre>
       </td>
     </tr>

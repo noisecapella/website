@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - openFrameworks/events/ofEvents.h</title>
+  <title>LCOV - .coverage.total - openFrameworks/events/ofEvents.h</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">14.3 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntryLo">12.5 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,275 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
-<span class="lineNum">       2 </span>            : 
-<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
-<span class="lineNum">       4 </span>            : #include &quot;ofPoint.h&quot;
-<span class="lineNum">       5 </span>            : 
-<span class="lineNum">       6 </span>            : //-------------------------- mouse/key query
-<span class="lineNum">       7 </span>            : bool            ofGetMousePressed(int button=-1); //by default any button
-<span class="lineNum">       8 </span>            : bool            ofGetKeyPressed(int key=-1); //by default any key
-<span class="lineNum">       9 </span>            : 
-<span class="lineNum">      10 </span>            : int                     ofGetMouseX();
-<span class="lineNum">      11 </span>            : int                     ofGetMouseY();
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            : int                     ofGetPreviousMouseX();
-<span class="lineNum">      14 </span>            : int                     ofGetPreviousMouseY();
-<span class="lineNum">      15 </span>            : 
-<span class="lineNum">      16 </span>            : void            ofSetEscapeQuitsApp(bool bQuitOnEsc);
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span>            : void            exitApp(); 
-<a name="19"><span class="lineNum">      19 </span>            : </a>
-<span class="lineNum">      20 </span>            : //-----------------------------------------------
-<span class="lineNum">      21 </span><span class="lineNoCov">          0 : class ofDragInfo{</span>
-<span class="lineNum">      22 </span>            :         public:
-<span class="lineNum">      23 </span>            :                 vector &lt;string&gt; files;
-<span class="lineNum">      24 </span>            :                 ofPoint position;
-<span class="lineNum">      25 </span>            : };
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            : //-----------------------------------------------
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            : #ifdef OF_USING_POCO
-<span class="lineNum">      30 </span>            :         #define _OF_EVENTS
-<span class="lineNum">      31 </span>            :         #ifndef OF_EVENTS_ADDON
-<span class="lineNum">      32 </span>            :                 #include &quot;ofEventUtils.h&quot;
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 //-----------------------------------------------
-<span class="lineNum">      35 </span>            :                 // event arguments, this are used in oF to pass
-<a name="36"><span class="lineNum">      36 </span>            :                 // the data when notifying events</a>
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 class ofEventArgs{};</span>
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 class ofEntryEventArgs : public ofEventArgs {
-<span class="lineNum">      41 </span>            :                 public:
-<span class="lineNum">      42 </span>            :                         int state;
-<span class="lineNum">      43 </span>            :                 };
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            :                 class ofKeyEventArgs : public ofEventArgs {
-<span class="lineNum">      46 </span>            :                   public:
-<span class="lineNum">      47 </span>            :                         int key;
-<span class="lineNum">      48 </span>            :                 };
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            :                 class ofMouseEventArgs : public ofEventArgs {
-<span class="lineNum">      51 </span>            :                   public:
-<span class="lineNum">      52 </span>            :                         int x;
-<span class="lineNum">      53 </span>            :                         int y;
-<span class="lineNum">      54 </span>            :                         int button;
-<span class="lineNum">      55 </span>            :                 };
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 class ofTouchEventArgs : public ofEventArgs {
-<span class="lineNum">      58 </span>            :                   public:
-<span class="lineNum">      59 </span>            :                         enum Type{
-<span class="lineNum">      60 </span>            :                                 down,
-<span class="lineNum">      61 </span>            :                                 up,
-<span class="lineNum">      62 </span>            :                                 move,
-<span class="lineNum">      63 </span>            :                                 doubleTap,
-<span class="lineNum">      64 </span>            :                                 cancel
-<span class="lineNum">      65 </span>            :                         } type;
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span>            :                         int id;
-<span class="lineNum">      68 </span>            :                         int time;
-<span class="lineNum">      69 </span>            :                         float x, y;
-<span class="lineNum">      70 </span>            :                         int numTouches;
-<span class="lineNum">      71 </span>            :                         float width, height;
-<span class="lineNum">      72 </span>            :                         float angle;
-<span class="lineNum">      73 </span>            :                         float minoraxis, majoraxis;
-<span class="lineNum">      74 </span>            :                         float pressure;
-<span class="lineNum">      75 </span>            :                         float xspeed, yspeed;
-<span class="lineNum">      76 </span>            :                         float xaccel, yaccel;
-<span class="lineNum">      77 </span>            :                 };
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                 class ofAudioEventArgs : public ofEventArgs {
-<span class="lineNum">      80 </span>            :                   public:
-<span class="lineNum">      81 </span>            :                         float* buffer;
-<span class="lineNum">      82 </span>            :                         int bufferSize;
-<span class="lineNum">      83 </span>            :                         int nChannels;
-<span class="lineNum">      84 </span>            :                 };
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :                 class ofResizeEventArgs : public ofEventArgs {
-<span class="lineNum">      87 </span>            :                   public:
-<span class="lineNum">      88 </span>            :                         int width;
-<span class="lineNum">      89 </span>            :                         int height;
-<a name="90"><span class="lineNum">      90 </span>            :                 };</a>
-<span class="lineNum">      91 </span>            :                 
-<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :                 class ofMessage : public ofEventArgs{</span></a>
-<span class="lineNum">      93 </span>            :                         public:
-<span class="lineNum">      94 </span><span class="lineNoCov">          0 :                                 ofMessage( string msg ){</span>
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                                         message = msg;</span>
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                                 }</span>
-<span class="lineNum">      97 </span>            :                                 string message;
-<span class="lineNum">      98 </span>            :                 };
-<span class="lineNum">      99 </span>            :                 
-<span class="lineNum">     100 </span>            :         #else
-<span class="lineNum">     101 </span>            :                 #include &quot;ofxEventUtils.h&quot;
-<a name="102"><span class="lineNum">     102 </span>            :         #endif</a>
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineCov">        195 :         class ofCoreEvents {</span>
-<span class="lineNum">     105 </span>            :           public:
-<span class="lineNum">     106 </span>            :                 ofEvent&lt;ofEventArgs&gt;              setup;
-<span class="lineNum">     107 </span>            :                 ofEvent&lt;ofEventArgs&gt;              update;
-<span class="lineNum">     108 </span>            :                 ofEvent&lt;ofEventArgs&gt;              draw;
-<span class="lineNum">     109 </span>            :                 ofEvent&lt;ofEventArgs&gt;              exit;
-<span class="lineNum">     110 </span>            :                 
-<span class="lineNum">     111 </span>            :                 ofEvent&lt;ofEntryEventArgs&gt; windowEntered;
-<span class="lineNum">     112 </span>            :                 ofEvent&lt;ofResizeEventArgs&gt;        windowResized;
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            :                 ofEvent&lt;ofKeyEventArgs&gt;   keyPressed;
-<span class="lineNum">     115 </span>            :                 ofEvent&lt;ofKeyEventArgs&gt;   keyReleased;
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :                 ofEvent&lt;ofMouseEventArgs&gt;         mouseMoved;
-<span class="lineNum">     118 </span>            :                 ofEvent&lt;ofMouseEventArgs&gt;         mouseDragged;
-<span class="lineNum">     119 </span>            :                 ofEvent&lt;ofMouseEventArgs&gt;         mousePressed;
-<span class="lineNum">     120 </span>            :                 ofEvent&lt;ofMouseEventArgs&gt;         mouseReleased;
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span>            :                 ofEvent&lt;ofAudioEventArgs&gt;         audioReceived;
-<span class="lineNum">     123 </span>            :                 ofEvent&lt;ofAudioEventArgs&gt;         audioRequested;
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            :                 ofEvent&lt;ofTouchEventArgs&gt; touchDown;
-<span class="lineNum">     126 </span>            :                 ofEvent&lt;ofTouchEventArgs&gt; touchUp;
-<span class="lineNum">     127 </span>            :                 ofEvent&lt;ofTouchEventArgs&gt; touchMoved;
-<span class="lineNum">     128 </span>            :                 ofEvent&lt;ofTouchEventArgs&gt; touchDoubleTap;
-<span class="lineNum">     129 </span>            :                 ofEvent&lt;ofTouchEventArgs&gt; touchCancelled;
-<span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span>            :                 ofEvent&lt;ofMessage&gt;                        messageEvent;
-<span class="lineNum">     132 </span>            :                 ofEvent&lt;ofDragInfo&gt;                       fileDragEvent;
-<span class="lineNum">     133 </span>            : 
-<span class="lineNum">     134 </span>            :                 void disable(){
-<span class="lineNum">     135 </span>            :                         setup.disable();
-<span class="lineNum">     136 </span>            :                         draw.disable();
-<span class="lineNum">     137 </span>            :                         update.disable();
-<span class="lineNum">     138 </span>            :                         exit.disable();
-<span class="lineNum">     139 </span>            :                         keyPressed.disable();
-<span class="lineNum">     140 </span>            :                         keyReleased.disable();
-<span class="lineNum">     141 </span>            :                         mouseDragged.disable();
-<span class="lineNum">     142 </span>            :                         mouseReleased.disable();
-<span class="lineNum">     143 </span>            :                         mousePressed.disable();
-<span class="lineNum">     144 </span>            :                         mouseMoved.disable();
-<span class="lineNum">     145 </span>            :                         audioReceived.disable();
-<span class="lineNum">     146 </span>            :                         audioRequested.disable();
-<span class="lineNum">     147 </span>            :                         touchDown.disable();
-<span class="lineNum">     148 </span>            :                         touchUp.disable();
-<span class="lineNum">     149 </span>            :                         touchMoved.disable();
-<span class="lineNum">     150 </span>            :                         touchDoubleTap.disable();
-<span class="lineNum">     151 </span>            :                         touchCancelled.disable();
-<span class="lineNum">     152 </span>            :                         messageEvent.disable();
-<span class="lineNum">     153 </span>            :                         fileDragEvent.disable();
-<span class="lineNum">     154 </span>            :                 }
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span>            :                 void enable(){
-<span class="lineNum">     157 </span>            :                         setup.enable();
-<span class="lineNum">     158 </span>            :                         draw.enable();
-<span class="lineNum">     159 </span>            :                         update.enable();
-<span class="lineNum">     160 </span>            :                         exit.enable();
-<span class="lineNum">     161 </span>            :                         keyPressed.enable();
-<span class="lineNum">     162 </span>            :                         keyReleased.enable();
-<span class="lineNum">     163 </span>            :                         mouseDragged.enable();
-<span class="lineNum">     164 </span>            :                         mouseReleased.enable();
-<span class="lineNum">     165 </span>            :                         mousePressed.enable();
-<span class="lineNum">     166 </span>            :                         mouseMoved.enable();
-<span class="lineNum">     167 </span>            :                         audioReceived.enable();
-<span class="lineNum">     168 </span>            :                         audioRequested.enable();
-<span class="lineNum">     169 </span>            :                         touchDown.enable();
-<span class="lineNum">     170 </span>            :                         touchUp.enable();
-<span class="lineNum">     171 </span>            :                         touchMoved.enable();
-<span class="lineNum">     172 </span>            :                         touchDoubleTap.enable();
-<span class="lineNum">     173 </span>            :                         touchCancelled.enable();
-<span class="lineNum">     174 </span>            :                         messageEvent.enable();
-<span class="lineNum">     175 </span>            :                         fileDragEvent.enable();
-<span class="lineNum">     176 </span>            :                 }
-<span class="lineNum">     177 </span>            :         };
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span>            :         void ofSendMessage(ofMessage msg);
-<span class="lineNum">     180 </span>            :         void ofSendMessage(string messageString);
-<span class="lineNum">     181 </span>            : 
-<span class="lineNum">     182 </span>            :         ofCoreEvents &amp; ofEvents();
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     185 </span>            :         void ofRegisterMouseEvents(ListenerClass * listener){
-<span class="lineNum">     186 </span>            :                 ofAddListener(ofEvents().mouseDragged,listener,&amp;ListenerClass::mouseDragged);
-<span class="lineNum">     187 </span>            :                 ofAddListener(ofEvents().mouseMoved,listener,&amp;ListenerClass::mouseMoved);
-<span class="lineNum">     188 </span>            :                 ofAddListener(ofEvents().mousePressed,listener,&amp;ListenerClass::mousePressed);
-<span class="lineNum">     189 </span>            :                 ofAddListener(ofEvents().mouseReleased,listener,&amp;ListenerClass::mouseReleased);
-<span class="lineNum">     190 </span>            :         }
-<span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     193 </span>            :         void ofRegisterKeyEvents(ListenerClass * listener){
-<span class="lineNum">     194 </span>            :                 ofAddListener(ofEvents().keyPressed, listener, &amp;ListenerClass::keyPressed);
-<span class="lineNum">     195 </span>            :                 ofAddListener(ofEvents().keyReleased, listener, &amp;ListenerClass::keyReleased);
-<span class="lineNum">     196 </span>            :         }
-<span class="lineNum">     197 </span>            : 
-<span class="lineNum">     198 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     199 </span>            :         void ofRegisterTouchEvents(ListenerClass * listener){
-<span class="lineNum">     200 </span>            :                 ofAddListener(ofEvents().touchDoubleTap, listener, &amp;ListenerClass::touchDoubleTap);
-<span class="lineNum">     201 </span>            :                 ofAddListener(ofEvents().touchDown, listener, &amp;ListenerClass::touchDown);
-<span class="lineNum">     202 </span>            :                 ofAddListener(ofEvents().touchMoved, listener, &amp;ListenerClass::touchMoved);
-<span class="lineNum">     203 </span>            :                 ofAddListener(ofEvents().touchUp, listener, &amp;ListenerClass::touchUp);
-<span class="lineNum">     204 </span>            :                 ofAddListener(ofEvents().touchCancelled, listener, &amp;ListenerClass::touchCancelled);
-<span class="lineNum">     205 </span>            :         }
-<span class="lineNum">     206 </span>            : 
-<span class="lineNum">     207 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     208 </span>            :         void ofRegisterGetMessages(ListenerClass * listener){
-<span class="lineNum">     209 </span>            :                 ofAddListener(ofEvents().messageEvent, listener, &amp;ListenerClass::gotMessage);
-<span class="lineNum">     210 </span>            :         }
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     213 </span>            :         void ofRegisterDragEvents(ListenerClass * listener){
-<span class="lineNum">     214 </span>            :                 ofAddListener(ofEvents().fileDragEvent, listener, &amp;ListenerClass::dragEvent);
-<span class="lineNum">     215 </span>            :         }
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     218 </span>            :         void ofUnregisterMouseEvents(ListenerClass * listener){
-<span class="lineNum">     219 </span>            :                 ofRemoveListener(ofEvents().mouseDragged,listener,&amp;ListenerClass::mouseDragged);
-<span class="lineNum">     220 </span>            :                 ofRemoveListener(ofEvents().mouseMoved,listener,&amp;ListenerClass::mouseMoved);
-<span class="lineNum">     221 </span>            :                 ofRemoveListener(ofEvents().mousePressed,listener,&amp;ListenerClass::mousePressed);
-<span class="lineNum">     222 </span>            :                 ofRemoveListener(ofEvents().mouseReleased,listener,&amp;ListenerClass::mouseReleased);
-<span class="lineNum">     223 </span>            :         }
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     226 </span>            :         void ofUnregisterKeyEvents(ListenerClass * listener){
-<span class="lineNum">     227 </span>            :                 ofRemoveListener(ofEvents().keyPressed, listener, &amp;ListenerClass::keyPressed);
-<span class="lineNum">     228 </span>            :                 ofRemoveListener(ofEvents().keyReleased, listener, &amp;ListenerClass::keyReleased);
-<span class="lineNum">     229 </span>            :         }
-<span class="lineNum">     230 </span>            : 
-<span class="lineNum">     231 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     232 </span>            :         void ofUnregisterTouchEvents(ListenerClass * listener){
-<span class="lineNum">     233 </span>            :                 ofRemoveListener(ofEvents().touchDoubleTap, listener, &amp;ListenerClass::touchDoubleTap);
-<span class="lineNum">     234 </span>            :                 ofRemoveListener(ofEvents().touchDown, listener, &amp;ListenerClass::touchDown);
-<span class="lineNum">     235 </span>            :                 ofRemoveListener(ofEvents().touchMoved, listener, &amp;ListenerClass::touchMoved);
-<span class="lineNum">     236 </span>            :                 ofRemoveListener(ofEvents().touchUp, listener, &amp;ListenerClass::touchUp);
-<span class="lineNum">     237 </span>            :                 ofRemoveListener(ofEvents().touchCancelled, listener, &amp;ListenerClass::touchCancelled);
-<span class="lineNum">     238 </span>            :         }
-<span class="lineNum">     239 </span>            : 
-<span class="lineNum">     240 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     241 </span>            :         void ofUnregisterGetMessages(ListenerClass * listener){
-<span class="lineNum">     242 </span>            :                 ofRemoveListener(ofEvents().messageEvent, listener, &amp;ListenerClass::gotMessage);
-<span class="lineNum">     243 </span>            :         }
-<span class="lineNum">     244 </span>            :         
-<span class="lineNum">     245 </span>            :         template&lt;class ListenerClass&gt;
-<span class="lineNum">     246 </span>            :         void ofUnregisterDragEvents(ListenerClass * listener){
-<span class="lineNum">     247 </span>            :                 ofRemoveListener(ofEvents().fileDragEvent, listener, &amp;ListenerClass::dragEvent);
-<span class="lineNum">     248 </span>            :         }       
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span>            : #endif
-<span class="lineNum">     251 </span>            : 
-<span class="lineNum">     252 </span>            : //  event notification only for internal OF use
-<span class="lineNum">     253 </span>            : void ofNotifySetup();
-<span class="lineNum">     254 </span>            : void ofNotifyUpdate();
-<span class="lineNum">     255 </span>            : void ofNotifyDraw();
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span>            : void ofNotifyKeyPressed(int key);
-<span class="lineNum">     258 </span>            : void ofNotifyKeyReleased(int key);
-<span class="lineNum">     259 </span>            : 
-<span class="lineNum">     260 </span>            : void ofNotifyMousePressed(int x, int y, int button);
-<span class="lineNum">     261 </span>            : void ofNotifyMouseReleased(int x, int y, int button);
-<span class="lineNum">     262 </span>            : void ofNotifyMouseDragged(int x, int y, int button);
-<span class="lineNum">     263 </span>            : void ofNotifyMouseMoved(int x, int y);
-<span class="lineNum">     264 </span>            : 
-<span class="lineNum">     265 </span>            : void ofNotifyExit();
-<span class="lineNum">     266 </span>            : void ofNotifyWindowResized(int width, int height);
-<span class="lineNum">     267 </span>            : void ofNotifyWindowEntry(int state);
-<span class="lineNum">     268 </span>            : 
-<span class="lineNum">     269 </span>            : void ofNotifyDragEvent(ofDragInfo info);
+<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
 </pre>
       </td>
     </tr>

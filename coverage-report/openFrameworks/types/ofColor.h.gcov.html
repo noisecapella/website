@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - .coverage.base - openFrameworks/types/ofColor.h</title>
+  <title>LCOV - .coverage.total - openFrameworks/types/ofColor.h</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">.coverage.base</td>
+            <td class="headerValue">.coverage.total</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntryMed">86.7 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-08-09</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">60.0 %</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -60,161 +60,7 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
-<span class="lineNum">       2 </span>            : #include &lt;limits&gt;
-<span class="lineNum">       3 </span>            : #include &quot;ofMath.h&quot;
-<span class="lineNum">       4 </span>            : 
-<span class="lineNum">       5 </span>            : //----------------------------------------------------------
-<span class="lineNum">       6 </span>            : // ofColor
-<span class="lineNum">       7 </span>            : //----------------------------------------------------------
-<span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : template&lt;typename PixelType&gt;
-<span class="lineNum">      10 </span>            : class ofColor_{
-<span class="lineNum">      11 </span>            :         public:
-<span class="lineNum">      12 </span>            :         
-<span class="lineNum">      13 </span>            :                 ofColor_&lt;PixelType&gt; ();
-<span class="lineNum">      14 </span>            :                 ~ofColor_&lt;PixelType&gt; ();
-<span class="lineNum">      15 </span>            :                 
-<span class="lineNum">      16 </span>            :                 ofColor_&lt;PixelType&gt; (float _r, float _g, float _b, float _a = limit());
-<span class="lineNum">      17 </span>            :                 ofColor_&lt;PixelType&gt; (const ofColor_&lt;PixelType&gt; &amp; color);
-<span class="lineNum">      18 </span>            :                 ofColor_&lt;PixelType&gt; (const ofColor_&lt;PixelType&gt; &amp; color, float _a);
-<span class="lineNum">      19 </span>            :                 ofColor_&lt;PixelType&gt; (float gray, float _a = limit());
-<span class="lineNum">      20 </span>            :                 
-<span class="lineNum">      21 </span>            :                 template&lt;typename SrcType&gt;
-<span class="lineNum">      22 </span>            :                 ofColor_&lt;PixelType&gt; (const ofColor_&lt;SrcType&gt; &amp; color);
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :                 static ofColor_&lt;PixelType&gt; fromHsb (float hue, float saturation, float brightness, float alpha = limit());
-<span class="lineNum">      25 </span>            :                 static ofColor_&lt;PixelType&gt; fromHex (int hexColor, float alpha = limit());
-<span class="lineNum">      26 </span>            :                 
-<span class="lineNum">      27 </span>            :                 static const ofColor_&lt;PixelType&gt; white, gray, black, red, green, blue, cyan, magenta, yellow;
-<span class="lineNum">      28 </span>            :         
-<span class="lineNum">      29 </span>            :                 void set (float _r, float _g, float _b, float _a = limit());
-<span class="lineNum">      30 </span>            :                 void set (float _gray, float _a = limit());
-<span class="lineNum">      31 </span>            :                 void set (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span>            :                 void setHex (int hexColor, float alpha = limit());
-<span class="lineNum">      34 </span>            :                 int getHex () const;
-<span class="lineNum">      35 </span>            :                 
-<span class="lineNum">      36 </span>            :                 ofColor_&lt;PixelType&gt;&amp; clamp ();
-<span class="lineNum">      37 </span>            :                 ofColor_&lt;PixelType&gt;&amp; invert ();
-<span class="lineNum">      38 </span>            :                 ofColor_&lt;PixelType&gt;&amp; normalize ();
-<span class="lineNum">      39 </span>            :                 ofColor_&lt;PixelType&gt;&amp; lerp(const ofColor_&lt;PixelType&gt;&amp; target, float amount);
-<span class="lineNum">      40 </span>            :                 
-<span class="lineNum">      41 </span>            :                 ofColor_&lt;PixelType&gt; getClamped () const;
-<span class="lineNum">      42 </span>            :                 ofColor_&lt;PixelType&gt; getInverted () const;
-<span class="lineNum">      43 </span>            :                 ofColor_&lt;PixelType&gt; getNormalized () const;
-<span class="lineNum">      44 </span>            :                 ofColor_&lt;PixelType&gt; getLerped(const ofColor_&lt;PixelType&gt;&amp; target, float amount) const;
-<span class="lineNum">      45 </span>            :                 
-<span class="lineNum">      46 </span>            :                 float getHue () const;
-<span class="lineNum">      47 </span>            :                 float getSaturation () const;
-<span class="lineNum">      48 </span>            :                 float getBrightness () const; // brightest component
-<span class="lineNum">      49 </span>            :                 float getLightness () const; // average of the components
-<span class="lineNum">      50 </span>            :                 void getHsb(float&amp; hue, float&amp; saturation, float&amp; brightness) const;
-<span class="lineNum">      51 </span>            :                 
-<span class="lineNum">      52 </span>            :                 void setHue (float hue);
-<span class="lineNum">      53 </span>            :                 void setSaturation (float saturation);
-<span class="lineNum">      54 </span>            :                 void setBrightness (float brightness);
-<span class="lineNum">      55 </span>            :                 void setHsb(float hue, float saturation, float brightness, float alpha = limit() );
-<span class="lineNum">      56 </span>            :                 
-<span class="lineNum">      57 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator = (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            :                 template&lt;typename SrcType&gt;
-<span class="lineNum">      60 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator = (ofColor_&lt;SrcType&gt; const &amp; color);
-<span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator = (float const &amp; val);
-<span class="lineNum">      63 </span>            :                 bool operator == (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      64 </span>            :                 bool operator != (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      65 </span>            :                 ofColor_&lt;PixelType&gt; operator + (ofColor_&lt;PixelType&gt; const &amp; color) const;
-<span class="lineNum">      66 </span>            :                 ofColor_&lt;PixelType&gt; operator + (float const &amp; val) const;
-<span class="lineNum">      67 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator += (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      68 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator += (float const &amp; val);
-<span class="lineNum">      69 </span>            :                 ofColor_&lt;PixelType&gt; operator - (ofColor_&lt;PixelType&gt; const &amp; color) const;
-<span class="lineNum">      70 </span>            :                 ofColor_&lt;PixelType&gt; operator - (float const &amp; val) const;
-<span class="lineNum">      71 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator -= (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      72 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator -= (float const &amp; val);
-<span class="lineNum">      73 </span>            :                 ofColor_&lt;PixelType&gt; operator * (ofColor_&lt;PixelType&gt; const &amp; color) const;
-<span class="lineNum">      74 </span>            :                 ofColor_&lt;PixelType&gt; operator * (float const &amp; val) const;
-<span class="lineNum">      75 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator *= (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      76 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator *= (float const &amp; val);
-<span class="lineNum">      77 </span>            :                 ofColor_&lt;PixelType&gt; operator / (ofColor_&lt;PixelType&gt; const &amp; color) const;
-<span class="lineNum">      78 </span>            :                 ofColor_&lt;PixelType&gt; operator / (float const &amp; val) const;
-<span class="lineNum">      79 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator /= (ofColor_&lt;PixelType&gt; const &amp; color);
-<span class="lineNum">      80 </span>            :                 ofColor_&lt;PixelType&gt; &amp; operator /= (float const &amp; val);
-<span class="lineNum">      81 </span>            :                 const PixelType &amp; operator [] (int n) const;
-<span class="lineNum">      82 </span>            :                 PixelType &amp; operator [] (int n);
-<span class="lineNum">      83 </span>            :                 
-<span class="lineNum">      84 </span>            :                 friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const ofColor_&lt;PixelType&gt;&amp; color) {
-<span class="lineNum">      85 </span>            :                         if(sizeof(PixelType) == 1) {
-<span class="lineNum">      86 </span>            :                                 os &lt;&lt; (int) color.r &lt;&lt; &quot;, &quot; &lt;&lt; (int) color.g &lt;&lt; &quot;, &quot; &lt;&lt; (int) color.b &lt;&lt; &quot;, &quot; &lt;&lt; (int) color.a;
-<span class="lineNum">      87 </span>            :                         } else {
-<span class="lineNum">      88 </span>            :                                 os &lt;&lt; color.r &lt;&lt; &quot;, &quot; &lt;&lt; color.g &lt;&lt; &quot;, &quot; &lt;&lt; color.b &lt;&lt; &quot;, &quot; &lt;&lt; color.a;
-<span class="lineNum">      89 </span>            :                         }
-<span class="lineNum">      90 </span>            :                         return os;
-<span class="lineNum">      91 </span>            :                 }
-<span class="lineNum">      92 </span>            : 
-<span class="lineNum">      93 </span>            :                 friend istream&amp; operator&gt;&gt;(istream&amp; is, ofColor_&lt;PixelType&gt;&amp; color) {
-<span class="lineNum">      94 </span>            :                         is &gt;&gt; color.r;
-<span class="lineNum">      95 </span>            :                         is.ignore(2);
-<span class="lineNum">      96 </span>            :                         is &gt;&gt; color.g;
-<span class="lineNum">      97 </span>            :                         is.ignore(2);
-<span class="lineNum">      98 </span>            :                         is &gt;&gt; color.b;
-<span class="lineNum">      99 </span>            :                         is.ignore(2);
-<span class="lineNum">     100 </span>            :                         is &gt;&gt; color.a;
-<span class="lineNum">     101 </span>            :                         return is;
-<span class="lineNum">     102 </span>            :                 }
-<span class="lineNum">     103 </span>            :                                 
-<span class="lineNum">     104 </span>            :                 static float limit();
-<span class="lineNum">     105 </span>            :                 
-<span class="lineNum">     106 </span>            :                 union  {
-<span class="lineNum">     107 </span>            :                         struct {
-<span class="lineNum">     108 </span>            :                                 PixelType r, g, b, a;
-<span class="lineNum">     109 </span>            :                         };
-<span class="lineNum">     110 </span>            :                         PixelType v[4];
-<span class="lineNum">     111 </span>            :                 };
-<span class="lineNum">     112 </span>            :                 
-<span class="lineNum">     113 </span>            :         private:
-<span class="lineNum">     114 </span>            :                 template&lt;typename SrcType&gt;
-<span class="lineNum">     115 </span>            :                 void copyFrom(const ofColor_&lt;SrcType&gt; &amp; mom);
-<span class="lineNum">     116 </span>            : };
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span>            : typedef ofColor_&lt;unsigned char&gt; ofColor;
-<span class="lineNum">     120 </span>            : typedef ofColor_&lt;float&gt; ofFloatColor;
-<span class="lineNum">     121 </span>            : typedef ofColor_&lt;unsigned short&gt; ofShortColor;
-<span class="lineNum">     122 </span>            : 
-<a name="123"><span class="lineNum">     123 </span>            : template&lt;typename PixelType&gt;</a>
-<span class="lineNum">     124 </span>            : template&lt;typename SrcType&gt;
-<span class="lineNum">     125 </span><span class="lineCov">     277877 : ofColor_&lt;PixelType&gt;::ofColor_(const ofColor_&lt;SrcType&gt; &amp; mom){</span>
-<span class="lineNum">     126 </span><span class="lineCov">     277877 :         copyFrom(mom);</span>
-<span class="lineNum">     127 </span><span class="lineCov">     277877 : }</span>
-<span class="lineNum">     128 </span>            : 
-<a name="129"><span class="lineNum">     129 </span>            : template&lt;typename PixelType&gt;</a>
-<span class="lineNum">     130 </span>            : template&lt;typename SrcType&gt;
-<span class="lineNum">     131 </span><span class="lineCov">      22613 : ofColor_&lt;PixelType&gt; &amp; ofColor_&lt;PixelType&gt;::operator=(const ofColor_&lt;SrcType&gt; &amp; mom){</span>
-<span class="lineNum">     132 </span><span class="lineCov">      22613 :         copyFrom(mom);</span>
-<span class="lineNum">     133 </span><span class="lineCov">      22613 :         return *this;</span>
-<span class="lineNum">     134 </span>            : }
-<span class="lineNum">     135 </span>            : 
-<a name="136"><span class="lineNum">     136 </span>            : template&lt;typename PixelType&gt;</a>
-<span class="lineNum">     137 </span>            : template&lt;typename SrcType&gt;
-<span class="lineNum">     138 </span><span class="lineCov">     300468 : void ofColor_&lt;PixelType&gt;::copyFrom(const ofColor_&lt;SrcType&gt; &amp; mom){</span>
-<span class="lineNum">     139 </span><span class="lineCov">     300568 :         const float srcMax = mom.limit();</span>
-<span class="lineNum">     140 </span><span class="lineCov">     300568 :         const float dstMax = limit();</span>
-<span class="lineNum">     141 </span><span class="lineCov">     300568 :         const float factor = dstMax / srcMax;</span>
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            :         if(sizeof(SrcType) == sizeof(float)) {
-<span class="lineNum">     144 </span>            :                 // coming from float we need a special case to clamp the values
-<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 for(int i = 0; i &lt; 4; i++){</span>
-<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                         v[i] = ofClamp(mom[i], 0, 1) * factor;</span>
-<span class="lineNum">     147 </span>            :                 }
-<span class="lineNum">     148 </span>            :         } else{
-<span class="lineNum">     149 </span>            :                 // everything else is a straight scaling
-<span class="lineNum">     150 </span><span class="lineCov">    1502840 :                 for(int i = 0; i &lt; 4; i++){</span>
-<span class="lineNum">     151 </span><span class="lineCov">    1202272 :                         v[i] = mom[i] * factor;</span>
-<span class="lineNum">     152 </span>            :                 }
-<span class="lineNum">     153 </span>            :         }
-<span class="lineNum">     154 </span><span class="lineCov">     300468 : }</span>
-<span class="lineNum">     155 </span>            : 
+<span class="lineNum">       0 </span><span class="lineNoCov">          0 : (missing file)</span>
 </pre>
       </td>
     </tr>

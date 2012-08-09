@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.total - /home/schneg/Projects/openFrameworks/libs/poco/include/Poco/Thread_POSIX.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">home/schneg/Projects/openFrameworks/libs/poco/include/Poco</a> - Thread_POSIX.h<span style="font-size: 80%;"> (source / <a href="Thread_POSIX.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.total</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">37.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">16.7 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : //</a>
+<span class="lineNum">       2 </span>            : // Thread_POSIX.h
+<span class="lineNum">       3 </span>            : //
+<span class="lineNum">       4 </span>            : // $Id: //poco/1.4/Foundation/include/Poco/Thread_POSIX.h#3 $
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : // Library: Foundation
+<span class="lineNum">       7 </span>            : // Package: Threading
+<span class="lineNum">       8 </span>            : // Module:  Thread
+<span class="lineNum">       9 </span>            : //
+<span class="lineNum">      10 </span>            : // Definition of the ThreadImpl class for POSIX Threads.
+<span class="lineNum">      11 </span>            : //
+<span class="lineNum">      12 </span>            : // Copyright (c) 2004-2007, Applied Informatics Software Engineering GmbH.
+<span class="lineNum">      13 </span>            : // and Contributors.
+<span class="lineNum">      14 </span>            : //
+<span class="lineNum">      15 </span>            : // Permission is hereby granted, free of charge, to any person or organization
+<span class="lineNum">      16 </span>            : // obtaining a copy of the software and accompanying documentation covered by
+<span class="lineNum">      17 </span>            : // this license (the &quot;Software&quot;) to use, reproduce, display, distribute,
+<span class="lineNum">      18 </span>            : // execute, and transmit the Software, and to prepare derivative works of the
+<span class="lineNum">      19 </span>            : // Software, and to permit third-parties to whom the Software is furnished to
+<span class="lineNum">      20 </span>            : // do so, all subject to the following:
+<span class="lineNum">      21 </span>            : // 
+<span class="lineNum">      22 </span>            : // The copyright notices in the Software and this entire statement, including
+<span class="lineNum">      23 </span>            : // the above license grant, this restriction and the following disclaimer,
+<span class="lineNum">      24 </span>            : // must be included in all copies of the Software, in whole or in part, and
+<span class="lineNum">      25 </span>            : // all derivative works of the Software, unless such copies or derivative
+<span class="lineNum">      26 </span>            : // works are solely in the form of machine-executable object code generated by
+<span class="lineNum">      27 </span>            : // a source language processor.
+<span class="lineNum">      28 </span>            : // 
+<span class="lineNum">      29 </span>            : // THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<span class="lineNum">      30 </span>            : // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<span class="lineNum">      31 </span>            : // FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+<span class="lineNum">      32 </span>            : // SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+<span class="lineNum">      33 </span>            : // FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+<span class="lineNum">      34 </span>            : // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+<span class="lineNum">      35 </span>            : // DEALINGS IN THE SOFTWARE.
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : #ifndef Foundation_Thread_POSIX_INCLUDED
+<span class="lineNum">      40 </span>            : #define Foundation_Thread_POSIX_INCLUDED
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : #include &quot;Poco/Foundation.h&quot;
+<span class="lineNum">      44 </span>            : #include &quot;Poco/Runnable.h&quot;
+<span class="lineNum">      45 </span>            : #include &quot;Poco/SignalHandler.h&quot;
+<span class="lineNum">      46 </span>            : #include &quot;Poco/Event.h&quot;
+<span class="lineNum">      47 </span>            : #include &quot;Poco/RefCountedObject.h&quot;
+<span class="lineNum">      48 </span>            : #include &quot;Poco/AutoPtr.h&quot;
+<span class="lineNum">      49 </span>            : #include &lt;pthread.h&gt;
+<span class="lineNum">      50 </span>            : // must be limits.h (not &lt;climits&gt;) for PTHREAD_STACK_MIN on Solaris
+<span class="lineNum">      51 </span>            : #include &lt;limits.h&gt;
+<span class="lineNum">      52 </span>            : #if !defined(POCO_NO_SYS_SELECT_H)
+<span class="lineNum">      53 </span>            : #include &lt;sys/select.h&gt;
+<span class="lineNum">      54 </span>            : #endif
+<span class="lineNum">      55 </span>            : #include &lt;errno.h&gt;
+<span class="lineNum">      56 </span>            : #if defined(POCO_VXWORKS)
+<span class="lineNum">      57 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      58 </span>            : #endif
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : namespace Poco {
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : class Foundation_API ThreadImpl
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span>            : public: 
+<span class="lineNum">      67 </span>            :     typedef pthread_t TIDImpl;
+<span class="lineNum">      68 </span>            :         typedef void (*Callable)(void*);
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :         enum Priority
+<span class="lineNum">      71 </span>            :         {
+<span class="lineNum">      72 </span>            :                 PRIO_LOWEST_IMPL,
+<span class="lineNum">      73 </span>            :                 PRIO_LOW_IMPL,
+<span class="lineNum">      74 </span>            :                 PRIO_NORMAL_IMPL,
+<span class="lineNum">      75 </span>            :                 PRIO_HIGH_IMPL,
+<span class="lineNum">      76 </span>            :                 PRIO_HIGHEST_IMPL
+<a name="77"><span class="lineNum">      77 </span>            :         };</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :         struct CallbackData: public RefCountedObject</span>
+<span class="lineNum">      80 </span>            :         {
+<span class="lineNum">      81 </span>            :                 CallbackData(): callback(0), pData(0)
+<span class="lineNum">      82 </span>            :                 {
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 Callable  callback;
+<span class="lineNum">      86 </span>            :                 void*     pData; 
+<span class="lineNum">      87 </span>            :         };
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :         ThreadImpl();                           
+<span class="lineNum">      90 </span>            :         ~ThreadImpl();
+<span class="lineNum">      91 </span>            :     
+<span class="lineNum">      92 </span>            :         TIDImpl tidImpl() const;
+<span class="lineNum">      93 </span>            :         void setPriorityImpl(int prio);
+<span class="lineNum">      94 </span>            :         int getPriorityImpl() const;
+<span class="lineNum">      95 </span>            :         void setOSPriorityImpl(int prio);
+<span class="lineNum">      96 </span>            :         int getOSPriorityImpl() const;
+<span class="lineNum">      97 </span>            :         static int getMinOSPriorityImpl();
+<span class="lineNum">      98 </span>            :         static int getMaxOSPriorityImpl();
+<span class="lineNum">      99 </span>            :         void setStackSizeImpl(int size);
+<span class="lineNum">     100 </span>            :         int getStackSizeImpl() const;
+<span class="lineNum">     101 </span>            :         void startImpl(Runnable&amp; target);
+<span class="lineNum">     102 </span>            :         void startImpl(Callable target, void* pData = 0);
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :         void joinImpl();
+<span class="lineNum">     105 </span>            :         bool joinImpl(long milliseconds);
+<span class="lineNum">     106 </span>            :         bool isRunningImpl() const;
+<span class="lineNum">     107 </span>            :         static void sleepImpl(long milliseconds);
+<span class="lineNum">     108 </span>            :         static void yieldImpl();
+<span class="lineNum">     109 </span>            :         static ThreadImpl* currentImpl();
+<span class="lineNum">     110 </span>            :         static TIDImpl currentTidImpl();
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            : protected:
+<span class="lineNum">     113 </span>            :         static void* runnableEntry(void* pThread);
+<span class="lineNum">     114 </span>            :         static void* callableEntry(void* pThread);
+<span class="lineNum">     115 </span>            :         static int mapPrio(int prio);
+<span class="lineNum">     116 </span>            :         static int reverseMapPrio(int osPrio);
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            : private:
+<span class="lineNum">     119 </span>            :         class CurrentThreadHolder
+<span class="lineNum">     120 </span>            :         {
+<span class="lineNum">     121 </span>            :         public:
+<span class="lineNum">     122 </span>            :                 CurrentThreadHolder()
+<span class="lineNum">     123 </span>            :                 {
+<span class="lineNum">     124 </span>            :                         if (pthread_key_create(&amp;_key, NULL))
+<span class="lineNum">     125 </span>            :                                 throw SystemException(&quot;cannot allocate thread context key&quot;);
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            :                 ~CurrentThreadHolder()
+<span class="lineNum">     128 </span>            :                 {
+<span class="lineNum">     129 </span>            :                         pthread_key_delete(_key);
+<span class="lineNum">     130 </span>            :                 }
+<span class="lineNum">     131 </span>            :                 ThreadImpl* get() const
+<span class="lineNum">     132 </span>            :                 {
+<span class="lineNum">     133 </span>            :                         return reinterpret_cast&lt;ThreadImpl*&gt;(pthread_getspecific(_key));
+<span class="lineNum">     134 </span>            :                 }
+<span class="lineNum">     135 </span>            :                 void set(ThreadImpl* pThread)
+<span class="lineNum">     136 </span>            :                 {
+<span class="lineNum">     137 </span>            :                         pthread_setspecific(_key, pThread);
+<span class="lineNum">     138 </span>            :                 }
+<span class="lineNum">     139 </span>            :         
+<span class="lineNum">     140 </span>            :         private:
+<span class="lineNum">     141 </span>            :                 pthread_key_t _key;
+<a name="142"><span class="lineNum">     142 </span>            :         };</a>
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         struct ThreadData: public RefCountedObject</span>
+<span class="lineNum">     145 </span>            :         {
+<span class="lineNum">     146 </span>            :                 ThreadData():
+<span class="lineNum">     147 </span>            :                         pRunnableTarget(0),
+<span class="lineNum">     148 </span>            :                         pCallbackTarget(0),
+<span class="lineNum">     149 </span>            :                         thread(0),
+<span class="lineNum">     150 </span>            :                         prio(PRIO_NORMAL_IMPL),
+<span class="lineNum">     151 </span>            :                         osPrio(0),
+<span class="lineNum">     152 </span>            :                         done(false),
+<span class="lineNum">     153 </span>            :                         stackSize(POCO_THREAD_STACK_SIZE)
+<span class="lineNum">     154 </span>            :                 {
+<span class="lineNum">     155 </span>            :                 #if defined(POCO_VXWORKS)
+<span class="lineNum">     156 </span>            :                         // This workaround is for VxWorks 5.x where
+<span class="lineNum">     157 </span>            :                         // pthread_init() won't properly initialize the thread.
+<span class="lineNum">     158 </span>            :                         std::memset(&amp;thread, 0, sizeof(thread));
+<span class="lineNum">     159 </span>            :                 #endif
+<span class="lineNum">     160 </span>            :                 }
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :                 Runnable*     pRunnableTarget;
+<span class="lineNum">     163 </span>            :                 AutoPtr&lt;CallbackData&gt; pCallbackTarget;
+<span class="lineNum">     164 </span>            :                 pthread_t     thread;
+<span class="lineNum">     165 </span>            :                 int           prio;
+<span class="lineNum">     166 </span>            :                 int           osPrio;
+<span class="lineNum">     167 </span>            :                 Event         done;
+<span class="lineNum">     168 </span>            :                 std::size_t   stackSize;
+<span class="lineNum">     169 </span>            :         };
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :         AutoPtr&lt;ThreadData&gt; _pData;
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :         static CurrentThreadHolder _currentThreadHolder;
+<span class="lineNum">     174 </span>            :         
+<span class="lineNum">     175 </span>            : #if defined(POCO_OS_FAMILY_UNIX) &amp;&amp; !defined(POCO_VXWORKS)
+<span class="lineNum">     176 </span>            :         SignalHandler::JumpBufferVec _jumpBufferVec;
+<span class="lineNum">     177 </span>            :         friend class SignalHandler;
+<span class="lineNum">     178 </span>            : #endif
+<span class="lineNum">     179 </span>            : };
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            : //
+<span class="lineNum">     183 </span>            : // inlines
+<span class="lineNum">     184 </span>            : //
+<span class="lineNum">     185 </span>            : inline int ThreadImpl::getPriorityImpl() const
+<span class="lineNum">     186 </span>            : {
+<span class="lineNum">     187 </span>            :         return _pData-&gt;prio;
+<span class="lineNum">     188 </span>            : }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            : inline int ThreadImpl::getOSPriorityImpl() const
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span>            :         return _pData-&gt;osPrio;
+<span class="lineNum">     194 </span>            : }
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span><span class="lineCov">         25 : inline bool ThreadImpl::isRunningImpl() const</span>
+<span class="lineNum">     198 </span>            : {
+<span class="lineNum">     199 </span><span class="lineCov">         25 :         return _pData-&gt;pRunnableTarget != 0 ||</span>
+<span class="lineNum">     200 </span><span class="lineCov">         25 :                 (_pData-&gt;pCallbackTarget.get() != 0 &amp;&amp; _pData-&gt;pCallbackTarget-&gt;callback != 0);</span>
+<span class="lineNum">     201 </span>            : }
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 : inline void ThreadImpl::yieldImpl()</span>
+<span class="lineNum">     205 </span>            : {
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :         sched_yield();</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            : inline int ThreadImpl::getStackSizeImpl() const
+<span class="lineNum">     211 </span>            : {
+<span class="lineNum">     212 </span>            :         return _pData-&gt;stackSize;
+<span class="lineNum">     213 </span>            : }
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : inline ThreadImpl::TIDImpl ThreadImpl::tidImpl() const
+<span class="lineNum">     217 </span>            : {
+<span class="lineNum">     218 </span>            :         return _pData-&gt;thread;
+<span class="lineNum">     219 </span>            : }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            : } // namespace Poco
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            : #endif // Foundation_Thread_POSIX_INCLUDED
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
