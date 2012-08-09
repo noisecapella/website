@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/sound/ofSoundPlayer.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/sound</a> - ofSoundPlayer.h<span style="font-size: 80%;"> (source / <a href="ofSoundPlayer.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #pragma once</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofTypes.h&quot;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : // --------------------- global functions:
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : //TODO: FIX THIS SHIT!!!!!!
+<span class="lineNum">      10 </span>            : //#warning FIX THIS.
+<span class="lineNum">      11 </span>            : void ofSoundStopAll();
+<span class="lineNum">      12 </span>            : void ofSoundSetVolume(float vol);
+<span class="lineNum">      13 </span>            : void ofSoundUpdate();                                           // calls FMOD update.
+<span class="lineNum">      14 </span>            : float * ofSoundGetSpectrum(int nBands);         // max 512...
+<span class="lineNum">      15 </span>            : void ofSoundShutdown();
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #include &quot;ofBaseTypes.h&quot;
+<span class="lineNum">      18 </span>            : #include &quot;ofBaseSoundPlayer.h&quot;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #ifdef OF_SOUND_PLAYER_QUICKTIME
+<span class="lineNum">      22 </span>            : #include &quot;ofQuicktimeSoundPlayer.h&quot;
+<span class="lineNum">      23 </span>            : #define OF_SOUND_PLAYER_TYPE ofQuicktimeSoundPlayer
+<span class="lineNum">      24 </span>            : #endif
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : #ifdef OF_SOUND_PLAYER_FMOD
+<span class="lineNum">      27 </span>            : #include &quot;ofFmodSoundPlayer.h&quot;
+<span class="lineNum">      28 </span>            : #define OF_SOUND_PLAYER_TYPE ofFmodSoundPlayer
+<span class="lineNum">      29 </span>            : #endif
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : #ifdef OF_SOUND_PLAYER_OPENAL
+<span class="lineNum">      32 </span>            : #include &quot;ofOpenALSoundPlayer.h&quot;
+<span class="lineNum">      33 </span>            : #define OF_SOUND_PLAYER_TYPE ofOpenALSoundPlayer
+<span class="lineNum">      34 </span>            : #endif
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #ifdef TARGET_OF_IPHONE
+<span class="lineNum">      37 </span>            : #include &quot;ofxOpenALSoundPlayer.h&quot;
+<span class="lineNum">      38 </span>            : #define OF_SOUND_PLAYER_TYPE ofxOpenALSoundPlayer
+<span class="lineNum">      39 </span>            : #endif
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : #ifdef TARGET_ANDROID
+<span class="lineNum">      42 </span>            : #include &quot;ofxAndroidSoundPlayer.h&quot;
+<span class="lineNum">      43 </span>            : #define OF_SOUND_PLAYER_TYPE ofxAndroidSoundPlayer
+<span class="lineNum">      44 </span>            : inline void ofSoundShutdown(){}
+<span class="lineNum">      45 </span>            : #endif
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<span class="lineNum">      47 </span>            : //---------------------------------------------
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 : class ofSoundPlayer : public ofBaseSoundPlayer {</span>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :         public:
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 ofSoundPlayer();
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 void setPlayer(ofPtr&lt;ofBaseSoundPlayer&gt; newPlayer);
+<span class="lineNum">      55 </span>            :                 ofPtr&lt;ofBaseSoundPlayer&gt; getPlayer();
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 bool loadSound(string fileName, bool stream = false);
+<span class="lineNum">      58 </span>            :                 void unloadSound();
+<span class="lineNum">      59 </span>            :                 void play();
+<span class="lineNum">      60 </span>            :                 void stop();
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 void setVolume(float vol);
+<span class="lineNum">      63 </span>            :                 void setPan(float vol); // -1 to 1 
+<span class="lineNum">      64 </span>            :                 void setSpeed(float spd);
+<span class="lineNum">      65 </span>            :                 void setPaused(bool bP);
+<span class="lineNum">      66 </span>            :                 void setLoop(bool bLp);
+<span class="lineNum">      67 </span>            :                 void setMultiPlay(bool bMp);
+<span class="lineNum">      68 </span>            :                 void setPosition(float pct); // 0 = start, 1 = end;
+<span class="lineNum">      69 </span>            :                 void setPositionMS(int ms);
+<span class="lineNum">      70 </span>            :                 int getPositionMS();
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 float getPosition();
+<span class="lineNum">      73 </span>            :                 bool getIsPlaying();
+<span class="lineNum">      74 </span>            :                 float getSpeed();
+<span class="lineNum">      75 </span>            :                 float getPan();
+<span class="lineNum">      76 </span>            :                 float getVolume();
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 bool isLoaded();                
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :         protected:
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 ofPtr&lt;ofBaseSoundPlayer&gt; player;
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            : };
+<span class="lineNum">      86 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

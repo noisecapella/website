@@ -1,0 +1,610 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - /usr/include/gstreamer-0.10/gst/gstmessage.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">usr/include/gstreamer-0.10/gst</a> - gstmessage.h<span style="font-size: 80%;"> (source / <a href="gstmessage.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* GStreamer</a>
+<span class="lineNum">       2 </span>            :  * Copyright (C) 2004 Wim Taymans &lt;wim@fluendo.com&gt;
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * gstmessage.h: Header for GstMessage subsystem
+<span class="lineNum">       5 </span>            :  *
+<span class="lineNum">       6 </span>            :  * This library is free software; you can redistribute it and/or
+<span class="lineNum">       7 </span>            :  * modify it under the terms of the GNU Library General Public
+<span class="lineNum">       8 </span>            :  * License as published by the Free Software Foundation; either
+<span class="lineNum">       9 </span>            :  * version 2 of the License, or (at your option) any later version.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  * This library is distributed in the hope that it will be useful,
+<span class="lineNum">      12 </span>            :  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      13 </span>            :  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      14 </span>            :  * Library General Public License for more details.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  * You should have received a copy of the GNU Library General Public
+<span class="lineNum">      17 </span>            :  * License along with this library; if not, write to the
+<span class="lineNum">      18 </span>            :  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+<span class="lineNum">      19 </span>            :  * Boston, MA 02111-1307, USA.
+<span class="lineNum">      20 </span>            :  */
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #ifndef __GST_MESSAGE_H__
+<span class="lineNum">      23 </span>            : #define __GST_MESSAGE_H__
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : G_BEGIN_DECLS
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : typedef struct _GstMessage GstMessage;
+<span class="lineNum">      28 </span>            : typedef struct _GstMessageClass GstMessageClass;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : /**
+<span class="lineNum">      31 </span>            :  * GstMessageType:
+<span class="lineNum">      32 </span>            :  * @GST_MESSAGE_UNKNOWN: an undefined message
+<span class="lineNum">      33 </span>            :  * @GST_MESSAGE_EOS: end-of-stream reached in a pipeline. The application will
+<span class="lineNum">      34 </span>            :  * only receive this message in the PLAYING state and every time it sets a
+<span class="lineNum">      35 </span>            :  * pipeline to PLAYING that is in the EOS state. The application can perform a
+<span class="lineNum">      36 </span>            :  * flushing seek in the pipeline, which will undo the EOS state again.
+<span class="lineNum">      37 </span>            :  * @GST_MESSAGE_ERROR: an error occured. When the application receives an error
+<span class="lineNum">      38 </span>            :  * message it should stop playback of the pipeline and not assume that more
+<span class="lineNum">      39 </span>            :  * data will be played.
+<span class="lineNum">      40 </span>            :  * @GST_MESSAGE_WARNING: a warning occured.
+<span class="lineNum">      41 </span>            :  * @GST_MESSAGE_INFO: an info message occured
+<span class="lineNum">      42 </span>            :  * @GST_MESSAGE_TAG: a tag was found.
+<span class="lineNum">      43 </span>            :  * @GST_MESSAGE_BUFFERING: the pipeline is buffering. When the application
+<span class="lineNum">      44 </span>            :  * receives a buffering message in the PLAYING state for a non-live pipeline it
+<span class="lineNum">      45 </span>            :  * must PAUSE the pipeline until the buffering completes, when the percentage
+<span class="lineNum">      46 </span>            :  * field in the message is 100%. For live pipelines, no action must be
+<span class="lineNum">      47 </span>            :  * performed and the buffering percentage can be used to inform the user about
+<span class="lineNum">      48 </span>            :  * the progress.
+<span class="lineNum">      49 </span>            :  * @GST_MESSAGE_STATE_CHANGED: a state change happened
+<span class="lineNum">      50 </span>            :  * @GST_MESSAGE_STATE_DIRTY: an element changed state in a streaming thread.
+<span class="lineNum">      51 </span>            :  * This message is deprecated.
+<span class="lineNum">      52 </span>            :  * @GST_MESSAGE_STEP_DONE: a stepping operation finished.
+<span class="lineNum">      53 </span>            :  * @GST_MESSAGE_CLOCK_PROVIDE: an element notifies its capability of providing
+<span class="lineNum">      54 </span>            :  *                             a clock. This message is used internally and
+<span class="lineNum">      55 </span>            :  *                             never forwarded to the application.
+<span class="lineNum">      56 </span>            :  * @GST_MESSAGE_CLOCK_LOST: The current clock as selected by the pipeline became
+<span class="lineNum">      57 </span>            :  *                          unusable. The pipeline will select a new clock on
+<span class="lineNum">      58 </span>            :  *                          the next PLAYING state change. The application
+<span class="lineNum">      59 </span>            :  *                          should set the pipeline to PAUSED and back to
+<span class="lineNum">      60 </span>            :  *                          PLAYING when this message is received.
+<span class="lineNum">      61 </span>            :  * @GST_MESSAGE_NEW_CLOCK: a new clock was selected in the pipeline.
+<span class="lineNum">      62 </span>            :  * @GST_MESSAGE_STRUCTURE_CHANGE: the structure of the pipeline changed. This
+<span class="lineNum">      63 </span>            :  * message is used internally and never forwarded to the application.
+<span class="lineNum">      64 </span>            :  * @GST_MESSAGE_STREAM_STATUS: status about a stream, emitted when it starts,
+<span class="lineNum">      65 </span>            :  *                             stops, errors, etc..
+<span class="lineNum">      66 </span>            :  * @GST_MESSAGE_APPLICATION: message posted by the application, possibly
+<span class="lineNum">      67 </span>            :  *                           via an application-specific element.
+<span class="lineNum">      68 </span>            :  * @GST_MESSAGE_ELEMENT: element-specific message, see the specific element's
+<span class="lineNum">      69 </span>            :  *                       documentation
+<span class="lineNum">      70 </span>            :  * @GST_MESSAGE_SEGMENT_START: pipeline started playback of a segment. This
+<span class="lineNum">      71 </span>            :  * message is used internally and never forwarded to the application.
+<span class="lineNum">      72 </span>            :  * @GST_MESSAGE_SEGMENT_DONE: pipeline completed playback of a segment. This
+<span class="lineNum">      73 </span>            :  * message is forwarded to the application after all elements that posted
+<span class="lineNum">      74 </span>            :  * @GST_MESSAGE_SEGMENT_START posted a GST_MESSAGE_SEGMENT_DONE message.
+<span class="lineNum">      75 </span>            :  * @GST_MESSAGE_DURATION: The duration of a pipeline changed. The application
+<span class="lineNum">      76 </span>            :  * can get the new duration with a duration query.
+<span class="lineNum">      77 </span>            :  * @GST_MESSAGE_ASYNC_START: Posted by elements when they start an ASYNC
+<span class="lineNum">      78 </span>            :  * #GstStateChange. This message is not forwarded to the application but is used
+<span class="lineNum">      79 </span>            :  * internally. Since: 0.10.13.
+<span class="lineNum">      80 </span>            :  * @GST_MESSAGE_ASYNC_DONE: Posted by elements when they complete an ASYNC
+<span class="lineNum">      81 </span>            :  * #GstStateChange. The application will only receive this message from the toplevel
+<span class="lineNum">      82 </span>            :  * pipeline. Since: 0.10.13
+<span class="lineNum">      83 </span>            :  * @GST_MESSAGE_LATENCY: Posted by elements when their latency changes. The
+<span class="lineNum">      84 </span>            :  * application should recalculate and distribute a new latency. Since: 0.10.12
+<span class="lineNum">      85 </span>            :  * @GST_MESSAGE_REQUEST_STATE: Posted by elements when they want the pipeline to
+<span class="lineNum">      86 </span>            :  * change state. This message is a suggestion to the application which can
+<span class="lineNum">      87 </span>            :  * decide to perform the state change on (part of) the pipeline. Since: 0.10.23.
+<span class="lineNum">      88 </span>            :  * @GST_MESSAGE_STEP_START: A stepping operation was started. Since: 0.10.24
+<span class="lineNum">      89 </span>            :  * @GST_MESSAGE_QOS: A buffer was dropped or an element changed its processing
+<span class="lineNum">      90 </span>            :  * strategy for Quality of Service reasons. Since: 0.10.29
+<span class="lineNum">      91 </span>            :  * @GST_MESSAGE_PROGRESS: A progress message. Since: 0.10.33
+<span class="lineNum">      92 </span>            :  * @GST_MESSAGE_ANY: mask for all of the above messages.
+<span class="lineNum">      93 </span>            :  *
+<span class="lineNum">      94 </span>            :  * The different message types that are available.
+<span class="lineNum">      95 </span>            :  */
+<span class="lineNum">      96 </span>            : /* NOTE: keep in sync with quark registration in gstmessage.c
+<span class="lineNum">      97 </span>            :  * NOTE: keep GST_MESSAGE_ANY a valid gint to avoid compiler warnings.
+<span class="lineNum">      98 </span>            :  */
+<span class="lineNum">      99 </span>            : typedef enum
+<span class="lineNum">     100 </span>            : {
+<span class="lineNum">     101 </span>            :   GST_MESSAGE_UNKNOWN           = 0,
+<span class="lineNum">     102 </span>            :   GST_MESSAGE_EOS               = (1 &lt;&lt; 0),
+<span class="lineNum">     103 </span>            :   GST_MESSAGE_ERROR             = (1 &lt;&lt; 1),
+<span class="lineNum">     104 </span>            :   GST_MESSAGE_WARNING           = (1 &lt;&lt; 2),
+<span class="lineNum">     105 </span>            :   GST_MESSAGE_INFO              = (1 &lt;&lt; 3),
+<span class="lineNum">     106 </span>            :   GST_MESSAGE_TAG               = (1 &lt;&lt; 4),
+<span class="lineNum">     107 </span>            :   GST_MESSAGE_BUFFERING         = (1 &lt;&lt; 5),
+<span class="lineNum">     108 </span>            :   GST_MESSAGE_STATE_CHANGED     = (1 &lt;&lt; 6),
+<span class="lineNum">     109 </span>            :   GST_MESSAGE_STATE_DIRTY       = (1 &lt;&lt; 7),
+<span class="lineNum">     110 </span>            :   GST_MESSAGE_STEP_DONE         = (1 &lt;&lt; 8),
+<span class="lineNum">     111 </span>            :   GST_MESSAGE_CLOCK_PROVIDE     = (1 &lt;&lt; 9),
+<span class="lineNum">     112 </span>            :   GST_MESSAGE_CLOCK_LOST        = (1 &lt;&lt; 10),
+<span class="lineNum">     113 </span>            :   GST_MESSAGE_NEW_CLOCK         = (1 &lt;&lt; 11),
+<span class="lineNum">     114 </span>            :   GST_MESSAGE_STRUCTURE_CHANGE  = (1 &lt;&lt; 12),
+<span class="lineNum">     115 </span>            :   GST_MESSAGE_STREAM_STATUS     = (1 &lt;&lt; 13),
+<span class="lineNum">     116 </span>            :   GST_MESSAGE_APPLICATION       = (1 &lt;&lt; 14),
+<span class="lineNum">     117 </span>            :   GST_MESSAGE_ELEMENT           = (1 &lt;&lt; 15),
+<span class="lineNum">     118 </span>            :   GST_MESSAGE_SEGMENT_START     = (1 &lt;&lt; 16),
+<span class="lineNum">     119 </span>            :   GST_MESSAGE_SEGMENT_DONE      = (1 &lt;&lt; 17),
+<span class="lineNum">     120 </span>            :   GST_MESSAGE_DURATION          = (1 &lt;&lt; 18),
+<span class="lineNum">     121 </span>            :   GST_MESSAGE_LATENCY           = (1 &lt;&lt; 19),
+<span class="lineNum">     122 </span>            :   GST_MESSAGE_ASYNC_START       = (1 &lt;&lt; 20),
+<span class="lineNum">     123 </span>            :   GST_MESSAGE_ASYNC_DONE        = (1 &lt;&lt; 21),
+<span class="lineNum">     124 </span>            :   GST_MESSAGE_REQUEST_STATE     = (1 &lt;&lt; 22),
+<span class="lineNum">     125 </span>            :   GST_MESSAGE_STEP_START        = (1 &lt;&lt; 23),
+<span class="lineNum">     126 </span>            :   GST_MESSAGE_QOS               = (1 &lt;&lt; 24),
+<span class="lineNum">     127 </span>            :   GST_MESSAGE_PROGRESS          = (1 &lt;&lt; 25),
+<span class="lineNum">     128 </span>            :   GST_MESSAGE_ANY               = ~0
+<span class="lineNum">     129 </span>            : } GstMessageType;
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : #include &lt;gst/gstminiobject.h&gt;
+<span class="lineNum">     132 </span>            : #include &lt;gst/gstobject.h&gt;
+<span class="lineNum">     133 </span>            : #include &lt;gst/gstelement.h&gt;
+<span class="lineNum">     134 </span>            : #include &lt;gst/gsttaglist.h&gt;
+<span class="lineNum">     135 </span>            : #include &lt;gst/gststructure.h&gt;
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            : /**
+<span class="lineNum">     138 </span>            :  * GST_MESSAGE_TRACE_NAME:
+<span class="lineNum">     139 </span>            :  *
+<span class="lineNum">     140 </span>            :  * The name used for memory allocation tracing
+<span class="lineNum">     141 </span>            :  */
+<span class="lineNum">     142 </span>            : #define GST_MESSAGE_TRACE_NAME  &quot;GstMessage&quot;
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            : #define GST_TYPE_MESSAGE                         (gst_message_get_type())
+<span class="lineNum">     145 </span>            : #define GST_IS_MESSAGE(obj)                      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GST_TYPE_MESSAGE))
+<span class="lineNum">     146 </span>            : #define GST_IS_MESSAGE_CLASS(klass)              (G_TYPE_CHECK_CLASS_TYPE ((klass), GST_TYPE_MESSAGE))
+<span class="lineNum">     147 </span>            : #define GST_MESSAGE_GET_CLASS(obj)               (G_TYPE_INSTANCE_GET_CLASS ((obj), GST_TYPE_MESSAGE, GstMessageClass))
+<span class="lineNum">     148 </span>            : #define GST_MESSAGE(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_MESSAGE, GstMessage))
+<span class="lineNum">     149 </span>            : #define GST_MESSAGE_CLASS(klass)                 (G_TYPE_CHECK_CLASS_CAST ((klass), GST_TYPE_MESSAGE, GstMessageClass))
+<span class="lineNum">     150 </span>            : #define GST_MESSAGE_CAST(obj)                    ((GstMessage*)(obj))
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span>            : /* the lock is used to handle the synchronous handling of messages,
+<span class="lineNum">     153 </span>            :  * the emiting thread is block until the handling thread processed
+<span class="lineNum">     154 </span>            :  * the message using this mutex/cond pair */
+<span class="lineNum">     155 </span>            : #define GST_MESSAGE_GET_LOCK(message)   (GST_MESSAGE_CAST(message)-&gt;lock)
+<span class="lineNum">     156 </span>            : #define GST_MESSAGE_LOCK(message)       g_mutex_lock(GST_MESSAGE_GET_LOCK(message))
+<span class="lineNum">     157 </span>            : #define GST_MESSAGE_UNLOCK(message)     g_mutex_unlock(GST_MESSAGE_GET_LOCK(message))
+<span class="lineNum">     158 </span>            : #define GST_MESSAGE_COND(message)       (GST_MESSAGE_CAST(message)-&gt;cond)
+<span class="lineNum">     159 </span>            : #define GST_MESSAGE_WAIT(message)       g_cond_wait(GST_MESSAGE_COND(message),GST_MESSAGE_GET_LOCK(message))
+<span class="lineNum">     160 </span>            : #define GST_MESSAGE_SIGNAL(message)     g_cond_signal(GST_MESSAGE_COND(message))
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            : /**
+<span class="lineNum">     163 </span>            :  * GST_MESSAGE_TYPE:
+<span class="lineNum">     164 </span>            :  * @message: a #GstMessage
+<span class="lineNum">     165 </span>            :  *
+<span class="lineNum">     166 </span>            :  * Get the #GstMessageType of @message.
+<span class="lineNum">     167 </span>            :  */
+<span class="lineNum">     168 </span>            : #define GST_MESSAGE_TYPE(message)       (GST_MESSAGE_CAST(message)-&gt;type)
+<span class="lineNum">     169 </span>            : /**
+<span class="lineNum">     170 </span>            :  * GST_MESSAGE_TYPE_NAME:
+<span class="lineNum">     171 </span>            :  * @message: a #GstMessage
+<span class="lineNum">     172 </span>            :  *
+<span class="lineNum">     173 </span>            :  * Get a constant string representation of the #GstMessageType of @message.
+<span class="lineNum">     174 </span>            :  *
+<span class="lineNum">     175 </span>            :  * Since: 0.10.4
+<span class="lineNum">     176 </span>            :  */
+<span class="lineNum">     177 </span>            : #define GST_MESSAGE_TYPE_NAME(message)  gst_message_type_get_name(GST_MESSAGE_TYPE(message))
+<span class="lineNum">     178 </span>            : /**
+<span class="lineNum">     179 </span>            :  * GST_MESSAGE_TIMESTAMP:
+<span class="lineNum">     180 </span>            :  * @message: a #GstMessage
+<span class="lineNum">     181 </span>            :  *
+<span class="lineNum">     182 </span>            :  * Get the timestamp of @message. This is the timestamp when the message
+<span class="lineNum">     183 </span>            :  * was created.
+<span class="lineNum">     184 </span>            :  */
+<span class="lineNum">     185 </span>            : #define GST_MESSAGE_TIMESTAMP(message)  (GST_MESSAGE_CAST(message)-&gt;timestamp)
+<span class="lineNum">     186 </span>            : /**
+<span class="lineNum">     187 </span>            :  * GST_MESSAGE_SRC:
+<span class="lineNum">     188 </span>            :  * @message: a #GstMessage
+<span class="lineNum">     189 </span>            :  *
+<span class="lineNum">     190 </span>            :  * Get the object that posted @message.
+<span class="lineNum">     191 </span>            :  */
+<span class="lineNum">     192 </span>            : #define GST_MESSAGE_SRC(message)        (GST_MESSAGE_CAST(message)-&gt;src)
+<span class="lineNum">     193 </span>            : /**
+<span class="lineNum">     194 </span>            :  * GST_MESSAGE_SRC_NAME:
+<span class="lineNum">     195 </span>            :  * @message: a #GstMessage
+<span class="lineNum">     196 </span>            :  *
+<span class="lineNum">     197 </span>            :  * Get the name of the object that posted @message. Returns &quot;(NULL)&quot; if
+<span class="lineNum">     198 </span>            :  * the message has no source object set.
+<span class="lineNum">     199 </span>            :  *
+<span class="lineNum">     200 </span>            :  * Since: 0.10.24
+<span class="lineNum">     201 </span>            :  */
+<span class="lineNum">     202 </span>            : #define GST_MESSAGE_SRC_NAME(message)   (GST_MESSAGE_SRC(message) ? \
+<span class="lineNum">     203 </span>            :     GST_OBJECT_NAME (GST_MESSAGE_SRC(message)) : &quot;(NULL)&quot;)
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            : /**
+<span class="lineNum">     206 </span>            :  * GstStructureChangeType:
+<span class="lineNum">     207 </span>            :  * @GST_STRUCTURE_CHANGE_TYPE_PAD_LINK: Pad linking is starting or done.
+<span class="lineNum">     208 </span>            :  * @GST_STRUCTURE_CHANGE_TYPE_PAD_UNLINK: Pad unlinking is starting or done.
+<span class="lineNum">     209 </span>            :  *
+<span class="lineNum">     210 </span>            :  * The type of a %GST_MESSAGE_STRUCTURE_CHANGE.
+<span class="lineNum">     211 </span>            :  *
+<span class="lineNum">     212 </span>            :  * Since: 0.10.22
+<span class="lineNum">     213 </span>            :  */
+<span class="lineNum">     214 </span>            : typedef enum {
+<span class="lineNum">     215 </span>            :   GST_STRUCTURE_CHANGE_TYPE_PAD_LINK   = 0,
+<span class="lineNum">     216 </span>            :   GST_STRUCTURE_CHANGE_TYPE_PAD_UNLINK = 1
+<span class="lineNum">     217 </span>            : } GstStructureChangeType;
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            : /**
+<span class="lineNum">     220 </span>            :  * GstStreamStatusType:
+<span class="lineNum">     221 </span>            :  * @GST_STREAM_STATUS_TYPE_CREATE: A new thread need to be created.
+<span class="lineNum">     222 </span>            :  * @GST_STREAM_STATUS_TYPE_ENTER: a thread entered its loop function
+<span class="lineNum">     223 </span>            :  * @GST_STREAM_STATUS_TYPE_LEAVE: a thread left its loop function
+<span class="lineNum">     224 </span>            :  * @GST_STREAM_STATUS_TYPE_DESTROY: a thread is destroyed
+<span class="lineNum">     225 </span>            :  * @GST_STREAM_STATUS_TYPE_START: a thread is started
+<span class="lineNum">     226 </span>            :  * @GST_STREAM_STATUS_TYPE_PAUSE: a thread is paused
+<span class="lineNum">     227 </span>            :  * @GST_STREAM_STATUS_TYPE_STOP: a thread is stopped
+<span class="lineNum">     228 </span>            :  *
+<span class="lineNum">     229 </span>            :  * The type of a %GST_MESSAGE_STREAM_STATUS. The stream status messages inform the
+<span class="lineNum">     230 </span>            :  * application of new streaming threads and their status.
+<span class="lineNum">     231 </span>            :  *
+<span class="lineNum">     232 </span>            :  * Since: 0.10.24
+<span class="lineNum">     233 </span>            :  */
+<span class="lineNum">     234 </span>            : typedef enum {
+<span class="lineNum">     235 </span>            :   GST_STREAM_STATUS_TYPE_CREATE   = 0,
+<span class="lineNum">     236 </span>            :   GST_STREAM_STATUS_TYPE_ENTER    = 1,
+<span class="lineNum">     237 </span>            :   GST_STREAM_STATUS_TYPE_LEAVE    = 2,
+<span class="lineNum">     238 </span>            :   GST_STREAM_STATUS_TYPE_DESTROY  = 3,
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :   GST_STREAM_STATUS_TYPE_START    = 8,
+<span class="lineNum">     241 </span>            :   GST_STREAM_STATUS_TYPE_PAUSE    = 9,
+<span class="lineNum">     242 </span>            :   GST_STREAM_STATUS_TYPE_STOP     = 10
+<span class="lineNum">     243 </span>            : } GstStreamStatusType;
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            : /**
+<span class="lineNum">     246 </span>            :  * GstProgressType:
+<span class="lineNum">     247 </span>            :  * @GST_PROGRESS_TYPE_START: A new task started.
+<span class="lineNum">     248 </span>            :  * @GST_PROGRESS_TYPE_CONTINUE: A task completed and a new one continues.
+<span class="lineNum">     249 </span>            :  * @GST_PROGRESS_TYPE_COMPLETE: A task completed.
+<span class="lineNum">     250 </span>            :  * @GST_PROGRESS_TYPE_CANCELED: A task was canceled.
+<span class="lineNum">     251 </span>            :  * @GST_PROGRESS_TYPE_ERROR: A task caused an error. An error message is also
+<span class="lineNum">     252 </span>            :  *          posted on the bus.
+<span class="lineNum">     253 </span>            :  *
+<span class="lineNum">     254 </span>            :  * The type of a %GST_MESSAGE_PROGRESS. The progress messages inform the
+<span class="lineNum">     255 </span>            :  * application of the status of assynchronous tasks.
+<span class="lineNum">     256 </span>            :  *
+<span class="lineNum">     257 </span>            :  * Since: 0.10.33
+<span class="lineNum">     258 </span>            :  */
+<span class="lineNum">     259 </span>            : typedef enum {
+<span class="lineNum">     260 </span>            :   GST_PROGRESS_TYPE_START    = 0,
+<span class="lineNum">     261 </span>            :   GST_PROGRESS_TYPE_CONTINUE = 1,
+<span class="lineNum">     262 </span>            :   GST_PROGRESS_TYPE_COMPLETE = 2,
+<span class="lineNum">     263 </span>            :   GST_PROGRESS_TYPE_CANCELED = 3,
+<span class="lineNum">     264 </span>            :   GST_PROGRESS_TYPE_ERROR    = 4,
+<span class="lineNum">     265 </span>            : } GstProgressType;
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            : /**
+<span class="lineNum">     268 </span>            :  * GstMessage:
+<span class="lineNum">     269 </span>            :  * @mini_object: the parent structure
+<span class="lineNum">     270 </span>            :  * @type: the #GstMessageType of the message
+<span class="lineNum">     271 </span>            :  * @timestamp: the timestamp of the message
+<span class="lineNum">     272 </span>            :  * @src: the src of the message
+<span class="lineNum">     273 </span>            :  * @structure: the #GstStructure containing the message info.
+<span class="lineNum">     274 </span>            :  *
+<span class="lineNum">     275 </span>            :  * A #GstMessage.
+<span class="lineNum">     276 </span>            :  */
+<span class="lineNum">     277 </span>            : struct _GstMessage
+<span class="lineNum">     278 </span>            : {
+<span class="lineNum">     279 </span>            :   GstMiniObject mini_object;
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :   /*&lt; private &gt;*//* with MESSAGE_LOCK */
+<span class="lineNum">     282 </span>            :   GMutex *lock;                 /* lock and cond for async delivery */
+<span class="lineNum">     283 </span>            :   GCond *cond;
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :   /*&lt; public &gt; *//* with COW */
+<span class="lineNum">     286 </span>            :   GstMessageType type;
+<span class="lineNum">     287 </span>            :   guint64 timestamp;
+<span class="lineNum">     288 </span>            :   GstObject *src;
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :   GstStructure *structure;
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :   /*&lt; private &gt;*/
+<span class="lineNum">     293 </span>            :   union {
+<span class="lineNum">     294 </span>            :     struct {
+<span class="lineNum">     295 </span>            :       guint32 seqnum;
+<span class="lineNum">     296 </span>            :     } ABI;
+<span class="lineNum">     297 </span>            :     /* + 0 to mark ABI change for future greppage */
+<span class="lineNum">     298 </span>            :     gpointer _gst_reserved[GST_PADDING + 0];
+<span class="lineNum">     299 </span>            :   } abidata;
+<span class="lineNum">     300 </span>            : };
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            : struct _GstMessageClass {
+<span class="lineNum">     303 </span>            :   GstMiniObjectClass mini_object_class;
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span>            :   /*&lt; private &gt;*/
+<span class="lineNum">     306 </span>            :   gpointer _gst_reserved[GST_PADDING];
+<span class="lineNum">     307 </span>            : };
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span>            : GType           gst_message_get_type            (void);
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            : const gchar*    gst_message_type_get_name       (GstMessageType type);
+<span class="lineNum">     312 </span>            : GQuark          gst_message_type_to_quark       (GstMessageType type);
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            : /* refcounting */
+<span class="lineNum">     315 </span>            : /**
+<span class="lineNum">     316 </span>            :  * gst_message_ref:
+<span class="lineNum">     317 </span>            :  * @msg: the message to ref
+<span class="lineNum">     318 </span>            :  *
+<span class="lineNum">     319 </span>            :  * Convenience macro to increase the reference count of the message.
+<span class="lineNum">     320 </span>            :  *
+<span class="lineNum">     321 </span>            :  * Returns: @msg (for convenience when doing assignments)
+<span class="lineNum">     322 </span>            :  */
+<span class="lineNum">     323 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     324 </span>            : G_INLINE_FUNC GstMessage * gst_message_ref (GstMessage * msg);
+<span class="lineNum">     325 </span>            : #endif
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            : static inline GstMessage *
+<span class="lineNum">     328 </span>            : gst_message_ref (GstMessage * msg)
+<span class="lineNum">     329 </span>            : {
+<span class="lineNum">     330 </span>            :   return (GstMessage *) gst_mini_object_ref (GST_MINI_OBJECT_CAST (msg));
+<span class="lineNum">     331 </span>            : }
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            : /**
+<span class="lineNum">     334 </span>            :  * gst_message_unref:
+<span class="lineNum">     335 </span>            :  * @msg: the message to unref
+<span class="lineNum">     336 </span>            :  *
+<span class="lineNum">     337 </span>            :  * Convenience macro to decrease the reference count of the message, possibly
+<span class="lineNum">     338 </span>            :  * freeing it.
+<span class="lineNum">     339 </span>            :  */
+<span class="lineNum">     340 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     341 </span>            : G_INLINE_FUNC void gst_message_unref (GstMessage * msg);
+<span class="lineNum">     342 </span>            : #endif
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<span class="lineNum">     344 </span>            : static inline void
+<span class="lineNum">     345 </span><span class="lineCov">        899 : gst_message_unref (GstMessage * msg)</span>
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span><span class="lineCov">        899 :   gst_mini_object_unref (GST_MINI_OBJECT_CAST (msg));</span>
+<span class="lineNum">     348 </span><span class="lineCov">        899 : }</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span>            : /* copy message */
+<span class="lineNum">     351 </span>            : /**
+<span class="lineNum">     352 </span>            :  * gst_message_copy:
+<span class="lineNum">     353 </span>            :  * @msg: the message to copy
+<span class="lineNum">     354 </span>            :  *
+<span class="lineNum">     355 </span>            :  * Creates a copy of the message. Returns a copy of the message.
+<span class="lineNum">     356 </span>            :  *
+<span class="lineNum">     357 </span>            :  * Returns: (transfer full): a new copy of @msg.
+<span class="lineNum">     358 </span>            :  *
+<span class="lineNum">     359 </span>            :  * MT safe
+<span class="lineNum">     360 </span>            :  */
+<span class="lineNum">     361 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     362 </span>            : G_INLINE_FUNC GstMessage * gst_message_copy (const GstMessage * msg);
+<span class="lineNum">     363 </span>            : #endif
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            : static inline GstMessage *
+<span class="lineNum">     366 </span>            : gst_message_copy (const GstMessage * msg)
+<span class="lineNum">     367 </span>            : {
+<span class="lineNum">     368 </span>            :   return GST_MESSAGE_CAST (gst_mini_object_copy (GST_MINI_OBJECT_CONST_CAST (msg)));
+<span class="lineNum">     369 </span>            : }
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            : /**
+<span class="lineNum">     372 </span>            :  * gst_message_make_writable:
+<span class="lineNum">     373 </span>            :  * @msg: (transfer full): the message to make writable
+<span class="lineNum">     374 </span>            :  *
+<span class="lineNum">     375 </span>            :  * Checks if a message is writable. If not, a writable copy is made and
+<span class="lineNum">     376 </span>            :  * returned.
+<span class="lineNum">     377 </span>            :  *
+<span class="lineNum">     378 </span>            :  * Returns: (transfer full): a message (possibly a duplicate) that is writable.
+<span class="lineNum">     379 </span>            :  *
+<span class="lineNum">     380 </span>            :  * MT safe
+<span class="lineNum">     381 </span>            :  */
+<span class="lineNum">     382 </span>            : #define         gst_message_make_writable(msg)  GST_MESSAGE_CAST (gst_mini_object_make_writable (GST_MINI_OBJECT_CAST (msg)))
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span>            : /* identifiers for events and messages */
+<span class="lineNum">     385 </span>            : guint32         gst_message_get_seqnum          (GstMessage *message);
+<span class="lineNum">     386 </span>            : void            gst_message_set_seqnum          (GstMessage *message, guint32 seqnum);
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            : /* EOS */
+<span class="lineNum">     389 </span>            : GstMessage *    gst_message_new_eos             (GstObject * src) G_GNUC_MALLOC;
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            : /* ERROR */
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            : GstMessage *    gst_message_new_error           (GstObject * src, GError * error, const gchar * debug) G_GNUC_MALLOC;
+<span class="lineNum">     394 </span>            : void            gst_message_parse_error         (GstMessage *message, GError **gerror, gchar **debug);
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span>            : /* WARNING */
+<span class="lineNum">     397 </span>            : GstMessage *    gst_message_new_warning         (GstObject * src, GError * error, const gchar * debug) G_GNUC_MALLOC;
+<span class="lineNum">     398 </span>            : void            gst_message_parse_warning       (GstMessage *message, GError **gerror, gchar **debug);
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            : /* INFO */
+<span class="lineNum">     401 </span>            : GstMessage *    gst_message_new_info            (GstObject * src, GError * error, const gchar * debug) G_GNUC_MALLOC;
+<span class="lineNum">     402 </span>            : void            gst_message_parse_info          (GstMessage *message, GError **gerror, gchar **debug);
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            : /* TAG */
+<span class="lineNum">     405 </span>            : GstMessage *    gst_message_new_tag             (GstObject * src, GstTagList * tag_list) G_GNUC_MALLOC;
+<span class="lineNum">     406 </span>            : GstMessage *    gst_message_new_tag_full        (GstObject * src, GstPad *pad, GstTagList * tag_list) G_GNUC_MALLOC;
+<span class="lineNum">     407 </span>            : void            gst_message_parse_tag           (GstMessage *message, GstTagList **tag_list);
+<span class="lineNum">     408 </span>            : void            gst_message_parse_tag_full      (GstMessage *message, GstPad **pad, GstTagList **tag_list);
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            : /* BUFFERING */
+<span class="lineNum">     411 </span>            : GstMessage *    gst_message_new_buffering         (GstObject * src, gint percent) G_GNUC_MALLOC;
+<span class="lineNum">     412 </span>            : void            gst_message_parse_buffering       (GstMessage *message, gint *percent);
+<span class="lineNum">     413 </span>            : void            gst_message_set_buffering_stats   (GstMessage *message, GstBufferingMode mode,
+<span class="lineNum">     414 </span>            :                                                    gint avg_in, gint avg_out,
+<span class="lineNum">     415 </span>            :                                                    gint64 buffering_left);
+<span class="lineNum">     416 </span>            : void            gst_message_parse_buffering_stats (GstMessage *message, GstBufferingMode *mode,
+<span class="lineNum">     417 </span>            :                                                    gint *avg_in, gint *avg_out,
+<span class="lineNum">     418 </span>            :                                                    gint64 *buffering_left);
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span>            : /* STATE_CHANGED */
+<span class="lineNum">     421 </span>            : GstMessage *    gst_message_new_state_changed   (GstObject * src, GstState oldstate,
+<span class="lineNum">     422 </span>            :                                                  GstState newstate, GstState pending) G_GNUC_MALLOC;
+<span class="lineNum">     423 </span>            : void            gst_message_parse_state_changed (GstMessage *message, GstState *oldstate,
+<span class="lineNum">     424 </span>            :                                                  GstState *newstate, GstState *pending);
+<span class="lineNum">     425 </span>            : 
+<span class="lineNum">     426 </span>            : /* STATE_DIRTY */
+<span class="lineNum">     427 </span>            : GstMessage *    gst_message_new_state_dirty     (GstObject * src) G_GNUC_MALLOC;
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            : /* STEP_DONE */
+<span class="lineNum">     430 </span>            : GstMessage *    gst_message_new_step_done       (GstObject * src, GstFormat format, guint64 amount,
+<span class="lineNum">     431 </span>            :                                                  gdouble rate, gboolean flush, gboolean intermediate,
+<span class="lineNum">     432 </span>            :                                                  guint64 duration, gboolean eos) G_GNUC_MALLOC;
+<span class="lineNum">     433 </span>            : void            gst_message_parse_step_done     (GstMessage * message, GstFormat *format, guint64 *amount,
+<span class="lineNum">     434 </span>            :                                                  gdouble *rate, gboolean *flush, gboolean *intermediate,
+<span class="lineNum">     435 </span>            :                                                  guint64 *duration, gboolean *eos);
+<span class="lineNum">     436 </span>            : /* CLOCK_PROVIDE */
+<span class="lineNum">     437 </span>            : GstMessage *    gst_message_new_clock_provide   (GstObject * src, GstClock *clock, gboolean ready) G_GNUC_MALLOC;
+<span class="lineNum">     438 </span>            : void            gst_message_parse_clock_provide (GstMessage *message, GstClock **clock,
+<span class="lineNum">     439 </span>            :                                                  gboolean *ready);
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span>            : /* CLOCK_LOST */
+<span class="lineNum">     442 </span>            : GstMessage *    gst_message_new_clock_lost      (GstObject * src, GstClock *clock) G_GNUC_MALLOC;
+<span class="lineNum">     443 </span>            : void            gst_message_parse_clock_lost    (GstMessage *message, GstClock **clock);
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            : /* NEW_CLOCK */
+<span class="lineNum">     446 </span>            : GstMessage *    gst_message_new_new_clock       (GstObject * src, GstClock *clock) G_GNUC_MALLOC;
+<span class="lineNum">     447 </span>            : void            gst_message_parse_new_clock     (GstMessage *message, GstClock **clock);
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span>            : /* APPLICATION */
+<span class="lineNum">     450 </span>            : GstMessage *    gst_message_new_application     (GstObject * src, GstStructure * structure) G_GNUC_MALLOC;
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            : /* ELEMENT */
+<span class="lineNum">     453 </span>            : GstMessage *    gst_message_new_element         (GstObject * src, GstStructure * structure) G_GNUC_MALLOC;
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span>            : /* SEGMENT_START */
+<span class="lineNum">     456 </span>            : GstMessage *    gst_message_new_segment_start   (GstObject * src, GstFormat format, gint64 position) G_GNUC_MALLOC;
+<span class="lineNum">     457 </span>            : void            gst_message_parse_segment_start (GstMessage *message, GstFormat *format,
+<span class="lineNum">     458 </span>            :                                                  gint64 *position);
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span>            : /* SEGMENT_DONE */
+<span class="lineNum">     461 </span>            : GstMessage *    gst_message_new_segment_done    (GstObject * src, GstFormat format, gint64 position) G_GNUC_MALLOC;
+<span class="lineNum">     462 </span>            : void            gst_message_parse_segment_done  (GstMessage *message, GstFormat *format,
+<span class="lineNum">     463 </span>            :                                                  gint64 *position);
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span>            : /* DURATION */
+<span class="lineNum">     466 </span>            : GstMessage *    gst_message_new_duration        (GstObject * src, GstFormat format, gint64 duration) G_GNUC_MALLOC;
+<span class="lineNum">     467 </span>            : void            gst_message_parse_duration      (GstMessage *message, GstFormat *format,
+<span class="lineNum">     468 </span>            :                                                  gint64 *duration);
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            : /* LATENCY */
+<span class="lineNum">     471 </span>            : GstMessage *    gst_message_new_latency         (GstObject * src) G_GNUC_MALLOC;
+<span class="lineNum">     472 </span>            : 
+<span class="lineNum">     473 </span>            : /* ASYNC_START */
+<span class="lineNum">     474 </span>            : GstMessage *    gst_message_new_async_start     (GstObject * src, gboolean new_base_time) G_GNUC_MALLOC;
+<span class="lineNum">     475 </span>            : void            gst_message_parse_async_start   (GstMessage *message, gboolean *new_base_time);
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            : /* ASYNC_DONE */
+<span class="lineNum">     478 </span>            : GstMessage *    gst_message_new_async_done      (GstObject * src) G_GNUC_MALLOC;
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span>            : /* STRUCTURE CHANGE */
+<span class="lineNum">     481 </span>            : GstMessage *    gst_message_new_structure_change   (GstObject * src, GstStructureChangeType type,
+<span class="lineNum">     482 </span>            :                                                     GstElement *owner, gboolean busy) G_GNUC_MALLOC;
+<span class="lineNum">     483 </span>            : void            gst_message_parse_structure_change (GstMessage *message, GstStructureChangeType *type,
+<span class="lineNum">     484 </span>            :                                                     GstElement **owner, gboolean *busy);
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span>            : /* STREAM STATUS */
+<span class="lineNum">     487 </span>            : GstMessage *    gst_message_new_stream_status        (GstObject * src, GstStreamStatusType type,
+<span class="lineNum">     488 </span>            :                                                       GstElement *owner) G_GNUC_MALLOC;
+<span class="lineNum">     489 </span>            : void            gst_message_parse_stream_status      (GstMessage *message, GstStreamStatusType *type,
+<span class="lineNum">     490 </span>            :                                                       GstElement **owner);
+<span class="lineNum">     491 </span>            : void            gst_message_set_stream_status_object (GstMessage *message, const GValue *object);
+<span class="lineNum">     492 </span>            : const GValue *  gst_message_get_stream_status_object (GstMessage *message);
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span>            : /* REQUEST_STATE */
+<span class="lineNum">     495 </span>            : GstMessage *    gst_message_new_request_state   (GstObject * src, GstState state) G_GNUC_MALLOC;
+<span class="lineNum">     496 </span>            : void            gst_message_parse_request_state (GstMessage * message, GstState *state);
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span>            : /* STEP_START */
+<span class="lineNum">     499 </span>            : GstMessage *    gst_message_new_step_start      (GstObject * src, gboolean active, GstFormat format,
+<span class="lineNum">     500 </span>            :                                                  guint64 amount, gdouble rate, gboolean flush,
+<span class="lineNum">     501 </span>            :                                                  gboolean intermediate) G_GNUC_MALLOC;
+<span class="lineNum">     502 </span>            : void            gst_message_parse_step_start    (GstMessage * message, gboolean *active, GstFormat *format,
+<span class="lineNum">     503 </span>            :                                                  guint64 *amount, gdouble *rate, gboolean *flush,
+<span class="lineNum">     504 </span>            :                                                  gboolean *intermediate);
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            : /* QOS */
+<span class="lineNum">     507 </span>            : GstMessage *    gst_message_new_qos             (GstObject * src, gboolean live, guint64 running_time,
+<span class="lineNum">     508 </span>            :                                                  guint64 stream_time, guint64 timestamp, guint64 duration) G_GNUC_MALLOC;
+<span class="lineNum">     509 </span>            : void            gst_message_set_qos_values      (GstMessage * message, gint64 jitter, gdouble proportion,
+<span class="lineNum">     510 </span>            :                                                  gint quality);
+<span class="lineNum">     511 </span>            : void            gst_message_set_qos_stats       (GstMessage * message, GstFormat format, guint64 processed,
+<span class="lineNum">     512 </span>            :                                                  guint64 dropped);
+<span class="lineNum">     513 </span>            : void            gst_message_parse_qos           (GstMessage * message, gboolean * live, guint64 * running_time,
+<span class="lineNum">     514 </span>            :                                                  guint64 * stream_time, guint64 * timestamp, guint64 * duration);
+<span class="lineNum">     515 </span>            : void            gst_message_parse_qos_values    (GstMessage * message, gint64 * jitter, gdouble * proportion,
+<span class="lineNum">     516 </span>            :                                                  gint * quality);
+<span class="lineNum">     517 </span>            : void            gst_message_parse_qos_stats     (GstMessage * message, GstFormat * format, guint64 * processed,
+<span class="lineNum">     518 </span>            :                                                  guint64 * dropped);
+<span class="lineNum">     519 </span>            : /* PROGRESS */
+<span class="lineNum">     520 </span>            : GstMessage *    gst_message_new_progress           (GstObject * src, GstProgressType type, const gchar *code,
+<span class="lineNum">     521 </span>            :                                                     const gchar *text) G_GNUC_MALLOC;
+<span class="lineNum">     522 </span>            : void            gst_message_parse_progress         (GstMessage * message, GstProgressType * type, gchar ** code,
+<span class="lineNum">     523 </span>            :                                                     gchar ** text);
+<span class="lineNum">     524 </span>            : 
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            : /* custom messages */
+<span class="lineNum">     527 </span>            : GstMessage *    gst_message_new_custom          (GstMessageType type,
+<span class="lineNum">     528 </span>            :                                                  GstObject    * src,
+<span class="lineNum">     529 </span>            :                                                  GstStructure * structure) G_GNUC_MALLOC;
+<span class="lineNum">     530 </span>            : const GstStructure *  gst_message_get_structure (GstMessage *message);
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span>            : G_END_DECLS
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span>            : #endif /* __GST_MESSAGE_H__ */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

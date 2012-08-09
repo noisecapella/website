@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/utils/ofThread.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/utils</a> - ofThread.cpp<span style="font-size: 80%;"> (source / <a href="ofThread.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntryLo">49.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofThread.h&quot; </a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;ofLog.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofUtils.h&quot;
+<span class="lineNum">       5 </span>            : #ifdef TARGET_ANDROID
+<span class="lineNum">       6 </span>            : #include &lt;jni.h&gt;
+<span class="lineNum">       7 </span>            : #include &quot;ofxAndroidUtils.h&quot;
+<span class="lineNum">       8 </span>            : #endif
+<a name="9"><span class="lineNum">       9 </span>            : </a>
+<span class="lineNum">      10 </span>            : //------------------------------------------------- 
+<span class="lineNum">      11 </span><span class="lineCov">         15 : ofThread::ofThread(){ </span>
+<span class="lineNum">      12 </span><span class="lineCov">         15 :    threadRunning = false;</span>
+<span class="lineNum">      13 </span><span class="lineCov">         15 :    verbose = false;</span>
+<span class="lineNum">      14 </span><span class="lineCov">         15 :    thread.setName(&quot;Thread &quot;+ofToString(thread.id()));</span>
+<span class="lineNum">      15 </span><span class="lineCov">         15 :    blocking = true;</span>
+<span class="lineNum">      16 </span><span class="lineCov">         15 : } </span>
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<span class="lineNum">      18 </span>            : //------------------------------------------------- 
+<span class="lineNum">      19 </span><span class="lineCov">         13 : ofThread::~ofThread(){ </span>
+<span class="lineNum">      20 </span><span class="lineCov">         13 :    stopThread();</span>
+<span class="lineNum">      21 </span><span class="lineCov">         13 : } </span>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<span class="lineNum">      23 </span>            : //------------------------------------------------- 
+<span class="lineNum">      24 </span><span class="lineCov">         21 : bool ofThread::isThreadRunning(){ </span>
+<span class="lineNum">      25 </span><span class="lineCov">         21 :    return threadRunning;</span>
+<span class="lineNum">      26 </span>            : }
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<span class="lineNum">      28 </span>            : //------------------------------------------------- 
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 : int ofThread::getThreadId(){</span>
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :         return thread.id();</span>
+<span class="lineNum">      31 </span>            : }
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<span class="lineNum">      33 </span>            : //------------------------------------------------- 
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 : string ofThread::getThreadName(){</span>
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :         return thread.name();</span>
+<span class="lineNum">      36 </span>            : }
+<a name="37"><span class="lineNum">      37 </span>            : </a>
+<span class="lineNum">      38 </span>            : //------------------------------------------------- 
+<span class="lineNum">      39 </span><span class="lineCov">          7 : void ofThread::startThread(bool blocking, bool verbose){</span>
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span><span class="lineCov">          7 :         if(thread.isRunning()){ </span>
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 ofLogWarning(thread.name()) &lt;&lt; &quot;cannot start, thread already running&quot;;</span>
+<span class="lineNum">      43 </span><span class="lineCov">          7 :                 return; </span>
+<span class="lineNum">      44 </span>            :         } 
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :         // have to put this here because the thread can be running 
+<span class="lineNum">      47 </span>            :         // before the call to create it returns 
+<span class="lineNum">      48 </span><span class="lineCov">          7 :         threadRunning = true; </span>
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineCov">          7 :         this-&gt;blocking = blocking;</span>
+<span class="lineNum">      51 </span><span class="lineCov">          7 :         this-&gt;verbose = verbose;</span>
+<span class="lineNum">      52 </span>            :         
+<span class="lineNum">      53 </span><span class="lineCov">          7 :         if(verbose){</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 ofSetLogLevel(thread.name(), OF_LOG_VERBOSE);</span>
+<span class="lineNum">      55 </span>            :         }
+<span class="lineNum">      56 </span>            :         else{
+<span class="lineNum">      57 </span><span class="lineCov">          7 :                 ofSetLogLevel(thread.name(), OF_LOG_NOTICE);</span>
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">          7 :         thread.start(*this);</span>
+<span class="lineNum">      61 </span>            : } 
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<span class="lineNum">      63 </span>            : //------------------------------------------------- 
+<span class="lineNum">      64 </span><span class="lineCov">       2630 : bool ofThread::lock(){ </span>
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span><span class="lineCov">       2630 :         if(blocking){</span>
+<span class="lineNum">      67 </span><span class="lineCov">       2623 :                 if(verbose){</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                         if(Poco::Thread::current() == &amp;thread){</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :                                 ofLogVerbose(thread.name()) &lt;&lt; &quot;thread waiting for own mutex to be unlocked&quot;;</span>
+<span class="lineNum">      70 </span>            :                         }
+<span class="lineNum">      71 </span>            :                         else{
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                                 ofLogVerbose(thread.name()) &lt;&lt; &quot;external waiting for thread mutex to be unlocked&quot;;</span>
+<span class="lineNum">      73 </span>            :                         }
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span><span class="lineCov">       2623 :                 mutex.lock();</span>
+<span class="lineNum">      76 </span>            :         }
+<span class="lineNum">      77 </span>            :         else{
+<span class="lineNum">      78 </span><span class="lineCov">          7 :                 if(!mutex.tryLock()){</span>
+<span class="lineNum">      79 </span><span class="lineCov">          1 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;mutex is busy - already locked&quot;; </span>
+<span class="lineNum">      80 </span><span class="lineCov">          1 :                         return false; </span>
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            :         }
+<span class="lineNum">      83 </span>            :         
+<span class="lineNum">      84 </span><span class="lineCov">       2629 :         if(verbose){</span>
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 if(Poco::Thread::current() == &amp;thread){</span>
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;thread locked own mutex&quot;;</span>
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            :                 else{
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;external locked thread mutex&quot;;</span>
+<span class="lineNum">      90 </span>            :                 }
+<span class="lineNum">      91 </span>            :         }
+<span class="lineNum">      92 </span>            :         
+<span class="lineNum">      93 </span><span class="lineCov">       2630 :         return true; </span>
+<span class="lineNum">      94 </span>            : } 
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<span class="lineNum">      96 </span>            : //------------------------------------------------- 
+<span class="lineNum">      97 </span><span class="lineCov">       2629 : void ofThread::unlock(){ </span>
+<span class="lineNum">      98 </span><span class="lineCov">       2629 :         mutex.unlock();</span>
+<span class="lineNum">      99 </span>            :         
+<span class="lineNum">     100 </span><span class="lineCov">       2629 :         if(verbose){</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                 if(Poco::Thread::current() == &amp;thread){</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;thread unlocked own mutex&quot;;</span>
+<span class="lineNum">     103 </span>            :                 }
+<span class="lineNum">     104 </span>            :                 else{
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;external unlocked thread mutex&quot;;</span>
+<span class="lineNum">     106 </span>            :                 }
+<span class="lineNum">     107 </span>            :         }
+<span class="lineNum">     108 </span><span class="lineCov">       2629 :         return; </span>
+<span class="lineNum">     109 </span>            : } 
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<span class="lineNum">     111 </span>            : //------------------------------------------------- 
+<span class="lineNum">     112 </span><span class="lineCov">         18 : void ofThread::stopThread(){</span>
+<span class="lineNum">     113 </span><span class="lineCov">         18 :         if(thread.isRunning()) {</span>
+<span class="lineNum">     114 </span><span class="lineCov">         10 :                 threadRunning = false;</span>
+<span class="lineNum">     115 </span>            :         }
+<span class="lineNum">     116 </span><span class="lineCov">         18 : }</span>
+<a name="117"><span class="lineNum">     117 </span>            : </a>
+<span class="lineNum">     118 </span>            : //-------------------------------------------------
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 : void ofThread::waitForThread(bool stop){</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :         if(thread.isRunning()){</span>
+<span class="lineNum">     121 </span>            :                 
+<span class="lineNum">     122 </span>            :                 // tell thread to stop
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 if(stop){</span>
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                         threadRunning = false;</span>
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         ofLogVerbose(thread.name()) &lt;&lt; &quot;signaled to stop&quot;;</span>
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            :                 
+<span class="lineNum">     128 </span>            :                 // wait for the thread to finish
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 ofLogVerbose(thread.name()) &lt;&lt; &quot;waiting to stop&quot;;</span>
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 if(Poco::Thread::current() == &amp;thread){</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :                         ofLogWarning(thread.name()) &lt;&lt; &quot;waitForThread should only be called from outside the thread&quot;;</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                         return;</span>
+<span class="lineNum">     133 </span>            :                 }
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 thread.join();</span>
+<span class="lineNum">     135 </span>            :    }
+<span class="lineNum">     136 </span>            : }
+<a name="137"><span class="lineNum">     137 </span>            : </a>
+<span class="lineNum">     138 </span>            : //-------------------------------------------------
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 : void ofThread::sleep(int sleepMS){</span>
+<span class="lineNum">     140 </span><span class="lineNoCov">          0 :         Poco::Thread::sleep(sleepMS);</span>
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 : }</span>
+<a name="142"><span class="lineNum">     142 </span>            : </a>
+<span class="lineNum">     143 </span>            : //-------------------------------------------------
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 : void ofThread::yield(){</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :         Poco::Thread::yield();</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 : }</span>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<span class="lineNum">     148 </span>            : //-------------------------------------------------
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 : bool ofThread::isCurrentThread(){</span>
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         if(ofThread::getCurrentThread() == this)</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 return true;</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     153 </span>            : }
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<span class="lineNum">     155 </span>            : //-------------------------------------------------
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 : bool ofThread::isMainThread(){</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :         if(Poco::Thread::current() == NULL)</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 return true;</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     160 </span>            : }
+<a name="161"><span class="lineNum">     161 </span>            : </a>
+<span class="lineNum">     162 </span>            : //-------------------------------------------------
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 : ofThread * ofThread::getCurrentThread(){</span>
+<span class="lineNum">     164 </span>            :         // assumes all created threads are ofThreads ...
+<span class="lineNum">     165 </span>            :         // might be dangerous if people are using Poco::Threads directly
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         return (ofThread *) Poco::Thread::current();</span>
+<span class="lineNum">     167 </span>            : }
+<span class="lineNum">     168 </span>            : 
+<a name="169"><span class="lineNum">     169 </span>            : // PROTECTED</a>
+<span class="lineNum">     170 </span>            : //-------------------------------------------------
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 : void ofThread::threadedFunction(){</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         ofLogWarning(thread.name()) &lt;&lt; &quot;override threadedFunction with your own&quot;;</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     174 </span>            : 
+<a name="175"><span class="lineNum">     175 </span>            : // PRIVATE</a>
+<span class="lineNum">     176 </span>            : //-------------------------------------------------
+<span class="lineNum">     177 </span><span class="lineCov">          7 : void ofThread::run(){</span>
+<span class="lineNum">     178 </span>            :         
+<span class="lineNum">     179 </span><span class="lineCov">          7 :         ofLogVerbose(thread.name()) &lt;&lt; &quot;started&quot;;</span>
+<span class="lineNum">     180 </span>            : #ifdef TARGET_ANDROID
+<span class="lineNum">     181 </span>            :         JNIEnv * env;
+<span class="lineNum">     182 </span>            :         jint attachResult = ofGetJavaVMPtr()-&gt;AttachCurrentThread(&amp;env,NULL);
+<span class="lineNum">     183 </span>            : #endif
+<span class="lineNum">     184 </span>            :         // user function
+<span class="lineNum">     185 </span><span class="lineCov">          7 :         threadedFunction();</span>
+<span class="lineNum">     186 </span>            :         
+<span class="lineNum">     187 </span>            : #ifdef TARGET_ANDROID
+<span class="lineNum">     188 </span>            :         attachResult = ofGetJavaVMPtr()-&gt;DetachCurrentThread();
+<span class="lineNum">     189 </span>            : #endif
+<span class="lineNum">     190 </span>            : 
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :         threadRunning = false;</span></a>
+<span class="lineNum">     192 </span><span class="lineCov">          1 :         ofLogVerbose(thread.name()) &lt;&lt; &quot;stopped&quot;;</span>
+<span class="lineNum">     193 </span><span class="lineCov">        576 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,1292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/graphics/ofImage.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/graphics</a> - ofImage.cpp<span style="font-size: 80%;"> (source / <a href="ofImage.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">298</td>
+            <td class="headerCovTableEntry">509</td>
+            <td class="headerCovTableEntryLo">58.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">57</td>
+            <td class="headerCovTableEntry">219</td>
+            <td class="headerCovTableEntryLo">26.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofImage.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;ofAppRunner.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;ofTypes.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofURLFileLoader.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofGraphics.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;FreeImage.h&quot;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">       9 </span>            : #include &lt;set&gt;
+<span class="lineNum">      10 </span>            :         // android destroys the opengl context on screen orientation change
+<span class="lineNum">      11 </span>            :         // or when the application runs in the background so we need to reload
+<span class="lineNum">      12 </span>            :         // all the textures when the context is created again.
+<span class="lineNum">      13 </span>            :         // keeping a pointer to all the images we can tell them to reload from a static method
+<span class="lineNum">      14 </span>            :         static set&lt;ofImage *&gt; &amp; all_images(){
+<span class="lineNum">      15 </span>            :                 static set&lt;ofImage *&gt; * images = new set&lt;ofImage *&gt;;
+<span class="lineNum">      16 </span>            :                 return *images;
+<span class="lineNum">      17 </span>            :         }
+<span class="lineNum">      18 </span>            :         static set&lt;ofFloatImage *&gt; &amp; all_float_images(){
+<span class="lineNum">      19 </span>            :                 static set&lt;ofFloatImage *&gt; * images = new set&lt;ofFloatImage *&gt;;
+<span class="lineNum">      20 </span>            :                 return *images;
+<span class="lineNum">      21 </span>            :         }
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :         static set&lt;ofShortImage *&gt; &amp; all_short_images(){
+<span class="lineNum">      24 </span>            :                 static set&lt;ofShortImage *&gt; * images = new set&lt;ofShortImage *&gt;;
+<span class="lineNum">      25 </span>            :                 return *images;
+<span class="lineNum">      26 </span>            :         }
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :         static void registerImage(ofImage * img){
+<span class="lineNum">      29 </span>            :                 all_images().insert(img);
+<span class="lineNum">      30 </span>            :         }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :         static void registerImage(ofFloatImage * img){
+<span class="lineNum">      33 </span>            :                 all_float_images().insert(img);
+<span class="lineNum">      34 </span>            :         }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :         static void registerImage(ofShortImage * img){
+<span class="lineNum">      37 </span>            :                 all_short_images().insert(img);
+<span class="lineNum">      38 </span>            :         }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :         static void unregisterImage(ofImage * img){
+<span class="lineNum">      41 </span>            :                 all_images().erase(img);
+<span class="lineNum">      42 </span>            :         }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :         static void unregisterImage(ofFloatImage * img){
+<span class="lineNum">      45 </span>            :                 all_float_images().erase(img);
+<span class="lineNum">      46 </span>            :         }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :         static void unregisterImage(ofShortImage * img){
+<span class="lineNum">      49 </span>            :                 all_short_images().erase(img);
+<span class="lineNum">      50 </span>            :         }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :         void ofReloadAllImageTextures(){
+<span class="lineNum">      53 </span>            :                 set&lt;ofImage *&gt;::iterator it;
+<span class="lineNum">      54 </span>            :                 for(it=all_images().begin(); it!=all_images().end(); it++){
+<span class="lineNum">      55 </span>            :                         (*it)-&gt;reloadTexture();
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            :                 set&lt;ofFloatImage *&gt;::iterator f_it;
+<span class="lineNum">      58 </span>            :                 for(f_it=all_float_images().begin(); f_it!=all_float_images().end(); f_it++){
+<span class="lineNum">      59 </span>            :                         (*f_it)-&gt;reloadTexture();
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span>            : #endif
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : 
+<a name="65"><span class="lineNum">      65 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      66 </span>            : // static variable for freeImage initialization:
+<span class="lineNum">      67 </span><span class="lineCov">       1037 : void ofInitFreeImage(bool deinit=false){</span>
+<span class="lineNum">      68 </span>            :         // need a new bool to avoid c++ &quot;deinitialization order fiasco&quot;:
+<span class="lineNum">      69 </span>            :         // http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.15
+<span class="lineNum">      70 </span><span class="lineCov">       1037 :         static bool     * bFreeImageInited = new bool(false);</span>
+<span class="lineNum">      71 </span><span class="lineCov">       1037 :         if(!bFreeImageInited &amp;&amp; !deinit){</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 FreeImage_Initialise();</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :                 *bFreeImageInited = true;</span>
+<span class="lineNum">      74 </span>            :         }
+<span class="lineNum">      75 </span><span class="lineCov">       1037 :         if(bFreeImageInited &amp;&amp; deinit){</span>
+<span class="lineNum">      76 </span><span class="lineCov">        193 :                 FreeImage_DeInitialise();</span>
+<span class="lineNum">      77 </span>            :         }
+<span class="lineNum">      78 </span><span class="lineCov">       1037 : }</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : template &lt;typename T&gt;
+<span class="lineNum">      81 </span>            : FREE_IMAGE_TYPE getFreeImageType(ofPixels_&lt;T&gt;&amp; pix);
+<a name="82"><span class="lineNum">      82 </span>            : </a>
+<span class="lineNum">      83 </span>            : template &lt;&gt;
+<span class="lineNum">      84 </span><span class="lineCov">        422 : FREE_IMAGE_TYPE getFreeImageType(ofPixels&amp; pix) {</span>
+<span class="lineNum">      85 </span><span class="lineCov">        422 :         return FIT_BITMAP;</span>
+<span class="lineNum">      86 </span>            : }
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<span class="lineNum">      88 </span>            : template &lt;&gt;
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 : FREE_IMAGE_TYPE getFreeImageType(ofShortPixels&amp; pix) {</span>
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :         switch(pix.getNumChannels()) {</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                 case 1: return FIT_UINT16;</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :                 case 3: return FIT_RGB16;</span>
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :                 case 4: return FIT_RGBA16;</span>
+<span class="lineNum">      94 </span>            :                 default:
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :                         ofLogError() &lt;&lt; &quot;Unkown freeimage type for&quot; &lt;&lt; pix.getNumChannels() &lt;&lt; &quot;channels&quot;;</span>
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                         return FIT_UNKNOWN;</span>
+<span class="lineNum">      97 </span>            :         }
+<a name="98"><span class="lineNum">      98 </span>            : }</a>
+<span class="lineNum">      99 </span>            : template &lt;&gt;
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 : FREE_IMAGE_TYPE getFreeImageType(ofFloatPixels&amp; pix) {</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :         switch(pix.getNumChannels()) {</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 case 1: return FIT_FLOAT;</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                 case 3: return FIT_RGBF;</span>
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :                 case 4: return FIT_RGBAF;</span>
+<span class="lineNum">     105 </span>            :                 default:
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                         ofLogError() &lt;&lt; &quot;Unkown freeimage type for&quot; &lt;&lt; pix.getNumChannels() &lt;&lt; &quot;channels&quot;;</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         return FIT_UNKNOWN;</span>
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span>            : }
+<span class="lineNum">     110 </span>            : 
+<a name="111"><span class="lineNum">     111 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     112 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     113 </span><span class="lineCov">        422 : FIBITMAP* getBmpFromPixels(ofPixels_&lt;PixelType&gt; &amp;pix){</span>
+<span class="lineNum">     114 </span><span class="lineCov">        422 :         PixelType* pixels = pix.getPixels();</span>
+<span class="lineNum">     115 </span><span class="lineCov">        422 :         unsigned int width = pix.getWidth();</span>
+<span class="lineNum">     116 </span><span class="lineCov">        422 :         unsigned int height = pix.getHeight();</span>
+<span class="lineNum">     117 </span><span class="lineCov">        422 :         unsigned int bpp = pix.getBitsPerPixel();</span>
+<span class="lineNum">     118 </span>            :         
+<span class="lineNum">     119 </span><span class="lineCov">        422 :         FREE_IMAGE_TYPE freeImageType = getFreeImageType(pix);</span>
+<span class="lineNum">     120 </span><span class="lineCov">        422 :         FIBITMAP* bmp = FreeImage_AllocateT(freeImageType, width, height, bpp);</span>
+<span class="lineNum">     121 </span><span class="lineCov">        422 :         unsigned char* bmpBits = FreeImage_GetBits(bmp);</span>
+<span class="lineNum">     122 </span><span class="lineCov">        422 :         if(bmpBits != NULL) {</span>
+<span class="lineNum">     123 </span><span class="lineCov">        422 :                 int srcStride = width * pix.getBytesPerPixel();</span>
+<span class="lineNum">     124 </span><span class="lineCov">        422 :                 int dstStride = FreeImage_GetPitch(bmp);</span>
+<span class="lineNum">     125 </span><span class="lineCov">        422 :                 unsigned char* src = (unsigned char*) pixels;</span>
+<span class="lineNum">     126 </span><span class="lineCov">        422 :                 unsigned char* dst = bmpBits;</span>
+<span class="lineNum">     127 </span><span class="lineCov">     265868 :                 for(int i = 0; i &lt; (int)height; i++) {</span>
+<span class="lineNum">     128 </span><span class="lineCov">     265446 :                         memcpy(dst, src, srcStride);</span>
+<span class="lineNum">     129 </span><span class="lineCov">     265446 :                         src += srcStride;</span>
+<span class="lineNum">     130 </span><span class="lineCov">     265446 :                         dst += dstStride;</span>
+<span class="lineNum">     131 </span>            :                 }
+<span class="lineNum">     132 </span>            :         } else {
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 ofLogError() &lt;&lt; &quot;ofImage::getBmpFromPixels() unable to get FIBITMAP from ofPixels&quot;;</span>
+<span class="lineNum">     134 </span>            :         }
+<span class="lineNum">     135 </span>            :         
+<span class="lineNum">     136 </span>            :         // ofPixels are top left, FIBITMAP is bottom left
+<span class="lineNum">     137 </span><span class="lineCov">        422 :         FreeImage_FlipVertical(bmp);</span>
+<span class="lineNum">     138 </span>            :         
+<span class="lineNum">     139 </span><span class="lineCov">        422 :         return bmp;</span>
+<span class="lineNum">     140 </span>            : }
+<span class="lineNum">     141 </span>            : 
+<a name="142"><span class="lineNum">     142 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     143 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     144 </span><span class="lineCov">        652 : void putBmpIntoPixels(FIBITMAP * bmp, ofPixels_&lt;PixelType&gt; &amp;pix, bool swapForLittleEndian = true) {</span>
+<span class="lineNum">     145 </span>            :         // some images use a palette, or &lt;8 bpp, so convert them to raster 8-bit channels
+<span class="lineNum">     146 </span><span class="lineCov">        652 :         FIBITMAP* bmpConverted = NULL;</span>
+<span class="lineNum">     147 </span><span class="lineCov">        652 :         if(FreeImage_GetColorType(bmp) == FIC_PALETTE || FreeImage_GetBPP(bmp) &lt; 8) {</span>
+<span class="lineNum">     148 </span><span class="lineCov">          1 :                 if(FreeImage_IsTransparent(bmp)) {</span>
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                         bmpConverted = FreeImage_ConvertTo32Bits(bmp);</span>
+<span class="lineNum">     150 </span>            :                 } else {
+<span class="lineNum">     151 </span><span class="lineCov">          1 :                         bmpConverted = FreeImage_ConvertTo24Bits(bmp);</span>
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span><span class="lineCov">          1 :                 bmp = bmpConverted;</span>
+<span class="lineNum">     154 </span>            :         }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineCov">        652 :         unsigned int width = FreeImage_GetWidth(bmp);</span>
+<span class="lineNum">     157 </span><span class="lineCov">        652 :         unsigned int height = FreeImage_GetHeight(bmp);</span>
+<span class="lineNum">     158 </span><span class="lineCov">        652 :         unsigned int bpp = FreeImage_GetBPP(bmp);</span>
+<span class="lineNum">     159 </span><span class="lineCov">        652 :         unsigned int channels = (bpp / sizeof(PixelType)) / 8;</span>
+<span class="lineNum">     160 </span><span class="lineCov">        652 :         unsigned int pitch = FreeImage_GetPitch(bmp);</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :         // ofPixels are top left, FIBITMAP is bottom left
+<span class="lineNum">     163 </span><span class="lineCov">        652 :         FreeImage_FlipVertical(bmp);</span>
+<span class="lineNum">     164 </span>            :         
+<span class="lineNum">     165 </span><span class="lineCov">        652 :         unsigned char* bmpBits = FreeImage_GetBits(bmp);</span>
+<span class="lineNum">     166 </span><span class="lineCov">        652 :         if(bmpBits != NULL) {</span>
+<span class="lineNum">     167 </span><span class="lineCov">        652 :                 pix.setFromAlignedPixels((PixelType*) bmpBits, width, height, channels, pitch);</span>
+<span class="lineNum">     168 </span>            :         } else {
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 ofLogError() &lt;&lt; &quot;ofImage::putBmpIntoPixels() unable to set ofPixels from FIBITMAP&quot;;</span>
+<span class="lineNum">     170 </span>            :         }
+<span class="lineNum">     171 </span>            :         
+<span class="lineNum">     172 </span><span class="lineCov">        652 :         if(bmpConverted != NULL) {</span>
+<span class="lineNum">     173 </span><span class="lineCov">          1 :                 FreeImage_Unload(bmpConverted);</span>
+<span class="lineNum">     174 </span>            :         }
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : #ifdef TARGET_LITTLE_ENDIAN
+<span class="lineNum">     177 </span><span class="lineCov">        651 :         if(swapForLittleEndian &amp;&amp; sizeof(PixelType) == 1) {</span>
+<span class="lineNum">     178 </span><span class="lineCov">        447 :                 pix.swapRgb();</span>
+<span class="lineNum">     179 </span>            :         }
+<span class="lineNum">     180 </span>            : #endif
+<span class="lineNum">     181 </span><span class="lineCov">        652 : }</span>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
+<span class="lineNum">     183 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     184 </span><span class="lineCov">        447 : static bool loadImage(ofPixels_&lt;PixelType&gt; &amp; pix, string fileName){</span>
+<span class="lineNum">     185 </span><span class="lineCov">        447 :         ofInitFreeImage();</span>
+<span class="lineNum">     186 </span><span class="lineCov">        447 :         if(fileName.substr(0, 7) == &quot;http://&quot;) {</span>
+<span class="lineNum">     187 </span><span class="lineNoCov">          0 :                 return ofLoadImage(pix, ofLoadURL(fileName).data);</span>
+<span class="lineNum">     188 </span>            :         }
+<span class="lineNum">     189 </span>            :         
+<span class="lineNum">     190 </span><span class="lineCov">        447 :         fileName = ofToDataPath(fileName);</span>
+<span class="lineNum">     191 </span><span class="lineCov">        447 :         bool bLoaded = false;</span>
+<span class="lineNum">     192 </span><span class="lineCov">        447 :         FIBITMAP * bmp = NULL;</span>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineCov">        447 :         FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;</span>
+<span class="lineNum">     195 </span><span class="lineCov">        447 :         fif = FreeImage_GetFileType(fileName.c_str(), 0);</span>
+<span class="lineNum">     196 </span><span class="lineCov">        447 :         if(fif == FIF_UNKNOWN) {</span>
+<span class="lineNum">     197 </span>            :                 // or guess via filename
+<span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 fif = FreeImage_GetFIFFromFilename(fileName.c_str());</span>
+<span class="lineNum">     199 </span>            :         }
+<span class="lineNum">     200 </span><span class="lineCov">        447 :         if((fif != FIF_UNKNOWN) &amp;&amp; FreeImage_FIFSupportsReading(fif)) {</span>
+<span class="lineNum">     201 </span><span class="lineCov">        447 :                 bmp = FreeImage_Load(fif, fileName.c_str(), 0);</span>
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span><span class="lineCov">        447 :                 if (bmp != NULL){</span>
+<span class="lineNum">     204 </span><span class="lineCov">        447 :                         bLoaded = true;</span>
+<span class="lineNum">     205 </span>            :                 }
+<span class="lineNum">     206 </span>            :         }
+<span class="lineNum">     207 </span>            :         
+<span class="lineNum">     208 </span>            :         //-----------------------------
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span><span class="lineCov">        447 :         if ( bLoaded ){</span>
+<span class="lineNum">     211 </span><span class="lineCov">        447 :                 putBmpIntoPixels(bmp,pix);</span>
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineCov">        447 :         if (bmp != NULL){</span>
+<span class="lineNum">     215 </span><span class="lineCov">        447 :                 FreeImage_Unload(bmp);</span>
+<span class="lineNum">     216 </span>            :         }
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineCov">        447 :         return bLoaded;</span>
+<span class="lineNum">     219 </span>            : }
+<a name="220"><span class="lineNum">     220 </span>            : </a>
+<span class="lineNum">     221 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     222 </span><span class="lineCov">          1 : static bool loadImage(ofPixels_&lt;PixelType&gt; &amp; pix, const ofBuffer &amp; buffer){</span>
+<span class="lineNum">     223 </span><span class="lineCov">          1 :         ofInitFreeImage();</span>
+<span class="lineNum">     224 </span>            :         int width, height, bpp;
+<span class="lineNum">     225 </span><span class="lineCov">          1 :         bool bLoaded = false;</span>
+<span class="lineNum">     226 </span><span class="lineCov">          1 :         FIBITMAP* bmp = NULL;</span>
+<span class="lineNum">     227 </span><span class="lineCov">          1 :         FIMEMORY* hmem = NULL;</span>
+<span class="lineNum">     228 </span>            :         
+<span class="lineNum">     229 </span><span class="lineCov">          1 :         hmem = FreeImage_OpenMemory((unsigned char*) buffer.getBinaryBuffer(), buffer.size());</span>
+<span class="lineNum">     230 </span><span class="lineCov">          1 :         if (hmem == NULL){</span>
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;couldn't create memory handle!&quot;);</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     233 </span>            :         }
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :         //get the file type!
+<span class="lineNum">     236 </span><span class="lineCov">          1 :         FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem);</span>
+<span class="lineNum">     237 </span><span class="lineCov">          1 :         if( fif == -1 ){</span>
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;unable to guess format&quot;, fif);</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     240 </span>            :                 FreeImage_CloseMemory(hmem);
+<span class="lineNum">     241 </span>            :         }
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :         //make the image!!
+<span class="lineNum">     245 </span><span class="lineCov">          1 :         bmp = FreeImage_LoadFromMemory(fif, hmem, 0);</span>
+<span class="lineNum">     246 </span>            :         
+<span class="lineNum">     247 </span><span class="lineCov">          1 :         if( bmp != NULL ){</span>
+<span class="lineNum">     248 </span><span class="lineCov">          1 :                 bLoaded = true;</span>
+<span class="lineNum">     249 </span>            :         }
+<span class="lineNum">     250 </span>            :         
+<span class="lineNum">     251 </span>            :         //-----------------------------
+<span class="lineNum">     252 </span>            :         
+<span class="lineNum">     253 </span><span class="lineCov">          1 :         if (bLoaded){</span>
+<span class="lineNum">     254 </span><span class="lineCov">          1 :                 putBmpIntoPixels(bmp,pix);</span>
+<span class="lineNum">     255 </span>            :         } else {
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 width = height = bpp = 0;</span>
+<span class="lineNum">     257 </span>            :         }
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineCov">          1 :         if (bmp != NULL){</span>
+<span class="lineNum">     260 </span><span class="lineCov">          1 :                 FreeImage_Unload(bmp);</span>
+<span class="lineNum">     261 </span>            :         }
+<span class="lineNum">     262 </span>            :         
+<span class="lineNum">     263 </span><span class="lineCov">          1 :         if( hmem != NULL ){</span>
+<span class="lineNum">     264 </span><span class="lineCov">          1 :                 FreeImage_CloseMemory(hmem);</span>
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span><span class="lineCov">          1 :         return bLoaded;</span>
+<span class="lineNum">     268 </span>            : }
+<span class="lineNum">     269 </span>            : 
+<a name="270"><span class="lineNum">     270 </span>            : </a>
+<span class="lineNum">     271 </span>            : //----------------------------------------------------
+<span class="lineNum">     272 </span><span class="lineCov">        446 : bool ofLoadImage(ofPixels &amp; pix, string fileName) {</span>
+<span class="lineNum">     273 </span><span class="lineCov">        446 :         return loadImage(pix,fileName);</span>
+<span class="lineNum">     274 </span>            : }
+<a name="275"><span class="lineNum">     275 </span>            : </a>
+<a name="276"><span class="lineNum">     276 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     277 </span><span class="lineCov">          1 : bool ofLoadImage(ofPixels &amp; pix, const ofBuffer &amp; buffer) {</span>
+<span class="lineNum">     278 </span><span class="lineCov">          1 :         return loadImage(pix,buffer);</span>
+<span class="lineNum">     279 </span>            : }
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<span class="lineNum">     281 </span>            : //----------------------------------------------------
+<span class="lineNum">     282 </span><span class="lineCov">          1 : bool ofLoadImage(ofFloatPixels &amp; pix, string path){</span>
+<span class="lineNum">     283 </span><span class="lineCov">          1 :         return loadImage(pix,path);</span>
+<span class="lineNum">     284 </span>            : }
+<a name="285"><span class="lineNum">     285 </span>            : </a>
+<a name="286"><span class="lineNum">     286 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 : bool ofLoadImage(ofFloatPixels &amp; pix, const ofBuffer &amp; buffer){</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :         return loadImage(pix,buffer);</span>
+<span class="lineNum">     289 </span>            : }
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<span class="lineNum">     291 </span>            : //----------------------------------------------------
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 : bool ofLoadImage(ofShortPixels &amp; pix, string path){</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :         return loadImage(pix,path);</span>
+<span class="lineNum">     294 </span>            : }
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 : bool ofLoadImage(ofShortPixels &amp; pix, const ofBuffer &amp; buffer){</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 :         return loadImage(pix,buffer);</span>
+<span class="lineNum">     299 </span>            : }
+<span class="lineNum">     300 </span>            : 
+<a name="301"><span class="lineNum">     301 </span>            : </a>
+<span class="lineNum">     302 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     303 </span><span class="lineCov">         39 : bool ofLoadImage(ofTexture &amp; tex, string path){</span>
+<span class="lineNum">     304 </span><span class="lineCov">         39 :         ofPixels pixels;</span>
+<span class="lineNum">     305 </span><span class="lineCov">         39 :         bool loaded = ofLoadImage(pixels,path);</span>
+<span class="lineNum">     306 </span><span class="lineCov">         39 :         if(loaded){</span>
+<span class="lineNum">     307 </span><span class="lineCov">         39 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     308 </span><span class="lineCov">         39 :                 tex.loadData(pixels);</span>
+<span class="lineNum">     309 </span>            :         }
+<span class="lineNum">     310 </span><span class="lineCov">         39 :         return loaded;</span>
+<span class="lineNum">     311 </span>            : }
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 : bool ofLoadImage(ofTexture &amp; tex, const ofBuffer &amp; buffer){</span>
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :         ofPixels pixels;</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :         bool loaded = ofLoadImage(pixels,buffer);</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         if(loaded){</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 tex.loadData(pixels);</span>
+<span class="lineNum">     320 </span>            :         }
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         return loaded;</span>
+<span class="lineNum">     322 </span>            : }
+<span class="lineNum">     323 </span>            : 
+<a name="324"><span class="lineNum">     324 </span>            : //----------------------------------------------------------------</a>
+<span class="lineNum">     325 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     326 </span><span class="lineCov">        218 : static void saveImage(ofPixels_&lt;PixelType&gt; &amp; pix, string fileName, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     327 </span><span class="lineCov">        218 :         ofInitFreeImage();</span>
+<span class="lineNum">     328 </span><span class="lineCov">        218 :         if (pix.isAllocated() == false){</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR,&quot;error saving image - pixels aren't allocated&quot;);</span>
+<span class="lineNum">     330 </span><span class="lineCov">        218 :                 return;</span>
+<span class="lineNum">     331 </span>            :         }
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            :         #ifdef TARGET_LITTLE_ENDIAN
+<span class="lineNum">     334 </span>            :         if(sizeof(PixelType) == 1) {
+<span class="lineNum">     335 </span><span class="lineCov">        218 :                 pix.swapRgb();</span>
+<span class="lineNum">     336 </span>            :         }
+<span class="lineNum">     337 </span>            :         #endif
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineCov">        218 :         FIBITMAP * bmp  = getBmpFromPixels(pix);</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            :         #ifdef TARGET_LITTLE_ENDIAN
+<span class="lineNum">     342 </span>            :         if(sizeof(PixelType) == 1) {
+<span class="lineNum">     343 </span><span class="lineCov">        218 :                 pix.swapRgb();</span>
+<span class="lineNum">     344 </span>            :         }
+<span class="lineNum">     345 </span>            :         #endif
+<span class="lineNum">     346 </span>            :         
+<span class="lineNum">     347 </span><span class="lineCov">        218 :         fileName = ofToDataPath(fileName);</span>
+<span class="lineNum">     348 </span><span class="lineCov">        218 :         FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;</span>
+<span class="lineNum">     349 </span><span class="lineCov">        218 :         fif = FreeImage_GetFileType(fileName.c_str(), 0);</span>
+<span class="lineNum">     350 </span><span class="lineCov">        218 :         if(fif == FIF_UNKNOWN) {</span>
+<span class="lineNum">     351 </span>            :                 // or guess via filename
+<span class="lineNum">     352 </span><span class="lineCov">          7 :                 fif = FreeImage_GetFIFFromFilename(fileName.c_str());</span>
+<span class="lineNum">     353 </span>            :         }
+<span class="lineNum">     354 </span><span class="lineCov">        218 :         if((fif != FIF_UNKNOWN) &amp;&amp; FreeImage_FIFSupportsReading(fif)) {</span>
+<span class="lineNum">     355 </span><span class="lineCov">        217 :                 if(fif == FIF_JPEG) {</span>
+<span class="lineNum">     356 </span><span class="lineCov">        212 :                         int quality = JPEG_QUALITYSUPERB;</span>
+<span class="lineNum">     357 </span><span class="lineCov">        212 :                         switch(qualityLevel) {</span>
+<span class="lineNum">     358 </span><span class="lineCov">        212 :                                 case OF_IMAGE_QUALITY_WORST: quality = JPEG_QUALITYBAD; break;</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :                                 case OF_IMAGE_QUALITY_LOW: quality = JPEG_QUALITYAVERAGE; break;</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :                                 case OF_IMAGE_QUALITY_MEDIUM: quality = JPEG_QUALITYNORMAL; break;</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :                                 case OF_IMAGE_QUALITY_HIGH: quality = JPEG_QUALITYGOOD; break;</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                                 case OF_IMAGE_QUALITY_BEST: quality = JPEG_QUALITYSUPERB; break;</span>
+<span class="lineNum">     363 </span>            :                         }
+<span class="lineNum">     364 </span><span class="lineCov">        212 :                         FreeImage_Save(fif, bmp, fileName.c_str(), quality);</span>
+<span class="lineNum">     365 </span>            :                 } else {
+<span class="lineNum">     366 </span><span class="lineCov">          5 :                         if(qualityLevel != OF_IMAGE_QUALITY_BEST) {</span>
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 :                                 ofLogWarning() &lt;&lt; &quot;ofImageCompressionType only applies to JPEG images, ignoring value&quot;;</span>
+<span class="lineNum">     368 </span>            :                         }
+<span class="lineNum">     369 </span>            :                         
+<span class="lineNum">     370 </span><span class="lineCov">          5 :                         if (fif == FIF_GIF) {</span>
+<span class="lineNum">     371 </span>            :                                 FIBITMAP* convertedBmp;
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :                                 if(pix.getImageType() == OF_IMAGE_COLOR_ALPHA) {</span>
+<span class="lineNum">     373 </span>            :                                         // this just converts the image to grayscale so it can save something
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :                                         convertedBmp = FreeImage_ConvertTo8Bits(bmp);</span>
+<span class="lineNum">     375 </span>            :                                 } else {
+<span class="lineNum">     376 </span>            :                                         // this will create a 256-color palette from the image
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :                                         convertedBmp = FreeImage_ColorQuantize(bmp, FIQ_NNQUANT);</span>
+<span class="lineNum">     378 </span>            :                                 }
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :                                 FreeImage_Save(fif, convertedBmp, fileName.c_str());</span>
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 :                                 if (convertedBmp != NULL){</span>
+<span class="lineNum">     381 </span><span class="lineNoCov">          0 :                                         FreeImage_Unload(convertedBmp);</span>
+<span class="lineNum">     382 </span>            :                                 }
+<span class="lineNum">     383 </span>            :                         } else {
+<span class="lineNum">     384 </span><span class="lineCov">          5 :                                 FreeImage_Save(fif, bmp, fileName.c_str());</span>
+<span class="lineNum">     385 </span>            :                         }
+<span class="lineNum">     386 </span>            :                 }
+<span class="lineNum">     387 </span>            :         }
+<span class="lineNum">     388 </span>            : 
+<span class="lineNum">     389 </span><span class="lineCov">        218 :         if (bmp != NULL){</span>
+<span class="lineNum">     390 </span><span class="lineCov">        218 :                 FreeImage_Unload(bmp);</span>
+<span class="lineNum">     391 </span>            :         }
+<span class="lineNum">     392 </span>            : }
+<a name="393"><span class="lineNum">     393 </span>            : </a>
+<span class="lineNum">     394 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     395 </span><span class="lineCov">        218 : void ofSaveImage(ofPixels &amp; pix, string fileName, ofImageQualityType qualityLevel){</span>
+<span class="lineNum">     396 </span><span class="lineCov">        218 :         saveImage(pix,fileName,qualityLevel);</span>
+<span class="lineNum">     397 </span><span class="lineCov">        218 : }</span>
+<a name="398"><span class="lineNum">     398 </span>            : </a>
+<span class="lineNum">     399 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 : void ofSaveImage(ofFloatPixels &amp; pix, string fileName, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :         saveImage(pix,fileName,qualityLevel);</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 : }</span>
+<a name="403"><span class="lineNum">     403 </span>            : </a>
+<span class="lineNum">     404 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     405 </span><span class="lineNoCov">          0 : void ofSaveImage(ofShortPixels &amp; pix, string fileName, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     406 </span><span class="lineNoCov">          0 :         saveImage(pix,fileName,qualityLevel);</span>
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     408 </span>            : 
+<a name="409"><span class="lineNum">     409 </span>            : //----------------------------------------------------------------</a>
+<span class="lineNum">     410 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 : static void saveImage(ofPixels_&lt;PixelType&gt; &amp; pix, ofBuffer &amp; buffer, ofImageFormat format, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     412 </span>            :         //thanks to alvaro casinelli for the implementation
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 :         ofInitFreeImage();</span>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :         if (pix.isAllocated() == false){</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR,&quot;error saving image - pixels aren't allocated&quot;);</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     419 </span>            :         }
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span>            :         #ifdef TARGET_LITTLE_ENDIAN
+<span class="lineNum">     422 </span>            :         if(sizeof(PixelType) == 1) {
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :                 pix.swapRgb();</span>
+<span class="lineNum">     424 </span>            :         }
+<span class="lineNum">     425 </span>            :         #endif
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :         FIBITMAP * bmp  = getBmpFromPixels(pix);</span>
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            :         #ifdef TARGET_LITTLE_ENDIAN
+<span class="lineNum">     430 </span>            :         if(sizeof(PixelType) == 1) {
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 :                 pix.swapRgb();</span>
+<span class="lineNum">     432 </span>            :         }
+<span class="lineNum">     433 </span>            :         #endif
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :         if (bmp)  // bitmap successfully created</span>
+<span class="lineNum">     436 </span>            :         {
+<span class="lineNum">     437 </span>            :                    // (b) open a memory stream to compress the image onto mem_buffer:
+<span class="lineNum">     438 </span>            :                    //
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 :                    FIMEMORY *hmem = FreeImage_OpenMemory();</span>
+<span class="lineNum">     440 </span>            :                    // (c) encode and save the image to the memory (on dib FIBITMAP image):
+<span class="lineNum">     441 </span>            :                    //
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :                    if(FREE_IMAGE_FORMAT(format) == FIF_JPEG) {</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :                                 int quality = JPEG_QUALITYSUPERB;</span>
+<span class="lineNum">     444 </span><span class="lineNoCov">          0 :                                 switch(qualityLevel) {</span>
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :                                         case OF_IMAGE_QUALITY_WORST: quality = JPEG_QUALITYBAD; break;</span>
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :                                         case OF_IMAGE_QUALITY_LOW: quality = JPEG_QUALITYAVERAGE; break;</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :                                         case OF_IMAGE_QUALITY_MEDIUM: quality = JPEG_QUALITYNORMAL; break;</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :                                         case OF_IMAGE_QUALITY_HIGH: quality = JPEG_QUALITYGOOD; break;</span>
+<span class="lineNum">     449 </span><span class="lineNoCov">          0 :                                         case OF_IMAGE_QUALITY_BEST: quality = JPEG_QUALITYSUPERB; break;</span>
+<span class="lineNum">     450 </span>            :                                 }
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 :                                 FreeImage_SaveToMemory(FIF_JPEG, bmp, hmem, quality);</span>
+<span class="lineNum">     452 </span>            :                    }else{
+<span class="lineNum">     453 </span><span class="lineNoCov">          0 :                                 FreeImage_SaveToMemory((FREE_IMAGE_FORMAT)format, bmp, hmem);</span>
+<span class="lineNum">     454 </span>            :                    }
+<span class="lineNum">     455 </span>            :                    /*
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span>            :                   NOTE: at this point, hmem contains the entire data in memory stored in fif format. the
+<span class="lineNum">     458 </span>            :                   amount of space used by the memory is equal to file_size:
+<span class="lineNum">     459 </span>            :                   long file_size = FreeImage_TellMemory(hmem);
+<span class="lineNum">     460 </span>            :                   but can also be retrieved by FreeImage_AcquireMemory that retrieves both the
+<span class="lineNum">     461 </span>            :                   length of the buffer, and the buffer memory address.
+<span class="lineNum">     462 </span>            :                   */
+<span class="lineNum">     463 </span>            :                         #ifdef TARGET_WIN32
+<span class="lineNum">     464 </span>            :                            DWORD size_in_bytes = 0;
+<span class="lineNum">     465 </span>            :                         #else
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :                            uint32_t size_in_bytes = 0;</span>
+<span class="lineNum">     467 </span>            :                         #endif
+<span class="lineNum">     468 </span>            :                    // Save compressed data on mem_buffer
+<span class="lineNum">     469 </span>            :                    // note: FreeImage_AquireMemory allocates space for aux_mem_buffer):
+<span class="lineNum">     470 </span>            :                    //
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :                    unsigned char *mem_buffer = NULL;</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :                    if (!FreeImage_AcquireMemory(hmem, &amp;mem_buffer, &amp;size_in_bytes))</span>
+<span class="lineNum">     473 </span><span class="lineNoCov">          0 :                                    cout &lt;&lt; &quot;Error aquiring compressed image from memory&quot; &lt;&lt; endl;</span>
+<span class="lineNum">     474 </span>            : 
+<span class="lineNum">     475 </span>            :                    /*
+<span class="lineNum">     476 </span>            :                           Now, before closing the memory stream, copy the content of mem_buffer
+<span class="lineNum">     477 </span>            :                           to an auxiliary buffer
+<span class="lineNum">     478 </span>            :                     */
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span><span class="lineNoCov">          0 :                    buffer.set((char*)mem_buffer,size_in_bytes);</span>
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span>            :                    // Finally, close the FIBITMAP object, or we will get a memory leak:
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :                    FreeImage_Unload(bmp);</span>
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            :                    // Close the memory stream (otherwise we may get a memory leak).
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :                    FreeImage_CloseMemory(hmem);</span>
+<span class="lineNum">     487 </span>            :         }
+<span class="lineNum">     488 </span>            : }
+<a name="489"><span class="lineNum">     489 </span>            : </a>
+<span class="lineNum">     490 </span>            : //----------------------------------------------------------------
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 : void ofSaveImage(ofPixels &amp; pix, ofBuffer &amp; buffer, ofImageFormat format, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     492 </span><span class="lineNoCov">          0 :         saveImage(pix,buffer,format,qualityLevel);</span>
+<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span><span class="lineNoCov">          0 : void ofSaveImage(ofFloatPixels &amp; pix, ofBuffer &amp; buffer, ofImageFormat format, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         saveImage(pix,buffer,format,qualityLevel);</span>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     498 </span>            : 
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 : void ofSaveImage(ofShortPixels &amp; pix, ofBuffer &amp; buffer, ofImageFormat format, ofImageQualityType qualityLevel) {</span>
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 :         saveImage(pix,buffer,format,qualityLevel);</span>
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span>            : 
+<a name="504"><span class="lineNum">     504 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">     505 </span>            : // freeImage based stuff:
+<span class="lineNum">     506 </span><span class="lineCov">        193 : void ofCloseFreeImage(){</span>
+<span class="lineNum">     507 </span><span class="lineCov">        193 :         ofInitFreeImage(true);</span>
+<span class="lineNum">     508 </span><span class="lineCov">        193 : }</span>
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span>            : //-------------------------------------------------------------
+<span class="lineNum">     511 </span>            : //  implementation
+<span class="lineNum">     512 </span>            : 
+<a name="513"><span class="lineNum">     513 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     514 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     515 </span><span class="lineCov">        178 : ofImage_&lt;PixelType&gt;::ofImage_(){</span>
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span><span class="lineCov">        178 :         width                                           = 0;</span>
+<span class="lineNum">     518 </span><span class="lineCov">        178 :         height                                          = 0;</span>
+<span class="lineNum">     519 </span><span class="lineCov">        178 :         bpp                                                     = 0;</span>
+<span class="lineNum">     520 </span><span class="lineCov">        178 :         type                                            = OF_IMAGE_UNDEFINED;</span>
+<span class="lineNum">     521 </span><span class="lineCov">        178 :         bUseTexture                                     = true;         // the default is, yes, use a texture</span>
+<span class="lineNum">     522 </span>            : 
+<span class="lineNum">     523 </span>            :         //----------------------- init free image if necessary
+<span class="lineNum">     524 </span><span class="lineCov">        178 :         ofInitFreeImage();</span>
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">     527 </span>            :         registerImage(this);
+<span class="lineNum">     528 </span>            : #endif
+<span class="lineNum">     529 </span><span class="lineCov">        178 : }</span>
+<span class="lineNum">     530 </span>            : 
+<a name="531"><span class="lineNum">     531 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     532 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt;::ofImage_(const ofPixels_&lt;PixelType&gt; &amp; pix){</span>
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :         width                                           = 0;</span>
+<span class="lineNum">     535 </span><span class="lineNoCov">          0 :         height                                          = 0;</span>
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 :         bpp                                                     = 0;</span>
+<span class="lineNum">     537 </span><span class="lineNoCov">          0 :         type                                            = OF_IMAGE_UNDEFINED;</span>
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         bUseTexture                                     = true;         // the default is, yes, use a texture</span>
+<span class="lineNum">     539 </span>            : 
+<span class="lineNum">     540 </span>            :         //----------------------- init free image if necessary
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :         ofInitFreeImage();</span>
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">     544 </span>            :         registerImage(this);
+<span class="lineNum">     545 </span>            : #endif
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :         setFromPixels(pix);</span>
+<span class="lineNum">     548 </span><span class="lineNoCov">          0 : }</span>
+<a name="549"><span class="lineNum">     549 </span>            : </a>
+<span class="lineNum">     550 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt;::ofImage_(const ofFile &amp; file){</span>
+<span class="lineNum">     552 </span><span class="lineNoCov">          0 :         width                                           = 0;</span>
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         height                                          = 0;</span>
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :         bpp                                                     = 0;</span>
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :         type                                            = OF_IMAGE_UNDEFINED;</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :         bUseTexture                                     = true;         // the default is, yes, use a texture</span>
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span>            :         //----------------------- init free image if necessary
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :         ofInitFreeImage();</span>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">     562 </span>            :         registerImage(this);
+<span class="lineNum">     563 </span>            : #endif
+<span class="lineNum">     564 </span>            : 
+<span class="lineNum">     565 </span><span class="lineNoCov">          0 :         loadImage(file);</span>
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 : }</span>
+<a name="567"><span class="lineNum">     567 </span>            : </a>
+<span class="lineNum">     568 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt;::ofImage_(const string &amp; filename){</span>
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :         width                                           = 0;</span>
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :         height                                          = 0;</span>
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :         bpp                                                     = 0;</span>
+<span class="lineNum">     573 </span><span class="lineNoCov">          0 :         type                                            = OF_IMAGE_UNDEFINED;</span>
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :         bUseTexture                                     = true;         // the default is, yes, use a texture</span>
+<span class="lineNum">     575 </span>            : 
+<span class="lineNum">     576 </span>            :         //----------------------- init free image if necessary
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :         ofInitFreeImage();</span>
+<span class="lineNum">     578 </span>            : 
+<span class="lineNum">     579 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">     580 </span>            :         registerImage(this);
+<span class="lineNum">     581 </span>            : #endif
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :         loadImage(filename);</span>
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     585 </span>            : 
+<a name="586"><span class="lineNum">     586 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     587 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     588 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt;&amp; ofImage_&lt;PixelType&gt;::operator=(const ofImage_&lt;PixelType&gt;&amp; mom) {</span>
+<span class="lineNum">     589 </span><span class="lineNoCov">          0 :         if(&amp;mom==this) return *this;</span>
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 :         clone(mom);</span>
+<span class="lineNum">     591 </span><span class="lineNoCov">          0 :         update();</span>
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :         return *this;</span>
+<span class="lineNum">     593 </span>            : }
+<span class="lineNum">     594 </span>            : 
+<a name="595"><span class="lineNum">     595 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     596 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     597 </span><span class="lineCov">        281 : ofImage_&lt;PixelType&gt;::ofImage_(const ofImage_&lt;PixelType&gt;&amp; mom) {</span>
+<span class="lineNum">     598 </span><span class="lineCov">        281 :         clear();</span>
+<span class="lineNum">     599 </span><span class="lineCov">        281 :         clone(mom);</span>
+<span class="lineNum">     600 </span><span class="lineCov">        281 :         update();</span>
+<span class="lineNum">     601 </span><span class="lineCov">        281 : }</span>
+<span class="lineNum">     602 </span>            : 
+<a name="603"><span class="lineNum">     603 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     604 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     605 </span><span class="lineCov">        459 : ofImage_&lt;PixelType&gt;::~ofImage_(){</span>
+<span class="lineNum">     606 </span><span class="lineCov">       1377 :         clear();</span>
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span>            : #if defined(TARGET_ANDROID) || defined(TARGET_OF_IPHONE)
+<span class="lineNum">     609 </span>            :         unregisterImage(this);
+<span class="lineNum">     610 </span>            : #endif
+<span class="lineNum">     611 </span><span class="lineCov">       1377 : }</span>
+<span class="lineNum">     612 </span>            : 
+<span class="lineNum">     613 </span>            : 
+<a name="614"><span class="lineNum">     614 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     615 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     616 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::reloadTexture(){</span>
+<span class="lineNum">     617 </span><span class="lineNoCov">          0 :         if (pixels.isAllocated() &amp;&amp; bUseTexture){</span>
+<span class="lineNum">     618 </span><span class="lineNoCov">          0 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     619 </span><span class="lineNoCov">          0 :                 tex.loadData(pixels);</span>
+<span class="lineNum">     620 </span>            :         }
+<span class="lineNum">     621 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     622 </span>            : 
+<a name="623"><span class="lineNum">     623 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     624 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     625 </span><span class="lineNoCov">          0 : bool ofImage_&lt;PixelType&gt;::loadImage(const ofFile &amp; file){</span>
+<span class="lineNum">     626 </span><span class="lineNoCov">          0 :         return loadImage(file.getAbsolutePath());</span>
+<span class="lineNum">     627 </span>            : }
+<span class="lineNum">     628 </span>            : 
+<a name="629"><span class="lineNum">     629 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     630 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     631 </span><span class="lineCov">        408 : bool ofImage_&lt;PixelType&gt;::loadImage(string fileName){</span>
+<span class="lineNum">     632 </span><span class="lineCov">        408 :         bool bLoadedOk = ofLoadImage(pixels, fileName);</span>
+<span class="lineNum">     633 </span><span class="lineCov">        408 :         if (!bLoadedOk) {</span>
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;Couldn't load image from &quot; + fileName);</span>
+<span class="lineNum">     635 </span><span class="lineNoCov">          0 :                 clear();</span>
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     637 </span>            :         }
+<span class="lineNum">     638 </span><span class="lineCov">        408 :         if (bLoadedOk &amp;&amp; pixels.isAllocated() &amp;&amp; bUseTexture){</span>
+<span class="lineNum">     639 </span><span class="lineCov">        408 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     640 </span>            :         }
+<span class="lineNum">     641 </span><span class="lineCov">        408 :         update();</span>
+<span class="lineNum">     642 </span><span class="lineCov">        408 :         return bLoadedOk;</span>
+<span class="lineNum">     643 </span>            : }
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     646 </span><span class="lineCov">          1 : bool ofImage_&lt;PixelType&gt;::loadImage(const ofBuffer &amp; buffer){</span>
+<span class="lineNum">     647 </span><span class="lineCov">          1 :         bool bLoadedOk = ofLoadImage(pixels, buffer);</span>
+<span class="lineNum">     648 </span><span class="lineCov">          1 :         if (!bLoadedOk) {</span>
+<span class="lineNum">     649 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_ERROR, &quot;Couldn't load image from buffer.&quot;);</span>
+<span class="lineNum">     650 </span><span class="lineNoCov">          0 :                 clear();</span>
+<span class="lineNum">     651 </span><span class="lineNoCov">          0 :                 return false;</span>
+<span class="lineNum">     652 </span>            :         }
+<span class="lineNum">     653 </span><span class="lineCov">          1 :         if (bLoadedOk &amp;&amp; pixels.isAllocated() &amp;&amp; bUseTexture){</span>
+<span class="lineNum">     654 </span><span class="lineCov">          1 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     655 </span>            :         }
+<span class="lineNum">     656 </span><span class="lineCov">          1 :         update();</span>
+<span class="lineNum">     657 </span><span class="lineCov">          1 :         return bLoadedOk;</span>
+<span class="lineNum">     658 </span>            : }
+<span class="lineNum">     659 </span>            : 
+<a name="660"><span class="lineNum">     660 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     661 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     662 </span><span class="lineCov">        218 : void ofImage_&lt;PixelType&gt;::saveImage(string fileName, ofImageQualityType qualityLevel){</span>
+<span class="lineNum">     663 </span><span class="lineCov">        218 :         ofSaveImage(pixels, fileName, qualityLevel);</span>
+<span class="lineNum">     664 </span><span class="lineCov">        218 : }</span>
+<span class="lineNum">     665 </span>            : 
+<a name="666"><span class="lineNum">     666 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     667 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::saveImage(ofBuffer &amp; buffer, ofImageQualityType qualityLevel){</span>
+<span class="lineNum">     669 </span><span class="lineNoCov">          0 :         ofSaveImage(pixels, buffer, qualityLevel);</span>
+<span class="lineNum">     670 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     671 </span>            : 
+<a name="672"><span class="lineNum">     672 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     673 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     674 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::saveImage(const ofFile &amp; file, ofImageQualityType compressionLevel){</span>
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :         ofSaveImage(pixels,file.getAbsolutePath(),compressionLevel);</span>
+<span class="lineNum">     676 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     677 </span>            : 
+<span class="lineNum">     678 </span>            : //we could cap these values - but it might be more useful
+<span class="lineNum">     679 </span>            : //to be able to set anchor points outside the image
+<span class="lineNum">     680 </span>            : 
+<a name="681"><span class="lineNum">     681 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     682 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     683 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::setAnchorPercent(float xPct, float yPct){</span>
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :     if (bUseTexture)tex.setAnchorPercent(xPct, yPct);</span>
+<span class="lineNum">     685 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     686 </span>            : 
+<a name="687"><span class="lineNum">     687 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     688 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     689 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::setAnchorPoint(float x, float y){</span>
+<span class="lineNum">     690 </span><span class="lineNoCov">          0 :     if (bUseTexture)tex.setAnchorPoint(x, y);</span>
+<span class="lineNum">     691 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     692 </span>            : 
+<a name="693"><span class="lineNum">     693 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     694 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::resetAnchor(){</span>
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :         if (bUseTexture)tex.resetAnchor();</span>
+<span class="lineNum">     697 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     698 </span>            : 
+<a name="699"><span class="lineNum">     699 </span>            : //------------------------------------</a>
+<span class="lineNum">     700 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     701 </span><span class="lineCov">      16937 : void ofImage_&lt;PixelType&gt;::draw(float x, float y){</span>
+<span class="lineNum">     702 </span><span class="lineCov">      16937 :         draw(x,y,0,getWidth(),getHeight());</span>
+<span class="lineNum">     703 </span><span class="lineCov">      16937 : }</span>
+<span class="lineNum">     704 </span>            : 
+<a name="705"><span class="lineNum">     705 </span>            : //------------------------------------</a>
+<span class="lineNum">     706 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     707 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::draw(float x, float y, float z){</span>
+<span class="lineNum">     708 </span><span class="lineNoCov">          0 :         draw(x,y,z,getWidth(),getHeight());</span>
+<span class="lineNum">     709 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     710 </span>            : 
+<a name="711"><span class="lineNum">     711 </span>            : //------------------------------------</a>
+<span class="lineNum">     712 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     713 </span><span class="lineCov">      15236 : void ofImage_&lt;PixelType&gt;::draw(float x, float y, float w, float h){</span>
+<span class="lineNum">     714 </span><span class="lineCov">      15236 :         draw(x,y,0,w,h);</span>
+<span class="lineNum">     715 </span><span class="lineCov">      15236 : }</span>
+<span class="lineNum">     716 </span>            : 
+<a name="717"><span class="lineNum">     717 </span>            : //------------------------------------</a>
+<span class="lineNum">     718 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     719 </span><span class="lineCov">      32173 : void ofImage_&lt;PixelType&gt;::draw(float x, float y, float z, float w, float h){</span>
+<span class="lineNum">     720 </span><span class="lineCov">      32173 :         drawSubsection(x,y,z,w,h,0,0,getWidth(),getHeight());</span>
+<span class="lineNum">     721 </span><span class="lineCov">      32173 : }</span>
+<span class="lineNum">     722 </span>            : 
+<a name="723"><span class="lineNum">     723 </span>            : //------------------------------------</a>
+<span class="lineNum">     724 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     725 </span><span class="lineCov">       1681 : void ofImage_&lt;PixelType&gt;::drawSubsection(float x, float y, float w, float h, float sx, float sy){</span>
+<span class="lineNum">     726 </span><span class="lineCov">       1681 :         drawSubsection(x,y,0,w,h,sx,sy,w,h);</span>
+<span class="lineNum">     727 </span><span class="lineCov">       1681 : }</span>
+<span class="lineNum">     728 </span>            : 
+<a name="729"><span class="lineNum">     729 </span>            : //------------------------------------</a>
+<span class="lineNum">     730 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     731 </span><span class="lineCov">       5043 : void ofImage_&lt;PixelType&gt;::drawSubsection(float x, float y, float w, float h, float sx, float sy, float _sw, float _sh){</span>
+<span class="lineNum">     732 </span><span class="lineCov">       5043 :         drawSubsection(x,y,0,w,h,sx,sy,_sw,_sh);</span>
+<span class="lineNum">     733 </span><span class="lineCov">       5043 : }</span>
+<span class="lineNum">     734 </span>            : 
+<a name="735"><span class="lineNum">     735 </span>            : //------------------------------------</a>
+<span class="lineNum">     736 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     737 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::drawSubsection(float x, float y, float z, float w, float h, float sx, float sy){</span>
+<span class="lineNum">     738 </span><span class="lineNoCov">          0 :         drawSubsection(x,y,z,w,h,sx,sy,w,h);</span>
+<span class="lineNum">     739 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     740 </span>            : 
+<a name="741"><span class="lineNum">     741 </span>            : //------------------------------------</a>
+<span class="lineNum">     742 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     743 </span><span class="lineCov">      38897 : void ofImage_&lt;PixelType&gt;::drawSubsection(float x, float y, float z, float w, float h, float sx, float sy, float sw, float sh){</span>
+<span class="lineNum">     744 </span><span class="lineCov">      38897 :         ofGetCurrentRenderer()-&gt;draw(*this,x,y,z,w,h,sx,sy,sw,sh);</span>
+<span class="lineNum">     745 </span><span class="lineCov">      38897 : }</span>
+<span class="lineNum">     746 </span>            : 
+<a name="747"><span class="lineNum">     747 </span>            : //------------------------------------</a>
+<span class="lineNum">     748 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     749 </span><span class="lineCov">          8 : void ofImage_&lt;PixelType&gt;::allocate(int w, int h, ofImageType newType){</span>
+<span class="lineNum">     750 </span>            :         
+<span class="lineNum">     751 </span><span class="lineCov">          8 :         if (width == w &amp;&amp; height == h &amp;&amp; newType == type){</span>
+<span class="lineNum">     752 </span><span class="lineCov">          8 :                 return;</span>
+<span class="lineNum">     753 </span>            :         }
+<span class="lineNum">     754 </span><span class="lineCov">          4 :         pixels.allocate(w, h, newType);</span>
+<span class="lineNum">     755 </span>            : 
+<span class="lineNum">     756 </span>            :         // take care of texture allocation --
+<span class="lineNum">     757 </span><span class="lineCov">          4 :         if (pixels.isAllocated() &amp;&amp; bUseTexture){</span>
+<span class="lineNum">     758 </span><span class="lineCov">          4 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">     759 </span>            :         }
+<span class="lineNum">     760 </span>            :         
+<span class="lineNum">     761 </span><span class="lineCov">          4 :         width   = pixels.getWidth();</span>
+<span class="lineNum">     762 </span><span class="lineCov">          4 :         height  = pixels.getHeight();</span>
+<span class="lineNum">     763 </span><span class="lineCov">          4 :         bpp             = pixels.getBitsPerPixel();</span>
+<span class="lineNum">     764 </span><span class="lineCov">          4 :         type    = pixels.getImageType();</span>
+<span class="lineNum">     765 </span>            : }
+<span class="lineNum">     766 </span>            : 
+<span class="lineNum">     767 </span>            : 
+<a name="768"><span class="lineNum">     768 </span>            : //------------------------------------</a>
+<span class="lineNum">     769 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     770 </span><span class="lineCov">        742 : void ofImage_&lt;PixelType&gt;::clear(){</span>
+<span class="lineNum">     771 </span>            : 
+<span class="lineNum">     772 </span><span class="lineCov">        742 :         pixels.clear();</span>
+<span class="lineNum">     773 </span><span class="lineCov">        742 :         if(bUseTexture) tex.clear();</span>
+<span class="lineNum">     774 </span>            : 
+<span class="lineNum">     775 </span><span class="lineCov">        742 :         width                                   = 0;</span>
+<span class="lineNum">     776 </span><span class="lineCov">        742 :         height                                  = 0;</span>
+<span class="lineNum">     777 </span><span class="lineCov">        742 :         bpp                                             = 0;</span>
+<span class="lineNum">     778 </span><span class="lineCov">        742 :         type                                    = OF_IMAGE_UNDEFINED;</span>
+<span class="lineNum">     779 </span><span class="lineCov">        742 :         bUseTexture                     = true;         // the default is, yes, use a texture</span>
+<span class="lineNum">     780 </span><span class="lineCov">        742 : }</span>
+<span class="lineNum">     781 </span>            : 
+<a name="782"><span class="lineNum">     782 </span>            : //------------------------------------</a>
+<span class="lineNum">     783 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     784 </span><span class="lineCov">       1047 : PixelType * ofImage_&lt;PixelType&gt;::getPixels(){</span>
+<span class="lineNum">     785 </span><span class="lineCov">       1047 :         return pixels.getPixels();</span>
+<span class="lineNum">     786 </span>            : }
+<span class="lineNum">     787 </span>            : 
+<a name="788"><span class="lineNum">     788 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     789 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     790 </span><span class="lineCov">        290 : ofPixels_&lt;PixelType&gt; &amp; ofImage_&lt;PixelType&gt;::getPixelsRef(){</span>
+<span class="lineNum">     791 </span><span class="lineCov">        290 :         return pixels;</span>
+<span class="lineNum">     792 </span>            : }
+<span class="lineNum">     793 </span>            : 
+<a name="794"><span class="lineNum">     794 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     795 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     796 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt;::operator ofPixels_&lt;PixelType&gt;&amp;(){</span>
+<span class="lineNum">     797 </span><span class="lineNoCov">          0 :         return pixels;</span>
+<span class="lineNum">     798 </span>            : }
+<span class="lineNum">     799 </span>            : 
+<span class="lineNum">     800 </span>            : //------------------------------------
+<a name="801"><span class="lineNum">     801 </span>            : //for getting a reference to the texture</a>
+<span class="lineNum">     802 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     803 </span><span class="lineCov">      47051 : ofTexture &amp; ofImage_&lt;PixelType&gt;::getTextureReference(){</span>
+<span class="lineNum">     804 </span>            : /*
+<span class="lineNum">     805 </span>            :         // it should be the responsibility of anything using getTextureReference()
+<span class="lineNum">     806 </span>            :         // to check that it's allocated
+<span class="lineNum">     807 </span>            :         if(!tex.bAllocated() ){
+<span class="lineNum">     808 </span>            :                 ofLog(OF_LOG_WARNING, &quot;ofImage - getTextureReference - texture is not allocated&quot;);
+<span class="lineNum">     809 </span>            :         }
+<span class="lineNum">     810 </span>            :         */
+<span class="lineNum">     811 </span><span class="lineCov">      47051 :         return tex;</span>
+<span class="lineNum">     812 </span>            : }
+<span class="lineNum">     813 </span>            : 
+<a name="814"><span class="lineNum">     814 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     815 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     816 </span><span class="lineCov">      42606 : void ofImage_&lt;PixelType&gt;::bind(){</span>
+<span class="lineNum">     817 </span><span class="lineCov">      42606 :         if (bUseTexture &amp;&amp; tex.bAllocated())</span>
+<span class="lineNum">     818 </span><span class="lineCov">      42606 :                 tex.bind();</span>
+<span class="lineNum">     819 </span><span class="lineCov">      42606 : }</span>
+<span class="lineNum">     820 </span>            : 
+<a name="821"><span class="lineNum">     821 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     822 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     823 </span><span class="lineCov">      42606 : void ofImage_&lt;PixelType&gt;::unbind(){</span>
+<span class="lineNum">     824 </span><span class="lineCov">      42606 :         if (bUseTexture &amp;&amp; tex.bAllocated())</span>
+<span class="lineNum">     825 </span><span class="lineCov">      42606 :                 tex.unbind();</span>
+<span class="lineNum">     826 </span><span class="lineCov">      42606 : }</span>
+<span class="lineNum">     827 </span>            : 
+<a name="828"><span class="lineNum">     828 </span>            : //------------------------------------</a>
+<span class="lineNum">     829 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     830 </span><span class="lineCov">    3427290 : ofColor_&lt;PixelType&gt; ofImage_&lt;PixelType&gt;::getColor(int x, int y) const {</span>
+<span class="lineNum">     831 </span><span class="lineCov">    3427290 :         return pixels.getColor(x, y);</span>
+<span class="lineNum">     832 </span>            : }
+<span class="lineNum">     833 </span>            : 
+<a name="834"><span class="lineNum">     834 </span>            : //------------------------------------</a>
+<span class="lineNum">     835 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     836 </span><span class="lineCov">   25739772 : void ofImage_&lt;PixelType&gt;::setColor(int x, int y, ofColor_&lt;PixelType&gt; color) {</span>
+<span class="lineNum">     837 </span><span class="lineCov">   25739772 :         pixels.setColor(x, y, color);</span>
+<span class="lineNum">     838 </span><span class="lineCov">   25739772 : }</span>
+<span class="lineNum">     839 </span>            : 
+<a name="840"><span class="lineNum">     840 </span>            : //------------------------------------</a>
+<span class="lineNum">     841 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     842 </span><span class="lineCov">          1 : void  ofImage_&lt;PixelType&gt;::setFromPixels(const PixelType * newPixels, int w, int h, ofImageType newType, bool bOrderIsRGB){</span>
+<span class="lineNum">     843 </span>            : 
+<span class="lineNum">     844 </span><span class="lineCov">          1 :         allocate(w, h, newType);</span>
+<span class="lineNum">     845 </span><span class="lineCov">          1 :         pixels.setFromPixels(newPixels,w,h,newType);</span>
+<span class="lineNum">     846 </span>            : 
+<span class="lineNum">     847 </span><span class="lineCov">          1 :         if (!bOrderIsRGB &amp;&amp; sizeof(PixelType) == 1){</span>
+<span class="lineNum">     848 </span><span class="lineNoCov">          0 :                 pixels.swapRgb();</span>
+<span class="lineNum">     849 </span>            :         }
+<span class="lineNum">     850 </span>            : 
+<span class="lineNum">     851 </span><span class="lineCov">          1 :         update();</span>
+<span class="lineNum">     852 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     853 </span>            : 
+<a name="854"><span class="lineNum">     854 </span>            : //------------------------------------</a>
+<span class="lineNum">     855 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     856 </span><span class="lineCov">          1 : void ofImage_&lt;PixelType&gt;::setFromPixels(const ofPixels_&lt;PixelType&gt; &amp; pixels){</span>
+<span class="lineNum">     857 </span><span class="lineCov">          1 :         setFromPixels(pixels.getPixels(),pixels.getWidth(),pixels.getHeight(),pixels.getImageType());</span>
+<span class="lineNum">     858 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     859 </span>            : 
+<a name="860"><span class="lineNum">     860 </span>            : //------------------------------------</a>
+<span class="lineNum">     861 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     862 </span><span class="lineNoCov">          0 : ofImage_&lt;PixelType&gt; &amp; ofImage_&lt;PixelType&gt;::operator=(ofPixels_&lt;PixelType&gt; &amp; pixels){</span>
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 :         setFromPixels(pixels);</span>
+<span class="lineNum">     864 </span><span class="lineNoCov">          0 :         return *this;</span>
+<span class="lineNum">     865 </span>            : }
+<span class="lineNum">     866 </span>            : 
+<a name="867"><span class="lineNum">     867 </span>            : //------------------------------------</a>
+<span class="lineNum">     868 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     869 </span><span class="lineCov">       1264 : void ofImage_&lt;PixelType&gt;::update(){</span>
+<span class="lineNum">     870 </span><span class="lineCov">       1264 :         width = pixels.getWidth();</span>
+<span class="lineNum">     871 </span><span class="lineCov">       1264 :         height = pixels.getHeight();</span>
+<span class="lineNum">     872 </span><span class="lineCov">       1264 :         bpp = pixels.getBitsPerPixel();</span>
+<span class="lineNum">     873 </span><span class="lineCov">       1264 :         type = pixels.getImageType();</span>
+<span class="lineNum">     874 </span><span class="lineCov">       1264 :         if (pixels.isAllocated() &amp;&amp; bUseTexture){</span>
+<span class="lineNum">     875 </span><span class="lineCov">        962 :                 int glTypeInternal = ofGetGlInternalFormat(pixels);</span>
+<span class="lineNum">     876 </span><span class="lineCov">        962 :                 if(!tex.isAllocated() || tex.getWidth() != width || tex.getHeight() != height || tex.getTextureData().glTypeInternal != glTypeInternal){</span>
+<span class="lineNum">     877 </span><span class="lineNoCov">          0 :                         tex.allocate(pixels.getWidth(), pixels.getHeight(), glTypeInternal);</span>
+<span class="lineNum">     878 </span>            :                 }
+<span class="lineNum">     879 </span><span class="lineCov">        962 :                 tex.loadData(pixels);</span>
+<span class="lineNum">     880 </span>            :         }
+<span class="lineNum">     881 </span><span class="lineCov">       1264 : }</span>
+<span class="lineNum">     882 </span>            : 
+<a name="883"><span class="lineNum">     883 </span>            : //------------------------------------</a>
+<span class="lineNum">     884 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::setUseTexture(bool bUse){</span>
+<span class="lineNum">     886 </span><span class="lineNoCov">          0 :         bUseTexture = bUse;</span>
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     888 </span>            : 
+<a name="889"><span class="lineNum">     889 </span>            : //------------------------------------</a>
+<span class="lineNum">     890 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     891 </span><span class="lineCov">      39178 : bool ofImage_&lt;PixelType&gt;::isUsingTexture(){</span>
+<span class="lineNum">     892 </span><span class="lineCov">      39178 :         return bUseTexture;</span>
+<span class="lineNum">     893 </span>            : }
+<span class="lineNum">     894 </span>            : 
+<a name="895"><span class="lineNum">     895 </span>            : //------------------------------------</a>
+<span class="lineNum">     896 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">     897 </span><span class="lineCov">          5 : void ofImage_&lt;PixelType&gt;::grabScreen(int _x, int _y, int _w, int _h){</span>
+<span class="lineNum">     898 </span>            : 
+<span class="lineNum">     899 </span><span class="lineCov">          5 :         allocate(_w, _h, OF_IMAGE_COLOR);</span>
+<span class="lineNum">     900 </span>            : 
+<span class="lineNum">     901 </span><span class="lineCov">          5 :     int sw = ofGetViewportWidth();</span>
+<span class="lineNum">     902 </span><span class="lineCov">          5 :     int sh = ofGetViewportHeight();     // if we are in a FBO or other viewport, this fails: ofGetHeight();</span>
+<span class="lineNum">     903 </span>            :     
+<span class="lineNum">     904 </span><span class="lineCov">          5 :         if (!((width == _w) &amp;&amp; (height == _h))){</span>
+<span class="lineNum">     905 </span><span class="lineNoCov">          0 :                 resize(_w, _h);</span>
+<span class="lineNum">     906 </span>            :         }
+<span class="lineNum">     907 </span>            : 
+<span class="lineNum">     908 </span>            :         #ifndef TARGET_OPENGLES
+<span class="lineNum">     909 </span>            :     
+<span class="lineNum">     910 </span><span class="lineCov">          5 :     _y = sh - _y;</span>
+<span class="lineNum">     911 </span><span class="lineCov">          5 :     _y -= _h; // top, bottom issues</span>
+<span class="lineNum">     912 </span>            :     
+<span class="lineNum">     913 </span><span class="lineCov">          5 :     glPushClientAttrib( GL_CLIENT_PIXEL_STORE_BIT );                                                                                    // be nice to anyone else who might use pixelStore</span>
+<span class="lineNum">     914 </span><span class="lineCov">          5 :     glPixelStorei(GL_PACK_ALIGNMENT, 1);</span>
+<span class="lineNum">     915 </span><span class="lineCov">          5 :     glReadPixels(_x, _y, _w, _h, ofGetGlInternalFormat(pixels), GL_UNSIGNED_BYTE, pixels.getPixels()); // read the memory....</span>
+<span class="lineNum">     916 </span><span class="lineCov">          5 :     glPopClientAttrib();</span>
+<span class="lineNum">     917 </span>            :     
+<span class="lineNum">     918 </span><span class="lineCov">          5 :         int sizeOfOneLineOfPixels = pixels.getWidth() * pixels.getBytesPerPixel();</span>
+<span class="lineNum">     919 </span><span class="lineCov">          5 :         PixelType * tempLineOfPix = new PixelType[sizeOfOneLineOfPixels];</span>
+<span class="lineNum">     920 </span>            :         PixelType * linea;
+<span class="lineNum">     921 </span>            :         PixelType * lineb;
+<span class="lineNum">     922 </span><span class="lineCov">        455 :         for (int i = 0; i &lt; pixels.getHeight()/2; i++){</span>
+<span class="lineNum">     923 </span><span class="lineCov">        450 :                 linea = pixels.getPixels() + i * sizeOfOneLineOfPixels;</span>
+<span class="lineNum">     924 </span><span class="lineCov">        450 :                 lineb = pixels.getPixels() + (pixels.getHeight()-i-1) * sizeOfOneLineOfPixels;</span>
+<span class="lineNum">     925 </span><span class="lineCov">        450 :                 memcpy(tempLineOfPix, linea, sizeOfOneLineOfPixels);</span>
+<span class="lineNum">     926 </span><span class="lineCov">        450 :                 memcpy(linea, lineb, sizeOfOneLineOfPixels);</span>
+<span class="lineNum">     927 </span><span class="lineCov">        450 :                 memcpy(lineb, tempLineOfPix, sizeOfOneLineOfPixels);</span>
+<span class="lineNum">     928 </span>            :         }
+<span class="lineNum">     929 </span><span class="lineCov">          5 :         delete [] tempLineOfPix;</span>
+<span class="lineNum">     930 </span>            :         
+<span class="lineNum">     931 </span>            :     #else
+<span class="lineNum">     932 </span>            :     
+<span class="lineNum">     933 </span>            :     int numPixels   = width*height;
+<span class="lineNum">     934 </span>            :     if( numPixels == 0 ){
+<span class="lineNum">     935 </span>            :         ofLog(OF_LOG_ERROR, &quot;grabScreen width or height is 0 - returning&quot;);
+<span class="lineNum">     936 </span>            :         return;
+<span class="lineNum">     937 </span>            :     }
+<span class="lineNum">     938 </span>            :     
+<span class="lineNum">     939 </span>            :     int numRGBA         = numPixels*4;
+<span class="lineNum">     940 </span>            :     GLubyte *bufferRGBA = (GLubyte *) malloc(numRGBA);
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span>            :     if(ofGetOrientation() == OF_ORIENTATION_DEFAULT) {
+<span class="lineNum">     943 </span>            :         
+<span class="lineNum">     944 </span>            :         _y = sh - _y;   // screen is flipped vertically.
+<span class="lineNum">     945 </span>            :         _y -= _h;
+<span class="lineNum">     946 </span>            :         
+<span class="lineNum">     947 </span>            :         glPixelStorei(GL_PACK_ALIGNMENT, 1);
+<span class="lineNum">     948 </span>            :         glReadPixels(_x, _y, _w, _h, GL_RGBA, GL_UNSIGNED_BYTE, bufferRGBA);
+<span class="lineNum">     949 </span>            :         
+<span class="lineNum">     950 </span>            :         for(int y = 0; y &lt; _h; y++){  
+<span class="lineNum">     951 </span>            :             for(int x = 0; x &lt; _w; x++){
+<span class="lineNum">     952 </span>            :                 
+<span class="lineNum">     953 </span>            :                 int i = y * _w * 3 + x * 3;
+<span class="lineNum">     954 </span>            :                 int j = (_h-1-y) * _w * 4 + x * 4;  // rotate 90.
+<span class="lineNum">     955 </span>            :                 
+<span class="lineNum">     956 </span>            :                 pixels.getPixels()[i]   = bufferRGBA[j];
+<span class="lineNum">     957 </span>            :                 pixels.getPixels()[i+1] = bufferRGBA[j+1];
+<span class="lineNum">     958 </span>            :                 pixels.getPixels()[i+2] = bufferRGBA[j+2];
+<span class="lineNum">     959 </span>            :             }
+<span class="lineNum">     960 </span>            :         }
+<span class="lineNum">     961 </span>            :     }
+<span class="lineNum">     962 </span>            :     else if(ofGetOrientation() == OF_ORIENTATION_180) {
+<span class="lineNum">     963 </span>            :         
+<span class="lineNum">     964 </span>            :         _x = sw - _x;   // screen is flipped horizontally.
+<span class="lineNum">     965 </span>            :         _x -= _w;
+<span class="lineNum">     966 </span>            :         
+<span class="lineNum">     967 </span>            :         glPixelStorei(GL_PACK_ALIGNMENT, 1);
+<span class="lineNum">     968 </span>            :         glReadPixels(_x, _y, _w, _h, GL_RGBA, GL_UNSIGNED_BYTE, bufferRGBA);
+<span class="lineNum">     969 </span>            :         
+<span class="lineNum">     970 </span>            :         for(int y = 0; y &lt; _h; y++){  
+<span class="lineNum">     971 </span>            :             for(int x = 0; x &lt; _w; x++){
+<span class="lineNum">     972 </span>            :                 
+<span class="lineNum">     973 </span>            :                 int i = y * _w * 3 + x * 3;
+<span class="lineNum">     974 </span>            :                 int j = y * _w * 4 + (_w-1-x) * 4;  // rotate 90.
+<span class="lineNum">     975 </span>            :                 
+<span class="lineNum">     976 </span>            :                 pixels.getPixels()[i]   = bufferRGBA[j];
+<span class="lineNum">     977 </span>            :                 pixels.getPixels()[i+1] = bufferRGBA[j+1];
+<span class="lineNum">     978 </span>            :                 pixels.getPixels()[i+2] = bufferRGBA[j+2];
+<span class="lineNum">     979 </span>            :             }
+<span class="lineNum">     980 </span>            :         }
+<span class="lineNum">     981 </span>            :     }
+<span class="lineNum">     982 </span>            :     else if(ofGetOrientation() == OF_ORIENTATION_90_RIGHT) {
+<span class="lineNum">     983 </span>            :         
+<span class="lineNum">     984 </span>            :         int tempW = _w;     // swap width and height.
+<span class="lineNum">     985 </span>            :         _w = _h;
+<span class="lineNum">     986 </span>            :         _h = tempW;
+<span class="lineNum">     987 </span>            :         
+<span class="lineNum">     988 </span>            :         int tempY = _y;     // swap x and y.
+<span class="lineNum">     989 </span>            :         _y = _x;
+<span class="lineNum">     990 </span>            :         _x = tempY;
+<span class="lineNum">     991 </span>            :         
+<span class="lineNum">     992 </span>            :         glPixelStorei(GL_PACK_ALIGNMENT, 1);
+<span class="lineNum">     993 </span>            :         glReadPixels(_x, _y, _w, _h, GL_RGBA, GL_UNSIGNED_BYTE, bufferRGBA);
+<span class="lineNum">     994 </span>            :         
+<span class="lineNum">     995 </span>            :         for(int y = 0; y &lt; _h; y++){  
+<span class="lineNum">     996 </span>            :             for(int x = 0; x &lt; _w; x++){
+<span class="lineNum">     997 </span>            :                 
+<span class="lineNum">     998 </span>            :                 int i = x * _h * 3 + y * 3;
+<span class="lineNum">     999 </span>            :                 int j = y * _w * 4 + x * 4;
+<span class="lineNum">    1000 </span>            :                 
+<span class="lineNum">    1001 </span>            :                 pixels.getPixels()[i]   = bufferRGBA[j];
+<span class="lineNum">    1002 </span>            :                 pixels.getPixels()[i+1] = bufferRGBA[j+1];
+<span class="lineNum">    1003 </span>            :                 pixels.getPixels()[i+2] = bufferRGBA[j+2];
+<span class="lineNum">    1004 </span>            :             }
+<span class="lineNum">    1005 </span>            :         }
+<span class="lineNum">    1006 </span>            :     }
+<span class="lineNum">    1007 </span>            :     else if(ofGetOrientation() == OF_ORIENTATION_90_LEFT) {
+<span class="lineNum">    1008 </span>            :         
+<span class="lineNum">    1009 </span>            :         int tempW = _w; // swap width and height.
+<span class="lineNum">    1010 </span>            :         _w = _h;
+<span class="lineNum">    1011 </span>            :         _h = tempW;
+<span class="lineNum">    1012 </span>            :         
+<span class="lineNum">    1013 </span>            :         int tempY = _y; // swap x and y.
+<span class="lineNum">    1014 </span>            :         _y = _x;
+<span class="lineNum">    1015 </span>            :         _x = tempY;
+<span class="lineNum">    1016 </span>            :         
+<span class="lineNum">    1017 </span>            :         _x = sw - _x;   // screen is flipped horizontally.
+<span class="lineNum">    1018 </span>            :         _x -= _w;
+<span class="lineNum">    1019 </span>            :         
+<span class="lineNum">    1020 </span>            :         _y = sh - _y;   // screen is flipped vertically.
+<span class="lineNum">    1021 </span>            :         _y -= _h;
+<span class="lineNum">    1022 </span>            :         
+<span class="lineNum">    1023 </span>            :         glPixelStorei(GL_PACK_ALIGNMENT, 1);
+<span class="lineNum">    1024 </span>            :         glReadPixels(_x, _y, _w, _h, GL_RGBA, GL_UNSIGNED_BYTE, bufferRGBA);
+<span class="lineNum">    1025 </span>            :         
+<span class="lineNum">    1026 </span>            :         for(int y = 0; y &lt; _h; y++){  
+<span class="lineNum">    1027 </span>            :             for(int x = 0; x &lt; _w; x++){
+<span class="lineNum">    1028 </span>            :                 
+<span class="lineNum">    1029 </span>            :                 int i = x * _h * 3 + y * 3;
+<span class="lineNum">    1030 </span>            :                 int j = (_h-1-y) * _w * 4 + (_w-1-x) * 4;
+<span class="lineNum">    1031 </span>            :                 
+<span class="lineNum">    1032 </span>            :                 pixels.getPixels()[i]   = bufferRGBA[j];
+<span class="lineNum">    1033 </span>            :                 pixels.getPixels()[i+1] = bufferRGBA[j+1];
+<span class="lineNum">    1034 </span>            :                 pixels.getPixels()[i+2] = bufferRGBA[j+2];
+<span class="lineNum">    1035 </span>            :             }
+<span class="lineNum">    1036 </span>            :         }
+<span class="lineNum">    1037 </span>            :     }
+<span class="lineNum">    1038 </span>            :     
+<span class="lineNum">    1039 </span>            :     free(bufferRGBA);    
+<span class="lineNum">    1040 </span>            :     
+<span class="lineNum">    1041 </span>            :     #endif
+<span class="lineNum">    1042 </span>            : 
+<span class="lineNum">    1043 </span><span class="lineCov">          5 :         update();</span>
+<span class="lineNum">    1044 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">    1045 </span>            : 
+<a name="1046"><span class="lineNum">    1046 </span>            : //------------------------------------</a>
+<span class="lineNum">    1047 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1048 </span><span class="lineCov">          2 : void ofImage_&lt;PixelType&gt;::setImageType(ofImageType newType){</span>
+<span class="lineNum">    1049 </span><span class="lineCov">          2 :         changeTypeOfPixels(pixels, newType);</span>
+<span class="lineNum">    1050 </span><span class="lineCov">          2 :         update();</span>
+<span class="lineNum">    1051 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">    1052 </span>            : 
+<a name="1053"><span class="lineNum">    1053 </span>            : //------------------------------------</a>
+<span class="lineNum">    1054 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1055 </span><span class="lineCov">        202 : void ofImage_&lt;PixelType&gt;::resize(int newWidth, int newHeight){</span>
+<span class="lineNum">    1056 </span><span class="lineCov">        404 :         if(newWidth == width &amp;&amp; newHeight == height) return;</span>
+<span class="lineNum">    1057 </span>            : 
+<span class="lineNum">    1058 </span><span class="lineCov">        202 :         resizePixels(pixels, newWidth, newHeight);</span>
+<span class="lineNum">    1059 </span>            : 
+<span class="lineNum">    1060 </span><span class="lineCov">        202 :         if (bUseTexture){</span>
+<span class="lineNum">    1061 </span><span class="lineCov">        202 :                 tex.clear();</span>
+<span class="lineNum">    1062 </span><span class="lineCov">        202 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">    1063 </span>            :         }
+<span class="lineNum">    1064 </span>            : 
+<span class="lineNum">    1065 </span><span class="lineCov">        202 :         update();</span>
+<span class="lineNum">    1066 </span>            : }
+<span class="lineNum">    1067 </span>            : 
+<span class="lineNum">    1068 </span>            : 
+<a name="1069"><span class="lineNum">    1069 </span>            : //------------------------------------</a>
+<span class="lineNum">    1070 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1071 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::crop(int x, int y, int w, int h){</span>
+<span class="lineNum">    1072 </span><span class="lineNoCov">          0 :         w = ofClamp(w,1,getWidth());</span>
+<span class="lineNum">    1073 </span><span class="lineNoCov">          0 :         h = ofClamp(h,1,getHeight());</span>
+<span class="lineNum">    1074 </span>            : 
+<span class="lineNum">    1075 </span><span class="lineNoCov">          0 :         pixels.crop(x,y,w,h);</span>
+<span class="lineNum">    1076 </span><span class="lineNoCov">          0 :         update();</span>
+<span class="lineNum">    1077 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1078 </span>            : 
+<a name="1079"><span class="lineNum">    1079 </span>            : //------------------------------------</a>
+<span class="lineNum">    1080 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1081 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::cropFrom(ofImage_&lt;PixelType&gt; &amp; otherImage, int x, int y, int w, int h){</span>
+<span class="lineNum">    1082 </span><span class="lineNoCov">          0 :         w = ofClamp(w,1,otherImage.getWidth());</span>
+<span class="lineNum">    1083 </span><span class="lineNoCov">          0 :         h = ofClamp(h,1,otherImage.getHeight());</span>
+<span class="lineNum">    1084 </span>            : 
+<span class="lineNum">    1085 </span><span class="lineNoCov">          0 :         int myOldWidth = pixels.getWidth();</span>
+<span class="lineNum">    1086 </span><span class="lineNoCov">          0 :         int myOldHeight = pixels.getHeight();</span>
+<span class="lineNum">    1087 </span>            : 
+<span class="lineNum">    1088 </span><span class="lineNoCov">          0 :         otherImage.pixels.cropTo(pixels, x, y, w, h);</span>
+<span class="lineNum">    1089 </span>            : 
+<span class="lineNum">    1090 </span><span class="lineNoCov">          0 :         if (myOldWidth != pixels.getWidth() || myOldHeight != pixels.getHeight()){</span>
+<span class="lineNum">    1091 </span><span class="lineNoCov">          0 :                 if (bUseTexture){</span>
+<span class="lineNum">    1092 </span><span class="lineNoCov">          0 :                         tex.clear();</span>
+<span class="lineNum">    1093 </span><span class="lineNoCov">          0 :                         tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">    1094 </span>            :                 }
+<span class="lineNum">    1095 </span>            :         }
+<span class="lineNum">    1096 </span>            : 
+<span class="lineNum">    1097 </span><span class="lineNoCov">          0 :         update();</span>
+<span class="lineNum">    1098 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1099 </span>            : 
+<a name="1100"><span class="lineNum">    1100 </span>            : //------------------------------------</a>
+<span class="lineNum">    1101 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1102 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::rotate90(int nRotations){</span>
+<span class="lineNum">    1103 </span><span class="lineNoCov">          0 :         int myOldWidth = pixels.getWidth();</span>
+<span class="lineNum">    1104 </span><span class="lineNoCov">          0 :         int myOldHeight = pixels.getHeight();</span>
+<span class="lineNum">    1105 </span><span class="lineNoCov">          0 :         pixels.rotate90(nRotations);</span>
+<span class="lineNum">    1106 </span><span class="lineNoCov">          0 :         if (myOldWidth != pixels.getWidth() || myOldHeight != pixels.getHeight()){</span>
+<span class="lineNum">    1107 </span><span class="lineNoCov">          0 :                 if (bUseTexture){</span>
+<span class="lineNum">    1108 </span><span class="lineNoCov">          0 :                         tex.clear();</span>
+<span class="lineNum">    1109 </span><span class="lineNoCov">          0 :                         tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">    1110 </span>            :                 }
+<span class="lineNum">    1111 </span>            :         }
+<span class="lineNum">    1112 </span><span class="lineNoCov">          0 :         update();</span>
+<span class="lineNum">    1113 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1114 </span>            : 
+<a name="1115"><span class="lineNum">    1115 </span>            : //------------------------------------</a>
+<span class="lineNum">    1116 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1117 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::mirror(bool vertical, bool horizontal){</span>
+<span class="lineNum">    1118 </span><span class="lineNoCov">          0 :         pixels.mirror(vertical, horizontal);</span>
+<span class="lineNum">    1119 </span><span class="lineNoCov">          0 :         update();</span>
+<span class="lineNum">    1120 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1121 </span>            : 
+<span class="lineNum">    1122 </span>            : 
+<span class="lineNum">    1123 </span>            : 
+<span class="lineNum">    1124 </span>            : 
+<span class="lineNum">    1125 </span>            : 
+<span class="lineNum">    1126 </span>            : 
+<span class="lineNum">    1127 </span>            : //----------------------------------------------------------------------------------------------------
+<span class="lineNum">    1128 </span>            : //----------------------------------------------------------------------------------------------------
+<span class="lineNum">    1129 </span>            : //----------------------------------------------------------------------------------------------------
+<span class="lineNum">    1130 </span>            : // freeImage based code &amp; utilities:
+<span class="lineNum">    1131 </span>            : 
+<span class="lineNum">    1132 </span>            : 
+<a name="1133"><span class="lineNum">    1133 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">    1134 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1135 </span><span class="lineCov">        202 : void ofImage_&lt;PixelType&gt;::resizePixels(ofPixels_&lt;PixelType&gt; &amp;pix, int newWidth, int newHeight){</span>
+<span class="lineNum">    1136 </span>            : 
+<span class="lineNum">    1137 </span><span class="lineCov">        202 :         FIBITMAP * bmp                                  = getBmpFromPixels(pix);</span>
+<span class="lineNum">    1138 </span><span class="lineCov">        202 :         FIBITMAP * convertedBmp                 = NULL;</span>
+<span class="lineNum">    1139 </span>            : 
+<span class="lineNum">    1140 </span><span class="lineCov">        202 :         convertedBmp = FreeImage_Rescale(bmp, newWidth, newHeight, FILTER_BICUBIC);</span>
+<span class="lineNum">    1141 </span><span class="lineCov">        202 :         putBmpIntoPixels(convertedBmp, pix, false);</span>
+<span class="lineNum">    1142 </span>            : 
+<span class="lineNum">    1143 </span><span class="lineCov">        202 :         if (bmp != NULL)                                FreeImage_Unload(bmp);</span>
+<span class="lineNum">    1144 </span><span class="lineCov">        202 :         if (convertedBmp != NULL)               FreeImage_Unload(convertedBmp);</span>
+<span class="lineNum">    1145 </span><span class="lineCov">        202 : }</span>
+<span class="lineNum">    1146 </span>            : 
+<a name="1147"><span class="lineNum">    1147 </span>            : //----------------------------------------------------</a>
+<span class="lineNum">    1148 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1149 </span><span class="lineCov">          2 : void ofImage_&lt;PixelType&gt;::changeTypeOfPixels(ofPixels_&lt;PixelType&gt; &amp;pix, ofImageType newType){</span>
+<span class="lineNum">    1150 </span><span class="lineCov">          2 :         int oldType = pix.getImageType();</span>
+<span class="lineNum">    1151 </span>            :                 
+<span class="lineNum">    1152 </span><span class="lineCov">          2 :         if (oldType == newType) {</span>
+<span class="lineNum">    1153 </span><span class="lineCov">          2 :                 return; // no need to reallocate</span>
+<span class="lineNum">    1154 </span>            :         }
+<span class="lineNum">    1155 </span>            : 
+<span class="lineNum">    1156 </span><span class="lineCov">          2 :         FIBITMAP * bmp = getBmpFromPixels(pix);</span>
+<span class="lineNum">    1157 </span><span class="lineCov">          2 :         FIBITMAP * convertedBmp = NULL;</span>
+<span class="lineNum">    1158 </span>            : 
+<span class="lineNum">    1159 </span><span class="lineCov">          2 :         switch (newType){</span>
+<span class="lineNum">    1160 </span>            :                 case OF_IMAGE_GRAYSCALE:
+<span class="lineNum">    1161 </span><span class="lineCov">          2 :                         convertedBmp = FreeImage_ConvertToGreyscale(bmp);</span>
+<span class="lineNum">    1162 </span><span class="lineCov">          2 :                         break;</span>
+<span class="lineNum">    1163 </span>            :                 case OF_IMAGE_COLOR:
+<span class="lineNum">    1164 </span><span class="lineNoCov">          0 :                         convertedBmp = FreeImage_ConvertTo24Bits(bmp);</span>
+<span class="lineNum">    1165 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">    1166 </span>            :                 case OF_IMAGE_COLOR_ALPHA:
+<span class="lineNum">    1167 </span><span class="lineNoCov">          0 :                         convertedBmp = FreeImage_ConvertTo32Bits(bmp);</span>
+<span class="lineNum">    1168 </span><span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">    1169 </span>            :                 default:
+<span class="lineNum">    1170 </span><span class="lineNoCov">          0 :                         ofLog(OF_LOG_ERROR, &quot;changeTypeOfPixels: format not supported&quot;);</span>
+<span class="lineNum">    1171 </span>            :         }
+<span class="lineNum">    1172 </span>            :         
+<span class="lineNum">    1173 </span><span class="lineCov">          2 :         putBmpIntoPixels(convertedBmp, pix, false);</span>
+<span class="lineNum">    1174 </span>            : 
+<span class="lineNum">    1175 </span><span class="lineCov">          2 :         if (bmp != NULL) {</span>
+<span class="lineNum">    1176 </span><span class="lineCov">          2 :                 FreeImage_Unload(bmp);</span>
+<span class="lineNum">    1177 </span>            :         }
+<span class="lineNum">    1178 </span><span class="lineCov">          2 :         if (convertedBmp != NULL) {</span>
+<span class="lineNum">    1179 </span><span class="lineCov">          2 :                 FreeImage_Unload(convertedBmp);</span>
+<span class="lineNum">    1180 </span>            :         }
+<span class="lineNum">    1181 </span>            : 
+<span class="lineNum">    1182 </span><span class="lineCov">          2 :         if(bUseTexture){</span>
+<span class="lineNum">    1183 </span>            :                 // always reallocate the texture. if ofTexture doesn't need reallocation,
+<span class="lineNum">    1184 </span>            :                 // it doesn't have to. but it needs to change the internal format.
+<span class="lineNum">    1185 </span><span class="lineCov">          2 :                 tex.allocate(pixels.getWidth(), pixels.getHeight(), ofGetGlInternalFormat(pixels));</span>
+<span class="lineNum">    1186 </span>            :         }
+<span class="lineNum">    1187 </span>            : }
+<span class="lineNum">    1188 </span>            : 
+<a name="1189"><span class="lineNum">    1189 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">    1190 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1191 </span><span class="lineCov">     466347 : float ofImage_&lt;PixelType&gt;::getHeight(){</span>
+<span class="lineNum">    1192 </span><span class="lineCov">     466347 :         return height;</span>
+<span class="lineNum">    1193 </span>            : }
+<span class="lineNum">    1194 </span>            : 
+<a name="1195"><span class="lineNum">    1195 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">    1196 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1197 </span><span class="lineCov">     971109 : float ofImage_&lt;PixelType&gt;::getWidth(){</span>
+<span class="lineNum">    1198 </span><span class="lineCov">     971109 :         return width;</span>
+<span class="lineNum">    1199 </span>            : }
+<span class="lineNum">    1200 </span>            : 
+<span class="lineNum">    1201 </span>            : //----------------------------------------------------------
+<span class="lineNum">    1202 </span>            : // Sosolimited: texture compression
+<a name="1203"><span class="lineNum">    1203 </span>            : // call this function before you call loadImage()</a>
+<span class="lineNum">    1204 </span>            : template&lt;typename PixelType&gt;
+<span class="lineNum">    1205 </span><span class="lineNoCov">          0 : void ofImage_&lt;PixelType&gt;::setCompression(ofTexCompression compression)</span>
+<span class="lineNum">    1206 </span>            : {
+<span class="lineNum">    1207 </span><span class="lineNoCov">          0 :         if(bUseTexture){</span>
+<span class="lineNum">    1208 </span><span class="lineNoCov">          0 :                 tex.setCompression( compression );</span>
+<span class="lineNum">    1209 </span>            :         }
+<span class="lineNum">    1210 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">    1211 </span>            : 
+<a name="1212"><span class="lineNum">    1212 </span>            : template class ofImage_&lt;unsigned char&gt;;</a>
+<span class="lineNum">    1213 </span>            : template class ofImage_&lt;float&gt;;
+<span class="lineNum">    1214 </span><span class="lineCov">        575 : template class ofImage_&lt;unsigned short&gt;;</span>
+<span class="lineNum">    1215 </span>            : 
+<span class="lineNum">    1216 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/gl/ofVboMesh.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/gl</a> - ofVboMesh.cpp<span style="font-size: 80%;"> (source / <a href="ofVboMesh.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">50</td>
+            <td class="headerCovTableEntry">60</td>
+            <td class="headerCovTableEntryMed">83.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofVboMesh.h&quot;</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span><span class="lineCov">         11 : ofVboMesh::ofVboMesh(){</span>
+<span class="lineNum">       4 </span><span class="lineCov">         11 :         usage= GL_STATIC_DRAW;</span>
+<a name="5"><span class="lineNum">       5 </span><span class="lineCov">         11 : }</span></a>
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span><span class="lineCov">       4204 : ofVboMesh::ofVboMesh(const ofMesh &amp; mom)</span>
+<span class="lineNum">       8 </span><span class="lineCov">       4204 : :ofMesh(mom)</span>
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span><span class="lineCov">       4204 :         usage= GL_STATIC_DRAW;</span>
+<a name="11"><span class="lineNum">      11 </span><span class="lineCov">       4204 : }</span></a>
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span><span class="lineCov">          1 : void ofVboMesh::setUsage(int _usage){</span>
+<span class="lineNum">      14 </span><span class="lineCov">          1 :         usage = _usage;</span>
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">          1 : }</span></a>
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span><span class="lineCov">      16800 : void ofVboMesh::draw(ofPolyRenderMode drawMode){</span>
+<span class="lineNum">      18 </span><span class="lineCov">      16800 :         if(!vbo.getIsAllocated()){</span>
+<span class="lineNum">      19 </span><span class="lineCov">       3845 :                 if(getNumVertices()){</span>
+<span class="lineNum">      20 </span><span class="lineCov">       3845 :                         vbo.setVertexData(getVerticesPointer(),getNumVertices(),usage);</span>
+<span class="lineNum">      21 </span>            :                 }
+<span class="lineNum">      22 </span><span class="lineCov">       3845 :                 if(getNumColors()){</span>
+<span class="lineNum">      23 </span><span class="lineCov">          2 :                         vbo.setColorData(getColorsPointer(),getNumColors(),usage);</span>
+<span class="lineNum">      24 </span>            :                 }
+<span class="lineNum">      25 </span><span class="lineCov">       3845 :                 if(getNumNormals()){</span>
+<span class="lineNum">      26 </span><span class="lineCov">       3843 :                         vbo.setNormalData(getNormalsPointer(),getNumNormals(),usage);</span>
+<span class="lineNum">      27 </span>            :                 }
+<span class="lineNum">      28 </span><span class="lineCov">       3845 :                 if(getNumTexCoords()){</span>
+<span class="lineNum">      29 </span><span class="lineCov">       2828 :                         vbo.setTexCoordData(getTexCoordsPointer(),getNumTexCoords(),usage);</span>
+<span class="lineNum">      30 </span>            :                 }
+<span class="lineNum">      31 </span><span class="lineCov">       3845 :                 if(getNumIndices()){</span>
+<span class="lineNum">      32 </span><span class="lineCov">       3842 :                         vbo.setIndexData(getIndexPointer(),getNumIndices(),usage);</span>
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span><span class="lineCov">       3845 :                 vboNumIndices = getNumIndices();</span>
+<span class="lineNum">      35 </span><span class="lineCov">       3845 :                 vboNumVerts = getNumVertices();</span>
+<span class="lineNum">      36 </span><span class="lineCov">       3845 :                 vboNumColors = getNumColors();</span>
+<span class="lineNum">      37 </span><span class="lineCov">       3845 :                 vboNumTexCoords = getNumTexCoords();</span>
+<span class="lineNum">      38 </span><span class="lineCov">       3845 :                 vboNumNormals = getNumNormals();</span>
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span><span class="lineCov">      16800 :         if(haveVertsChanged()){</span>
+<span class="lineNum">      42 </span><span class="lineCov">       5946 :                 if(vboNumVerts&lt;getNumVertices()){</span>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :                         vbo.setVertexData(getVerticesPointer(),getNumVertices(),usage);</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :                         vboNumVerts = getNumVertices();</span>
+<span class="lineNum">      45 </span>            :                 }else{
+<span class="lineNum">      46 </span><span class="lineCov">       5946 :                         vbo.updateVertexData(getVerticesPointer(),getNumVertices());</span>
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            :         }
+<span class="lineNum">      49 </span><span class="lineCov">      16800 :         if(haveColorsChanged()){</span>
+<span class="lineNum">      50 </span><span class="lineCov">       1209 :                 if(vboNumColors&lt;getNumColors()){</span>
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                         vbo.setColorData(getColorsPointer(),getNumColors(),usage);</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :                         vboNumColors = getNumColors();</span>
+<span class="lineNum">      53 </span>            :                 }else{
+<span class="lineNum">      54 </span><span class="lineCov">       1209 :                         vbo.updateColorData(getColorsPointer(),getNumColors());</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            :         }
+<span class="lineNum">      58 </span><span class="lineCov">      16800 :         if(haveNormalsChanged()){</span>
+<span class="lineNum">      59 </span><span class="lineCov">       4737 :                 if(vboNumNormals&lt;getNumNormals()){</span>
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :                         vbo.updateNormalData(getNormalsPointer(),getNumNormals());</span>
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :                         vboNumNormals = getNumNormals();</span>
+<span class="lineNum">      62 </span>            :                 }else{
+<span class="lineNum">      63 </span><span class="lineCov">       4737 :                         vbo.setNormalData(getNormalsPointer(),getNumNormals(),usage);</span>
+<span class="lineNum">      64 </span>            :                 }
+<span class="lineNum">      65 </span>            :         }
+<span class="lineNum">      66 </span><span class="lineCov">      16800 :         if(haveTexCoordsChanged()){</span>
+<span class="lineNum">      67 </span><span class="lineCov">       2828 :                 if(vboNumTexCoords&lt;getNumTexCoords()){</span>
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                         vbo.setTexCoordData(getTexCoordsPointer(),getNumTexCoords(),usage);</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :                         vboNumTexCoords = getNumTexCoords();</span>
+<span class="lineNum">      70 </span>            :                 }else{
+<span class="lineNum">      71 </span><span class="lineCov">       2828 :                         vbo.updateTexCoordData(getTexCoordsPointer(),getNumTexCoords());</span>
+<span class="lineNum">      72 </span>            :                 }
+<span class="lineNum">      73 </span>            :         }
+<span class="lineNum">      74 </span><span class="lineCov">      16800 :         if(haveIndicesChanged()){</span>
+<span class="lineNum">      75 </span><span class="lineCov">       5052 :                 if(vboNumIndices&lt;getNumIndices()){</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :                         vbo.setIndexData(getIndexPointer(),getNumIndices(),usage);</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :                         vboNumIndices = getNumIndices();</span>
+<span class="lineNum">      78 </span>            :                 }else{
+<span class="lineNum">      79 </span><span class="lineCov">       5052 :                         vbo.updateIndexData(getIndexPointer(),getNumIndices());</span>
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            :         }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">      16800 :         GLuint mode = ofGetGLPrimitiveMode(getMode());</span>
+<span class="lineNum">      85 </span>            : #ifndef TARGET_OPENGLES
+<span class="lineNum">      86 </span><span class="lineCov">      16800 :         glPushAttrib(GL_POLYGON_BIT);</span>
+<span class="lineNum">      87 </span><span class="lineCov">      16800 :         glPolygonMode(GL_FRONT_AND_BACK, ofGetGLPolyMode(drawMode));</span>
+<span class="lineNum">      88 </span><span class="lineCov">      16800 :         if(getNumIndices() &amp;&amp; drawMode!=OF_MESH_POINTS){</span>
+<span class="lineNum">      89 </span><span class="lineCov">       5833 :                 vbo.drawElements(mode,getNumIndices());</span>
+<span class="lineNum">      90 </span>            :         }else{
+<span class="lineNum">      91 </span><span class="lineCov">      10967 :                 vbo.draw(mode,0,getNumVertices());</span>
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span><span class="lineCov">      16800 :         glPopAttrib();</span>
+<span class="lineNum">      94 </span>            : #else
+<span class="lineNum">      95 </span>            :         if(drawMode == OF_MESH_POINTS){
+<span class="lineNum">      96 </span>            :                 vbo.draw(GL_POINTS,0,getNumVertices());
+<span class="lineNum">      97 </span>            :         }else if(drawMode == OF_MESH_WIREFRAME){
+<span class="lineNum">      98 </span>            :                 if(getNumIndices()){
+<span class="lineNum">      99 </span>            :                         vbo.drawElements(GL_LINES,getNumIndices());
+<span class="lineNum">     100 </span>            :                 }else{
+<span class="lineNum">     101 </span>            :                         vbo.draw(GL_LINES,0,getNumVertices());
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            :         }else{
+<span class="lineNum">     104 </span>            :                 if(getNumIndices() &amp;&amp; drawMode!=OF_MESH_POINTS){
+<span class="lineNum">     105 </span>            :                         vbo.drawElements(mode,getNumIndices());
+<span class="lineNum">     106 </span>            :                 }else{
+<span class="lineNum">     107 </span>            :                         vbo.draw(mode,0,getNumVertices());
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            :         }
+<span class="lineNum">     110 </span>            : #endif
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineCov">      16845 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

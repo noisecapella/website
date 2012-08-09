@@ -1,0 +1,447 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/types/ofBaseTypes.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/types</a> - ofBaseTypes.h<span style="font-size: 80%;"> (source / <a href="ofBaseTypes.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">94</td>
+            <td class="headerCovTableEntryLo">26.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntry">108</td>
+            <td class="headerCovTableEntryLo">26.9 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  *  ofBaseTypes.h
+<span class="lineNum">       3 </span>            :  *  openFrameworksLib
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  *  Created by zachary lieberman on 1/9/11.
+<span class="lineNum">       6 </span>            :  *  Copyright 2011 __MyCompanyName__. All rights reserved.
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  */
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : #pragma once
+<span class="lineNum">      13 </span>            : #include &quot;ofPoint.h&quot;
+<span class="lineNum">      14 </span>            : #include &quot;ofRectangle.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;ofConstants.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;ofColor.h&quot;
+<span class="lineNum">      17 </span>            : #include &quot;ofMesh.h&quot;
+<span class="lineNum">      18 </span>            : #include &quot;ofPixels.h&quot;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : template&lt;typename T&gt;
+<span class="lineNum">      21 </span>            : class ofImage_;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : typedef ofImage_&lt;unsigned char&gt; ofImage;
+<span class="lineNum">      24 </span>            : typedef ofImage_&lt;float&gt; ofFloatImage;
+<span class="lineNum">      25 </span>            : typedef ofImage_&lt;unsigned short&gt; ofShortImage;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : class ofPath;
+<span class="lineNum">      28 </span>            : class ofPolyline;
+<span class="lineNum">      29 </span>            : typedef ofPixels&amp; ofPixelsRef;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : //----------------------------------------------------------
+<span class="lineNum">      33 </span>            : // ofBaseDraws
+<a name="34"><span class="lineNum">      34 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      35 </span>            : 
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">       2364 : class ofBaseDraws{</span></a>
+<span class="lineNum">      37 </span>            : public:
+<span class="lineNum">      38 </span><span class="lineCov">       2343 :         virtual ~ofBaseDraws(){}</span>
+<a name="39"><span class="lineNum">      39 </span>            :         virtual void draw(float x, float y)=0;</a>
+<span class="lineNum">      40 </span>            :         virtual void draw(float x, float y, float w, float h)=0;
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :         virtual void draw(const ofPoint &amp; point) {</span>
+<a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 draw(point.x, point.y);</span></a>
+<span class="lineNum">      43 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :         virtual void draw(const ofRectangle &amp; rect) {</span>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :                 draw(rect.x, rect.y, rect.width, rect.height);</span></a>
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :         virtual void draw(const ofPoint &amp; point, float w, float h) {</span>
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :                 draw(point.x, point.y, w, h);</span>
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      50 </span>            :         
+<span class="lineNum">      51 </span>            :         virtual float getHeight()=0;
+<a name="52"><span class="lineNum">      52 </span>            :         virtual float getWidth()=0;</a>
+<a name="53"><span class="lineNum">      53 </span>            :         </a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :         virtual void setAnchorPercent(float xPct, float yPct){};</span></a>
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         virtual void setAnchorPoint(float x, float y){};</span>
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         virtual void resetAnchor(){};</span>
+<span class="lineNum">      57 </span>            :         
+<span class="lineNum">      58 </span>            : };
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : //----------------------------------------------------------
+<span class="lineNum">      61 </span>            : // ofBaseUpdates
+<a name="62"><span class="lineNum">      62 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      63 </span>            : 
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">         46 : class ofBaseUpdates{</span></a>
+<span class="lineNum">      65 </span>            : public:
+<span class="lineNum">      66 </span><span class="lineCov">         25 :         virtual ~ofBaseUpdates(){}</span>
+<span class="lineNum">      67 </span>            :         virtual void update()=0;
+<span class="lineNum">      68 </span>            : };
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            : //----------------------------------------------------------
+<span class="lineNum">      72 </span>            : // ofBaseHasTexture
+<span class="lineNum">      73 </span>            : //----------------------------------------------------------
+<a name="74"><span class="lineNum">      74 </span>            : class ofTexture;</a>
+<span class="lineNum">      75 </span>            : 
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        472 : class ofBaseHasTexture{</span></a>
+<span class="lineNum">      77 </span>            : public:
+<span class="lineNum">      78 </span><span class="lineCov">        465 :         virtual ~ofBaseHasTexture(){}</span>
+<span class="lineNum">      79 </span>            :         virtual ofTexture &amp; getTextureReference()=0;
+<span class="lineNum">      80 </span>            :         virtual void setUseTexture(bool bUseTex)=0;
+<span class="lineNum">      81 </span>            : };
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            : //----------------------------------------------------------
+<a name="84"><span class="lineNum">      84 </span>            : // ofAbstractHasPixels</a>
+<span class="lineNum">      85 </span>            : //----------------------------------------------------------
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        486 : class ofAbstractHasPixels{</span></a>
+<span class="lineNum">      87 </span>            : public:
+<span class="lineNum">      88 </span><span class="lineCov">        475 :         virtual ~ofAbstractHasPixels(){}</span>
+<span class="lineNum">      89 </span>            : };
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            : //----------------------------------------------------------
+<span class="lineNum">      92 </span>            : // ofBaseHasPixels
+<a name="93"><span class="lineNum">      93 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">      94 </span>            : template&lt;typename T&gt;
+<span class="lineNum">      95 </span><span class="lineCov">        486 : class ofBaseHasPixels_: public ofAbstractHasPixels{</span>
+<span class="lineNum">      96 </span>            : public:
+<span class="lineNum">      97 </span><span class="lineCov">        475 :         virtual ~ofBaseHasPixels_&lt;T&gt;(){}</span>
+<span class="lineNum">      98 </span>            :         virtual T * getPixels()=0;
+<span class="lineNum">      99 </span>            :         virtual ofPixels_&lt;T&gt; &amp; getPixelsRef()=0;
+<span class="lineNum">     100 </span>            : };
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            : typedef ofBaseHasPixels_&lt;unsigned char&gt; ofBaseHasPixels;
+<span class="lineNum">     103 </span>            : typedef ofBaseHasPixels_&lt;float&gt; ofBaseHasFloatPixels;
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            : //----------------------------------------------------------
+<a name="106"><span class="lineNum">     106 </span>            : // ofAbstractImage    -&gt;   to be able to put different types of images in vectors...</a>
+<span class="lineNum">     107 </span>            : //----------------------------------------------------------
+<span class="lineNum">     108 </span><span class="lineCov">        466 : class ofAbstractImage: public ofBaseDraws, public ofBaseHasTexture{</span>
+<span class="lineNum">     109 </span>            : public:
+<span class="lineNum">     110 </span><span class="lineCov">        461 :         virtual ~ofAbstractImage(){}</span>
+<span class="lineNum">     111 </span>            : };
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            : //----------------------------------------------------------
+<span class="lineNum">     114 </span>            : // ofBaseImage
+<span class="lineNum">     115 </span>            : //----------------------------------------------------------
+<span class="lineNum">     116 </span>            : template&lt;typename T&gt;
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        466 : class ofBaseImage_: public ofAbstractImage, virtual public ofBaseHasPixels_&lt;T&gt;{</span></a>
+<span class="lineNum">     118 </span>            : public:
+<span class="lineNum">     119 </span><span class="lineCov">        461 :         virtual ~ofBaseImage_&lt;T&gt;(){};</span>
+<span class="lineNum">     120 </span>            : };
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            : typedef ofBaseImage_&lt;unsigned char&gt; ofBaseImage;
+<span class="lineNum">     123 </span>            : typedef ofBaseImage_&lt;float&gt; ofBaseFloatImage;
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : //----------------------------------------------------------
+<span class="lineNum">     126 </span>            : // ofBaseHasSoundStream
+<span class="lineNum">     127 </span>            : //----------------------------------------------------------
+<span class="lineNum">     128 </span>            : class ofBaseSoundInput{
+<a name="129"><span class="lineNum">     129 </span>            : </a>
+<span class="lineNum">     130 </span>            :         public:
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         virtual ~ofBaseSoundInput() {};</span></a>
+<span class="lineNum">     132 </span>            :     
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 virtual void audioIn( float * input, int bufferSize, int nChannels, int deviceID, long unsigned long tickCount ){</span>
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                         audioIn(input, bufferSize, nChannels);</span>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 }</span></a>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 virtual void audioIn( float * input, int bufferSize, int nChannels ){  </span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :                         audioReceived(input, bufferSize, nChannels);</span>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :                 }</span></a>
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 virtual void audioReceived( float * input, int bufferSize, int nChannels ){}</span>
+<span class="lineNum">     142 </span>            : };
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            : //----------------------------------------------------------
+<span class="lineNum">     145 </span>            : // ofBaseHasSoundStream
+<span class="lineNum">     146 </span>            : //----------------------------------------------------------
+<span class="lineNum">     147 </span>            : class ofBaseSoundOutput{
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<span class="lineNum">     149 </span>            :         public:
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         virtual ~ofBaseSoundOutput() {};</span></a>
+<span class="lineNum">     151 </span>            :     
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 virtual void audioOut( float * output, int bufferSize, int nChannels, int deviceID, long unsigned long tickCount  ){</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                         audioOut(output, bufferSize, nChannels);</span>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 }</span></a>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 virtual void audioOut( float * output, int bufferSize, int nChannels ){</span>
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                         audioRequested(output, bufferSize, nChannels);</span>
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 }</span>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<span class="lineNum">     160 </span>            :                 //legacy
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 virtual void audioRequested( float * output, int bufferSize, int nChannels ){</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     163 </span>            : };
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            : //----------------------------------------------------------
+<a name="167"><span class="lineNum">     167 </span>            : // ofBaseVideo</a>
+<span class="lineNum">     168 </span>            : //----------------------------------------------------------
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         46 : class ofBaseVideo: virtual public ofBaseHasPixels, public ofBaseUpdates{</span></a>
+<span class="lineNum">     170 </span>            : public:
+<span class="lineNum">     171 </span><span class="lineCov">         25 :         virtual ~ofBaseVideo(){}</span>
+<span class="lineNum">     172 </span>            :         virtual bool isFrameNew()=0;
+<span class="lineNum">     173 </span>            :         virtual void close()=0;
+<span class="lineNum">     174 </span>            : };
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            : //----------------------------------------------------------
+<a name="178"><span class="lineNum">     178 </span>            : // ofBaseVideoDraws</a>
+<span class="lineNum">     179 </span>            : //----------------------------------------------------------
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         16 : class ofBaseVideoDraws: virtual public ofBaseVideo, public ofBaseImage{</span></a>
+<span class="lineNum">     181 </span>            : public:
+<span class="lineNum">     182 </span><span class="lineCov">          9 :         virtual ~ofBaseVideoDraws(){}</span>
+<span class="lineNum">     183 </span>            : };
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            : //----------------------------------------------------------
+<a name="186"><span class="lineNum">     186 </span>            : // ofBaseVideoGrabber</a>
+<span class="lineNum">     187 </span>            : //----------------------------------------------------------
+<span class="lineNum">     188 </span><span class="lineCov">         19 : class ofBaseVideoGrabber: virtual public ofBaseVideo{</span>
+<span class="lineNum">     189 </span>            :         
+<span class="lineNum">     190 </span>            :         public :
+<span class="lineNum">     191 </span>            :         virtual ~ofBaseVideoGrabber();
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :         //needs implementing
+<span class="lineNum">     194 </span>            :         virtual void    listDevices() = 0;              
+<span class="lineNum">     195 </span>            :         virtual bool    initGrabber(int w, int h) = 0;
+<span class="lineNum">     196 </span>            :         virtual void    update() = 0;
+<span class="lineNum">     197 </span>            :         virtual bool    isFrameNew() = 0;
+<span class="lineNum">     198 </span>            :         
+<span class="lineNum">     199 </span>            :         virtual unsigned char   * getPixels() = 0;
+<span class="lineNum">     200 </span>            :         
+<span class="lineNum">     201 </span>            :         virtual void    close() = 0;    
+<span class="lineNum">     202 </span>            :         
+<span class="lineNum">     203 </span>            :         virtual float   getHeight() = 0;
+<span class="lineNum">     204 </span>            :         virtual float   getWidth() = 0;
+<span class="lineNum">     205 </span>            :         
+<span class="lineNum">     206 </span>            :         //should implement!
+<span class="lineNum">     207 </span>            :         virtual void setVerbose(bool bTalkToMe);
+<span class="lineNum">     208 </span>            :         virtual void setDeviceID(int _deviceID);
+<span class="lineNum">     209 </span>            :         virtual void setDesiredFrameRate(int framerate);
+<span class="lineNum">     210 </span>            :         virtual void videoSettings();
+<span class="lineNum">     211 </span>            :         virtual void setPixelFormat(ofPixelFormat pixelFormat);
+<span class="lineNum">     212 </span>            :         virtual ofPixelFormat getPixelFormat();
+<span class="lineNum">     213 </span>            :         
+<span class="lineNum">     214 </span>            : };
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            : //----------------------------------------------------------
+<a name="218"><span class="lineNum">     218 </span>            : // ofBaseVideoPlayer</a>
+<span class="lineNum">     219 </span>            : //----------------------------------------------------------
+<span class="lineNum">     220 </span><span class="lineCov">         12 : class ofBaseVideoPlayer: virtual public ofBaseVideo{</span>
+<span class="lineNum">     221 </span>            :         
+<span class="lineNum">     222 </span>            : public:
+<span class="lineNum">     223 </span>            :         virtual ~ofBaseVideoPlayer();
+<span class="lineNum">     224 </span>            :         
+<span class="lineNum">     225 </span>            :         //needs implementing
+<span class="lineNum">     226 </span>            :         virtual bool                            loadMovie(string name) = 0;
+<span class="lineNum">     227 </span>            :         virtual void                            close() = 0;
+<span class="lineNum">     228 </span>            :         virtual void                            update() = 0;
+<span class="lineNum">     229 </span>            :         
+<span class="lineNum">     230 </span>            :         virtual void                            play() = 0;
+<span class="lineNum">     231 </span>            :         virtual void                            stop() = 0;             
+<span class="lineNum">     232 </span>            :         
+<a name="233"><span class="lineNum">     233 </span>            :         virtual bool                            isFrameNew() = 0;</a>
+<span class="lineNum">     234 </span>            :         virtual unsigned char *         getPixels() = 0;
+<span class="lineNum">     235 </span><span class="lineCov">       1234 :         virtual ofTexture *                     getTexture(){return NULL;}; // if your videoplayer needs to implement seperate texture and pixel returns for performance, implement this function to return a texture instead of a pixel array. see iPhoneVideoGrabber for reference</span>
+<span class="lineNum">     236 </span>            :         
+<span class="lineNum">     237 </span>            :         virtual float                           getWidth() = 0;
+<span class="lineNum">     238 </span>            :         virtual float                           getHeight() = 0;
+<span class="lineNum">     239 </span>            :         
+<span class="lineNum">     240 </span>            :         virtual bool                            isPaused() = 0;
+<span class="lineNum">     241 </span>            :         virtual bool                            isLoaded() = 0;
+<span class="lineNum">     242 </span>            :         virtual bool                            isPlaying() = 0;
+<span class="lineNum">     243 </span>            :         
+<span class="lineNum">     244 </span>            :         //should implement!
+<span class="lineNum">     245 </span>            :         virtual float                           getPosition();
+<span class="lineNum">     246 </span>            :         virtual float                           getSpeed();
+<span class="lineNum">     247 </span>            :         virtual float                           getDuration();
+<span class="lineNum">     248 </span>            :         virtual bool                            getIsMovieDone();
+<span class="lineNum">     249 </span>            :         
+<span class="lineNum">     250 </span>            :         virtual void                            setPaused(bool bPause);
+<span class="lineNum">     251 </span>            :         virtual void                            setPosition(float pct);
+<span class="lineNum">     252 </span>            :         virtual void                            setVolume(float volume); // 0..1
+<span class="lineNum">     253 </span>            :         virtual void                            setLoopState(ofLoopType state);
+<span class="lineNum">     254 </span>            :         virtual void                            setSpeed(float speed);
+<span class="lineNum">     255 </span>            :         virtual void                            setFrame(int frame);  // frame 0 = first frame...
+<span class="lineNum">     256 </span>            :         
+<span class="lineNum">     257 </span>            :         virtual int                                     getCurrentFrame();
+<span class="lineNum">     258 </span>            :         virtual int                                     getTotalNumFrames();
+<span class="lineNum">     259 </span>            :         virtual int                                     getLoopState();
+<span class="lineNum">     260 </span>            :         
+<span class="lineNum">     261 </span>            :         virtual void                            firstFrame();
+<span class="lineNum">     262 </span>            :         virtual void                            nextFrame();
+<span class="lineNum">     263 </span>            :         virtual void                            previousFrame();
+<span class="lineNum">     264 </span>            :         virtual void                            setPixelFormat(ofPixelFormat pixelFormat);
+<span class="lineNum">     265 </span>            :         
+<span class="lineNum">     266 </span>            : };
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            : //----------------------------------------------------------
+<span class="lineNum">     269 </span>            : // base renderers
+<a name="270"><span class="lineNum">     270 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     271 </span>            : 
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        197 : class ofBaseRenderer{</span></a>
+<span class="lineNum">     273 </span>            : public:
+<span class="lineNum">     274 </span><span class="lineCov">        197 :         virtual ~ofBaseRenderer(){}</span>
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            :         virtual string getType()=0;
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :         virtual void update()=0;
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :         virtual void draw(ofPolyline &amp; poly)=0;
+<span class="lineNum">     281 </span>            :         virtual void draw(ofPath &amp; shape)=0;
+<span class="lineNum">     282 </span>            :         virtual void draw(ofMesh &amp; vertexData, bool useColors, bool useTextures, bool useNormals)=0;
+<span class="lineNum">     283 </span>            :         virtual void draw(ofMesh &amp; vertexData, ofPolyRenderMode renderType, bool useColors, bool useTextures, bool useNormals)=0;
+<span class="lineNum">     284 </span>            :         virtual void draw(vector&lt;ofPoint&gt; &amp; vertexData, ofPrimitiveMode drawMode)=0;
+<span class="lineNum">     285 </span>            :         virtual void draw(ofImage &amp; image, float x, float y, float z, float w, float h, float sx, float sy, float sw, float sh)=0;
+<span class="lineNum">     286 </span>            :         virtual void draw(ofFloatImage &amp; image, float x, float y, float z, float w, float h, float sx, float sy, float sw, float sh)=0;
+<span class="lineNum">     287 </span>            :         virtual void draw(ofShortImage &amp; image, float x, float y, float z, float w, float h, float sx, float sy, float sw, float sh)=0;
+<span class="lineNum">     288 </span>            : 
+<a name="289"><span class="lineNum">     289 </span>            :         //--------------------------------------------</a>
+<a name="290"><span class="lineNum">     290 </span>            :         // transformations</a>
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :         virtual void pushView(){};</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :         virtual void popView(){};</span>
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :         // setup matrices and viewport (upto you to push and pop view before and after)
+<a name="295"><span class="lineNum">     295 </span>            :         // if width or height are 0, assume windows dimensions (ofGetWidth(), ofGetHeight())</a>
+<a name="296"><span class="lineNum">     296 </span>            :         // if nearDist or farDist are 0 assume defaults (calculated based on width / height)</a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         virtual void viewport(ofRectangle viewport){};</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :         virtual void viewport(float x = 0, float y = 0, float width = 0, float height = 0, bool invertY = true){};</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         virtual void setupScreenPerspective(float width = 0, float height = 0, ofOrientation orientation=OF_ORIENTATION_UNKNOWN, bool vFlip = true, float fov = 60, float nearDist = 0, float farDist = 0){}</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :         virtual void setupScreenOrtho(float width = 0, float height = 0, ofOrientation orientation=OF_ORIENTATION_UNKNOWN, bool vFlip = true, float nearDist = -1, float farDist = 1){};</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         virtual ofRectangle getCurrentViewport(){return ofRectangle();};</span></a>
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         virtual int getViewportWidth(){return 0;};</span>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :         virtual int getViewportHeight(){return 0;};</span></a>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :         virtual void setCoordHandedness(ofHandednessType handedness){};</span>
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :         virtual ofHandednessType getCoordHandedness(){return OF_LEFT_HANDED;};</span>
+<a name="307"><span class="lineNum">     307 </span>            : </a>
+<a name="308"><span class="lineNum">     308 </span>            :         //our openGL wrappers</a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :         virtual void pushMatrix(){};</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :         virtual void popMatrix(){};</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :         virtual void translate(float x, float y, float z = 0){};</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :         virtual void translate(const ofPoint &amp; p){};</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :         virtual void scale(float xAmnt, float yAmnt, float zAmnt = 1){};</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :         virtual void rotate(float degrees, float vecX, float vecY, float vecZ){};</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         virtual void rotateX(float degrees){};</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         virtual void rotateY(float degrees){};</span></a>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :         virtual void rotateZ(float degrees){};</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :         virtual void rotate(float degrees){};</span>
+<a name="319"><span class="lineNum">     319 </span>            : </a>
+<a name="320"><span class="lineNum">     320 </span>            :         // screen coordinate things / default gl values</a>
+<span class="lineNum">     321 </span><span class="lineNoCov">          0 :         virtual void setupGraphicDefaults(){};</span>
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :         virtual void setupScreen(){};</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            :         // drawing modes
+<span class="lineNum">     325 </span>            :         virtual void setRectMode(ofRectMode mode)=0;
+<span class="lineNum">     326 </span>            :         virtual ofRectMode getRectMode()=0;
+<span class="lineNum">     327 </span>            :         virtual void setFillMode(ofFillFlag fill)=0;
+<span class="lineNum">     328 </span>            :         virtual ofFillFlag getFillMode()=0;
+<span class="lineNum">     329 </span>            :         virtual void setLineWidth(float lineWidth)=0;
+<a name="330"><span class="lineNum">     330 </span>            :         virtual void setBlendMode(ofBlendMode blendMode)=0;</a>
+<a name="331"><span class="lineNum">     331 </span>            :         virtual void setLineSmoothing(bool smooth)=0;</a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          9 :         virtual void setCircleResolution(int res){};</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">          9 :         virtual void setSphereResolution(int res){};</span></a>
+<span class="lineNum">     334 </span><span class="lineNoCov">          0 :         virtual void enablePointSprites(){};</span>
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :         virtual void disablePointSprites(){};</span>
+<a name="336"><span class="lineNum">     336 </span>            : </a>
+<a name="337"><span class="lineNum">     337 </span>            :         // color options</a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :         virtual void setColor(int r, int g, int b){}; // 0-255</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :         virtual void setColor(int r, int g, int b, int a){}; // 0-255</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :         virtual void setColor(const ofColor &amp; color){};</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :         virtual void setColor(const ofColor &amp; color, int _a){};</span></a>
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         virtual void setColor(int gray){}; // new set a color as grayscale with one argument</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         virtual void setHexColor( int hexColor ){}; // hex, like web 0xFF0033;</span>
+<span class="lineNum">     344 </span>            : 
+<a name="345"><span class="lineNum">     345 </span>            :         // bg color</a>
+<a name="346"><span class="lineNum">     346 </span>            :         virtual ofFloatColor &amp; getBgColor()=0;</a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :         virtual bool bClearBg(){return true;};</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :         virtual void background(const ofColor &amp; c){};</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :         virtual void background(float brightness){};</span></a>
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :         virtual void background(int hexColor, float _a=255.0f){};</span>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :         virtual void background(int r, int g, int b, int a=255){};</span></a>
+<span class="lineNum">     352 </span>            : 
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         virtual void setBackgroundAuto(bool bManual){};         // default is true</span></a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :         virtual void clear(float r, float g, float b, float a=0){};</span></a>
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :         virtual void clear(float brightness, float a=0){};</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :         virtual void clearAlpha(){};</span>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span>            :         // drawing
+<span class="lineNum">     360 </span>            :         virtual void drawLine(float x1, float y1, float z1, float x2, float y2, float z2)=0;
+<span class="lineNum">     361 </span>            :         virtual void drawRectangle(float x, float y, float z, float w, float h)=0;
+<span class="lineNum">     362 </span>            :         virtual void drawTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)=0;
+<span class="lineNum">     363 </span>            :         virtual void drawCircle(float x, float y, float z, float radius)=0;
+<span class="lineNum">     364 </span>            :         virtual void drawSphere(float x, float y, float z, float radius)=0;
+<span class="lineNum">     365 </span>            :         virtual void drawEllipse(float x, float y, float z, float width, float height)=0;
+<span class="lineNum">     366 </span>            :         virtual void drawString(string text, float x, float y, float z, ofDrawBitmapMode mode)=0;
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :         // returns true if the renderer can render curves without decomposing them
+<span class="lineNum">     370 </span>            :         virtual bool rendersPathPrimitives()=0;
+<span class="lineNum">     371 </span>            : };
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

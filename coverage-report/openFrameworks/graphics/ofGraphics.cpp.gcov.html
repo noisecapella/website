@@ -1,0 +1,1239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - openFrameworks/graphics/ofGraphics.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">openFrameworks/graphics</a> - ofGraphics.cpp<span style="font-size: 80%;"> (source / <a href="ofGraphics.cpp.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">485</td>
+            <td class="headerCovTableEntry">611</td>
+            <td class="headerCovTableEntryMed">79.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">132</td>
+            <td class="headerCovTableEntryMed">78.8 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;ofGraphics.h&quot;</a>
+<span class="lineNum">       2 </span>            : #include &quot;ofAppRunner.h&quot;
+<span class="lineNum">       3 </span>            : #include &quot;ofUtils.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;ofBaseTypes.h&quot;
+<span class="lineNum">       5 </span>            : #include &quot;ofGLRenderer.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;ofPath.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;ofRendererCollection.h&quot;
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">      10 </span>            :         #include &lt;OpenGL/glu.h&gt;
+<span class="lineNum">      11 </span>            : #endif
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : //#ifdef TARGET_OPENGLES
+<span class="lineNum">      14 </span>            : //      #include &quot;glu.h&quot;
+<span class="lineNum">      15 </span>            : //#endif
+<span class="lineNum">      16 </span>            : //
+<span class="lineNum">      17 </span>            : #ifdef TARGET_LINUX
+<span class="lineNum">      18 </span>            :         #include &lt;GL/glu.h&gt;
+<span class="lineNum">      19 </span>            : #endif
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">      22 </span>            :         #include &quot;glu.h&quot;
+<span class="lineNum">      23 </span>            : #endif
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #ifndef TARGET_WIN32
+<span class="lineNum">      26 </span>            :     #define CALLBACK
+<span class="lineNum">      27 </span>            : #endif
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #ifdef TARGET_WIN32
+<span class="lineNum">      30 </span>            :         #define GLUT_BUILDING_LIB
+<span class="lineNum">      31 </span>            :         #include &quot;glut.h&quot;
+<span class="lineNum">      32 </span>            : #endif
+<span class="lineNum">      33 </span>            : #ifdef TARGET_OSX
+<span class="lineNum">      34 </span>            :         #include &lt;GLUT/glut.h&gt;
+<span class="lineNum">      35 </span>            : #endif
+<span class="lineNum">      36 </span>            : #ifdef TARGET_LINUX
+<span class="lineNum">      37 </span>            :         #include &lt;GL/glut.h&gt;
+<span class="lineNum">      38 </span>            : #endif
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : 
+<a name="41"><span class="lineNum">      41 </span>            : </a>
+<span class="lineNum">      42 </span>            : //style stuff - new in 006
+<span class="lineNum">      43 </span><span class="lineCov">        193 : static ofStyle currentStyle;</span>
+<span class="lineNum">      44 </span><span class="lineCov">        193 : static deque &lt;ofStyle&gt; styleHistory;</span>
+<span class="lineNum">      45 </span><span class="lineCov">        193 : static deque &lt;ofRectangle&gt; viewportHistory;</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineCov">        193 : static ofPath shape;</span>
+<span class="lineNum">      48 </span><span class="lineCov">        193 : static ofMesh vertexData;</span>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        193 : static ofPtr&lt;ofBaseRenderer&gt; renderer;</span></a>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineCov">        197 : void ofSetCurrentRenderer(ofPtr&lt;ofBaseRenderer&gt; renderer_){</span>
+<span class="lineNum">      52 </span><span class="lineCov">        195 :         renderer = renderer_;</span>
+<span class="lineNum">      53 </span><span class="lineCov">        197 :         renderer-&gt;setupGraphicDefaults();</span>
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineCov">        197 :         if(renderer-&gt;rendersPathPrimitives()){</span>
+<span class="lineNum">      56 </span><span class="lineCov">          2 :                 shape.setMode(ofPath::PATHS);</span>
+<span class="lineNum">      57 </span>            :         }else{
+<span class="lineNum">      58 </span><span class="lineCov">        195 :                 shape.setMode(ofPath::POLYLINES);</span>
+<span class="lineNum">      59 </span>            :         }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">        197 :         shape.setUseShapeColor(false);</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineCov">        197 :         ofSetStyle(currentStyle);</span>
+<span class="lineNum">      64 </span><span class="lineCov">        197 :         ofBackground(currentStyle.bgColor);</span>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        197 : }</span></a>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineCov">    2436451 : ofPtr&lt;ofBaseRenderer&gt; &amp; ofGetCurrentRenderer(){</span>
+<span class="lineNum">      68 </span><span class="lineCov">    2436451 :         return renderer;</span>
+<a name="69"><span class="lineNum">      69 </span>            : }</a>
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">      33026 : ofPtr&lt;ofGLRenderer&gt; ofGetGLRenderer(){</span>
+<span class="lineNum">      72 </span><span class="lineCov">      33026 :         if(ofGetCurrentRenderer()-&gt;getType()==&quot;GL&quot;){</span>
+<span class="lineNum">      73 </span><span class="lineCov">      33026 :                 return (ofPtr&lt;ofGLRenderer&gt;&amp;)ofGetCurrentRenderer();</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :         }else if(ofGetCurrentRenderer()-&gt;getType()==&quot;collection&quot;){</span>
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 return ((ofPtr&lt;ofRendererCollection&gt;&amp;)ofGetCurrentRenderer())-&gt;getGLRenderer();</span>
+<span class="lineNum">      76 </span>            :         }else{
+<span class="lineNum">      77 </span><span class="lineCov">      33026 :                 return ofPtr&lt;ofGLRenderer&gt;();</span>
+<span class="lineNum">      78 </span>            :         }
+<span class="lineNum">      79 </span>            : }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            : #ifndef TARGET_OPENGLES 
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            : //-----------------------------------------------------------------------------------
+<span class="lineNum">      84 </span>            : //-----------------------------------------------------------------------------------
+<span class="lineNum">      85 </span>            : #include &quot;ofCairoRenderer.h&quot;
+<span class="lineNum">      86 </span>            : #include &quot;ofGLRenderer.h&quot;
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">        193 : static ofPtr&lt;ofCairoRenderer&gt; cairoScreenshot;</span>
+<span class="lineNum">      89 </span><span class="lineCov">        193 : static ofPtr&lt;ofBaseRenderer&gt; storedRenderer;</span>
+<span class="lineNum">      90 </span><span class="lineCov">        193 : static ofPtr&lt;ofRendererCollection&gt; rendererCollection;</span>
+<span class="lineNum">      91 </span>            : static bool bScreenShotStarted = false;
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<span class="lineNum">      93 </span>            : //-----------------------------------------------------------------------------------
+<span class="lineNum">      94 </span><span class="lineCov">          2 : void ofBeginSaveScreenAsPDF(string filename, bool bMultipage, bool b3D, ofRectangle viewport){</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :         if( bScreenShotStarted )ofEndSaveScreenAsPDF();</span>
+<span class="lineNum">      96 </span>            :         
+<span class="lineNum">      97 </span><span class="lineCov">          2 :         storedRenderer = ofGetCurrentRenderer();</span>
+<span class="lineNum">      98 </span>            :         
+<span class="lineNum">      99 </span><span class="lineCov">          2 :         cairoScreenshot = ofPtr&lt;ofCairoRenderer&gt;(new ofCairoRenderer);</span>
+<span class="lineNum">     100 </span><span class="lineCov">          2 :         cairoScreenshot-&gt;setup(filename, ofCairoRenderer::PDF, bMultipage, b3D, viewport);           </span>
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span><span class="lineCov">          2 :         rendererCollection = ofPtr&lt;ofRendererCollection&gt;(new ofRendererCollection);</span>
+<span class="lineNum">     103 </span><span class="lineCov">          2 :         rendererCollection-&gt;renderers.push_back(ofGetGLRenderer());</span>
+<span class="lineNum">     104 </span><span class="lineCov">          2 :         rendererCollection-&gt;renderers.push_back(cairoScreenshot);</span>
+<span class="lineNum">     105 </span>            :         
+<span class="lineNum">     106 </span><span class="lineCov">          2 :         ofSetCurrentRenderer(rendererCollection);</span>
+<span class="lineNum">     107 </span><span class="lineCov">          2 :         bScreenShotStarted = true;</span>
+<span class="lineNum">     108 </span><span class="lineCov">          2 : }</span>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<span class="lineNum">     110 </span>            : //-----------------------------------------------------------------------------------
+<span class="lineNum">     111 </span><span class="lineCov">          2 : void ofEndSaveScreenAsPDF(){</span>
+<span class="lineNum">     112 </span><span class="lineCov">          2 :         if( bScreenShotStarted ){</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">          2 :                 if( cairoScreenshot ){</span>
+<span class="lineNum">     115 </span><span class="lineCov">          2 :                         cairoScreenshot-&gt;close();</span>
+<span class="lineNum">     116 </span><span class="lineCov">          2 :                         rendererCollection.reset();</span>
+<span class="lineNum">     117 </span><span class="lineCov">          2 :                         cairoScreenshot.reset();</span>
+<span class="lineNum">     118 </span>            :                 }
+<span class="lineNum">     119 </span><span class="lineCov">          2 :                 if( storedRenderer ){</span>
+<span class="lineNum">     120 </span><span class="lineCov">          2 :                         ofSetCurrentRenderer(storedRenderer);</span>
+<span class="lineNum">     121 </span><span class="lineCov">          2 :                         storedRenderer.reset();</span>
+<span class="lineNum">     122 </span>            :                 }
+<span class="lineNum">     123 </span>            :                 
+<span class="lineNum">     124 </span><span class="lineCov">          2 :                 bScreenShotStarted = false;</span>
+<span class="lineNum">     125 </span>            :         }
+<span class="lineNum">     126 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            : #endif
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            : //----------------------------------------------------------
+<span class="lineNum">     133 </span>            : // transformation matrix related functions
+<a name="134"><span class="lineNum">     134 </span>            : </a>
+<span class="lineNum">     135 </span>            : //----------------------------------------------------------
+<span class="lineNum">     136 </span><span class="lineCov">      20946 : void ofPushView(){</span>
+<span class="lineNum">     137 </span><span class="lineCov">      20946 :         renderer-&gt;pushView();</span>
+<span class="lineNum">     138 </span><span class="lineCov">      20946 : }</span>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<span class="lineNum">     140 </span>            : //----------------------------------------------------------
+<span class="lineNum">     141 </span><span class="lineCov">      20946 : void ofPopView(){</span>
+<span class="lineNum">     142 </span><span class="lineCov">      20946 :         renderer-&gt;popView();</span>
+<span class="lineNum">     143 </span><span class="lineCov">      20946 : }</span>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<span class="lineNum">     145 </span>            : //----------------------------------------------------------
+<span class="lineNum">     146 </span><span class="lineCov">      12690 : void ofViewport(ofRectangle viewport){</span>
+<span class="lineNum">     147 </span><span class="lineCov">      12690 :         renderer-&gt;viewport(viewport.x, viewport.y, viewport.width, viewport.height);</span>
+<span class="lineNum">     148 </span><span class="lineCov">      12690 : }</span>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<span class="lineNum">     150 </span>            : //----------------------------------------------------------
+<span class="lineNum">     151 </span><span class="lineCov">      93514 : void ofViewport(float x, float y, float width, float height, bool invertY){</span>
+<span class="lineNum">     152 </span><span class="lineCov">      93514 :         renderer-&gt;viewport(x,y,width,height,invertY);</span>
+<span class="lineNum">     153 </span><span class="lineCov">      93514 : }</span>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<span class="lineNum">     155 </span>            : //----------------------------------------------------------
+<span class="lineNum">     156 </span><span class="lineCov">    3227778 : ofRectangle ofGetCurrentViewport(){</span>
+<span class="lineNum">     157 </span><span class="lineCov">    3227778 :         return renderer-&gt;getCurrentViewport();</span>
+<span class="lineNum">     158 </span>            : }
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<span class="lineNum">     160 </span>            : //----------------------------------------------------------
+<span class="lineNum">     161 </span><span class="lineCov">      95777 : int ofGetViewportWidth(){</span>
+<span class="lineNum">     162 </span><span class="lineCov">      95777 :         return renderer-&gt;getViewportWidth();</span>
+<span class="lineNum">     163 </span>            : }
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<span class="lineNum">     165 </span>            : //----------------------------------------------------------
+<span class="lineNum">     166 </span><span class="lineCov">      97027 : int ofGetViewportHeight(){</span>
+<span class="lineNum">     167 </span><span class="lineCov">      97027 :         return renderer-&gt;getViewportHeight();</span>
+<span class="lineNum">     168 </span>            : }
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<span class="lineNum">     170 </span>            : //----------------------------------------------------------
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 : int ofOrientationToDegrees(ofOrientation orientation){</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         switch(orientation){</span>
+<span class="lineNum">     173 </span>            :         case OF_ORIENTATION_DEFAULT:
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     175 </span>            :         case OF_ORIENTATION_180:
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 return 180;</span>
+<span class="lineNum">     177 </span>            :         case OF_ORIENTATION_90_RIGHT:
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                 return 270;</span>
+<span class="lineNum">     179 </span>            :         case OF_ORIENTATION_90_LEFT:
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 return 90;</span>
+<span class="lineNum">     181 </span>            :         default:
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     183 </span>            :         }
+<span class="lineNum">     184 </span>            : }
+<a name="185"><span class="lineNum">     185 </span>            : </a>
+<span class="lineNum">     186 </span>            : //----------------------------------------------------------
+<span class="lineNum">     187 </span><span class="lineCov">      11874 : void ofSetCoordHandedness(ofHandednessType handedness){</span>
+<span class="lineNum">     188 </span><span class="lineCov">      11874 :         renderer-&gt;setCoordHandedness(handedness);</span>
+<span class="lineNum">     189 </span><span class="lineCov">      11874 : }</span>
+<a name="190"><span class="lineNum">     190 </span>            : </a>
+<span class="lineNum">     191 </span>            : //----------------------------------------------------------
+<span class="lineNum">     192 </span><span class="lineCov">     105496 : ofHandednessType ofGetCoordHandedness(){</span>
+<span class="lineNum">     193 </span><span class="lineCov">     105496 :         return renderer-&gt;getCoordHandedness();</span>
+<span class="lineNum">     194 </span>            : }
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<span class="lineNum">     196 </span>            : //----------------------------------------------------------
+<span class="lineNum">     197 </span><span class="lineCov">       8256 : void ofSetupScreenPerspective(float width, float height, ofOrientation orientation, bool vFlip, float fov, float nearDist, float farDist){</span>
+<span class="lineNum">     198 </span><span class="lineCov">       8256 :         renderer-&gt;setupScreenPerspective(width,height, orientation, vFlip,fov,nearDist,farDist);</span>
+<span class="lineNum">     199 </span><span class="lineCov">       8256 : }</span>
+<a name="200"><span class="lineNum">     200 </span>            : </a>
+<span class="lineNum">     201 </span>            : //----------------------------------------------------------
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 : void ofSetupScreenOrtho(float width, float height, ofOrientation orientation, bool vFlip, float nearDist, float farDist){</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :         renderer-&gt;setupScreenOrtho(width,height,orientation,vFlip,nearDist,farDist);</span>
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     205 </span>            : 
+<a name="206"><span class="lineNum">     206 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     207 </span>            : //Resets openGL parameters back to OF defaults
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 : void ofSetupGraphicDefaults(){</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         renderer-&gt;setupGraphicDefaults();</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         ofSetStyle(ofStyle());</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 : }</span>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<span class="lineNum">     213 </span>            : //----------------------------------------------------------
+<span class="lineNum">     214 </span><span class="lineCov">      86968 : void ofSetupScreen(){</span>
+<span class="lineNum">     215 </span><span class="lineCov">      86968 :         renderer-&gt;setupScreen();     // assume defaults</span>
+<span class="lineNum">     216 </span><span class="lineCov">      86968 : }</span>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            : 
+<a name="220"><span class="lineNum">     220 </span>            : //our openGL wrappers</a>
+<span class="lineNum">     221 </span>            : //----------------------------------------------------------
+<span class="lineNum">     222 </span><span class="lineCov">     934816 : void ofPushMatrix(){</span>
+<span class="lineNum">     223 </span><span class="lineCov">     934816 :         renderer-&gt;pushMatrix();</span>
+<span class="lineNum">     224 </span><span class="lineCov">     934816 : }</span>
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<span class="lineNum">     226 </span>            : //----------------------------------------------------------
+<span class="lineNum">     227 </span><span class="lineCov">     935137 : void ofPopMatrix(){</span>
+<span class="lineNum">     228 </span><span class="lineCov">     935137 :         renderer-&gt;popMatrix();</span>
+<span class="lineNum">     229 </span><span class="lineCov">     935137 : }</span>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<span class="lineNum">     231 </span>            : //----------------------------------------------------------
+<span class="lineNum">     232 </span><span class="lineCov">     286877 : void ofTranslate(const ofPoint&amp; p){</span>
+<span class="lineNum">     233 </span><span class="lineCov">     286877 :         renderer-&gt;translate(p);</span>
+<span class="lineNum">     234 </span><span class="lineCov">     286877 : }</span>
+<span class="lineNum">     235 </span>            : 
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<span class="lineNum">     237 </span>            : //----------------------------------------------------------
+<span class="lineNum">     238 </span><span class="lineCov">     568095 : void ofTranslate(float x, float y, float z){</span>
+<span class="lineNum">     239 </span><span class="lineCov">     568095 :         renderer-&gt;translate(x, y, z);</span>
+<span class="lineNum">     240 </span><span class="lineCov">     568095 : }</span>
+<a name="241"><span class="lineNum">     241 </span>            : </a>
+<span class="lineNum">     242 </span>            : //----------------------------------------------------------
+<span class="lineNum">     243 </span><span class="lineCov">      20337 : void ofScale(float xAmnt, float yAmnt, float zAmnt){</span>
+<span class="lineNum">     244 </span><span class="lineCov">      20337 :         renderer-&gt;scale(xAmnt, yAmnt, zAmnt);</span>
+<span class="lineNum">     245 </span><span class="lineCov">      20337 : }</span>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<span class="lineNum">     247 </span>            : //----------------------------------------------------------
+<span class="lineNum">     248 </span><span class="lineCov">      41385 : void ofRotate(float degrees, float vecX, float vecY, float vecZ){</span>
+<span class="lineNum">     249 </span><span class="lineCov">      41385 :         renderer-&gt;rotate(degrees, vecX, vecY, vecZ);</span>
+<span class="lineNum">     250 </span><span class="lineCov">      41385 : }</span>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<span class="lineNum">     252 </span>            : //----------------------------------------------------------
+<span class="lineNum">     253 </span><span class="lineCov">      43781 : void ofRotateX(float degrees){</span>
+<span class="lineNum">     254 </span><span class="lineCov">      43781 :         renderer-&gt;rotateX(degrees);</span>
+<span class="lineNum">     255 </span><span class="lineCov">      43781 : }</span>
+<a name="256"><span class="lineNum">     256 </span>            : </a>
+<span class="lineNum">     257 </span>            : //----------------------------------------------------------
+<span class="lineNum">     258 </span><span class="lineCov">      43533 : void ofRotateY(float degrees){</span>
+<span class="lineNum">     259 </span><span class="lineCov">      43533 :         renderer-&gt;rotateY(degrees);</span>
+<span class="lineNum">     260 </span><span class="lineCov">      43533 : }</span>
+<a name="261"><span class="lineNum">     261 </span>            : </a>
+<span class="lineNum">     262 </span>            : //----------------------------------------------------------
+<span class="lineNum">     263 </span><span class="lineCov">     572806 : void ofRotateZ(float degrees){</span>
+<span class="lineNum">     264 </span><span class="lineCov">     572806 :         renderer-&gt;rotateZ(degrees);</span>
+<span class="lineNum">     265 </span><span class="lineCov">     572806 : }</span>
+<span class="lineNum">     266 </span>            : 
+<a name="267"><span class="lineNum">     267 </span>            : //same as ofRotateZ</a>
+<span class="lineNum">     268 </span>            : //----------------------------------------------------------
+<span class="lineNum">     269 </span><span class="lineCov">    1570647 : void ofRotate(float degrees){</span>
+<span class="lineNum">     270 </span><span class="lineCov">    1570647 :         renderer-&gt;rotate(degrees);</span>
+<span class="lineNum">     271 </span><span class="lineCov">    1570647 : }</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            : // end transformation matrix related functions
+<span class="lineNum">     274 </span>            : //----------------------------------------------------------
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            : //----------------------------------------------------------
+<span class="lineNum">     278 </span>            : // background functions
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<span class="lineNum">     280 </span>            : //----------------------------------------------------------
+<span class="lineNum">     281 </span><span class="lineCov">      89205 : void ofClear(float r, float g, float b, float a){</span>
+<span class="lineNum">     282 </span><span class="lineCov">      89205 :         renderer-&gt;clear(r,g,b,a);</span>
+<span class="lineNum">     283 </span><span class="lineCov">      89205 : }</span>
+<a name="284"><span class="lineNum">     284 </span>            : </a>
+<span class="lineNum">     285 </span>            : //----------------------------------------------------------
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 : void ofClear(float brightness, float a){</span>
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :         renderer-&gt;clear(brightness, brightness, brightness, a);</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 : }</span>
+<a name="289"><span class="lineNum">     289 </span>            : </a>
+<span class="lineNum">     290 </span>            : //----------------------------------------------------------
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 : void ofClear(const ofColor &amp; c){</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :         renderer-&gt;clear(c.r, c.g, c.b, c.a);</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 : }</span>
+<a name="294"><span class="lineNum">     294 </span>            : </a>
+<span class="lineNum">     295 </span>            : //----------------------------------------------------------
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 : void ofClearAlpha(){</span>
+<span class="lineNum">     297 </span><span class="lineNoCov">          0 :         renderer-&gt;clearAlpha();</span>
+<span class="lineNum">     298 </span><span class="lineNoCov">          0 : }       </span>
+<a name="299"><span class="lineNum">     299 </span>            : </a>
+<span class="lineNum">     300 </span>            : //----------------------------------------------------------
+<span class="lineNum">     301 </span><span class="lineCov">          4 : void ofSetBackgroundAuto(bool bAuto){</span>
+<span class="lineNum">     302 </span><span class="lineCov">          4 :         renderer-&gt;setBackgroundAuto(bAuto);</span>
+<span class="lineNum">     303 </span><span class="lineCov">          4 : }</span>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<span class="lineNum">     305 </span>            : //----------------------------------------------------------
+<span class="lineNum">     306 </span><span class="lineCov">      85258 : bool ofbClearBg(){</span>
+<span class="lineNum">     307 </span><span class="lineCov">      85258 :         return renderer-&gt;bClearBg();</span>
+<span class="lineNum">     308 </span>            : }
+<a name="309"><span class="lineNum">     309 </span>            : </a>
+<span class="lineNum">     310 </span>            : //----------------------------------------------------------
+<span class="lineNum">     311 </span><span class="lineCov">      85258 : float * ofBgColorPtr(){</span>
+<span class="lineNum">     312 </span><span class="lineCov">      85258 :         return &amp;renderer-&gt;getBgColor().r;</span>
+<span class="lineNum">     313 </span>            : }
+<a name="314"><span class="lineNum">     314 </span>            : </a>
+<span class="lineNum">     315 </span>            : //----------------------------------------------------------
+<span class="lineNum">     316 </span><span class="lineCov">       8759 : void ofBackground(int brightness, int alpha){</span>
+<span class="lineNum">     317 </span><span class="lineCov">       8759 :         ofBackground(brightness, brightness, brightness, alpha);</span>
+<span class="lineNum">     318 </span><span class="lineCov">       8759 : }</span>
+<a name="319"><span class="lineNum">     319 </span>            : </a>
+<span class="lineNum">     320 </span>            : //----------------------------------------------------------
+<span class="lineNum">     321 </span><span class="lineCov">       3826 : void ofBackground(const ofColor &amp; c){</span>
+<span class="lineNum">     322 </span><span class="lineCov">       3826 :         ofBackground ( c.r, c.g, c.b, c.a);</span>
+<span class="lineNum">     323 </span><span class="lineCov">       3826 : }</span>
+<a name="324"><span class="lineNum">     324 </span>            : </a>
+<span class="lineNum">     325 </span>            : //----------------------------------------------------------
+<span class="lineNum">     326 </span><span class="lineCov">         11 : void ofBackgroundHex(int hexColor, int alpha){</span>
+<span class="lineNum">     327 </span><span class="lineCov">         11 :         ofBackground ( (hexColor &gt;&gt; 16) &amp; 0xff, (hexColor &gt;&gt; 8) &amp; 0xff, (hexColor &gt;&gt; 0) &amp; 0xff, alpha);</span>
+<span class="lineNum">     328 </span><span class="lineCov">         11 : }</span>
+<a name="329"><span class="lineNum">     329 </span>            : </a>
+<span class="lineNum">     330 </span>            : //----------------------------------------------------------
+<span class="lineNum">     331 </span><span class="lineCov">      22711 : void ofBackground(int r, int g, int b, int a){</span>
+<span class="lineNum">     332 </span><span class="lineCov">      22711 :         currentStyle.bgColor.set(r,g,b,a);</span>
+<span class="lineNum">     333 </span><span class="lineCov">      22711 :         renderer-&gt;background(r,g,b,a);</span>
+<span class="lineNum">     334 </span><span class="lineCov">      22711 : }</span>
+<a name="335"><span class="lineNum">     335 </span>            : </a>
+<span class="lineNum">     336 </span>            : //----------------------------------------------------------
+<span class="lineNum">     337 </span><span class="lineCov">      10889 : void ofBackgroundGradient(const ofColor&amp; start, const ofColor&amp; end, ofGradientMode mode) {</span>
+<span class="lineNum">     338 </span><span class="lineCov">      10889 :         float w = ofGetWidth(), h = ofGetHeight();</span>
+<span class="lineNum">     339 </span><span class="lineCov">      10889 :         ofMesh mesh;</span>
+<span class="lineNum">     340 </span><span class="lineCov">      10889 :         mesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);</span>
+<span class="lineNum">     341 </span><span class="lineCov">      10889 :         if(mode == OF_GRADIENT_CIRCULAR) {</span>
+<span class="lineNum">     342 </span>            :                 // this could be optimized by building a single mesh once, then copying
+<span class="lineNum">     343 </span>            :                 // it and just adding the colors whenever the function is called.
+<span class="lineNum">     344 </span><span class="lineCov">       9781 :                 ofVec2f center(w / 2, h / 2);</span>
+<span class="lineNum">     345 </span><span class="lineCov">       9781 :                 mesh.addVertex(center);</span>
+<span class="lineNum">     346 </span><span class="lineCov">       9781 :                 mesh.addColor(start);</span>
+<span class="lineNum">     347 </span><span class="lineCov">       9781 :                 int n = 32; // circular gradient resolution</span>
+<span class="lineNum">     348 </span><span class="lineCov">       9781 :                 float angleBisector = TWO_PI / (n * 2);</span>
+<span class="lineNum">     349 </span><span class="lineCov">       9781 :                 float smallRadius = ofDist(0, 0, w / 2, h / 2);</span>
+<span class="lineNum">     350 </span><span class="lineCov">       9781 :                 float bigRadius = smallRadius / cos(angleBisector);</span>
+<span class="lineNum">     351 </span><span class="lineCov">     332554 :                 for(int i = 0; i &lt;= n; i++) {</span>
+<span class="lineNum">     352 </span><span class="lineCov">     322773 :                         float theta = i * TWO_PI / n;</span>
+<span class="lineNum">     353 </span><span class="lineCov">     322773 :                         mesh.addVertex(center + ofVec2f(sin(theta), cos(theta)) * bigRadius);</span>
+<span class="lineNum">     354 </span><span class="lineCov">     322773 :                         mesh.addColor(end);</span>
+<span class="lineNum">     355 </span>            :                 }
+<span class="lineNum">     356 </span><span class="lineCov">       1108 :         } else if(mode == OF_GRADIENT_LINEAR) {</span>
+<span class="lineNum">     357 </span><span class="lineNoCov">          0 :                 mesh.addVertex(ofVec2f(0, 0));</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :                 mesh.addVertex(ofVec2f(w, 0));</span>
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 mesh.addVertex(ofVec2f(w, h));</span>
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 mesh.addVertex(ofVec2f(0, h));</span>
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 mesh.addColor(start);</span>
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 mesh.addColor(start);</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 mesh.addColor(end);</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 mesh.addColor(end);</span>
+<span class="lineNum">     365 </span><span class="lineCov">       1108 :         } else if(mode == OF_GRADIENT_BAR) {</span>
+<span class="lineNum">     366 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(w / 2, h / 2));</span>
+<span class="lineNum">     367 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(0, h / 2));</span>
+<span class="lineNum">     368 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(0, 0));</span>
+<span class="lineNum">     369 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(w, 0));</span>
+<span class="lineNum">     370 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(w, h / 2));</span>
+<span class="lineNum">     371 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(w, h));</span>
+<span class="lineNum">     372 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(0, h));</span>
+<span class="lineNum">     373 </span><span class="lineCov">       1108 :                 mesh.addVertex(ofVec2f(0, h / 2));</span>
+<span class="lineNum">     374 </span><span class="lineCov">       1108 :                 mesh.addColor(start);</span>
+<span class="lineNum">     375 </span><span class="lineCov">       1108 :                 mesh.addColor(start);</span>
+<span class="lineNum">     376 </span><span class="lineCov">       1108 :                 mesh.addColor(end);</span>
+<span class="lineNum">     377 </span><span class="lineCov">       1108 :                 mesh.addColor(end);</span>
+<span class="lineNum">     378 </span><span class="lineCov">       1108 :                 mesh.addColor(start);</span>
+<span class="lineNum">     379 </span><span class="lineCov">       1108 :                 mesh.addColor(end);</span>
+<span class="lineNum">     380 </span><span class="lineCov">       1108 :                 mesh.addColor(end);</span>
+<span class="lineNum">     381 </span><span class="lineCov">       1108 :                 mesh.addColor(start);</span>
+<span class="lineNum">     382 </span>            :         }
+<span class="lineNum">     383 </span><span class="lineCov">      10889 :         glDepthMask(false);</span>
+<span class="lineNum">     384 </span><span class="lineCov">      10889 :         mesh.draw();</span>
+<span class="lineNum">     385 </span><span class="lineCov">      10889 :         glDepthMask(true);</span>
+<span class="lineNum">     386 </span><span class="lineCov">      10889 : }</span>
+<a name="387"><span class="lineNum">     387 </span>            : </a>
+<span class="lineNum">     388 </span>            : //----------------------------------------------------------
+<span class="lineNum">     389 </span><span class="lineNoCov">          0 : void ofSetBackgroundColor(int brightness, int alpha){</span>
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :         ofSetBackgroundColor(brightness, brightness, brightness, alpha);</span>
+<span class="lineNum">     391 </span><span class="lineNoCov">          0 : }</span>
+<a name="392"><span class="lineNum">     392 </span>            : </a>
+<span class="lineNum">     393 </span>            : //----------------------------------------------------------
+<span class="lineNum">     394 </span><span class="lineCov">     134444 : void ofSetBackgroundColor(const ofColor &amp; c){</span>
+<span class="lineNum">     395 </span><span class="lineCov">     134444 :         ofSetBackgroundColor ( c.r, c.g, c.b, c.a);</span>
+<span class="lineNum">     396 </span><span class="lineCov">     134444 : }</span>
+<a name="397"><span class="lineNum">     397 </span>            : </a>
+<span class="lineNum">     398 </span>            : //----------------------------------------------------------
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 : void ofSetBackgroundColorHex(int hexColor, int alpha){</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :         ofSetBackgroundColor ( (hexColor &gt;&gt; 16) &amp; 0xff, (hexColor &gt;&gt; 8) &amp; 0xff, (hexColor &gt;&gt; 0) &amp; 0xff, alpha);</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 : }</span>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<span class="lineNum">     403 </span>            : //----------------------------------------------------------
+<span class="lineNum">     404 </span><span class="lineCov">     134444 : void ofSetBackgroundColor(int r, int g, int b, int a){</span>
+<span class="lineNum">     405 </span><span class="lineCov">     134444 :         currentStyle.bgColor.set(r,g,b,a);</span>
+<span class="lineNum">     406 </span><span class="lineCov">     134444 : }</span>
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span>            : // end background functions
+<span class="lineNum">     409 </span>            : //----------------------------------------------------------
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     415 </span>            : // drawing modes
+<a name="416"><span class="lineNum">     416 </span>            : </a>
+<span class="lineNum">     417 </span>            : //----------------------------------------------------------
+<span class="lineNum">     418 </span><span class="lineCov">     141386 : void  ofSetRectMode(ofRectMode mode){</span>
+<span class="lineNum">     419 </span><span class="lineCov">     141386 :         renderer-&gt;setRectMode(mode);</span>
+<span class="lineNum">     420 </span><span class="lineCov">     141386 :         currentStyle.rectMode = mode;</span>
+<span class="lineNum">     421 </span><span class="lineCov">     141386 : }</span>
+<a name="422"><span class="lineNum">     422 </span>            : </a>
+<span class="lineNum">     423 </span>            : //----------------------------------------------------------
+<span class="lineNum">     424 </span><span class="lineCov">      65347 : ofRectMode ofGetRectMode(){</span>
+<span class="lineNum">     425 </span><span class="lineCov">      65347 :         return  renderer-&gt;getRectMode();</span>
+<span class="lineNum">     426 </span>            : }
+<a name="427"><span class="lineNum">     427 </span>            : </a>
+<span class="lineNum">     428 </span>            : //----------------------------------------------------------
+<span class="lineNum">     429 </span><span class="lineCov">     143044 : void ofNoFill(){</span>
+<span class="lineNum">     430 </span><span class="lineCov">     143044 :         shape.setFilled(false);</span>
+<span class="lineNum">     431 </span><span class="lineCov">     143044 :         shape.setStrokeWidth(currentStyle.lineWidth);</span>
+<span class="lineNum">     432 </span><span class="lineCov">     143044 :         renderer-&gt;setFillMode(OF_OUTLINE);</span>
+<span class="lineNum">     433 </span><span class="lineCov">     143044 :         currentStyle.bFill = false;</span>
+<span class="lineNum">     434 </span><span class="lineCov">     143044 : }</span>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<span class="lineNum">     436 </span>            : //----------------------------------------------------------
+<span class="lineNum">     437 </span><span class="lineCov">     250634 : void ofFill(){</span>
+<span class="lineNum">     438 </span><span class="lineCov">     250634 :         shape.setFilled(true);</span>
+<span class="lineNum">     439 </span><span class="lineCov">     250634 :         shape.setStrokeWidth(0);</span>
+<span class="lineNum">     440 </span><span class="lineCov">     250634 :         renderer-&gt;setFillMode(OF_FILLED);</span>
+<span class="lineNum">     441 </span><span class="lineCov">     250634 :         currentStyle.bFill = true;</span>
+<span class="lineNum">     442 </span><span class="lineCov">     250634 : }</span>
+<span class="lineNum">     443 </span>            : 
+<a name="444"><span class="lineNum">     444 </span>            : // Returns OF_FILLED or OF_OUTLINE</a>
+<span class="lineNum">     445 </span>            : //----------------------------------------------------------
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 : ofFillFlag ofGetFill(){</span>
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :         return renderer-&gt;getFillMode();</span>
+<span class="lineNum">     448 </span>            : }
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<span class="lineNum">     450 </span>            : //----------------------------------------------------------
+<span class="lineNum">     451 </span><span class="lineCov">     516909 : void ofSetLineWidth(float lineWidth){</span>
+<span class="lineNum">     452 </span><span class="lineCov">     516909 :         shape.setStrokeWidth(lineWidth);</span>
+<span class="lineNum">     453 </span><span class="lineCov">     516909 :         renderer-&gt;setLineWidth(lineWidth);</span>
+<span class="lineNum">     454 </span><span class="lineCov">     516909 :         currentStyle.lineWidth = lineWidth;</span>
+<span class="lineNum">     455 </span><span class="lineCov">     516909 : }</span>
+<a name="456"><span class="lineNum">     456 </span>            : </a>
+<span class="lineNum">     457 </span>            : //----------------------------------------
+<span class="lineNum">     458 </span><span class="lineCov">     134444 : void ofSetCurveResolution(int res){</span>
+<span class="lineNum">     459 </span><span class="lineCov">     134444 :         shape.setCurveResolution(res);</span>
+<span class="lineNum">     460 </span><span class="lineCov">     134444 :         currentStyle.curveResolution = res;</span>
+<span class="lineNum">     461 </span><span class="lineCov">     134444 : }</span>
+<a name="462"><span class="lineNum">     462 </span>            : </a>
+<span class="lineNum">     463 </span>            : //----------------------------------------
+<span class="lineNum">     464 </span><span class="lineCov">     134446 : void ofSetSphereResolution(int res){</span>
+<span class="lineNum">     465 </span><span class="lineCov">     134446 :         renderer-&gt;setSphereResolution(res);</span>
+<span class="lineNum">     466 </span><span class="lineCov">     134446 :         currentStyle.sphereResolution = res;</span>
+<span class="lineNum">     467 </span><span class="lineCov">     134446 : }</span>
+<a name="468"><span class="lineNum">     468 </span>            : </a>
+<span class="lineNum">     469 </span>            : //----------------------------------------------------------
+<span class="lineNum">     470 </span><span class="lineCov">     140594 : void ofSetCircleResolution(int res){</span>
+<span class="lineNum">     471 </span><span class="lineCov">     140594 :         renderer-&gt;setCircleResolution(res);</span>
+<span class="lineNum">     472 </span><span class="lineCov">     140594 :         currentStyle.circleResolution = res;</span>
+<span class="lineNum">     473 </span><span class="lineCov">     140594 : }</span>
+<a name="474"><span class="lineNum">     474 </span>            : </a>
+<span class="lineNum">     475 </span>            : //----------------------------------------------------------
+<span class="lineNum">     476 </span><span class="lineCov">    1889771 : void ofSetColor(const ofColor &amp; color){</span>
+<span class="lineNum">     477 </span><span class="lineCov">    1889771 :         ofSetColor(color.r,color.g,color.b,color.a);</span>
+<span class="lineNum">     478 </span><span class="lineCov">    1889771 : }</span>
+<a name="479"><span class="lineNum">     479 </span>            : </a>
+<span class="lineNum">     480 </span>            : //----------------------------------------------------------
+<span class="lineNum">     481 </span><span class="lineCov">     454389 : void ofSetColor(const ofColor &amp; color, int _a){</span>
+<span class="lineNum">     482 </span><span class="lineCov">     454389 :         ofSetColor(color.r,color.g,color.b,_a);</span>
+<span class="lineNum">     483 </span><span class="lineCov">     454389 : }</span>
+<a name="484"><span class="lineNum">     484 </span>            : </a>
+<span class="lineNum">     485 </span>            : //----------------------------------------------------------
+<span class="lineNum">     486 </span><span class="lineCov">    4014505 : void ofSetColor(int r, int g, int b){</span>
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span><span class="lineCov">    4014505 :         currentStyle.color.r = r;</span>
+<span class="lineNum">     489 </span><span class="lineCov">    4014505 :         currentStyle.color.g = g;</span>
+<span class="lineNum">     490 </span><span class="lineCov">    4014505 :         currentStyle.color.b = b;</span>
+<span class="lineNum">     491 </span><span class="lineCov">    4014505 :         currentStyle.color.a = 255.0f;</span>
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span><span class="lineCov">    4014505 :         renderer-&gt;setColor(r,g,b,255);</span>
+<span class="lineNum">     494 </span><span class="lineCov">    4014505 : }</span>
+<span class="lineNum">     495 </span>            : 
+<a name="496"><span class="lineNum">     496 </span>            : </a>
+<span class="lineNum">     497 </span>            : //----------------------------------------------------------
+<span class="lineNum">     498 </span><span class="lineCov">    2571285 : void ofSetColor(int r, int g, int b, int a){</span>
+<span class="lineNum">     499 </span>            : 
+<span class="lineNum">     500 </span><span class="lineCov">    2571285 :         currentStyle.color.r = r;</span>
+<span class="lineNum">     501 </span><span class="lineCov">    2571285 :         currentStyle.color.g = g;</span>
+<span class="lineNum">     502 </span><span class="lineCov">    2571285 :         currentStyle.color.b = b;</span>
+<span class="lineNum">     503 </span><span class="lineCov">    2571285 :         currentStyle.color.a = a;</span>
+<span class="lineNum">     504 </span>            : 
+<span class="lineNum">     505 </span><span class="lineCov">    2571285 :         renderer-&gt;setColor(r,g,b,a);</span>
+<span class="lineNum">     506 </span><span class="lineCov">    2571285 : }</span>
+<a name="507"><span class="lineNum">     507 </span>            : </a>
+<span class="lineNum">     508 </span>            : //----------------------------------------------------------
+<span class="lineNum">     509 </span><span class="lineCov">     573982 : void ofSetColor(int gray){</span>
+<span class="lineNum">     510 </span><span class="lineCov">     573982 :         if( gray &gt; 255 ){</span>
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :                 ofLog(OF_LOG_WARNING, &quot;ofSetColor(int hexColor) - has changed to ofSetColor(int gray) - perhaps you want ofSetHexColor instead?\n&quot; );</span>
+<span class="lineNum">     512 </span>            :         }
+<span class="lineNum">     513 </span><span class="lineCov">     573982 :         ofSetColor(gray, gray, gray);</span>
+<span class="lineNum">     514 </span><span class="lineCov">     573982 : }</span>
+<a name="515"><span class="lineNum">     515 </span>            : </a>
+<span class="lineNum">     516 </span>            : //----------------------------------------------------------
+<span class="lineNum">     517 </span><span class="lineCov">     314798 : void ofSetHexColor(int hexColor){</span>
+<span class="lineNum">     518 </span><span class="lineCov">     314798 :         int r = (hexColor &gt;&gt; 16) &amp; 0xff;</span>
+<span class="lineNum">     519 </span><span class="lineCov">     314798 :         int g = (hexColor &gt;&gt; 8) &amp; 0xff;</span>
+<span class="lineNum">     520 </span><span class="lineCov">     314798 :         int b = (hexColor &gt;&gt; 0) &amp; 0xff;</span>
+<span class="lineNum">     521 </span><span class="lineCov">     314798 :         ofSetColor(r,g,b);</span>
+<span class="lineNum">     522 </span><span class="lineCov">     314798 : }</span>
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span>            : 
+<a name="525"><span class="lineNum">     525 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span><span class="lineCov">     188642 : void ofEnableBlendMode(ofBlendMode blendMode){</span>
+<span class="lineNum">     528 </span><span class="lineCov">     188642 :         currentStyle.blendingMode = blendMode;</span>
+<span class="lineNum">     529 </span><span class="lineCov">     188642 :         renderer-&gt;setBlendMode(blendMode);</span>
+<span class="lineNum">     530 </span><span class="lineCov">     188642 : }</span>
+<a name="531"><span class="lineNum">     531 </span>            : </a>
+<span class="lineNum">     532 </span>            : //----------------------------------------------------------
+<span class="lineNum">     533 </span><span class="lineCov">       1894 : void ofEnablePointSprites(){</span>
+<span class="lineNum">     534 </span><span class="lineCov">       1894 :         renderer-&gt;enablePointSprites();</span>
+<span class="lineNum">     535 </span><span class="lineCov">       1894 : }</span>
+<a name="536"><span class="lineNum">     536 </span>            : </a>
+<span class="lineNum">     537 </span>            : //----------------------------------------------------------
+<span class="lineNum">     538 </span><span class="lineCov">       1894 : void ofDisablePointSprites(){</span>
+<span class="lineNum">     539 </span><span class="lineCov">       1894 :         renderer-&gt;disablePointSprites();</span>
+<span class="lineNum">     540 </span><span class="lineCov">       1894 : }</span>
+<a name="541"><span class="lineNum">     541 </span>            : </a>
+<span class="lineNum">     542 </span>            : //----------------------------------------------------------
+<span class="lineNum">     543 </span><span class="lineCov">      21647 : void ofDisableBlendMode(){</span>
+<span class="lineNum">     544 </span><span class="lineCov">      21647 :     glDisable(GL_BLEND);</span>
+<span class="lineNum">     545 </span><span class="lineCov">      21647 :         currentStyle.blendingMode = OF_BLENDMODE_DISABLED;</span>
+<span class="lineNum">     546 </span><span class="lineCov">      21647 : }</span>
+<a name="547"><span class="lineNum">     547 </span>            : </a>
+<span class="lineNum">     548 </span>            : //----------------------------------------------------------
+<span class="lineNum">     549 </span><span class="lineCov">      42750 : void ofEnableAlphaBlending(){</span>
+<span class="lineNum">     550 </span><span class="lineCov">      42750 :         ofEnableBlendMode(OF_BLENDMODE_ALPHA);</span>
+<span class="lineNum">     551 </span><span class="lineCov">      42750 : }</span>
+<a name="552"><span class="lineNum">     552 </span>            : </a>
+<span class="lineNum">     553 </span>            : //----------------------------------------------------------
+<span class="lineNum">     554 </span><span class="lineCov">      20204 : void ofDisableAlphaBlending(){</span>
+<span class="lineNum">     555 </span><span class="lineCov">      20204 :     ofDisableBlendMode();</span>
+<span class="lineNum">     556 </span><span class="lineCov">      20204 : }</span>
+<a name="557"><span class="lineNum">     557 </span>            : </a>
+<span class="lineNum">     558 </span>            : //----------------------------------------------------------
+<span class="lineNum">     559 </span><span class="lineCov">     125982 : void ofEnableSmoothing(){</span>
+<span class="lineNum">     560 </span>            :         // please see:
+<span class="lineNum">     561 </span>            :         // http://www.opengl.org/resources/faq/technical/rasterization.htm
+<span class="lineNum">     562 </span><span class="lineCov">     125982 :         renderer-&gt;setLineSmoothing(true);</span>
+<span class="lineNum">     563 </span><span class="lineCov">     125982 :         currentStyle.smoothing = 1;</span>
+<span class="lineNum">     564 </span><span class="lineCov">     125982 : }</span>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<span class="lineNum">     566 </span>            : //----------------------------------------------------------
+<span class="lineNum">     567 </span><span class="lineCov">      80400 : void ofDisableSmoothing(){</span>
+<span class="lineNum">     568 </span><span class="lineCov">      80400 :         renderer-&gt;setLineSmoothing(false);</span>
+<span class="lineNum">     569 </span><span class="lineCov">      80400 :         currentStyle.smoothing = 0;</span>
+<span class="lineNum">     570 </span><span class="lineCov">      80400 : }</span>
+<a name="571"><span class="lineNum">     571 </span>            : </a>
+<span class="lineNum">     572 </span>            : //----------------------------------------------------------
+<span class="lineNum">     573 </span><span class="lineCov">     142599 : void ofSetPolyMode(ofPolyWindingMode mode){</span>
+<span class="lineNum">     574 </span><span class="lineCov">     142599 :         shape.setPolyWindingMode(mode);</span>
+<span class="lineNum">     575 </span><span class="lineCov">     142599 :         currentStyle.polyMode = mode;</span>
+<span class="lineNum">     576 </span><span class="lineCov">     142599 : }</span>
+<a name="577"><span class="lineNum">     577 </span>            : </a>
+<a name="578"><span class="lineNum">     578 </span>            : //----------------------------------------</a>
+<span class="lineNum">     579 </span><span class="lineCov">     135312 : void ofSetDrawBitmapMode(ofDrawBitmapMode mode){</span>
+<span class="lineNum">     580 </span><span class="lineCov">     135314 :         currentStyle.drawBitmapMode = mode;</span>
+<span class="lineNum">     581 </span><span class="lineCov">     135312 : }</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span>            : //----------------------------------------------------------
+<span class="lineNum">     584 </span><span class="lineCov">     134444 : void ofSetStyle(ofStyle style){</span>
+<span class="lineNum">     585 </span>            :         //color
+<span class="lineNum">     586 </span><span class="lineCov">     134444 :         ofSetColor((int)style.color.r, (int)style.color.g, (int)style.color.b, (int)style.color.a);</span>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span>            :         //bg color
+<span class="lineNum">     589 </span><span class="lineCov">     134444 :         ofSetBackgroundColor(style.bgColor);</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            :         //circle resolution - don't worry it only recalculates the display list if the res has changed
+<span class="lineNum">     592 </span><span class="lineCov">     134444 :         ofSetCircleResolution(style.circleResolution);</span>
+<span class="lineNum">     593 </span>            : 
+<span class="lineNum">     594 </span><span class="lineCov">     134444 :         ofSetSphereResolution(style.sphereResolution);</span>
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span><span class="lineCov">     134444 :         ofSetCurveResolution(style.curveResolution);</span>
+<span class="lineNum">     597 </span>            : 
+<span class="lineNum">     598 </span>            :         //line width - finally!
+<span class="lineNum">     599 </span><span class="lineCov">     134444 :         ofSetLineWidth(style.lineWidth);</span>
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span>            :         //rect mode: corner/center
+<span class="lineNum">     602 </span><span class="lineCov">     134444 :         ofSetRectMode(style.rectMode);</span>
+<span class="lineNum">     603 </span>            : 
+<span class="lineNum">     604 </span>            :         //poly mode: winding type
+<span class="lineNum">     605 </span><span class="lineCov">     134444 :         ofSetPolyMode(style.polyMode);</span>
+<span class="lineNum">     606 </span>            : 
+<span class="lineNum">     607 </span>            :         //fill
+<span class="lineNum">     608 </span><span class="lineCov">     134444 :         if(style.bFill ){</span>
+<span class="lineNum">     609 </span><span class="lineCov">     123130 :                 ofFill();</span>
+<span class="lineNum">     610 </span>            :         }else{
+<span class="lineNum">     611 </span><span class="lineCov">      11314 :                 ofNoFill();</span>
+<span class="lineNum">     612 </span>            :         }
+<span class="lineNum">     613 </span>            : 
+<span class="lineNum">     614 </span>            :         //smoothing
+<span class="lineNum">     615 </span><span class="lineCov">     134444 :         if(style.smoothing ){</span>
+<span class="lineNum">     616 </span><span class="lineCov">      99044 :                 ofEnableSmoothing();</span>
+<span class="lineNum">     617 </span>            :         }else{
+<span class="lineNum">     618 </span><span class="lineCov">      35400 :                 ofDisableSmoothing();</span>
+<span class="lineNum">     619 </span>            :         }
+<span class="lineNum">     620 </span>            : 
+<span class="lineNum">     621 </span>            :         //blending
+<span class="lineNum">     622 </span><span class="lineCov">     134444 :         ofEnableBlendMode(style.blendingMode);</span>
+<span class="lineNum">     623 </span>            :         
+<span class="lineNum">     624 </span>            :         //bitmap draw mode
+<span class="lineNum">     625 </span><span class="lineCov">     134444 :         ofSetDrawBitmapMode(style.drawBitmapMode);</span>
+<span class="lineNum">     626 </span><span class="lineCov">     134444 : }</span>
+<a name="627"><span class="lineNum">     627 </span>            : </a>
+<a name="628"><span class="lineNum">     628 </span>            : //----------------------------------------------------------</a>
+<span class="lineNum">     629 </span><span class="lineCov">     333239 : ofStyle ofGetStyle(){</span>
+<span class="lineNum">     630 </span><span class="lineCov">     333239 :         return currentStyle;</span>
+<span class="lineNum">     631 </span>            : }
+<a name="632"><span class="lineNum">     632 </span>            : </a>
+<span class="lineNum">     633 </span>            : //----------------------------------------------------------
+<span class="lineNum">     634 </span><span class="lineCov">     134240 : void ofPushStyle(){</span>
+<span class="lineNum">     635 </span><span class="lineCov">     134240 :         styleHistory.push_front(currentStyle);</span>
+<span class="lineNum">     636 </span>            : 
+<span class="lineNum">     637 </span>            :         //if we are over the max number of styles we have set, then delete the oldest styles.
+<span class="lineNum">     638 </span><span class="lineCov">     134240 :         if( styleHistory.size() &gt; OF_MAX_STYLE_HISTORY ){</span>
+<span class="lineNum">     639 </span><span class="lineNoCov">          0 :                 styleHistory.pop_back();</span>
+<span class="lineNum">     640 </span>            :                 //should we warn here?
+<span class="lineNum">     641 </span>            :                 //ofLog(OF_LOG_WARNING, &quot;ofPushStyle - warning: you have used ofPushStyle more than %i times without calling ofPopStyle - check your code!&quot;, OF_MAX_STYLE_HISTORY);
+<span class="lineNum">     642 </span>            :         }
+<span class="lineNum">     643 </span><span class="lineCov">     134240 : }</span>
+<a name="644"><span class="lineNum">     644 </span>            : </a>
+<span class="lineNum">     645 </span>            : //----------------------------------------------------------
+<span class="lineNum">     646 </span><span class="lineCov">     134376 : void ofPopStyle(){</span>
+<span class="lineNum">     647 </span><span class="lineCov">     134376 :         if( styleHistory.size() ){</span>
+<span class="lineNum">     648 </span><span class="lineCov">     134240 :                 ofSetStyle(styleHistory.front());</span>
+<span class="lineNum">     649 </span><span class="lineCov">     134240 :                 styleHistory.pop_front();</span>
+<span class="lineNum">     650 </span>            :         }
+<span class="lineNum">     651 </span><span class="lineCov">     134376 : }</span>
+<span class="lineNum">     652 </span>            : 
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span>            : 
+<span class="lineNum">     655 </span>            : // end drawing modes
+<span class="lineNum">     656 </span>            : //---------------------------------------------------------------------------
+<span class="lineNum">     657 </span>            : 
+<span class="lineNum">     658 </span>            : 
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span>            : //----------------------------------------------------------
+<span class="lineNum">     662 </span>            : // primitives
+<a name="663"><span class="lineNum">     663 </span>            : </a>
+<span class="lineNum">     664 </span>            : //----------------------------------------------------------
+<span class="lineNum">     665 </span><span class="lineNoCov">          0 : void ofTriangle(const ofPoint &amp; p1, const ofPoint &amp; p2, const ofPoint &amp; p3){</span>
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :         ofTriangle(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);</span>
+<span class="lineNum">     667 </span><span class="lineNoCov">          0 : }</span>
+<a name="668"><span class="lineNum">     668 </span>            : </a>
+<span class="lineNum">     669 </span>            : //----------------------------------------------------------
+<span class="lineNum">     670 </span><span class="lineCov">        977 : void ofTriangle(float x1,float y1,float x2,float y2,float x3, float y3){</span>
+<span class="lineNum">     671 </span><span class="lineCov">        977 :         ofTriangle(x1, y1, 0.0f, x2, y2, 0.0f, x3, y3, 0.0f);</span>
+<span class="lineNum">     672 </span><span class="lineCov">        977 : }</span>
+<a name="673"><span class="lineNum">     673 </span>            : </a>
+<span class="lineNum">     674 </span>            : //----------------------------------------------------------
+<span class="lineNum">     675 </span><span class="lineCov">        977 : void ofTriangle(float x1,float y1,float z1,float x2,float y2,float z2,float x3, float y3,float z3){</span>
+<span class="lineNum">     676 </span><span class="lineCov">        977 :         renderer-&gt;drawTriangle(x1,y1,z1,x2,y2,z2,x3,y3,z3);</span>
+<span class="lineNum">     677 </span><span class="lineCov">        977 : }</span>
+<a name="678"><span class="lineNum">     678 </span>            : </a>
+<span class="lineNum">     679 </span>            : //----------------------------------------------------------
+<span class="lineNum">     680 </span><span class="lineCov">      95731 : void ofCircle(const ofPoint &amp; p, float radius){</span>
+<span class="lineNum">     681 </span><span class="lineCov">      95731 :         ofCircle(p.x, p.y, p.z, radius);</span>
+<span class="lineNum">     682 </span><span class="lineCov">      95731 : }</span>
+<a name="683"><span class="lineNum">     683 </span>            : </a>
+<span class="lineNum">     684 </span>            : //----------------------------------------------------------
+<span class="lineNum">     685 </span><span class="lineCov">    7288307 : void ofCircle(float x, float y, float radius){</span>
+<span class="lineNum">     686 </span><span class="lineCov">    7288307 :         ofCircle(x,y,0,radius);</span>
+<span class="lineNum">     687 </span><span class="lineCov">    7288307 : }</span>
+<a name="688"><span class="lineNum">     688 </span>            : </a>
+<span class="lineNum">     689 </span>            : //----------------------------------------------------------
+<span class="lineNum">     690 </span><span class="lineCov">    7384038 : void ofCircle(float x, float y, float z, float radius){</span>
+<span class="lineNum">     691 </span><span class="lineCov">    7384038 :         renderer-&gt;drawCircle(x,y,z,radius);</span>
+<span class="lineNum">     692 </span><span class="lineCov">    7384038 : }</span>
+<a name="693"><span class="lineNum">     693 </span>            : </a>
+<span class="lineNum">     694 </span>            : //----------------------------------------------------------
+<span class="lineNum">     695 </span><span class="lineNoCov">          0 : void ofEllipse(const ofPoint &amp; p, float width, float height){</span>
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :         ofEllipse(p.x, p.y, p.z, width, height);</span>
+<span class="lineNum">     697 </span><span class="lineNoCov">          0 : }</span>
+<a name="698"><span class="lineNum">     698 </span>            : </a>
+<span class="lineNum">     699 </span>            : //----------------------------------------------------------
+<span class="lineNum">     700 </span><span class="lineCov">     917141 : void ofEllipse(float x, float y, float width, float height){</span>
+<span class="lineNum">     701 </span><span class="lineCov">     917141 :         ofEllipse(x,y,0,width,height);</span>
+<span class="lineNum">     702 </span><span class="lineCov">     917141 : }</span>
+<a name="703"><span class="lineNum">     703 </span>            : </a>
+<span class="lineNum">     704 </span>            : //----------------------------------------------------------
+<span class="lineNum">     705 </span><span class="lineCov">     917141 : void ofEllipse(float x, float y, float z, float width, float height){</span>
+<span class="lineNum">     706 </span><span class="lineCov">     917141 :         renderer-&gt;drawEllipse(x,y,z,width,height);</span>
+<span class="lineNum">     707 </span><span class="lineCov">     917141 : }</span>
+<a name="708"><span class="lineNum">     708 </span>            : </a>
+<span class="lineNum">     709 </span>            : //----------------------------------------------------------
+<span class="lineNum">     710 </span><span class="lineCov">     459732 : void ofLine(const ofPoint &amp; p1, const ofPoint &amp; p2){</span>
+<span class="lineNum">     711 </span><span class="lineCov">     459732 :         ofLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);</span>
+<span class="lineNum">     712 </span><span class="lineCov">     459732 : }</span>
+<a name="713"><span class="lineNum">     713 </span>            : </a>
+<span class="lineNum">     714 </span>            : //----------------------------------------------------------
+<span class="lineNum">     715 </span><span class="lineCov">    5194238 : void ofLine(float x1,float y1,float x2,float y2){</span>
+<span class="lineNum">     716 </span><span class="lineCov">    5194238 :         ofLine(x1, y1, 0.0f, x2, y2, 0.0f);</span>
+<span class="lineNum">     717 </span><span class="lineCov">    5194238 : }</span>
+<a name="718"><span class="lineNum">     718 </span>            : </a>
+<span class="lineNum">     719 </span>            : //----------------------------------------------------------
+<span class="lineNum">     720 </span><span class="lineCov">    5981613 : void ofLine(float x1,float y1,float z1,float x2,float y2,float z2){</span>
+<span class="lineNum">     721 </span><span class="lineCov">    5981613 :         renderer-&gt;drawLine(x1,y1,z1,x2,y2,z2);</span>
+<span class="lineNum">     722 </span><span class="lineCov">    5981613 : }</span>
+<a name="723"><span class="lineNum">     723 </span>            : </a>
+<span class="lineNum">     724 </span>            : //----------------------------------------------------------
+<span class="lineNum">     725 </span><span class="lineCov">       9419 : void ofRect(const ofRectangle &amp; r){</span>
+<span class="lineNum">     726 </span><span class="lineCov">       9419 :         ofRect(r.x, r.y, 0.0f, r.width, r.height);</span>
+<span class="lineNum">     727 </span><span class="lineCov">       9419 : }</span>
+<a name="728"><span class="lineNum">     728 </span>            : </a>
+<span class="lineNum">     729 </span>            : //----------------------------------------------------------
+<span class="lineNum">     730 </span><span class="lineNoCov">          0 : void ofRect(const ofPoint &amp; p,float w,float h){</span>
+<span class="lineNum">     731 </span><span class="lineNoCov">          0 :         ofRect(p.x, p.y, p.z, w, h);</span>
+<span class="lineNum">     732 </span><span class="lineNoCov">          0 : }</span>
+<a name="733"><span class="lineNum">     733 </span>            : </a>
+<span class="lineNum">     734 </span>            : //----------------------------------------------------------
+<span class="lineNum">     735 </span><span class="lineCov">    1953903 : void ofRect(float x,float y,float w,float h){</span>
+<span class="lineNum">     736 </span><span class="lineCov">    1953903 :         ofRect(x, y, 0.0f, w, h);</span>
+<span class="lineNum">     737 </span><span class="lineCov">    1953903 : }</span>
+<a name="738"><span class="lineNum">     738 </span>            : </a>
+<span class="lineNum">     739 </span>            : //----------------------------------------------------------
+<span class="lineNum">     740 </span><span class="lineCov">    1963322 : void ofRect(float x,float y,float z,float w,float h){</span>
+<span class="lineNum">     741 </span><span class="lineCov">    1963322 :         renderer-&gt;drawRectangle(x,y,z,w,h);</span>
+<span class="lineNum">     742 </span><span class="lineCov">    1963322 : }</span>
+<a name="743"><span class="lineNum">     743 </span>            : </a>
+<span class="lineNum">     744 </span>            : //----------------------------------------------------------
+<span class="lineNum">     745 </span><span class="lineNoCov">          0 : void ofRectRounded(const ofRectangle &amp; b,float r){</span>
+<span class="lineNum">     746 </span><span class="lineNoCov">          0 :         ofRectRounded(b.x, b.y, 0.0f, b.width, b.height, r);</span>
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 : }</span>
+<a name="748"><span class="lineNum">     748 </span>            : </a>
+<span class="lineNum">     749 </span>            : //----------------------------------------------------------
+<span class="lineNum">     750 </span><span class="lineNoCov">          0 : void ofRectRounded(const ofPoint &amp; p,float w,float h,float r){</span>
+<span class="lineNum">     751 </span><span class="lineNoCov">          0 :         ofRectRounded(p.x, p.y, p.z, w, h, r);</span>
+<span class="lineNum">     752 </span><span class="lineNoCov">          0 : }</span>
+<a name="753"><span class="lineNum">     753 </span>            : </a>
+<span class="lineNum">     754 </span>            : //----------------------------------------------------------
+<span class="lineNum">     755 </span><span class="lineNoCov">          0 : void ofRectRounded(float x,float y,float w,float h,float r){</span>
+<span class="lineNum">     756 </span><span class="lineNoCov">          0 :         ofRectRounded(x, y, 0.0f, w, h, r);</span>
+<span class="lineNum">     757 </span><span class="lineNoCov">          0 : }</span>
+<a name="758"><span class="lineNum">     758 </span>            : </a>
+<span class="lineNum">     759 </span>            : //----------------------------------------------------------
+<span class="lineNum">     760 </span><span class="lineNoCov">          0 : void ofRectRounded(float x,float y,float z,float w,float h,float r){</span>
+<span class="lineNum">     761 </span><span class="lineNoCov">          0 :         float x2 = x + w;</span>
+<span class="lineNum">     762 </span><span class="lineNoCov">          0 :         float y2 = y + h;</span>
+<span class="lineNum">     763 </span>            : 
+<span class="lineNum">     764 </span><span class="lineNoCov">          0 :         if (r &gt; w || r &gt; h || r &lt;= 0){</span>
+<span class="lineNum">     765 </span><span class="lineNoCov">          0 :                 ofRect(x, y, z, w, h);</span>
+<span class="lineNum">     766 </span><span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     767 </span>            :         }
+<span class="lineNum">     768 </span>            : 
+<span class="lineNum">     769 </span><span class="lineNoCov">          0 :         shape.clear();</span>
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :         shape.lineTo(x+r, y);</span>
+<span class="lineNum">     771 </span><span class="lineNoCov">          0 :         shape.bezierTo(x,y, x,y+r, x,y+r);</span>
+<span class="lineNum">     772 </span><span class="lineNoCov">          0 :         shape.lineTo(x, y2-r);</span>
+<span class="lineNum">     773 </span><span class="lineNoCov">          0 :         shape.bezierTo(x,y2, x+r,y2, x+r,y2);</span>
+<span class="lineNum">     774 </span><span class="lineNoCov">          0 :         shape.lineTo(x2-r, y2);</span>
+<span class="lineNum">     775 </span><span class="lineNoCov">          0 :         shape.bezierTo(x2,y2, x2,y2-r, x2,y2-r);</span>
+<span class="lineNum">     776 </span><span class="lineNoCov">          0 :         shape.lineTo(x2, y+r);</span>
+<span class="lineNum">     777 </span><span class="lineNoCov">          0 :         shape.bezierTo(x2,y, x2-r,y, x2-r,y);</span>
+<span class="lineNum">     778 </span><span class="lineNoCov">          0 :         shape.lineTo(x+r, y);</span>
+<span class="lineNum">     779 </span><span class="lineNoCov">          0 :         shape.draw();</span>
+<span class="lineNum">     780 </span>            : }
+<a name="781"><span class="lineNum">     781 </span>            : </a>
+<span class="lineNum">     782 </span>            : //----------------------------------------------------------
+<span class="lineNum">     783 </span><span class="lineCov">        977 : void ofCurve(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3){</span>
+<span class="lineNum">     784 </span><span class="lineCov">        977 :         shape.clear();</span>
+<span class="lineNum">     785 </span><span class="lineCov">        977 :         shape.curveTo(x0,y0);</span>
+<span class="lineNum">     786 </span><span class="lineCov">        977 :         shape.curveTo(x1,y1);</span>
+<span class="lineNum">     787 </span><span class="lineCov">        977 :         shape.curveTo(x2,y2);</span>
+<span class="lineNum">     788 </span><span class="lineCov">        977 :         shape.curveTo(x3,y3);</span>
+<span class="lineNum">     789 </span><span class="lineCov">        977 :         shape.draw();</span>
+<span class="lineNum">     790 </span><span class="lineCov">        977 : }</span>
+<a name="791"><span class="lineNum">     791 </span>            : </a>
+<span class="lineNum">     792 </span>            : //----------------------------------------------------------
+<span class="lineNum">     793 </span><span class="lineNoCov">          0 : void ofCurve(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){</span>
+<span class="lineNum">     794 </span><span class="lineNoCov">          0 :         shape.clear();</span>
+<span class="lineNum">     795 </span><span class="lineNoCov">          0 :         shape.curveTo(x0,y0,z0);</span>
+<span class="lineNum">     796 </span><span class="lineNoCov">          0 :         shape.curveTo(x1,y1,z1);</span>
+<span class="lineNum">     797 </span><span class="lineNoCov">          0 :         shape.curveTo(x2,y2,z2);</span>
+<span class="lineNum">     798 </span><span class="lineNoCov">          0 :         shape.curveTo(x3,y3,z3);</span>
+<span class="lineNum">     799 </span><span class="lineNoCov">          0 :         shape.draw();</span>
+<span class="lineNum">     800 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     801 </span>            : 
+<a name="802"><span class="lineNum">     802 </span>            : </a>
+<span class="lineNum">     803 </span>            : //----------------------------------------------------------
+<span class="lineNum">     804 </span><span class="lineCov">        977 : void ofBezier(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3){</span>
+<span class="lineNum">     805 </span><span class="lineCov">        977 :         shape.clear();</span>
+<span class="lineNum">     806 </span><span class="lineCov">        977 :         shape.moveTo(x0,y0);</span>
+<span class="lineNum">     807 </span><span class="lineCov">        977 :         shape.bezierTo(x1,y1,x2,y2,x3,y3);</span>
+<span class="lineNum">     808 </span><span class="lineCov">        977 :         shape.draw();</span>
+<span class="lineNum">     809 </span><span class="lineCov">        977 : }</span>
+<a name="810"><span class="lineNum">     810 </span>            : </a>
+<span class="lineNum">     811 </span>            : //----------------------------------------------------------
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 : void ofBezier(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){</span>
+<span class="lineNum">     813 </span><span class="lineNoCov">          0 :         shape.clear();</span>
+<span class="lineNum">     814 </span><span class="lineNoCov">          0 :         shape.moveTo(x0,y0,z0);</span>
+<span class="lineNum">     815 </span><span class="lineNoCov">          0 :         shape.bezierTo(x1,y1,z1,x2,y2,z2,x3,y3,z3);</span>
+<span class="lineNum">     816 </span><span class="lineNoCov">          0 :         shape.draw();</span>
+<span class="lineNum">     817 </span><span class="lineNoCov">          0 : }</span>
+<a name="818"><span class="lineNum">     818 </span>            : </a>
+<span class="lineNum">     819 </span>            : //----------------------------------------------------------
+<span class="lineNum">     820 </span><span class="lineCov">      56965 : void ofBeginShape(){</span>
+<span class="lineNum">     821 </span><span class="lineCov">      56965 :         shape.clear();</span>
+<span class="lineNum">     822 </span><span class="lineCov">      56965 : }</span>
+<a name="823"><span class="lineNum">     823 </span>            : </a>
+<span class="lineNum">     824 </span>            : //----------------------------------------------------------
+<span class="lineNum">     825 </span><span class="lineCov">    9626421 : void ofVertex(float x, float y){</span>
+<span class="lineNum">     826 </span><span class="lineCov">    9626421 :         shape.lineTo(x,y);</span>
+<span class="lineNum">     827 </span>            : 
+<span class="lineNum">     828 </span><span class="lineCov">    9626421 : }</span>
+<a name="829"><span class="lineNum">     829 </span>            : </a>
+<span class="lineNum">     830 </span>            : //----------------------------------------------------------
+<span class="lineNum">     831 </span><span class="lineNoCov">          0 : void ofVertex(float x, float y, float z){</span>
+<span class="lineNum">     832 </span><span class="lineNoCov">          0 :         shape.lineTo(x,y,z);</span>
+<span class="lineNum">     833 </span>            : 
+<span class="lineNum">     834 </span><span class="lineNoCov">          0 : }</span>
+<a name="835"><span class="lineNum">     835 </span>            : </a>
+<span class="lineNum">     836 </span>            : //---------------------------------------------------
+<span class="lineNum">     837 </span><span class="lineNoCov">          0 : void ofVertex(ofPoint &amp; p){</span>
+<span class="lineNum">     838 </span><span class="lineNoCov">          0 :         shape.lineTo(p);</span>
+<span class="lineNum">     839 </span><span class="lineNoCov">          0 : }</span>
+<a name="840"><span class="lineNum">     840 </span>            : </a>
+<span class="lineNum">     841 </span>            : //----------------------------------------------------------
+<span class="lineNum">     842 </span><span class="lineCov">       1028 : void ofVertices( const vector &lt;ofPoint&gt; &amp; polyPoints ){</span>
+<span class="lineNum">     843 </span><span class="lineCov">     411034 :         for( int k = 0; k &lt; (int)polyPoints.size(); k++){</span>
+<span class="lineNum">     844 </span><span class="lineCov">     410006 :                 shape.lineTo(polyPoints[k]);</span>
+<span class="lineNum">     845 </span>            :         }
+<span class="lineNum">     846 </span><span class="lineCov">       1028 : }</span>
+<a name="847"><span class="lineNum">     847 </span>            : </a>
+<span class="lineNum">     848 </span>            : //----------------------------------------------------------
+<span class="lineNum">     849 </span><span class="lineNoCov">          0 : void ofVertexes( const vector &lt;ofPoint&gt; &amp; polyPoints ){</span>
+<span class="lineNum">     850 </span><span class="lineNoCov">          0 :         ofVertices(polyPoints);</span>
+<span class="lineNum">     851 </span><span class="lineNoCov">          0 : }</span>
+<a name="852"><span class="lineNum">     852 </span>            : </a>
+<span class="lineNum">     853 </span>            : //---------------------------------------------------
+<span class="lineNum">     854 </span><span class="lineCov">      22206 : void ofCurveVertex(float x, float y){</span>
+<span class="lineNum">     855 </span><span class="lineCov">      22206 :         shape.curveTo(x,y);</span>
+<span class="lineNum">     856 </span><span class="lineCov">      22206 : }</span>
+<a name="857"><span class="lineNum">     857 </span>            : </a>
+<span class="lineNum">     858 </span>            : //----------------------------------------------------------
+<span class="lineNum">     859 </span><span class="lineNoCov">          0 : void ofCurveVertices( const vector &lt;ofPoint&gt; &amp; curvePoints){</span>
+<span class="lineNum">     860 </span><span class="lineNoCov">          0 :         for( int k = 0; k &lt; (int)curvePoints.size(); k++){</span>
+<span class="lineNum">     861 </span><span class="lineNoCov">          0 :                 shape.curveTo(curvePoints[k]);</span>
+<span class="lineNum">     862 </span>            :         }
+<span class="lineNum">     863 </span><span class="lineNoCov">          0 : }</span>
+<a name="864"><span class="lineNum">     864 </span>            : </a>
+<span class="lineNum">     865 </span>            : //----------------------------------------------------------
+<span class="lineNum">     866 </span><span class="lineNoCov">          0 : void ofCurveVertexes( const vector &lt;ofPoint&gt; &amp; curvePoints){</span>
+<span class="lineNum">     867 </span><span class="lineNoCov">          0 :         ofCurveVertices(curvePoints);</span>
+<span class="lineNum">     868 </span><span class="lineNoCov">          0 : }</span>
+<a name="869"><span class="lineNum">     869 </span>            : </a>
+<span class="lineNum">     870 </span>            : //---------------------------------------------------
+<span class="lineNum">     871 </span><span class="lineNoCov">          0 : void ofCurveVertex(ofPoint &amp; p){</span>
+<span class="lineNum">     872 </span><span class="lineNoCov">          0 :         shape.curveTo(p);</span>
+<span class="lineNum">     873 </span><span class="lineNoCov">          0 : }</span>
+<a name="874"><span class="lineNum">     874 </span>            : </a>
+<span class="lineNum">     875 </span>            : //---------------------------------------------------
+<span class="lineNum">     876 </span><span class="lineCov">       8790 : void ofBezierVertex(float x1, float y1, float x2, float y2, float x3, float y3){</span>
+<span class="lineNum">     877 </span><span class="lineCov">       8790 :         shape.bezierTo(x1,y1,x2,y2,x3,y3);</span>
+<a name="878"><span class="lineNum">     878 </span><span class="lineCov">       8790 : }</span></a>
+<span class="lineNum">     879 </span>            : 
+<span class="lineNum">     880 </span><span class="lineNoCov">          0 : void ofBezierVertex(const ofPoint &amp; p1, const ofPoint &amp; p2, const ofPoint &amp; p3){</span>
+<span class="lineNum">     881 </span><span class="lineNoCov">          0 :         shape.bezierTo(p1, p2, p3);</span>
+<span class="lineNum">     882 </span><span class="lineNoCov">          0 : }</span>
+<a name="883"><span class="lineNum">     883 </span>            : </a>
+<span class="lineNum">     884 </span>            : //---------------------------------------------------
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 : void ofBezierVertex(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3){</span>
+<span class="lineNum">     886 </span><span class="lineNoCov">          0 :         shape.bezierTo(x1,y1,z1,x2,y2,z2,x3,y3,z3);</span>
+<span class="lineNum">     887 </span><span class="lineNoCov">          0 : }</span>
+<a name="888"><span class="lineNum">     888 </span>            : </a>
+<span class="lineNum">     889 </span>            : //----------------------------------------------------------
+<span class="lineNum">     890 </span><span class="lineCov">       5876 : void ofNextContour(bool bClose){</span>
+<span class="lineNum">     891 </span><span class="lineCov">       5876 :         if (bClose){</span>
+<span class="lineNum">     892 </span><span class="lineCov">       5876 :                 shape.close();</span>
+<span class="lineNum">     893 </span>            :         }
+<span class="lineNum">     894 </span><span class="lineCov">       5876 :         shape.newSubPath();</span>
+<span class="lineNum">     895 </span><span class="lineCov">       5876 : }</span>
+<span class="lineNum">     896 </span>            : 
+<a name="897"><span class="lineNum">     897 </span>            : </a>
+<span class="lineNum">     898 </span>            : //----------------------------------------------------------
+<span class="lineNum">     899 </span><span class="lineCov">      56965 : void ofEndShape(bool bClose){</span>
+<span class="lineNum">     900 </span>            : 
+<span class="lineNum">     901 </span>            :         // (close -&gt; add the first point to the end)
+<span class="lineNum">     902 </span>            :         // -----------------------------------------------
+<span class="lineNum">     903 </span>            : 
+<span class="lineNum">     904 </span><span class="lineCov">      56965 :         if (bClose){</span>
+<span class="lineNum">     905 </span><span class="lineCov">      27670 :                 shape.close();</span>
+<span class="lineNum">     906 </span>            :         }
+<span class="lineNum">     907 </span>            : 
+<span class="lineNum">     908 </span><span class="lineCov">      56965 :         shape.draw();</span>
+<span class="lineNum">     909 </span>            : 
+<span class="lineNum">     910 </span><span class="lineCov">      56965 : }</span>
+<span class="lineNum">     911 </span>            : 
+<span class="lineNum">     912 </span>            : //--------------------------------------------------
+<span class="lineNum">     913 </span>            : // 3d primitives
+<a name="914"><span class="lineNum">     914 </span>            : </a>
+<span class="lineNum">     915 </span>            : //----------------------------------------
+<span class="lineNum">     916 </span><span class="lineCov">     100893 : void ofSphere(float x, float y, float z, float radius){</span>
+<span class="lineNum">     917 </span><span class="lineCov">     100893 :         ofPushMatrix();</span>
+<span class="lineNum">     918 </span><span class="lineCov">     100893 :         ofTranslate(x, y, z);</span>
+<span class="lineNum">     919 </span><span class="lineCov">     100893 :         ofSphere(radius);</span>
+<span class="lineNum">     920 </span><span class="lineCov">     100893 :         ofPopMatrix();</span>
+<span class="lineNum">     921 </span><span class="lineCov">     100893 : }</span>
+<a name="922"><span class="lineNum">     922 </span>            : </a>
+<span class="lineNum">     923 </span>            : //----------------------------------------
+<span class="lineNum">     924 </span><span class="lineNoCov">          0 : void ofSphere(float x, float y, float radius){</span>
+<span class="lineNum">     925 </span><span class="lineNoCov">          0 :         ofSphere(x, y, 0, radius);</span>
+<span class="lineNum">     926 </span><span class="lineNoCov">          0 : }</span>
+<a name="927"><span class="lineNum">     927 </span>            : </a>
+<span class="lineNum">     928 </span>            : //----------------------------------------
+<span class="lineNum">     929 </span><span class="lineCov">      88726 : void ofSphere(const ofPoint&amp; position, float radius){</span>
+<span class="lineNum">     930 </span><span class="lineCov">      88726 :         ofSphere(position.x,position.y,position.z,radius);</span>
+<span class="lineNum">     931 </span><span class="lineCov">      88726 : }</span>
+<a name="932"><span class="lineNum">     932 </span>            : </a>
+<span class="lineNum">     933 </span>            : //----------------------------------------
+<span class="lineNum">     934 </span><span class="lineCov">     100893 : void ofSphere(float radius){</span>
+<span class="lineNum">     935 </span><span class="lineCov">     100893 :         renderer-&gt;drawSphere(0,0,0,radius);</span>
+<span class="lineNum">     936 </span>            :         /*
+<span class="lineNum">     937 </span>            :         ofPushMatrix();
+<span class="lineNum">     938 </span>            :         ofRotateX(90);
+<span class="lineNum">     939 </span>            :         if(ofGetStyle().bFill) {
+<span class="lineNum">     940 </span>            :                 glutSolidSphere(radius, 2 * currentStyle.sphereResolution, currentStyle.sphereResolution);
+<span class="lineNum">     941 </span>            :         } else {
+<span class="lineNum">     942 </span>            :                 glutWireSphere(radius, 2 * currentStyle.sphereResolution, currentStyle.sphereResolution);
+<span class="lineNum">     943 </span>            :         }
+<span class="lineNum">     944 </span>            :         ofPopMatrix();
+<span class="lineNum">     945 </span>            :          */
+<span class="lineNum">     946 </span><span class="lineCov">     100893 : }</span>
+<a name="947"><span class="lineNum">     947 </span>            : </a>
+<span class="lineNum">     948 </span>            : //----------------------------------------
+<span class="lineNum">     949 </span><span class="lineCov">       8462 : void ofBox(float x, float y, float z, float size){</span>
+<span class="lineNum">     950 </span><span class="lineCov">       8462 :         ofBox(ofPoint(x, y, z), size);</span>
+<span class="lineNum">     951 </span><span class="lineCov">       8462 : }</span>
+<a name="952"><span class="lineNum">     952 </span>            : </a>
+<span class="lineNum">     953 </span>            : //----------------------------------------
+<span class="lineNum">     954 </span><span class="lineCov">       3616 : void ofBox(float x, float y, float size){</span>
+<span class="lineNum">     955 </span><span class="lineCov">       3616 :         ofBox(x, y, 0, size);</span>
+<span class="lineNum">     956 </span><span class="lineCov">       3616 : }</span>
+<a name="957"><span class="lineNum">     957 </span>            : </a>
+<span class="lineNum">     958 </span>            : //----------------------------------------
+<span class="lineNum">     959 </span><span class="lineCov">       8462 : void ofBox(const ofPoint&amp; position, float size){</span>
+<span class="lineNum">     960 </span><span class="lineCov">       8462 :         ofPushMatrix();</span>
+<span class="lineNum">     961 </span><span class="lineCov">       8462 :         ofTranslate(position);</span>
+<span class="lineNum">     962 </span><span class="lineCov">       8462 :         ofBox(size);</span>
+<span class="lineNum">     963 </span><span class="lineCov">       8462 :         ofPopMatrix();</span>
+<span class="lineNum">     964 </span><span class="lineCov">       8462 : }</span>
+<span class="lineNum">     965 </span>            : 
+<span class="lineNum">     966 </span>            : //----------------------------------------
+<span class="lineNum">     967 </span><span class="lineCov">     105496 : void ofBox(float size){</span>
+<span class="lineNum">     968 </span><span class="lineCov">     105496 :         ofPushMatrix();</span>
+<span class="lineNum">     969 </span><span class="lineCov">     105496 :         if(ofGetCoordHandedness() == OF_LEFT_HANDED){</span>
+<span class="lineNum">     970 </span><span class="lineNoCov">          0 :                 ofScale(1, 1, -1);</span>
+<span class="lineNum">     971 </span>            :         }
+<span class="lineNum">     972 </span>            : 
+<span class="lineNum">     973 </span><span class="lineCov">     105496 :         float h = size * .5;</span>
+<span class="lineNum">     974 </span>            :         
+<span class="lineNum">     975 </span><span class="lineCov">     105496 :         vertexData.clear();</span>
+<span class="lineNum">     976 </span><span class="lineCov">     105496 :         if(ofGetStyle().bFill){</span>
+<span class="lineNum">     977 </span>            :                 ofVec3f vertices[] = {
+<span class="lineNum">     978 </span>            :                         ofVec3f(+h,-h,+h), ofVec3f(+h,-h,-h), ofVec3f(+h,+h,-h), ofVec3f(+h,+h,+h),
+<span class="lineNum">     979 </span>            :                         ofVec3f(+h,+h,+h), ofVec3f(+h,+h,-h), ofVec3f(-h,+h,-h), ofVec3f(-h,+h,+h),
+<span class="lineNum">     980 </span>            :                         ofVec3f(+h,+h,+h), ofVec3f(-h,+h,+h), ofVec3f(-h,-h,+h), ofVec3f(+h,-h,+h),
+<span class="lineNum">     981 </span>            :                         ofVec3f(-h,-h,+h), ofVec3f(-h,+h,+h), ofVec3f(-h,+h,-h), ofVec3f(-h,-h,-h),
+<span class="lineNum">     982 </span>            :                         ofVec3f(-h,-h,+h), ofVec3f(-h,-h,-h), ofVec3f(+h,-h,-h), ofVec3f(+h,-h,+h),
+<span class="lineNum">     983 </span>            :                         ofVec3f(-h,-h,-h), ofVec3f(-h,+h,-h), ofVec3f(+h,+h,-h), ofVec3f(+h,-h,-h)
+<span class="lineNum">     984 </span><span class="lineCov">      57736 :                 };</span>
+<span class="lineNum">     985 </span><span class="lineCov">      57736 :                 vertexData.addVertices(vertices,24);</span>
+<span class="lineNum">     986 </span>            :                 
+<span class="lineNum">     987 </span>            :                 static ofVec3f normals[] = {
+<span class="lineNum">     988 </span>            :                         ofVec3f(+1,0,0), ofVec3f(+1,0,0), ofVec3f(+1,0,0), ofVec3f(+1,0,0),
+<span class="lineNum">     989 </span>            :                         ofVec3f(0,+1,0), ofVec3f(0,+1,0), ofVec3f(0,+1,0), ofVec3f(0,+1,0),
+<span class="lineNum">     990 </span>            :                         ofVec3f(0,0,+1), ofVec3f(0,0,+1), ofVec3f(0,0,+1), ofVec3f(0,0,+1),
+<span class="lineNum">     991 </span>            :                         ofVec3f(-1,0,0), ofVec3f(-1,0,0), ofVec3f(-1,0,0), ofVec3f(-1,0,0),
+<span class="lineNum">     992 </span>            :                         ofVec3f(0,-1,0), ofVec3f(0,-1,0), ofVec3f(0,-1,0), ofVec3f(0,-1,0),
+<span class="lineNum">     993 </span>            :                         ofVec3f(0,0,-1), ofVec3f(0,0,-1), ofVec3f(0,0,-1), ofVec3f(0,0,-1)
+<span class="lineNum">     994 </span><span class="lineCov">      57736 :                 };</span>
+<span class="lineNum">     995 </span><span class="lineCov">      57736 :                 vertexData.addNormals(normals,24);</span>
+<span class="lineNum">     996 </span>            : 
+<span class="lineNum">     997 </span>            :                 static ofVec2f tex[] = {
+<span class="lineNum">     998 </span>            :                         ofVec2f(1,0), ofVec2f(0,0), ofVec2f(0,1), ofVec2f(1,1),
+<span class="lineNum">     999 </span>            :                         ofVec2f(1,1), ofVec2f(1,0), ofVec2f(0,0), ofVec2f(0,1),
+<span class="lineNum">    1000 </span>            :                         ofVec2f(0,1), ofVec2f(1,1), ofVec2f(1,0), ofVec2f(0,0),
+<span class="lineNum">    1001 </span>            :                         ofVec2f(0,0), ofVec2f(0,1), ofVec2f(1,1), ofVec2f(1,0),
+<span class="lineNum">    1002 </span>            :                         ofVec2f(0,0), ofVec2f(0,1), ofVec2f(1,1), ofVec2f(1,0),
+<span class="lineNum">    1003 </span>            :                         ofVec2f(0,0), ofVec2f(0,1), ofVec2f(1,1), ofVec2f(1,0)
+<span class="lineNum">    1004 </span><span class="lineCov">      57736 :                 };</span>
+<span class="lineNum">    1005 </span><span class="lineCov">      57736 :                 vertexData.addTexCoords(tex,24);</span>
+<span class="lineNum">    1006 </span>            :         
+<span class="lineNum">    1007 </span>            :                 static ofIndexType indices[] = {
+<span class="lineNum">    1008 </span>            :                         0,1,2, // right top left
+<span class="lineNum">    1009 </span>            :                         0,2,3, // right bottom right
+<span class="lineNum">    1010 </span>            :                         4,5,6, // bottom top right
+<span class="lineNum">    1011 </span>            :                         4,6,7, // bottom bottom left    
+<span class="lineNum">    1012 </span>            :                         8,9,10, // back bottom right
+<span class="lineNum">    1013 </span>            :                         8,10,11, // back top left
+<span class="lineNum">    1014 </span>            :                         12,13,14, // left bottom right
+<span class="lineNum">    1015 </span>            :                         12,14,15, // left top left
+<span class="lineNum">    1016 </span>            :                         16,17,18, // ... etc
+<span class="lineNum">    1017 </span>            :                         16,18,19,
+<span class="lineNum">    1018 </span>            :                         20,21,22,
+<span class="lineNum">    1019 </span>            :                         20,22,23
+<span class="lineNum">    1020 </span>            :                 };
+<span class="lineNum">    1021 </span><span class="lineCov">      57736 :                 vertexData.addIndices(indices,36);</span>
+<span class="lineNum">    1022 </span><span class="lineCov">      57736 :                 vertexData.setMode(OF_PRIMITIVE_TRIANGLES);</span>
+<span class="lineNum">    1023 </span><span class="lineCov">      57736 :                 renderer-&gt;draw(vertexData,vertexData.usingColors(),vertexData.usingTextures(),vertexData.usingNormals());</span>
+<span class="lineNum">    1024 </span>            :         } else {
+<span class="lineNum">    1025 </span>            :                 ofVec3f vertices[] = {
+<span class="lineNum">    1026 </span>            :                         ofVec3f(+h,+h,+h),
+<span class="lineNum">    1027 </span>            :                         ofVec3f(+h,+h,-h),
+<span class="lineNum">    1028 </span>            :                         ofVec3f(+h,-h,+h),
+<span class="lineNum">    1029 </span>            :                         ofVec3f(+h,-h,-h),
+<span class="lineNum">    1030 </span>            :                         ofVec3f(-h,+h,+h),
+<span class="lineNum">    1031 </span>            :                         ofVec3f(-h,+h,-h),
+<span class="lineNum">    1032 </span>            :                         ofVec3f(-h,-h,+h),
+<span class="lineNum">    1033 </span>            :                         ofVec3f(-h,-h,-h)
+<span class="lineNum">    1034 </span><span class="lineCov">      47760 :                 };</span>
+<span class="lineNum">    1035 </span><span class="lineCov">      47760 :                 vertexData.addVertices(vertices,8);</span>
+<span class="lineNum">    1036 </span>            :                 
+<span class="lineNum">    1037 </span>            :                 static float n = sqrtf(3);
+<span class="lineNum">    1038 </span>            :                 static ofVec3f normals[] = {
+<span class="lineNum">    1039 </span>            :                         ofVec3f(+n,+n,+n),
+<span class="lineNum">    1040 </span>            :                         ofVec3f(+n,+n,-n),
+<span class="lineNum">    1041 </span>            :                         ofVec3f(+n,-n,+n),
+<span class="lineNum">    1042 </span>            :                         ofVec3f(+n,-n,-n),
+<span class="lineNum">    1043 </span>            :                         ofVec3f(-n,+n,+n),
+<span class="lineNum">    1044 </span>            :                         ofVec3f(-n,+n,-n),
+<span class="lineNum">    1045 </span>            :                         ofVec3f(-n,-n,+n),
+<span class="lineNum">    1046 </span>            :                         ofVec3f(-n,-n,-n)
+<span class="lineNum">    1047 </span><span class="lineCov">      47760 :                 };</span>
+<span class="lineNum">    1048 </span><span class="lineCov">      47760 :                 vertexData.addNormals(normals,8);</span>
+<span class="lineNum">    1049 </span>            : 
+<span class="lineNum">    1050 </span>            :                 static ofIndexType indices[] = {
+<span class="lineNum">    1051 </span>            :                         0,1, 1,3, 3,2, 2,0,
+<span class="lineNum">    1052 </span>            :                         4,5, 5,7, 7,6, 6,4,
+<span class="lineNum">    1053 </span>            :                         0,4, 5,1, 7,3, 6,2
+<span class="lineNum">    1054 </span>            :                 };
+<span class="lineNum">    1055 </span><span class="lineCov">      47760 :                 vertexData.addIndices(indices,24);</span>
+<span class="lineNum">    1056 </span>            : 
+<span class="lineNum">    1057 </span><span class="lineCov">      47760 :                 vertexData.setMode(OF_PRIMITIVE_LINES);</span>
+<span class="lineNum">    1058 </span><span class="lineCov">      47760 :                 renderer-&gt;draw(vertexData, vertexData.usingColors(),vertexData.usingTextures(),vertexData.usingNormals());</span>
+<span class="lineNum">    1059 </span>            :         }
+<span class="lineNum">    1060 </span>            : 
+<span class="lineNum">    1061 </span>            : 
+<span class="lineNum">    1062 </span><span class="lineCov">     105496 :         ofPopMatrix();</span>
+<span class="lineNum">    1063 </span><span class="lineCov">     105496 : }</span>
+<a name="1064"><span class="lineNum">    1064 </span>            : </a>
+<span class="lineNum">    1065 </span>            : //----------------------------------------
+<span class="lineNum">    1066 </span><span class="lineCov">       1791 : void ofCone(float x, float y, float z, float radius, float height) {</span>
+<span class="lineNum">    1067 </span><span class="lineCov">       1791 :         ofCone(ofPoint(x, y, z), radius, height);</span>
+<span class="lineNum">    1068 </span><span class="lineCov">       1791 : }</span>
+<a name="1069"><span class="lineNum">    1069 </span>            : </a>
+<span class="lineNum">    1070 </span>            : //----------------------------------------
+<span class="lineNum">    1071 </span><span class="lineNoCov">          0 : void ofCone(float x, float y, float radius, float height) {</span>
+<span class="lineNum">    1072 </span><span class="lineNoCov">          0 :         ofCone(x, y, 0, radius, height);</span>
+<span class="lineNum">    1073 </span><span class="lineNoCov">          0 : }</span>
+<a name="1074"><span class="lineNum">    1074 </span>            : </a>
+<span class="lineNum">    1075 </span>            : //----------------------------------------
+<span class="lineNum">    1076 </span><span class="lineCov">       1791 : void ofCone(const ofPoint&amp; position, float radius, float height) {</span>
+<span class="lineNum">    1077 </span><span class="lineCov">       1791 :         ofPushMatrix();</span>
+<span class="lineNum">    1078 </span><span class="lineCov">       1791 :         ofTranslate(position);</span>
+<span class="lineNum">    1079 </span><span class="lineCov">       1791 :         ofCone(radius, height);</span>
+<span class="lineNum">    1080 </span><span class="lineCov">       1791 :         ofPopMatrix();</span>
+<span class="lineNum">    1081 </span><span class="lineCov">       1791 : }</span>
+<span class="lineNum">    1082 </span>            : 
+<span class="lineNum">    1083 </span>            : //----------------------------------------
+<span class="lineNum">    1084 </span><span class="lineCov">       1791 : void ofCone(float radius, float height) {</span>
+<span class="lineNum">    1085 </span>            :         // TODO: add an implementation using ofMesh
+<span class="lineNum">    1086 </span>            : #ifndef TARGET_OPENGLES
+<span class="lineNum">    1087 </span>            :         // this needs to be swapped out with non-glut code
+<span class="lineNum">    1088 </span>            :         // see ofSphere above
+<span class="lineNum">    1089 </span>            :         
+<span class="lineNum">    1090 </span><span class="lineCov">       1791 :         if(ofGetStyle().bFill) {</span>
+<span class="lineNum">    1091 </span><span class="lineCov">       1791 :                 glutSolidCone(radius, height, currentStyle.circleResolution, 1);</span>
+<span class="lineNum">    1092 </span>            :         } else {
+<span class="lineNum">    1093 </span><span class="lineNoCov">          0 :                 glutWireCone(radius, height, currentStyle.circleResolution, 1);</span>
+<span class="lineNum">    1094 </span>            :         }
+<span class="lineNum">    1095 </span>            : #endif
+<span class="lineNum">    1096 </span><span class="lineCov">       1791 : }</span>
+<span class="lineNum">    1097 </span>            : 
+<span class="lineNum">    1098 </span>            : 
+<span class="lineNum">    1099 </span>            : // end 3d primitives
+<span class="lineNum">    1100 </span>            : //--------------------------------------------------
+<span class="lineNum">    1101 </span>            : 
+<span class="lineNum">    1102 </span>            : 
+<span class="lineNum">    1103 </span>            : //--------------------------------------------------
+<a name="1104"><span class="lineNum">    1104 </span>            : // text</a>
+<span class="lineNum">    1105 </span>            : //--------------------------------------------------
+<span class="lineNum">    1106 </span><span class="lineCov">       9742 : void ofDrawBitmapString(string textString, const ofPoint &amp; p){</span>
+<span class="lineNum">    1107 </span><span class="lineCov">       9742 :         ofDrawBitmapString(textString, p.x, p.y, p.z);</span>
+<a name="1108"><span class="lineNum">    1108 </span><span class="lineCov">       9742 : }</span></a>
+<span class="lineNum">    1109 </span>            : //--------------------------------------------------
+<span class="lineNum">    1110 </span><span class="lineCov">     244690 : void ofDrawBitmapString(string textString, float x, float y){</span>
+<span class="lineNum">    1111 </span><span class="lineCov">     244690 :         ofDrawBitmapString(textString, x, y, 0.0f);</span>
+<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">     244690 : }</span></a>
+<span class="lineNum">    1113 </span>            : //--------------------------------------------------
+<span class="lineNum">    1114 </span><span class="lineCov">     254432 : void ofDrawBitmapString(string textString, float x, float y, float z){</span>
+<span class="lineNum">    1115 </span><span class="lineCov">     254432 :         renderer-&gt;drawString(textString,x,y,z,currentStyle.drawBitmapMode);</span>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">     254432 : }</span></a>
+<span class="lineNum">    1117 </span>            : //--------------------------------------------------
+<span class="lineNum">    1118 </span><span class="lineCov">       1644 : void ofDrawBitmapStringHighlight(string text, const ofPoint&amp; position, const ofColor&amp; background, const ofColor&amp; foreground) {</span>
+<span class="lineNum">    1119 </span><span class="lineCov">       1644 :         ofDrawBitmapStringHighlight(text, position.x, position.y, background, foreground);</span>
+<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">       1644 : }</span></a>
+<span class="lineNum">    1121 </span>            : //--------------------------------------------------
+<span class="lineNum">    1122 </span><span class="lineCov">       3318 : void ofDrawBitmapStringHighlight(string text, int x, int y, const ofColor&amp; background, const ofColor&amp; foreground) {</span>
+<span class="lineNum">    1123 </span><span class="lineCov">       3318 :         vector&lt;string&gt; lines = ofSplitString(text, &quot;\n&quot;);</span>
+<span class="lineNum">    1124 </span><span class="lineCov">       3318 :         int textLength = 0;</span>
+<span class="lineNum">    1125 </span><span class="lineCov">       8310 :         for(int i = 0; i &lt; lines.size(); i++) {</span>
+<span class="lineNum">    1126 </span>            :                 // tabs are not rendered
+<span class="lineNum">    1127 </span><span class="lineCov">       4992 :                 int tabs = count(lines[i].begin(), lines[i].end(), '\t');</span>
+<span class="lineNum">    1128 </span><span class="lineCov">       4992 :                 int curLength = lines[i].length() - tabs;</span>
+<span class="lineNum">    1129 </span><span class="lineCov">       4992 :                 if(curLength &gt; textLength) {</span>
+<span class="lineNum">    1130 </span><span class="lineCov">       4992 :                         textLength = curLength;</span>
+<span class="lineNum">    1131 </span>            :                 }
+<span class="lineNum">    1132 </span>            :         }
+<span class="lineNum">    1133 </span>            :         
+<span class="lineNum">    1134 </span><span class="lineCov">       3318 :         int padding = 4;</span>
+<span class="lineNum">    1135 </span><span class="lineCov">       3318 :         int fontSize = 8;</span>
+<span class="lineNum">    1136 </span><span class="lineCov">       3318 :         float leading = 1.7;</span>
+<span class="lineNum">    1137 </span><span class="lineCov">       3318 :         int height = lines.size() * fontSize * leading - 1;</span>
+<span class="lineNum">    1138 </span><span class="lineCov">       3318 :         int width = textLength * fontSize;</span>
+<span class="lineNum">    1139 </span>            :         
+<span class="lineNum">    1140 </span><span class="lineCov">       3318 :         ofPushStyle();</span>
+<span class="lineNum">    1141 </span><span class="lineCov">       3318 :         glDepthMask(false);</span>
+<span class="lineNum">    1142 </span><span class="lineCov">       3318 :         ofSetColor(background);</span>
+<span class="lineNum">    1143 </span><span class="lineCov">       3318 :         ofFill();</span>
+<span class="lineNum">    1144 </span><span class="lineCov">       3318 :         ofPushMatrix();</span>
+<span class="lineNum">    1145 </span><span class="lineCov">       3318 :         ofTranslate(x, y, 0);</span>
+<span class="lineNum">    1146 </span><span class="lineCov">       3318 :         if(currentStyle.drawBitmapMode == OF_BITMAPMODE_MODEL) {</span>
+<span class="lineNum">    1147 </span><span class="lineNoCov">          0 :                 ofScale(1, -1, 0);</span>
+<span class="lineNum">    1148 </span>            :         }
+<span class="lineNum">    1149 </span><span class="lineCov">       3318 :         ofTranslate(-(padding), -(padding + fontSize + 2));</span>
+<span class="lineNum">    1150 </span><span class="lineCov">       3318 :         ofRect(0, 0, width + 2 * padding, height + 2 * padding);</span>
+<span class="lineNum">    1151 </span><span class="lineCov">       3318 :         ofPopMatrix();</span>
+<span class="lineNum">    1152 </span><span class="lineCov">       3318 :         ofSetColor(foreground);</span>
+<span class="lineNum">    1153 </span><span class="lineCov">       3318 :         ofNoFill();</span>
+<span class="lineNum">    1154 </span><span class="lineCov">       3318 :         ofPushMatrix();</span>
+<span class="lineNum">    1155 </span><span class="lineCov">       3318 :         ofDrawBitmapString(text, x, y);</span>
+<span class="lineNum">    1156 </span><span class="lineCov">       3318 :         ofPopMatrix();</span>
+<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">       3318 :         glDepthMask(true);</span></a>
+<span class="lineNum">    1158 </span><span class="lineCov">       3318 :         ofPopStyle();</span>
+<span class="lineNum">    1159 </span><span class="lineCov">       3897 : }</span>
+<span class="lineNum">    1160 </span>            : 
+<span class="lineNum">    1161 </span>            : 
+<span class="lineNum">    1162 </span>            : // end text
+<span class="lineNum">    1163 </span>            : //--------------------------------------------------
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

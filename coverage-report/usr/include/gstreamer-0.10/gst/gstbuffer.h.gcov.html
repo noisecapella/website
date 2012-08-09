@@ -1,0 +1,605 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - .coverage.base - /usr/include/gstreamer-0.10/gst/gstbuffer.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">usr/include/gstreamer-0.10/gst</a> - gstbuffer.h<span style="font-size: 80%;"> (source / <a href="gstbuffer.h.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">.coverage.base</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-08-09</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* GStreamer</a>
+<span class="lineNum">       2 </span>            :  * Copyright (C) 1999,2000 Erik Walthinsen &lt;omega@cse.ogi.edu&gt;
+<span class="lineNum">       3 </span>            :  *                    2000 Wim Taymans &lt;wtay@chello.be&gt;
+<span class="lineNum">       4 </span>            :  *
+<span class="lineNum">       5 </span>            :  * gstbuffer.h: Header for GstBuffer object
+<span class="lineNum">       6 </span>            :  *
+<span class="lineNum">       7 </span>            :  * This library is free software; you can redistribute it and/or
+<span class="lineNum">       8 </span>            :  * modify it under the terms of the GNU Library General Public
+<span class="lineNum">       9 </span>            :  * License as published by the Free Software Foundation; either
+<span class="lineNum">      10 </span>            :  * version 2 of the License, or (at your option) any later version.
+<span class="lineNum">      11 </span>            :  *
+<span class="lineNum">      12 </span>            :  * This library is distributed in the hope that it will be useful,
+<span class="lineNum">      13 </span>            :  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      14 </span>            :  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      15 </span>            :  * Library General Public License for more details.
+<span class="lineNum">      16 </span>            :  *
+<span class="lineNum">      17 </span>            :  * You should have received a copy of the GNU Library General Public
+<span class="lineNum">      18 </span>            :  * License along with this library; if not, write to the
+<span class="lineNum">      19 </span>            :  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+<span class="lineNum">      20 </span>            :  * Boston, MA 02111-1307, USA.
+<span class="lineNum">      21 </span>            :  */
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : #ifndef __GST_BUFFER_H__
+<span class="lineNum">      25 </span>            : #define __GST_BUFFER_H__
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #include &lt;gst/gstminiobject.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;gst/gstclock.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;gst/gstcaps.h&gt;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : G_BEGIN_DECLS
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : typedef struct _GstBuffer GstBuffer;
+<span class="lineNum">      34 </span>            : typedef struct _GstBufferClass GstBufferClass;
+<span class="lineNum">      35 </span>            : typedef struct _GstBufferPrivate GstBufferPrivate;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : /**
+<span class="lineNum">      38 </span>            :  * GST_BUFFER_TRACE_NAME:
+<span class="lineNum">      39 </span>            :  *
+<span class="lineNum">      40 </span>            :  * The name used for tracing memory allocations.
+<span class="lineNum">      41 </span>            :  */
+<span class="lineNum">      42 </span>            : #define GST_BUFFER_TRACE_NAME           &quot;GstBuffer&quot;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #define GST_TYPE_BUFFER                         (gst_buffer_get_type())
+<span class="lineNum">      45 </span>            : #define GST_IS_BUFFER(obj)                      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GST_TYPE_BUFFER))
+<span class="lineNum">      46 </span>            : #define GST_IS_BUFFER_CLASS(klass)              (G_TYPE_CHECK_CLASS_TYPE ((klass), GST_TYPE_BUFFER))
+<span class="lineNum">      47 </span>            : #define GST_BUFFER_GET_CLASS(obj)               (G_TYPE_INSTANCE_GET_CLASS ((obj), GST_TYPE_BUFFER, GstBufferClass))
+<span class="lineNum">      48 </span>            : #define GST_BUFFER(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_BUFFER, GstBuffer))
+<span class="lineNum">      49 </span>            : #define GST_BUFFER_CLASS(klass)                 (G_TYPE_CHECK_CLASS_CAST ((klass), GST_TYPE_BUFFER, GstBufferClass))
+<span class="lineNum">      50 </span>            : #define GST_BUFFER_CAST(obj)                    ((GstBuffer *)(obj))
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : /**
+<span class="lineNum">      53 </span>            :  * GST_BUFFER_FLAGS:
+<span class="lineNum">      54 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      55 </span>            :  *
+<span class="lineNum">      56 </span>            :  * A flags word containing #GstBufferFlag flags set on this buffer.
+<span class="lineNum">      57 </span>            :  */
+<span class="lineNum">      58 </span>            : #define GST_BUFFER_FLAGS(buf)                   GST_MINI_OBJECT_FLAGS(buf)
+<span class="lineNum">      59 </span>            : /**
+<span class="lineNum">      60 </span>            :  * GST_BUFFER_FLAG_IS_SET:
+<span class="lineNum">      61 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      62 </span>            :  * @flag: the #GstBufferFlag to check.
+<span class="lineNum">      63 </span>            :  *
+<span class="lineNum">      64 </span>            :  * Gives the status of a specific flag on a buffer.
+<span class="lineNum">      65 </span>            :  */
+<span class="lineNum">      66 </span>            : #define GST_BUFFER_FLAG_IS_SET(buf,flag)        GST_MINI_OBJECT_FLAG_IS_SET (buf, flag)
+<span class="lineNum">      67 </span>            : /**
+<span class="lineNum">      68 </span>            :  * GST_BUFFER_FLAG_SET:
+<span class="lineNum">      69 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      70 </span>            :  * @flag: the #GstBufferFlag to set.
+<span class="lineNum">      71 </span>            :  *
+<span class="lineNum">      72 </span>            :  * Sets a buffer flag on a buffer.
+<span class="lineNum">      73 </span>            :  */
+<span class="lineNum">      74 </span>            : #define GST_BUFFER_FLAG_SET(buf,flag)           GST_MINI_OBJECT_FLAG_SET (buf, flag)
+<span class="lineNum">      75 </span>            : /**
+<span class="lineNum">      76 </span>            :  * GST_BUFFER_FLAG_UNSET:
+<span class="lineNum">      77 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      78 </span>            :  * @flag: the #GstBufferFlag to clear.
+<span class="lineNum">      79 </span>            :  *
+<span class="lineNum">      80 </span>            :  * Clears a buffer flag.
+<span class="lineNum">      81 </span>            :  */
+<span class="lineNum">      82 </span>            : #define GST_BUFFER_FLAG_UNSET(buf,flag)         GST_MINI_OBJECT_FLAG_UNSET (buf, flag)
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            : /**
+<span class="lineNum">      85 </span>            :  * GST_BUFFER_DATA:
+<span class="lineNum">      86 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      87 </span>            :  *
+<span class="lineNum">      88 </span>            :  * A pointer to the data element of this buffer.
+<span class="lineNum">      89 </span>            :  */
+<span class="lineNum">      90 </span>            : #define GST_BUFFER_DATA(buf)                    (GST_BUFFER_CAST(buf)-&gt;data)
+<span class="lineNum">      91 </span>            : /**
+<span class="lineNum">      92 </span>            :  * GST_BUFFER_SIZE:
+<span class="lineNum">      93 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">      94 </span>            :  *
+<span class="lineNum">      95 </span>            :  * The size in bytes of the data in this buffer.
+<span class="lineNum">      96 </span>            :  */
+<span class="lineNum">      97 </span>            : #define GST_BUFFER_SIZE(buf)                    (GST_BUFFER_CAST(buf)-&gt;size)
+<span class="lineNum">      98 </span>            : /**
+<span class="lineNum">      99 </span>            :  * GST_BUFFER_TIMESTAMP:
+<span class="lineNum">     100 </span>            :  * @buf: a #GstBuffer.:
+<span class="lineNum">     101 </span>            :  *
+<span class="lineNum">     102 </span>            :  * The timestamp in nanoseconds (as a #GstClockTime) of the data in the buffer.
+<span class="lineNum">     103 </span>            :  * Value will be %GST_CLOCK_TIME_NONE if the timestamp is unknown.
+<span class="lineNum">     104 </span>            :  *
+<span class="lineNum">     105 </span>            :  */
+<span class="lineNum">     106 </span>            : #define GST_BUFFER_TIMESTAMP(buf)               (GST_BUFFER_CAST(buf)-&gt;timestamp)
+<span class="lineNum">     107 </span>            : /**
+<span class="lineNum">     108 </span>            :  * GST_BUFFER_DURATION:
+<span class="lineNum">     109 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     110 </span>            :  *
+<span class="lineNum">     111 </span>            :  * The duration in nanoseconds (as a #GstClockTime) of the data in the buffer.
+<span class="lineNum">     112 </span>            :  * Value will be %GST_CLOCK_TIME_NONE if the duration is unknown.
+<span class="lineNum">     113 </span>            :  */
+<span class="lineNum">     114 </span>            : #define GST_BUFFER_DURATION(buf)                (GST_BUFFER_CAST(buf)-&gt;duration)
+<span class="lineNum">     115 </span>            : /**
+<span class="lineNum">     116 </span>            :  * GST_BUFFER_CAPS:
+<span class="lineNum">     117 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     118 </span>            :  *
+<span class="lineNum">     119 </span>            :  * The caps for this buffer.
+<span class="lineNum">     120 </span>            :  */
+<span class="lineNum">     121 </span>            : #define GST_BUFFER_CAPS(buf)                    (GST_BUFFER_CAST(buf)-&gt;caps)
+<span class="lineNum">     122 </span>            : /**
+<span class="lineNum">     123 </span>            :  * GST_BUFFER_OFFSET:
+<span class="lineNum">     124 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     125 </span>            :  *
+<span class="lineNum">     126 </span>            :  * The offset in the source file of the beginning of this buffer.
+<span class="lineNum">     127 </span>            :  */
+<span class="lineNum">     128 </span>            : #define GST_BUFFER_OFFSET(buf)                  (GST_BUFFER_CAST(buf)-&gt;offset)
+<span class="lineNum">     129 </span>            : /**
+<span class="lineNum">     130 </span>            :  * GST_BUFFER_OFFSET_END:
+<span class="lineNum">     131 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     132 </span>            :  *
+<span class="lineNum">     133 </span>            :  * The offset in the source file of the end of this buffer.
+<span class="lineNum">     134 </span>            :  */
+<span class="lineNum">     135 </span>            : #define GST_BUFFER_OFFSET_END(buf)              (GST_BUFFER_CAST(buf)-&gt;offset_end)
+<span class="lineNum">     136 </span>            : /**
+<span class="lineNum">     137 </span>            :  * GST_BUFFER_MALLOCDATA:
+<span class="lineNum">     138 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     139 </span>            :  *
+<span class="lineNum">     140 </span>            :  * A pointer to any data allocated for this buffer using g_malloc(). If this is
+<span class="lineNum">     141 </span>            :  * non-NULL, this memory will be freed at the end of the buffer's lifecycle
+<span class="lineNum">     142 </span>            :  * (i.e. when its refcount becomes zero).
+<span class="lineNum">     143 </span>            :  */
+<span class="lineNum">     144 </span>            : #define GST_BUFFER_MALLOCDATA(buf)              (GST_BUFFER_CAST(buf)-&gt;malloc_data)
+<span class="lineNum">     145 </span>            : /**
+<span class="lineNum">     146 </span>            :  * GST_BUFFER_FREE_FUNC:
+<span class="lineNum">     147 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     148 </span>            :  *
+<span class="lineNum">     149 </span>            :  * A pointer to a function that will be called on the buffer's malloc_data when
+<span class="lineNum">     150 </span>            :  * this buffer is finalized. Defaults to g_free().
+<span class="lineNum">     151 </span>            :  *
+<span class="lineNum">     152 </span>            :  * Note that the free function only affects the buffer's malloc_data; if the
+<span class="lineNum">     153 </span>            :  * buffer's malloc_data is %NULL, the function will not be called.
+<span class="lineNum">     154 </span>            :  *
+<span class="lineNum">     155 </span>            :  * Since: 0.10.22
+<span class="lineNum">     156 </span>            :  */
+<span class="lineNum">     157 </span>            : #define GST_BUFFER_FREE_FUNC(buf)               (GST_BUFFER_CAST(buf)-&gt;free_func)
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            : /**
+<span class="lineNum">     160 </span>            :  * GST_BUFFER_OFFSET_NONE:
+<span class="lineNum">     161 </span>            :  *
+<span class="lineNum">     162 </span>            :  * Constant for no-offset return results.
+<span class="lineNum">     163 </span>            :  */
+<span class="lineNum">     164 </span>            : #define GST_BUFFER_OFFSET_NONE  ((guint64)-1)
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            : /**
+<span class="lineNum">     167 </span>            :  * GST_BUFFER_DURATION_IS_VALID:
+<span class="lineNum">     168 </span>            :  * @buffer: a #GstBuffer
+<span class="lineNum">     169 </span>            :  *
+<span class="lineNum">     170 </span>            :  * Tests if the duration is known.
+<span class="lineNum">     171 </span>            :  */
+<span class="lineNum">     172 </span>            : #define GST_BUFFER_DURATION_IS_VALID(buffer)    (GST_CLOCK_TIME_IS_VALID (GST_BUFFER_DURATION (buffer)))
+<span class="lineNum">     173 </span>            : /**
+<span class="lineNum">     174 </span>            :  * GST_BUFFER_TIMESTAMP_IS_VALID:
+<span class="lineNum">     175 </span>            :  * @buffer: a #GstBuffer
+<span class="lineNum">     176 </span>            :  *
+<span class="lineNum">     177 </span>            :  * Tests if the timestamp is known.
+<span class="lineNum">     178 </span>            :  */
+<span class="lineNum">     179 </span>            : #define GST_BUFFER_TIMESTAMP_IS_VALID(buffer)   (GST_CLOCK_TIME_IS_VALID (GST_BUFFER_TIMESTAMP (buffer)))
+<span class="lineNum">     180 </span>            : /**
+<span class="lineNum">     181 </span>            :  * GST_BUFFER_OFFSET_IS_VALID:
+<span class="lineNum">     182 </span>            :  * @buffer: a #GstBuffer
+<span class="lineNum">     183 </span>            :  *
+<span class="lineNum">     184 </span>            :  * Tests if the start offset is known.
+<span class="lineNum">     185 </span>            :  */
+<span class="lineNum">     186 </span>            : #define GST_BUFFER_OFFSET_IS_VALID(buffer)      (GST_BUFFER_OFFSET (buffer) != GST_BUFFER_OFFSET_NONE)
+<span class="lineNum">     187 </span>            : /**
+<span class="lineNum">     188 </span>            :  * GST_BUFFER_OFFSET_END_IS_VALID:
+<span class="lineNum">     189 </span>            :  * @buffer: a #GstBuffer
+<span class="lineNum">     190 </span>            :  *
+<span class="lineNum">     191 </span>            :  * Tests if the end offset is known.
+<span class="lineNum">     192 </span>            :  */
+<span class="lineNum">     193 </span>            : #define GST_BUFFER_OFFSET_END_IS_VALID(buffer)  (GST_BUFFER_OFFSET_END (buffer) != GST_BUFFER_OFFSET_NONE)
+<span class="lineNum">     194 </span>            : /**
+<span class="lineNum">     195 </span>            :  * GST_BUFFER_IS_DISCONT:
+<span class="lineNum">     196 </span>            :  * @buffer: a #GstBuffer
+<span class="lineNum">     197 </span>            :  *
+<span class="lineNum">     198 </span>            :  * Tests if the buffer marks a discontinuity in the stream.
+<span class="lineNum">     199 </span>            :  *
+<span class="lineNum">     200 </span>            :  * Since: 0.10.9
+<span class="lineNum">     201 </span>            :  */
+<span class="lineNum">     202 </span>            : #define GST_BUFFER_IS_DISCONT(buffer)   (GST_BUFFER_FLAG_IS_SET (buffer, GST_BUFFER_FLAG_DISCONT))
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            : /**
+<span class="lineNum">     205 </span>            :  * GstBufferFlag:
+<span class="lineNum">     206 </span>            :  * @GST_BUFFER_FLAG_READONLY: the buffer is read-only. This means the data of
+<span class="lineNum">     207 </span>            :  * the buffer should not be modified. The metadata might still be modified.
+<span class="lineNum">     208 </span>            :  * @GST_BUFFER_FLAG_PREROLL: the buffer is part of a preroll and should not be
+<span class="lineNum">     209 </span>            :  * displayed.
+<span class="lineNum">     210 </span>            :  * @GST_BUFFER_FLAG_DISCONT: the buffer marks a discontinuity in the stream.
+<span class="lineNum">     211 </span>            :  * This typically occurs after a seek or a dropped buffer from a live or
+<span class="lineNum">     212 </span>            :  * network source.
+<span class="lineNum">     213 </span>            :  * @GST_BUFFER_FLAG_IN_CAPS: the buffer has been added as a field in a #GstCaps.
+<span class="lineNum">     214 </span>            :  * @GST_BUFFER_FLAG_GAP: the buffer has been created to fill a gap in the
+<span class="lineNum">     215 </span>            :  * stream and contains media neutral data (elements can switch to optimized code
+<span class="lineNum">     216 </span>            :  * path that ignores the buffer content).
+<span class="lineNum">     217 </span>            :  * @GST_BUFFER_FLAG_DELTA_UNIT: this unit cannot be decoded independently.
+<span class="lineNum">     218 </span>            :  * @GST_BUFFER_FLAG_MEDIA1: a flag whose use is specific to the caps of the buffer. Since: 0.10.23.
+<span class="lineNum">     219 </span>            :  * @GST_BUFFER_FLAG_MEDIA2: a flag whose use is specific to the caps of the buffer. Since: 0.10.23.
+<span class="lineNum">     220 </span>            :  * @GST_BUFFER_FLAG_MEDIA3: a flag whose use is specific to the caps of the buffer. Since: 0.10.23.
+<span class="lineNum">     221 </span>            :  * @GST_BUFFER_FLAG_MEDIA4: a flag whose use is specific to the caps of the buffer. Since: 0.10.33.
+<span class="lineNum">     222 </span>            :  * @GST_BUFFER_FLAG_LAST: additional flags can be added starting from this flag.
+<span class="lineNum">     223 </span>            :  *
+<span class="lineNum">     224 </span>            :  * A set of buffer flags used to describe properties of a #GstBuffer.
+<span class="lineNum">     225 </span>            :  */
+<span class="lineNum">     226 </span>            : typedef enum {
+<span class="lineNum">     227 </span>            :   GST_BUFFER_FLAG_READONLY   = GST_MINI_OBJECT_FLAG_READONLY,
+<span class="lineNum">     228 </span>            :   GST_BUFFER_FLAG_MEDIA4     = GST_MINI_OBJECT_FLAG_RESERVED1,
+<span class="lineNum">     229 </span>            :   GST_BUFFER_FLAG_PREROLL    = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 0),
+<span class="lineNum">     230 </span>            :   GST_BUFFER_FLAG_DISCONT    = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 1),
+<span class="lineNum">     231 </span>            :   GST_BUFFER_FLAG_IN_CAPS    = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 2),
+<span class="lineNum">     232 </span>            :   GST_BUFFER_FLAG_GAP        = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 3),
+<span class="lineNum">     233 </span>            :   GST_BUFFER_FLAG_DELTA_UNIT = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 4),
+<span class="lineNum">     234 </span>            :   GST_BUFFER_FLAG_MEDIA1     = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 5),
+<span class="lineNum">     235 </span>            :   GST_BUFFER_FLAG_MEDIA2     = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 6),
+<span class="lineNum">     236 </span>            :   GST_BUFFER_FLAG_MEDIA3     = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 7),
+<span class="lineNum">     237 </span>            :   GST_BUFFER_FLAG_LAST       = (GST_MINI_OBJECT_FLAG_LAST &lt;&lt; 8)
+<span class="lineNum">     238 </span>            : } GstBufferFlag;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            : /**
+<span class="lineNum">     241 </span>            :  * GstBuffer:
+<span class="lineNum">     242 </span>            :  * @mini_object: the parent structure
+<span class="lineNum">     243 </span>            :  * @data: pointer to the buffer data
+<span class="lineNum">     244 </span>            :  * @size: size of buffer data
+<span class="lineNum">     245 </span>            :  * @timestamp: timestamp of the buffer, can be #GST_CLOCK_TIME_NONE when the
+<span class="lineNum">     246 </span>            :  *     timestamp is not known or relevant.
+<span class="lineNum">     247 </span>            :  * @duration: duration in time of the buffer data, can be #GST_CLOCK_TIME_NONE
+<span class="lineNum">     248 </span>            :  *     when the duration is not known or relevant.
+<span class="lineNum">     249 </span>            :  * @caps: the #GstCaps describing the data format in this buffer
+<span class="lineNum">     250 </span>            :  * @offset: a media specific offset for the buffer data.
+<span class="lineNum">     251 </span>            :  *     For video frames, this is the frame number of this buffer.
+<span class="lineNum">     252 </span>            :  *     For audio samples, this is the offset of the first sample in this buffer.
+<span class="lineNum">     253 </span>            :  *     For file data or compressed data this is the byte offset of the first
+<span class="lineNum">     254 </span>            :  *       byte in this buffer.
+<span class="lineNum">     255 </span>            :  * @offset_end: the last offset contained in this buffer. It has the same
+<span class="lineNum">     256 </span>            :  *     format as @offset.
+<span class="lineNum">     257 </span>            :  * @malloc_data: a pointer to the allocated memory associated with this buffer.
+<span class="lineNum">     258 </span>            :  *     When the buffer is freed, this data will freed with @free_func.
+<span class="lineNum">     259 </span>            :  * @free_func: a custom function that will be called with @malloc_data, defaults
+<span class="lineNum">     260 </span>            :  *     to g_free(). Since 0.10.22.
+<span class="lineNum">     261 </span>            :  * @parent: the parent buffer if this is a subbuffer. Since 0.10.26.
+<span class="lineNum">     262 </span>            :  *
+<span class="lineNum">     263 </span>            :  * The structure of a #GstBuffer. Use the associated macros to access the public
+<span class="lineNum">     264 </span>            :  * variables.
+<span class="lineNum">     265 </span>            :  */
+<span class="lineNum">     266 </span>            : struct _GstBuffer {
+<span class="lineNum">     267 </span>            :   GstMiniObject          mini_object;
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            :   /*&lt; public &gt;*/ /* with COW */
+<span class="lineNum">     270 </span>            :   /* pointer to data and its size */
+<span class="lineNum">     271 </span>            :   guint8                *data;
+<span class="lineNum">     272 </span>            :   guint                  size;
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :   /* timestamp */
+<span class="lineNum">     275 </span>            :   GstClockTime           timestamp;
+<span class="lineNum">     276 </span>            :   GstClockTime           duration;
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :   /* the media type of this buffer */
+<span class="lineNum">     279 </span>            :   GstCaps               *caps;
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :   /* media specific offset */
+<span class="lineNum">     282 </span>            :   guint64                offset;
+<span class="lineNum">     283 </span>            :   guint64                offset_end;
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :   guint8                *malloc_data;
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            :   /* ABI Added */
+<span class="lineNum">     288 </span>            :   GFreeFunc              free_func;
+<span class="lineNum">     289 </span>            :   GstBuffer             *parent;
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :   /*&lt; private &gt;*/
+<span class="lineNum">     292 </span>            :   GstBufferPrivate      *priv;
+<span class="lineNum">     293 </span>            :   gpointer _gst_reserved[GST_PADDING - 3];
+<span class="lineNum">     294 </span>            : };
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span>            : struct _GstBufferClass {
+<span class="lineNum">     297 </span>            :   GstMiniObjectClass    mini_object_class;
+<span class="lineNum">     298 </span>            : };
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span>            : GType       gst_buffer_get_type (void);
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            : /* allocation */
+<span class="lineNum">     303 </span>            : GstBuffer * gst_buffer_new               (void) G_GNUC_MALLOC;
+<span class="lineNum">     304 </span>            : GstBuffer * gst_buffer_new_and_alloc     (guint size) G_GNUC_MALLOC;
+<span class="lineNum">     305 </span>            : GstBuffer * gst_buffer_try_new_and_alloc (guint size) G_GNUC_MALLOC;
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span>            : /**
+<span class="lineNum">     308 </span>            :  * gst_buffer_set_data:
+<span class="lineNum">     309 </span>            :  * @buf: a #GstBuffer
+<span class="lineNum">     310 </span>            :  * @data: The data (a #guint8 *) to set on the buffer.
+<span class="lineNum">     311 </span>            :  * @size: The size (in bytes, as a #guint) of the data being set.
+<span class="lineNum">     312 </span>            :  *
+<span class="lineNum">     313 </span>            :  * A convenience function to set the data and size on a buffer.
+<span class="lineNum">     314 </span>            :  * This will replace any existing data pointer set on this buffer, but will
+<span class="lineNum">     315 </span>            :  * not change GST_BUFFER_MALLOCDATA(), if any. Callers should ensure that
+<span class="lineNum">     316 </span>            :  * GST_BUFFER_MALLOCDATA() is non-NULL, or should free that and set it to NULL.
+<span class="lineNum">     317 </span>            :  *
+<span class="lineNum">     318 </span>            :  * No checks are done on the data or size arguments passed.
+<span class="lineNum">     319 </span>            :  */
+<span class="lineNum">     320 </span>            : #define         gst_buffer_set_data(buf, data, size)    \
+<span class="lineNum">     321 </span>            : G_STMT_START {                                          \
+<span class="lineNum">     322 </span>            :   GST_BUFFER_DATA (buf) = data;                         \
+<span class="lineNum">     323 </span>            :   GST_BUFFER_SIZE (buf) = size;                         \
+<span class="lineNum">     324 </span>            : } G_STMT_END
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            : /* refcounting */
+<span class="lineNum">     327 </span>            : /**
+<span class="lineNum">     328 </span>            :  * gst_buffer_ref:
+<span class="lineNum">     329 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     330 </span>            :  *
+<span class="lineNum">     331 </span>            :  * Increases the refcount of the given buffer by one.
+<span class="lineNum">     332 </span>            :  *
+<span class="lineNum">     333 </span>            :  * Note that the refcount affects the writeability
+<span class="lineNum">     334 </span>            :  * of @buf and its metadata, see gst_buffer_is_writable() and
+<span class="lineNum">     335 </span>            :  * gst_buffer_is_metadata_writable(). It is
+<span class="lineNum">     336 </span>            :  * important to note that keeping additional references to
+<span class="lineNum">     337 </span>            :  * GstBuffer instances can potentially increase the number
+<span class="lineNum">     338 </span>            :  * of memcpy operations in a pipeline.
+<span class="lineNum">     339 </span>            :  *
+<span class="lineNum">     340 </span>            :  * Returns: (transfer full): @buf
+<span class="lineNum">     341 </span>            :  */
+<span class="lineNum">     342 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     343 </span>            : G_INLINE_FUNC GstBuffer * gst_buffer_ref (GstBuffer * buf);
+<span class="lineNum">     344 </span>            : #endif
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            : static inline GstBuffer *
+<span class="lineNum">     347 </span>            : gst_buffer_ref (GstBuffer * buf)
+<span class="lineNum">     348 </span>            : {
+<span class="lineNum">     349 </span>            :   return (GstBuffer *) gst_mini_object_ref (GST_MINI_OBJECT_CAST (buf));
+<span class="lineNum">     350 </span>            : }
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            : /**
+<span class="lineNum">     353 </span>            :  * gst_buffer_unref:
+<span class="lineNum">     354 </span>            :  * @buf: (transfer full): a #GstBuffer.
+<span class="lineNum">     355 </span>            :  *
+<span class="lineNum">     356 </span>            :  * Decreases the refcount of the buffer. If the refcount reaches 0, the buffer
+<span class="lineNum">     357 </span>            :  * will be freed. If GST_BUFFER_MALLOCDATA() is non-NULL, this pointer will
+<span class="lineNum">     358 </span>            :  * also be freed at this time.
+<span class="lineNum">     359 </span>            :  */
+<span class="lineNum">     360 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     361 </span>            : G_INLINE_FUNC void gst_buffer_unref (GstBuffer * buf);
+<span class="lineNum">     362 </span>            : #endif
+<a name="363"><span class="lineNum">     363 </span>            : </a>
+<span class="lineNum">     364 </span>            : static inline void
+<span class="lineNum">     365 </span><span class="lineCov">       5199 : gst_buffer_unref (GstBuffer * buf)</span>
+<span class="lineNum">     366 </span>            : {
+<span class="lineNum">     367 </span><span class="lineCov">       5199 :   gst_mini_object_unref (GST_MINI_OBJECT_CAST (buf));</span>
+<span class="lineNum">     368 </span><span class="lineCov">       5199 : }</span>
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span>            : /* copy buffer */
+<span class="lineNum">     371 </span>            : /**
+<span class="lineNum">     372 </span>            :  * gst_buffer_copy:
+<span class="lineNum">     373 </span>            :  * @buf: a #GstBuffer.
+<span class="lineNum">     374 </span>            :  *
+<span class="lineNum">     375 </span>            :  * Create a copy of the given buffer. This will also make a newly allocated
+<span class="lineNum">     376 </span>            :  * copy of the data the source buffer contains.
+<span class="lineNum">     377 </span>            :  *
+<span class="lineNum">     378 </span>            :  * Returns: (transfer full): a new copy of @buf.
+<span class="lineNum">     379 </span>            :  */
+<span class="lineNum">     380 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     381 </span>            : G_INLINE_FUNC GstBuffer * gst_buffer_copy (const GstBuffer * buf);
+<span class="lineNum">     382 </span>            : #endif
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span>            : static inline GstBuffer *
+<span class="lineNum">     385 </span>            : gst_buffer_copy (const GstBuffer * buf)
+<span class="lineNum">     386 </span>            : {
+<span class="lineNum">     387 </span>            :   return GST_BUFFER (gst_mini_object_copy (GST_MINI_OBJECT_CONST_CAST (buf)));
+<span class="lineNum">     388 </span>            : }
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            : /**
+<span class="lineNum">     392 </span>            :  * GstBufferCopyFlags:
+<span class="lineNum">     393 </span>            :  * @GST_BUFFER_COPY_FLAGS: flag indicating that buffer flags should be copied
+<span class="lineNum">     394 </span>            :  * @GST_BUFFER_COPY_TIMESTAMPS: flag indicating that buffer timestamp, duration,
+<span class="lineNum">     395 </span>            :  * offset and offset_end should be copied
+<span class="lineNum">     396 </span>            :  * @GST_BUFFER_COPY_CAPS: flag indicating that buffer caps should be copied
+<span class="lineNum">     397 </span>            :  * @GST_BUFFER_COPY_QDATA: flag indicating that buffer qdata should be copied
+<span class="lineNum">     398 </span>            :  *    (Since 0.10.36)
+<span class="lineNum">     399 </span>            :  *
+<span class="lineNum">     400 </span>            :  * A set of flags that can be provided to the gst_buffer_copy_metadata()
+<span class="lineNum">     401 </span>            :  * function to specify which metadata fields should be copied.
+<span class="lineNum">     402 </span>            :  *
+<span class="lineNum">     403 </span>            :  * Since: 0.10.13
+<span class="lineNum">     404 </span>            :  */
+<span class="lineNum">     405 </span>            : typedef enum {
+<span class="lineNum">     406 </span>            :   GST_BUFFER_COPY_FLAGS      = (1 &lt;&lt; 0),
+<span class="lineNum">     407 </span>            :   GST_BUFFER_COPY_TIMESTAMPS = (1 &lt;&lt; 1),
+<span class="lineNum">     408 </span>            :   GST_BUFFER_COPY_CAPS       = (1 &lt;&lt; 2),
+<span class="lineNum">     409 </span>            :   GST_BUFFER_COPY_QDATA      = (1 &lt;&lt; 3)
+<span class="lineNum">     410 </span>            : } GstBufferCopyFlags;
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : /**
+<span class="lineNum">     413 </span>            :  * GST_BUFFER_COPY_ALL:
+<span class="lineNum">     414 </span>            :  *
+<span class="lineNum">     415 </span>            :  * Combination of all possible fields that can be copied with
+<span class="lineNum">     416 </span>            :  * gst_buffer_copy_metadata().
+<span class="lineNum">     417 </span>            :  *
+<span class="lineNum">     418 </span>            :  * Since: 0.10.13
+<span class="lineNum">     419 </span>            :  */
+<span class="lineNum">     420 </span>            : #define GST_BUFFER_COPY_ALL ((GstBufferCopyFlags) (GST_BUFFER_COPY_FLAGS | GST_BUFFER_COPY_TIMESTAMPS | GST_BUFFER_COPY_CAPS | GST_BUFFER_COPY_QDATA))
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span>            : /* copies metadata into newly allocated buffer */
+<span class="lineNum">     423 </span>            : void            gst_buffer_copy_metadata        (GstBuffer *dest, const GstBuffer *src,
+<span class="lineNum">     424 </span>            :                                                  GstBufferCopyFlags flags);
+<span class="lineNum">     425 </span>            : 
+<span class="lineNum">     426 </span>            : /**
+<span class="lineNum">     427 </span>            :  * gst_buffer_is_writable:
+<span class="lineNum">     428 </span>            :  * @buf: a #GstBuffer
+<span class="lineNum">     429 </span>            :  *
+<span class="lineNum">     430 </span>            :  * Tests if you can safely write data into a buffer's data array or validly
+<span class="lineNum">     431 </span>            :  * modify the caps and timestamp metadata. Metadata in a GstBuffer is always
+<span class="lineNum">     432 </span>            :  * writable, but it is only safe to change it when there is only one owner
+<span class="lineNum">     433 </span>            :  * of the buffer - ie, the refcount is 1.
+<span class="lineNum">     434 </span>            :  */
+<span class="lineNum">     435 </span>            : #define         gst_buffer_is_writable(buf)     gst_mini_object_is_writable (GST_MINI_OBJECT_CAST (buf))
+<span class="lineNum">     436 </span>            : /**
+<span class="lineNum">     437 </span>            :  * gst_buffer_make_writable:
+<span class="lineNum">     438 </span>            :  * @buf: (transfer full): a #GstBuffer
+<span class="lineNum">     439 </span>            :  *
+<span class="lineNum">     440 </span>            :  * Makes a writable buffer from the given buffer. If the source buffer is
+<span class="lineNum">     441 </span>            :  * already writable, this will simply return the same buffer. A copy will
+<span class="lineNum">     442 </span>            :  * otherwise be made using gst_buffer_copy().
+<span class="lineNum">     443 </span>            :  *
+<span class="lineNum">     444 </span>            :  * Returns: (transfer full): a writable buffer which may or may not be the
+<span class="lineNum">     445 </span>            :  *     same as @buf
+<span class="lineNum">     446 </span>            :  */
+<span class="lineNum">     447 </span>            : #define         gst_buffer_make_writable(buf)   GST_BUFFER_CAST (gst_mini_object_make_writable (GST_MINI_OBJECT_CAST (buf)))
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span>            : /* Ensure that the metadata of the buffer is writable, even if the buffer data
+<span class="lineNum">     450 </span>            :  * isn't */
+<span class="lineNum">     451 </span>            : gboolean        gst_buffer_is_metadata_writable (GstBuffer *buf);
+<span class="lineNum">     452 </span>            : GstBuffer*      gst_buffer_make_metadata_writable (GstBuffer *buf);
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span>            : /* per-buffer user data */
+<span class="lineNum">     455 </span>            : 
+<span class="lineNum">     456 </span>            : void                  gst_buffer_set_qdata (GstBuffer     * buffer,
+<span class="lineNum">     457 </span>            :                                             GQuark          quark,
+<span class="lineNum">     458 </span>            :                                             GstStructure  * data);
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span>            : const GstStructure *  gst_buffer_get_qdata (GstBuffer     * buffer,
+<span class="lineNum">     461 </span>            :                                             GQuark          quark);
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span>            : /**
+<span class="lineNum">     466 </span>            :  * gst_buffer_replace:
+<span class="lineNum">     467 </span>            :  * @obuf: (inout) (transfer full): pointer to a pointer to a #GstBuffer to be
+<span class="lineNum">     468 </span>            :  *     replaced.
+<span class="lineNum">     469 </span>            :  * @nbuf: (transfer none) (allow-none): pointer to a #GstBuffer that will
+<span class="lineNum">     470 </span>            :  *     replace the buffer pointed to by @obuf.
+<span class="lineNum">     471 </span>            :  *
+<span class="lineNum">     472 </span>            :  * Modifies a pointer to a #GstBuffer to point to a different #GstBuffer. The
+<span class="lineNum">     473 </span>            :  * modification is done atomically (so this is useful for ensuring thread safety
+<span class="lineNum">     474 </span>            :  * in some cases), and the reference counts are updated appropriately (the old
+<span class="lineNum">     475 </span>            :  * buffer is unreffed, the new is reffed).
+<span class="lineNum">     476 </span>            :  *
+<span class="lineNum">     477 </span>            :  * Either @nbuf or the #GstBuffer pointed to by @obuf may be NULL.
+<span class="lineNum">     478 </span>            :  */
+<span class="lineNum">     479 </span>            : #ifdef _FOOL_GTK_DOC_
+<span class="lineNum">     480 </span>            : G_INLINE_FUNC void gst_buffer_replace (GstBuffer **obuf, GstBuffer *nbuf);
+<span class="lineNum">     481 </span>            : #endif
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            : static inline void
+<span class="lineNum">     484 </span>            : gst_buffer_replace (GstBuffer **obuf, GstBuffer *nbuf)
+<span class="lineNum">     485 </span>            : {
+<span class="lineNum">     486 </span>            :   gst_mini_object_replace ((GstMiniObject **) obuf, (GstMiniObject *) nbuf);
+<span class="lineNum">     487 </span>            : }
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span>            : GstCaps*        gst_buffer_get_caps             (GstBuffer *buffer);
+<span class="lineNum">     490 </span>            : void            gst_buffer_set_caps             (GstBuffer *buffer, GstCaps *caps);
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span>            : /* creating a subbuffer */
+<span class="lineNum">     493 </span>            : GstBuffer*      gst_buffer_create_sub           (GstBuffer *parent, guint offset, guint size) G_GNUC_MALLOC;
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span>            : /* span, two buffers, intelligently */
+<span class="lineNum">     496 </span>            : gboolean        gst_buffer_is_span_fast         (GstBuffer *buf1, GstBuffer *buf2);
+<span class="lineNum">     497 </span>            : GstBuffer*      gst_buffer_span                 (GstBuffer *buf1, guint32 offset, GstBuffer *buf2, guint32 len) G_GNUC_MALLOC;
+<span class="lineNum">     498 </span>            : 
+<span class="lineNum">     499 </span>            : /**
+<span class="lineNum">     500 </span>            :  * gst_value_set_buffer:
+<span class="lineNum">     501 </span>            :  * @v: a #GValue to receive the data
+<span class="lineNum">     502 </span>            :  * @b: (transfer none): a #GstBuffer to assign to the GstValue
+<span class="lineNum">     503 </span>            :  *
+<span class="lineNum">     504 </span>            :  * Sets @b as the value of @v.  Caller retains reference to buffer.
+<span class="lineNum">     505 </span>            :  */
+<span class="lineNum">     506 </span>            : #define         gst_value_set_buffer(v,b)       gst_value_set_mini_object(v, GST_MINI_OBJECT_CAST(b))
+<span class="lineNum">     507 </span>            : /**
+<span class="lineNum">     508 </span>            :  * gst_value_take_buffer:
+<span class="lineNum">     509 </span>            :  * @v: a #GValue to receive the data
+<span class="lineNum">     510 </span>            :  * @b: (transfer full): a #GstBuffer to assign to the GstValue
+<span class="lineNum">     511 </span>            :  *
+<span class="lineNum">     512 </span>            :  * Sets @b as the value of @v.  Caller gives away reference to buffer.
+<span class="lineNum">     513 </span>            :  */
+<span class="lineNum">     514 </span>            : #define         gst_value_take_buffer(v,b)      gst_value_take_mini_object(v, GST_MINI_OBJECT_CAST(b))
+<span class="lineNum">     515 </span>            : /**
+<span class="lineNum">     516 </span>            :  * gst_value_get_buffer:
+<span class="lineNum">     517 </span>            :  * @v: a #GValue to query
+<span class="lineNum">     518 </span>            :  *
+<span class="lineNum">     519 </span>            :  * Receives a #GstBuffer as the value of @v. Does not return a reference to
+<span class="lineNum">     520 </span>            :  * the buffer, so the pointer is only valid for as long as the caller owns
+<span class="lineNum">     521 </span>            :  * a reference to @v.
+<span class="lineNum">     522 </span>            :  *
+<span class="lineNum">     523 </span>            :  * Returns: (transfer none): buffer
+<span class="lineNum">     524 </span>            :  */
+<span class="lineNum">     525 </span>            : #define         gst_value_get_buffer(v)         GST_BUFFER_CAST (gst_value_get_mini_object(v))
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : G_END_DECLS
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span>            : #endif /* __GST_BUFFER_H__ */
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
