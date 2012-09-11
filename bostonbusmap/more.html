@@ -1,0 +1,325 @@
+<html>
+<head>
+<title>BostonBusMap</title>
+<style type="text/css">
+.box {
+border: black solid 2px;
+background-color: #cae1ff;
+font-family: Arial,Helvetica,sans-serif;
+
+padding: 2px;
+}
+body
+{
+background-color: #eedd82;
+font-family: Arial,Helvetica,sans-serif;
+color: #333333;
+}
+</style>
+
+</head>
+<body>
+<div class="center">
+<h2>Developer info</h2>
+<div class="box">
+<p>This page is meant primarily for developers and other people who are interested in the details of the app. The main page is <a href="index.html">here</a>.</p>
+
+<p>I started a blog about developing this app: <a href="http://bostonbusmap.tumblr.com">here's the link</a>.
+</div>
+
+<h2>Changelog (new updates)</h2>
+<div class="box">
+<ul>
+<li>
+<i>Sep 25, 2010</i> - <b>version 2.30-2.32</b><br />
+- bug fixes
+</li>
+<li>
+<i>Sep 11, 2010</i> - <b>version 2.29</b><br />
+- changing text around to be more intuitive<br />
+- attempted to fix GPS bug. GPS seems to persist after exiting the app on occasion if the app doesn't close properly<br />
+- fixing bug in favorites where it didn't list all routes a stop had
+</li>
+<li>
+<i>Sep 8, 2010</i> - version 2.28<br />
+- route pooling implemented, so memory issues should not be a problem anymore<br />
+- added all bus routes
+</li>
+<li>
+<i>Aug 27, 2010</i> - version 2.27<br />
+- new app icon! Thanks @hamtibz<br />
+- memory usage decreased. That's a neverending battle, so memory usage bugs may pop up again. In the long run I want to implement pooling for important objects so that the app can load only the routes and stops the user cares about. This will take a bit of work, though<br />
+- added back route overlays. They should be more detailed now; this will be really slow on older Android devices
+</li>
+<li>
+<i>Aug 25, 2010</i> - version 2.26<br />
+- including new route information which has some new bus routes<br />
+- the route overlay feature is removed temporarily due to space concerns; this will be added back next update.
+</li>
+<li>
+<i>Aug 11, 2010</i> - version 2.25<br />
+- route information is now included with the app instead of downloaded after you install it. This adds 900k or so to the app, increasing its size from 80k to about a megabyte, but I figured that was ok. This change should be temporary, although I don't know how temporary<br />
+- The mode switching button was changed to a drop-down menu
+</li>
+<li>
+<i>Aug 7, 2010</i> - version 2.24<br />
+- location should now act like it does on Google Maps, updating constantly until you close the app
+</li>
+<li>
+<i>Aug 6, 2010</i> - version 2.23<br />
+- increased number of stops to update at once
+</li>
+<li>
+<i>Aug 5, 2010</i> - version 2.22<br />
+- fixed bug with favorites not showing up immediately<br />
+- added a timeout to the route info downloads, and more messages to inform when route info downloads happen
+</li>
+<li>
+<i>Aug 4, 2010</i> - version 2.21<br />
+- limited number of stop predictions due to bandwidth issues, and route info is now downloaded on an as needed basis. See <a href="http://groups.google.com/group/massdotdevelopers/browse_thread/thread/45797322bff1e4f">this thread</a> in the MassDotDevelopers Google group.
+</li>
+<li>
+<i>Aug 2, 2010</i> - version 2.19 & 2.20<br />
+- fixed concurrency bugs
+</li>
+<li><i>Aug 1, 2010</i> - version 2.16<br />
+- fixed the bug I thought I fixed in 2.11<br />
+- added favorites! How this works: click a bus stop. Click menu, and click Favorite to mark or unmark as a favorite. Click the upper right button to switch to the favorites view (a bus stop with a star) to see only bus stops you have favorited<br />
+version 2.17:<br />
+- fixed a different memory leak and a bug in loading some stored favorites from disk<br />
+version 2.18:<br />
+- changed predictions to print all from the same route if looking at only bus stops on a single route. Looking at it in favorites will see the last three predictions, regardless of route
+<li><i>Jul 31, 2010</i> - version 2.14<br />
+- fixed memory leak. Each time the user exited the app, most of the data would stay in memory. This was because the main activity referred to these data structures after it exited, which prevented them from being garbage collected.<br />
+- fixed bug I introduced in 2.13 where the icons would stop following the map around if you went to the preferences menu or etc.
+</li>
+<li><i>Jul 30, 2010</i> - version 2.13<br/>
+- fixed bug where some phones with more than 2GB were improperly said to not have enough disk space
+</li>
+<li>
+<i>Jul 26, 2010</i> - version 2.11<br />
+- added support for the rest of the bus routes that the MBTA released today<br />
+- rewrote database code to be more efficient. When the new bus routes were added to the feed, the feed provided roughly 8 times as much data as it had before, so some phones were having problems handling this. I tested it on my G1 and it seems to do OK, but don't hesitate to email if you're having a problem<br />
+- it will now also check to make sure you have enough room on your phone before attempting to download any data<br />
+version 2.12:<br />
+- hitting the button on the upper left during the initial download caused a crash
+</li>
+<li>
+<i>Jul 25, 2010</i> - version 2.10<br />
+- the infer bus routes XML feed went offline for some reason, and apparently I never accounted for that, so it mistakenly says that you can't get to the bus feed. This is fixed in 2.10<br/>
+- routes can now be drawn out on the map, if you go into Preferences and enable that option. NOTE: this is currently slow on some phones<br />
+- other minor optimizations
+</li>
+<li>
+<i>Jul 24, 2010</i> - version 2.09<br />
+- fixed rotate screen bug which cut off the download of the initial route data<br />
+- changed accessable to accessible
+</li>
+<li>
+<i>Jul 18, 2010</i> - version 2.08<br />
+- fixed ui issue where rotating the screen produces icons that don't show text when selected<br />
+- added toggle button which should allow users to see only buses on certain supported routes if they want
+</li>
+<li>
+<i>Jul 8, 2010</i> - version 2.04-2.07<br/>
+- force closes which happen when you change screen orientation should be fixed, I think. It will still act a little weird (text won't pop up at first) but it should work after an update happens<br />
+- force closes and glitches which happen when you change between "Bus Locations" and the various routes should be fixed<br />
+- other force close bugs fixed relating to typos in the program
+</li>
+<li>
+<i>Jul 7, 2010</i> - version 2.03<br />
+- concurrency bug fixed. Sometimes if you switched between routes it shows two different sets of icons at once, and neither one works properly<br />
+- all route information is downloaded at once, which means direction info should work properly for buses which are supported<br />
+- I limited the predictions to only show the most recent three, to improve readability. Also, the "arriving in x minutes" is now always on a new line, also to improve readability.
+</li>
+<li>
+<i>Jun 23, 2010</i> - version 2.02<br />
+- drop-down menu now updates instantly when you select a new option
+</li>
+<li>
+<i>Jun 9, 2010</i> - version 2.01<br />
+- fixed focus bug<br />
+- route you picked will be default route when you start app next time<br />
+- features to come:<br />
+-- routes overlayed on map as a line<br />
+-- ability to bookmark stops, so you can find them easily<br />
+-- (maybe) ability to see stops around your current position, rather than just of a particular route
+</li>
+
+<li>
+<i>Jun 7, 2010</i> - version 2.00 (beta)<br />
+- bus predictions supported! Click the drop-down box to choose a route. It will take a little while to update, I'm trying to fix this to happen instantly<br />
+-- Also note that the first time you view predictions for a route, it will have to download the route information first, which may take a little longer than usual updates. This route information is saved to the device and it should not need to be downloaded again (at least until MassDOT updates that information)<br />
+-- NOTE: bus predictions are not always accurate. This app simply uses the info from the feed, so I can't improve upon their predictions (nor would I know how to).<br />
+- features to come:<br/>
+-- ability to bookmark stops, so you can find them easily<br/>
+-- (maybe) ability to see stops around your current position, rather than stops of one particular route
+</li>
+<li>
+<i>Jun 4, 2010</i> - version 1.25<br />
+- added back infer bus preference checkbox. I jumped the gun and removed it before MassDOT added all the routes to their feed. They added a bunch more, but it looks like it'll be the end of summer before all routes are added. I'm still pretty happy about this though<br />
+- fixed display glitch with location icon where it would stretch the bounding circle
+</li>
+<li>
+<i>Jun 3, 2010</i> - version 1.23:<br />
+- centering on location now shows an icon approximately where your location is. Note that this is a rough estimate and your location won't be continually updated like it is in the Google Maps app (I simply haven't had time to implement that part of it)<br />
+- MassDOT's feed now seems to show all bus routes! So I removed the infer bus estimation stuff. Thanks Nickolai Zeldovich!<br />
+- Grey highlight circle replaced with a blue outline circle<br />
+- version 1.24 fixes a small graphical glitch
+</li>
+<li>
+<i>May 26, 2010</i> - version 1.22:<br/>
+- I set the wrong map API key in the last version, so the map didn't update properly. That's fixed now, thanks for your patience
+</li>
+<li>
+<i>May 25, 2010</i> - version 1.21:<br />
+- force close bug fixed. This only happened sometimes when no buses were displayed and you clicked the screen.
+</li>
+<li>
+<i>Apr 24, 2010</i> - version 1.20:<br />
+- Infer vehicle routes checkbox should take effect faster<br />
+- I moved the Refresh button into the menu instead, and got rid of the title bar to free up space. Please email me if you want me to change it back.<br />
+- Bus icons should look better now<br />
+- Grey shadow where buses are currently being displayed should be a little lighter
+</li>
+<li>
+<i>Mar 13, 2010</i> - version 1.19:<br />
+- bug fixes. Fixed bug where clicking "Center on Boston" before any updates happened would cause it to crash. The "Infer bus routes" checkbox now takes effect after the next update, instead of when the app restarts.
+</li>
+<li>
+<i>Mar 6, 2010</i> - version 1.18:<br />
+- see 'Inferred bus routes' above
+</li>
+<li>
+<i>Mar 1, 2010</i> - version 1.17:<br />
+- more performance improvements
+</li>
+<li>
+<i>Feb 28, 2010</i> - version 1.15:<br />
+- app should be less sluggish than previous release<br />
+- a grey circle shows you what area the app buses are currently being displayed. To look in other areas, move the map<br />
+- I got rid of the 10 minute timeout, it seemed like a foolish decision in hindsight. The app shouldn't consume any power when paused (the screen goes blank for instance); if it does send me an email.<br />
+<i>version 1.16:</i><br />
+- bug fixed where using "Center on current location" or "Center on Boston" didn't update the bus locations also
+</li>
+<li>
+<i>Feb 17, 2010</i> - version 1.14:<br/>
+- refreshes and icon updates didn't line up well, which caused buses to jump around. This bug should be fixed, mostly
+</li>
+<li>
+<i>Feb 16, 2010</i> - version 1.13:<br />
+- bus icons now show up whenever you move the map, instead of waiting for the next refresh. <br />
+- "Seconds since update" is now computed from the time you click the icon, instead of from the time of refresh
+</li>
+<li>
+<i>Jan 30, 2010</i> - version 1.10:<br />
+- tooltips changed to act more like other Google Maps tooltips<br />
+- slightly more overlay icons<br/>
+- bug fixed where clicking the Refresh button after getting the 10 minute message asked you to wait another 10 seconds<br />
+- bug fixed; location finding will timeout after 40 seconds, or if the app closes<br />
+- version 1.11 fixes a bug where the "Can't find location" box popped up even if it was successful<br />
+- version 1.12 fixes arrow showing up even when the direction hasn't been calculated
+</li>
+<li>
+<i>Jan 24, 2010</i> - version 1.09 introduces a few new features:
+<br/>
+- Your location is saved when you exit the app so that you don't have to pan back to it each time you use it<br />
+- I added two buttons to the menu. "Center on your location" gets a quick location fix using whatever is available (GPS or otherwise). It won't wait for a very accurate location, just something that's good enough. "Center on Boston" centers the map on Boston.<br/>
+- Arrows are drawn on the buses showing what direction they were heading the last time they were updated.
+</li>
+<li><i>Jan 19, 2010</i> - version 1.06 fixes a bug in the updating code I introduced in 1.05, where sometimes it would stop updating.
+<br/>
+- version 1.07 fixes a bug with the Refresh button not restarting the timeout like it should have<br />
+- version 1.08 fixes a similar bug regarding the timeout
+</li>
+<li><i>Jan 18, 2010</i> - version 1.05 released. Fixed bug where screen rotate makes zoom buttons disappear. Also added timeout option (enabled by default) which turns off the constant updating after 10 minutes to save battery life. This might be useful if you accidentally leave the app open on your phone (like I did earlier today)</li>
+<li><i>Jan 16, 2010</i> - version 1.04 released. The buses change color when selected, which might make it easier to track a moving bus in a crowd of other buses. I also fixed the issue where changing the phone from portrait to landscape mode caused the app to restart everything
+</li>
+<li><i>Jan 4, 2010</i> - version 1.02/1.03 released, which changes the targeted Android version to 1.5 (it was previously 1.6) to allow more users to run it. There were no 1.6-specific features so this was an easy change. Also, a pretty embarassing bug was fixed, where the estimated bus directions pointed in the opposite direction they should have.<br/>
+</li>
+
+</ul>
+</div>
+
+<h2>Source</h2>
+<div class="box">
+<p>
+<p>The SourceForge page for the source code is <a href="http://sf.net/projects/bostonbusmap">http://sf.net/projects/bostonbusmap</a>.
+
+See SVN in the SourceForge page for the latest source code. There are also tarballs and apk binaries available for download.
+</p>
+</div>
+<h2>Longer Disclaimer</h2>
+<div class="box">
+<p>There is no warranty or any guarantee regarding the app. You should not rely on this app for any information or anything else.</p>
+<p>I'm releasing it in hopes that someone will find it useful. My main motivation for making this app is to avoid waiting outside in the cold or rain for a bus when I could be waiting indoors. I don't know how other people will find it useful, and it may end up not being that useful for me either. There's no guarantee that this will be useful at all, or even work properly, or anything; you're on your own, although you can always email me if you wish (see Contact below).</p>
+<p>There's also no guarantee that I'll maintain the app (although I probably will for the near future). This means bugs may never be fixed, and newer Android-based devices may never be supported. This is a spare time project for me.</p>
+
+</div>
+<h2>Copyright/License info</h2>
+<div class="box">
+<p>This app is released under the GPL version 3. 
+</p>
+<p>MassDOT provides the information in the feed. See the below section 'About the MBTA's feed' for more information. The app may at times bundle this information into the app; this information is not GPL'd or released under any license, and is owned by the MBTA.</p>
+<p>The bus icon comes from here: <a href="http://www.aiga.org/content.cfm/symbol-signs">http://www.aiga.org/content.cfm/symbol-signs</a></p>
+<p>This app uses Google Maps. See their terms of service here: <a href="http://maps.google.com/help/terms_maps.html">http://maps.google.com/help/terms_maps.html</a></p>
+<p>The stop icon was made by John Earnest. It uses the MBTA 'T' logo which might be trademarked or copyrighted.</p>
+<p>The star icon comes from here: <a href="http://commons.wikimedia.org/wiki/File:Empty_Star.svg">http://commons.wikimedia.org/wiki/File:Empty_Star.svg</a>. You can find the full star on a link on that page.</p>
+<p>The program incorporates code from <a href="http://github.com/jgilfelt/android-mapviewballoons/">android-mapviewballoons</a>. This is copyrighted readyState Software, but it's under the Apache license.</p>
+<p>App icon and logo (since 2.27) by Brittany Hamtil.</p>
+</div>
+<h2>About the MBTA's feed</h2>
+<div class="box">
+<p>
+See: <a href="http://www.eot.state.ma.us/developers/realtime/">http://www.eot.state.ma.us/developers/realtime/</a>
+</p>
+<p>
+The Massachusetts Department of Transportation (MassDOT) owns and provides the information this app uses. The information this app uses comes from this <a href="http://webservices.nextbus.com/service/publicXMLFeed?command=vehicleLocations&amp;a=mbta&amp;t=0">xml feed</a> and other related ones.
+</p>
+
+<p>
+They have their own disclaimers that you can read at the link above. In particular, they may have outages, incorrect or missing information, or it may just not update that frequently. These things do happen and it may impact your usage of the app. I think it's just great that the information is publicly available and that they're making an effort to work with developers to use their information.
+</p>
+<p>
+They require users of the feed to obtain information only as often as once every 10 seconds. The app should obey this rule; please don't try to circumvent it.
+</p>
+<p>
+The feed is a trial feed. The URL or the XML schema may change, breaking the app. 
+</p>
+<p>
+Not all routes are supported yet, but MassDOT plans on supporting all bus routes by the end of summer, 2010.
+<p>
+<!--<h3>Predictable verses non-predictable buses</h3>
+<p>They currently provide information for a bunch of the most popular bus routes carrying 1/3rd of the passengers (at least the 1, 77, 66, 71, 39, 23, and a bunch others I can't remember). All routes should be provided in the MassDOT feed by the end of summer (no guarantees, it's their feed).</p>
+<p>(Sometimes bus route 751 is mentioned, I searched for info on this and it seems to be SL-4 on the silver line.)</p>
+<p>These are the predictable bus routes. The XML feed often shows bus locations for buses other than those on those routes. These locations are shown in the app in the hope that it's useful to somebody, but they shouldn't be relied on. (For that matter, the app should not be relied on for anything.) They may possibly include other bus routes on the predictable list in the future; see their webpage for more information.
+</p>
+<p>
+
+The predictable bus routes provide more information than non-predictable bus routes in the feed. They mention what route a bus is on, its heading, and whether it's inbound or outbound. I have no idea how much more reliable the information on predictable buses is verses non predictable. For non-predictable buses I estimate a direction by comparing the last two update positions of the bus; I only do that to get a basic idea of where it's going.
+</p>
+<p><b>Note:</b> they've announced that they're trying to include all buses in the feed by the end of summer 2010. This is good news especially because in addition to bus locations they also offer a bus prediction service which tells you approximately when a bus will arrive at a certain stop.
+</p>-->
+</div>
+<h2>How does this work?</h2>
+<div class="box">
+<h3>Bus Locations</h3>
+<ul>
+<li>it downloads the XML file from the feed mentioned above in 'About the MBTA's feed'</li>
+<li>it gets the 20 closest buses to the center of where the map is located at the time. The app slows down significantly if too many are displayed at once, so it's limited to 20 currently</li>
+<li>it draws bus icons at those coordinates. If these icons are tapped, it should display basic information about the bus</li>
+<li>you can update manually by clicking "Refresh", or update automatically every 10 seconds or so by checking the "Update continuously" checkbox in the settings menu</li>
+<li>you can click the icons to see information about a bus</li>
+<!--<li>The estimated direction of a bus is computed using the bus location at two different update points. Predictable buses already provide this information; this is the "Heading" mentioned. The estimated direction is computed for non predictable buses to try to give an idea where it's going</li>-->
+</ul>
+<h3>Bus Predictions</h3>
+<ul>
+<li>when you first downloaded the app it downloaded some route information data. This has all the bus stops, what routes use them, and what direction buses on those routes are heading. It was cached to your Android device in the database in a serialized format.</li>
+<li>it downloads the prediction data for all the bus stops in the route every 10-15 seconds or so. If you're looking at the favorited stops, it downloads information for only those stops instead</li>
+<li>it uses the information from the cached route data and the new prediction data to print out useful information about when the next bus is predicted to arrive</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>
