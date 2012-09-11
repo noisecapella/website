@@ -1,6 +1,6 @@
 <%inherit file="/_templates/site.mako" />
 <%self:filter chain="markdown_template">
-- [BostonBusMap](https://play.google.com/store/apps/details?id=boston.Bus.Map) - an Android app which shows vehicle locations and displays transit predictions for the MBTA
+- [BostonBusMap](http://georgeschneeloch.com/bostonbusmap) ([Play store link](https://play.google.com/store/apps/details?id=boston.Bus.Map)) - an Android app which shows vehicle locations and displays transit predictions for the MBTA
 - [Macrovator](http://github.com/bostonbusmap/macrovator) - a Ruby on Rails application which records and executes macros in the form of keystrokes and other special commands, similar to how Emacs uses macros.
 - [Senescribe](http://github.com/bostonbusmap/senescribe) - a Ruby on Rails blog which records the age of each word and highlights them accordingly
 - [Restructor](http://github.com/bostonbusmap/restructor) - my attempt at a computer vision Android app
