@@ -1,0 +1,111 @@
+---
+title: Familiarity index
+permalink: http://www.georgeschneeloch.com/blog/2012/09/18/similarity-index
+date: 2012/09/18 02:18:31
+categories: 
+guid: tx9aSmDejGaBv-eCTYPZ8bwBWzc=
+---
+I've been playing with the Echo's Nest plugin I wrote, and I wanted to see what would happen when I set `familiarity` to be between 0% and 10%. I'm kind of interested in seeing what's incredibly wildly different from the Evens, but here's the list I got:
+
+- Ferdinand
+- Rem
+- The New Order
+- Don't Know
+- Papa
+- Kean
+- 1994
+- The Journey
+- 214
+- Beach Boyz
+- Techno
+- 202
+- 207
+- ???
+- ...
+- Japanese
+- Mp3
+- Uncle
+- aaaaa
+- Musa
+- 02
+- Desconocido
+- 26west
+- 201
+- Race The Fray
+- Unbekannt
+- Unknown Artists
+- artist
+- Santana & Everlast
+- 03
+- Spektor
+- ..
+- Janet
+- Unknown Artist
+- moZart
+- HendriX
+- Presley
+- Rock&roll
+- \????\- 
+- Surfer Rosa
+- W.A.Mozart
+- Bob Morley
+- Kurt Masur
+- Minem
+- Police & Thieves
+- C++
+- Daft
+- Jlo
+- Pac
+- Alicia K
+- Caira
+- The Stokes
+- Michael J.
+- Zac Grooms
+- Lil John
+- #9
+- Parklife
+- Soundtrack for the Motion Picture
+- Bep
+- #1 Defender
+- The +
+- Νικόλας Άσιμος
+- Joe Jonas
+- redrobot
+- NadaMucho Presents
+- Chrome Band
+- Red Hot
+- Oliver W. Tuthill Jr.
+- Almost There Records - Various Artists
+- J. Cash
+- #1 Twilight Movie Songs
+- #2 Staten Island Johnny
+- Lyn-Z
+- #1 Crush
+- Jimmy Deveney
+- EA.Rock
+- Manson
+- BuyBack Band
+- Ralph Wall-Greg Mertz
+- Aeolian Music Works
+- Varous Artists
+- Ivor Thomas
+- Jefferson Paine
+- Just B & Friends
+- Arthur Livingston
+- Jonah James
+- J Cash
+- Douglas Lee Saum / William Butler Yeats
+- Violet Femmes (Various Artists)
+- Pair Of Noids
+- Strip 77
+- Rojo
+- Lorraine Devon Wilke
+- The Mighty Keepers
+- Rik Slave
+- Yocahuna
+- Michel Brazeau
+- #2 Clubhouse Boys
+- #1 Childrens Learning Tool
+- Justin Goode
+
+'The Violet Femmes (Various Artists)' is so close, I guess it just got lost in the shuffle. None of these artists actually show up in my library, which isn't too surprising. The only artist I've seen which exists in my library is Alarm Will Sound, which shows up with a 20% familiarity rating compared against Jawbreaker. 
