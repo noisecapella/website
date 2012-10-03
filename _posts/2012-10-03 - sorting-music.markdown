@@ -1,0 +1,12 @@
+---
+title: Sorting Music
+permalink: http://www.georgeschneeloch.com/blog/2012/10/03/sorting-music
+date: 2012/10/03 15:41:17
+categories: 
+guid: V_59ci3JJHujkK7IRyWhY6c7Lbc=
+---
+The more and more I think about it, alphabetical order doesn't make much sense for digital storage. It's a system meant for human eyes, which divides a collection into 26 buckets (depending on language and other symbols), and then 26 sub-buckets for the second letter, and so on, until you reach a group which is easy to browse one after another. [The Wikipedia article](http://en.wikipedia.org/wiki/Alphabetical_order) on the subject discusses various other issues like the word 'the', spaces, and abbreviations.
+
+Generally when people talk about it regarding computers, they compare each character numerically, which are usually laid out in alphabetical order in Unicode and ASCII. It doesn't have a strong rationalle but it's consistent and generally good enough for displaying the list to people.
+
+I've been thinking about this mostly in regard to music stores, where the CDs and records are sorted by artist title. Many online music services cluster artists by similarity, but there's no obvious way to order multiple dimensions into a single consistent ordering. At the [Mahout](http://mahout.apache.org) talk I went to a little while ago Ted Dunning mentioned projecting multiple dimensions to a single dimension using a [random projection](https://www.google.com/search?sourceid=chrome&client=ubuntu&channel=cs&ie=UTF-8&q=random+projection+mapping#hl=en&safe=off&client=ubuntu&hs=SHC&channel=cs&sclient=psy-ab&q=random+projection+dimensionality+reduction&oq=random+projection+dimen&gs_l=serp.3.0.0j0i30l2j0i8i30.5879.6489.0.7796.5.5.0.0.0.0.216.542.3j1j1.5.0.les%3B..0.0...1c.1.Z7VSa-gIDM8&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.&fp=9abb5b05aa09b6fc&biw=1301&bih=682) which worked well enough for clustering purposes. It doesn't need to be a perfectly consistent sort. It would be awesome if certain sections of a music store corresponded to clusters, where people could browse in person and know they are looking at artists that generally match their tastes. Or they could head to the other side of the store and look at something completely different. That would give physical music stores a clear value over online websites where browsing is less natural and most things are represented as lists.
