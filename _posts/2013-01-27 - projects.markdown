@@ -1,0 +1,11 @@
+---
+title: Projects
+permalink: http://www.georgeschneeloch.com/blog/2013/01/27/projects
+date: 2013/01/27 17:42:51
+categories: 
+guid: TuB8fLS0FuXFTLGwKipA99NO2dY=
+---
+Two projects my former coworkers made that are pretty neat and worth looking at:
+
+- [Code review tool](http://github.com/skermes/review) written using Sinatra and haml. It allows you to annotate diffs against git branches which are then shared with other people involved in the code review. You just double click on the area you want to leave a comment, write something in the annotation box, then send the URL for the review to the other people involved for them to look at.
+- [Watson](http://github.com/babbaco/watson), a chatbot for [Campfire](http://www.campfirenow.com). It provides an easy interface to run things like deployment scripts, which are also logged and broadcast to everybody because it's done in the chatroom. There is a plugin API which makes it easy to extend for whatever purpose
